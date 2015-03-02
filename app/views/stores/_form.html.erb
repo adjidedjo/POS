@@ -1,0 +1,18 @@
+<%= simple_form_for @store, :html => { :class => 'form-horizontal' } do |f| %>
+    <%= f.association :branch, label_method: :cabang, value_method: :id %>
+  <%= error_span(@store[:branch_id]) %>
+  <%= f.association :channel, label_method: :channel, value_method: :id %>
+  <%= error_span(@store[:channel_id]) %>
+  <%= f.input :nama %>
+  <%= error_span(@store[:nama]) %>
+  <%= f.input :kota %>
+  <%= error_span(@store[:kota]) %>
+  <%= f.input :from_period, as: :tanggal %>
+  <%= error_span(@store[:from_period]) %>
+  <%= f.input :to_period, as: :tanggal %>
+  <%= error_span(@store[:to_period]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                stores_path, :class => 'btn btn-default' %>
+<% end %>

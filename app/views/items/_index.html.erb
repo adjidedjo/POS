@@ -1,0 +1,33 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-body">
+      <%- model_class = Item -%>
+      <div class="page-header">
+        <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+      </div>
+      <%= hidden_field_tag "kode_barang" %>
+      <%= hidden_field_tag "nama_barang" %>
+      <table id="a" class="display" width="100%" cellspacing="0" border="1" style="table-layout: fixed">
+        <thead>
+          <tr>
+            <th style='width: 170%;'>Kode Barang</th>
+            <th style='width: 270%;'>Nama Barang</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Item.all.each do |item| %>
+            <tr>
+              <td style='width: 150px;'><%= item.kode_barang %></td>
+              <td style='width: 200px;'><%= item.nama %></td>
+              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"), :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->

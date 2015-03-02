@@ -1,0 +1,56 @@
+<%- model_class = Sale -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:asal_so) %></th>
+      <th><%= model_class.human_attribute_name(:salesman_id) %></th>
+      <th><%= model_class.human_attribute_name(:nota_bene) %></th>
+      <th><%= model_class.human_attribute_name(:keterangan_customer) %></th>
+      <th><%= model_class.human_attribute_name(:venue_id) %></th>
+      <th><%= model_class.human_attribute_name(:spg) %></th>
+      <th><%= model_class.human_attribute_name(:customer) %></th>
+      <th><%= model_class.human_attribute_name(:phone_number) %></th>
+      <th><%= model_class.human_attribute_name(:hp1) %></th>
+      <th><%= model_class.human_attribute_name(:hp2) %></th>
+      <th><%= model_class.human_attribute_name(:alamat_kirim) %></th>
+      <th><%= model_class.human_attribute_name(:so_manual) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sales.each do |sale| %>
+      <tr>
+        <td><%= link_to sale.id, sale_path(sale) %></td>
+        <td><%= sale.asal_so %></td>
+        <td><%= sale.salesman_id %></td>
+        <td><%= sale.nota_bene %></td>
+        <td><%= sale.keterangan_customer %></td>
+        <td><%= sale.venue_id %></td>
+        <td><%= sale.spg %></td>
+        <td><%= sale.customer %></td>
+        <td><%= sale.phone_number %></td>
+        <td><%= sale.hp1 %></td>
+        <td><%= sale.hp2 %></td>
+        <td><%= sale.alamat_kirim %></td>
+        <td><%= sale.so_manual %></td>
+        <td><%=l sale.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_sale_path(sale), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      sale_path(sale),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "new", new_sale_path, :class => 'btn btn-primary' %>

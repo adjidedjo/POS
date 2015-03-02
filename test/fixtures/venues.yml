@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  venue_name: MyString
+  city: MyString
+  branch_id: 1
+  from_period: 2015-02-24
+  to_period: 2015-02-24
+
+two:
+  venue_name: MyString
+  city: MyString
+  branch_id: 1
+  from_period: 2015-02-24
+  to_period: 2015-02-24

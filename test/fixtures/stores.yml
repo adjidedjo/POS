@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  channel_id: 1
+  nama: MyString
+  kota: MyString
+  from_period: 2015-02-26
+  to_period: 2015-02-26
+
+two:
+  channel_id: 1
+  nama: MyString
+  kota: MyString
+  from_period: 2015-02-26
+  to_period: 2015-02-26

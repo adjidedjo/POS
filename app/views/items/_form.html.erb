@@ -1,0 +1,64 @@
+<%= simple_form_for @item, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :cabang_id %>
+  <%= error_span(@item[:cabang_id]) %>
+  <%= f.input :kode_barang %>
+  <%= error_span(@item[:kode_barang]) %>
+  <%= f.input :nama %>
+  <%= error_span(@item[:nama]) %>
+  <%= f.input :brand_id %>
+  <%= error_span(@item[:brand_id]) %>
+  <%= f.input :jenis %>
+  <%= error_span(@item[:jenis]) %>
+  <%= f.input :produk %>
+  <%= error_span(@item[:produk]) %>
+  <%= f.input :kain %>
+  <%= error_span(@item[:kain]) %>
+  <%= f.input :panjang %>
+  <%= error_span(@item[:panjang]) %>
+  <%= f.input :lebar %>
+  <%= error_span(@item[:lebar]) %>
+  <%= f.input :prev_harga %>
+  <%= error_span(@item[:prev_harga]) %>
+  <%= f.input :harga %>
+  <%= error_span(@item[:harga]) %>
+  <%= f.input :prev_discount_1 %>
+  <%= error_span(@item[:prev_discount_1]) %>
+  <%= f.input :discount_1 %>
+  <%= error_span(@item[:discount_1]) %>
+  <%= f.input :prev_discount_2 %>
+  <%= error_span(@item[:prev_discount_2]) %>
+  <%= f.input :discount_2 %>
+  <%= error_span(@item[:discount_2]) %>
+  <%= f.input :prev_discount_3 %>
+  <%= error_span(@item[:prev_discount_3]) %>
+  <%= f.input :discount_3 %>
+  <%= error_span(@item[:discount_3]) %>
+  <%= f.input :prev_discount_4 %>
+  <%= error_span(@item[:prev_discount_4]) %>
+  <%= f.input :discount_4 %>
+  <%= error_span(@item[:discount_4]) %>
+  <%= f.input :prev_upgrade %>
+  <%= error_span(@item[:prev_upgrade]) %>
+  <%= f.input :upgrade %>
+  <%= error_span(@item[:upgrade]) %>
+  <%= f.input :prev_cashback %>
+  <%= error_span(@item[:prev_cashback]) %>
+  <%= f.input :cashback %>
+  <%= error_span(@item[:cashback]) %>
+  <%= f.input :prev_special_price %>
+  <%= error_span(@item[:prev_special_price]) %>
+  <%= f.input :special_price %>
+  <%= error_span(@item[:special_price]) %>
+  <%= f.input :regional_id %>
+  <%= error_span(@item[:regional_id]) %>
+  <%= f.input :additional_program %>
+  <%= error_span(@item[:additional_program]) %>
+  <%= f.input :additional_diskon %>
+  <%= error_span(@item[:additional_diskon]) %>
+  <%= f.input :program_starting_at %>
+  <%= error_span(@item[:program_starting_at]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                items_path, :class => 'btn btn-default' %>
+<% end %>

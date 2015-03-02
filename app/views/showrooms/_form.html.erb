@@ -1,0 +1,12 @@
+<%= simple_form_for @showroom, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= error_span(@showroom[:name]) %>
+  <%=f.association :branch, label_method: :cabang  , value_method: :id %>
+  <%= error_span(@showroom[:branch_id]) %>
+  <%= f.input :city %>
+  <%= error_span(@showroom[:city]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                showrooms_path, :class => 'btn btn-default' %>
+<% end %>
