@@ -1,5 +1,7 @@
 jQuery ->
 
+  $('#index_of_sales').DataTable()
+
   stores = $('#sale_store_id').html()
   $('#sale_channel_id').change ->
     channel = $('#sale_channel_id :selected').text()

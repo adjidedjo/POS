@@ -14,7 +14,7 @@ class SalesController < ApplicationController
       format.html
       format.pdf do
         pdf = PosPdf.new(@sale, order_no)
-        send_data pdf.render, filename: "POS#{order_no}",
+        send_data pdf.render, filename: "#{@sale.no_so}",
           type: "application/pdf",
           disposition: "inline"
       end
