@@ -1,8 +1,6 @@
 $(document).ready ->
 
-  $('#a').dataTable({
-   sScrollY: 150,
-   sScrollX : 150,
+  $('#a').DataTable({
    paging: false,
    info: false,
    destroy: true
