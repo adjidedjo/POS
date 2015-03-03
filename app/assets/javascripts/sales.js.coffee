@@ -1,11 +1,15 @@
 jQuery ->
 
-  #$('#kk').hide()
-  #$("#sale_tipe_pembayaran_tunai").on 'change', () ->
-  # $('#kk').hide()
-
-  #$("#sale_tipe_pembayaran_kartu").on 'change', () ->
-  # $('#kk').show()
+  stores = $('#sale_store_id').html()
+  $('#sale_channel_id').change ->
+    channel = $('#sale_channel_id :selected').text()
+    options = $(stores).filter("optgroup[label='#{channel}']").html()
+    if options
+      $('#sale_store_id').html(options)
+      $('#sale_store_id').parent().show()
+    else
+      $('#sale_store_id').empty()
+      $('#sale_store_id').parent().hide()
 
   $('#sale_netto').on 'keyup', () ->
     pembayaran = document.getElementById('sale_pembayaran').value
@@ -38,14 +42,3 @@ jQuery ->
     event.preventDefault()
     open_modal()
     date_picker()
-
-  stores = $('#sale_store_id').html()
-  $('#sale_channel_id').change ->
-    channel = $('#sale_channel_id :selected').text()
-    options = $(stores).filter("optgroup[label='#{channel}']").html()
-    #if options
-    #  $('#sale_store_id').html(options)
-    #  $('#sale_store_id').parent().show()
-    #else
-    #  $('#sale_store_id').empty()
-    #  $('#sale_store_id').parent().hide()

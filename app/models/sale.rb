@@ -17,6 +17,12 @@ class Sale < ActiveRecord::Base
   before_create do
     get_no_sale = Sale.where(created_at: Date.today.to_datetime).count(:id)
     get_no_sale.nil? ? (self.no_sale = 1) : (self.no_sale = get_no_sale + 1)
+    no_sale = self.no_sale.to_s.rjust(4, '0')
+    bulan = Date.today.strftime('%m')
+    tahun = Date.today.strftime('%y')
+    kode_customer = self.store.kode_customer
+    kode_cabang = self.store.branch.id.to_s.rjust(2, '0')
+    self.no_so = 'SOM''-'+kode_cabang+'-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
     if pembayaran < netto
       self.cara_bayar = 'um'
     else
