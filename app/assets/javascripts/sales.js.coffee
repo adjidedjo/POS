@@ -1,7 +1,5 @@
 jQuery ->
 
-  $('#index_of_sales').DataTable()
-
   stores = $('#sale_store_id').html()
   $('#sale_channel_id').change ->
     channel = $('#sale_channel_id :selected').text()
@@ -37,6 +35,12 @@ jQuery ->
   add_item_to_table()
   open_modal()
   date_picker()
+  $('#index_of_sales').DataTable()
+  $('#of_sales').DataTable({
+    bPaginate: false,
+    bFilter: false,
+    bInfo: false
+  })
   $('form').on 'click', '.add_fields', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
