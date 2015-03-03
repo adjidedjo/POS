@@ -28,40 +28,41 @@
       <%= f.input :keterangan_customer, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:keterangan_customer]) %>
     </div>
-
-    <%= f.simple_fields_for :sale_items do |builder| %>
-      <%= render "sale_item_fields", :f => builder %>
-    <% end %>
-    <%= link_to_add_fields "Add Item", f, :sale_items %>
   </div>
-
   <div class="row">
-    <div class="col-md-6">
-      <%= f.input :netto, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
-      <%= f.input :pembayaran, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
-      <%= f.input :sisa, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
+    <%= f.simple_fields_for :sale_items do |builder| %>
+        <%= render "sale_item_fields", :f => builder %>
+      <% end %>
+      <%= link_to_add_fields "Add Item", f, :sale_items %>
     </div>
-    <div class="col-md-6">
-      <%= f.label :tipe_pembayaran %>
-      <%= f.collection_radio_buttons :tipe_pembayaran, [['tunai', 'Tunai'] ,['kartu', 'Kartu Kredit']], :first, :last, item_wrapper_tag: :div %>
-      <div id="kk">
-        <div class="col-md-5">
-          <%= f.input :nama_kartu, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 200px'} %>
-          <%= error_span(@sale[:nama_kartu]) %>
-          <%= f.input :no_kartu, :input_html => {:style => 'width: 200px'} %>
-          <%= error_span(@sale[:no_kartu]) %>
-        </div>
-        <div class="col-md-5">
-          <%= f.input :no_merchant, :input_html => {:style => 'width: 200px'} %>
-          <%= error_span(@sale[:no_merchant]) %>
-          <%= f.input :atas_nama, :input_html => {:style => 'width: 200px'} %>
-          <%= error_span(@sale[:atas_nama]) %>
+
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :netto, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
+        <%= f.input :pembayaran, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
+        <%= f.input :sisa, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
+      </div>
+      <div class="col-md-6">
+        <%= f.label :tipe_pembayaran %>
+        <%= f.collection_radio_buttons :tipe_pembayaran, [['tunai', 'Tunai'] ,['kartu', 'Kartu Kredit']], :first, :last, item_wrapper_tag: :div %>
+        <div id="kk">
+          <div class="col-md-5">
+            <%= f.input :nama_kartu, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 200px'} %>
+            <%= error_span(@sale[:nama_kartu]) %>
+            <%= f.input :no_kartu, :input_html => {:style => 'width: 200px'} %>
+            <%= error_span(@sale[:no_kartu]) %>
+          </div>
+          <div class="col-md-5">
+            <%= f.input :no_merchant, :input_html => {:style => 'width: 200px'} %>
+            <%= error_span(@sale[:no_merchant]) %>
+            <%= f.input :atas_nama, :input_html => {:style => 'width: 200px'} %>
+            <%= error_span(@sale[:atas_nama]) %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <%= f.button :submit, :class => 'btn-primary' %>
-  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-    sales_path, :class => 'btn btn-default' %>
-<% end %>
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+      sales_path, :class => 'btn btn-default' %>
+  <% end %>
