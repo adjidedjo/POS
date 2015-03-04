@@ -38,6 +38,7 @@ jQuery ->
     get_id = "sale_sale_items_attributes_0_serial"
     jumlah = get_id.replace("serial", "jumlah")
     kode_barang = get_id.replace("serial", "kode_barang")
+    nama_barang = get_id.replace("serial", "nama_barang")
     $.ajax
       url: '/sales/get_kode_barang_from_serial',
       data: {'kode_barang': $('.serial').val(), 'element_id': $(this).attr("id")},
@@ -46,6 +47,9 @@ jQuery ->
           alert "Serial yang anda masukan tidak terdaftar"
           document.getElementById(jumlah).readOnly = false
           document.getElementById(kode_barang).readOnly = false
+          document.getElementById(nama_barang).value = ""
+          document.getElementById(kode_barang).value = ""
+          document.getElementById(jumlah).value = ""
 
   add_item_to_table()
   open_modal()
@@ -74,6 +78,7 @@ jQuery ->
     get_id = "sale_sale_items_attributes_"+time+"_serial"
     jumlah = get_id.replace("serial", "jumlah")
     kode_barang = get_id.replace("serial", "kode_barang")
+    nama_barang = get_id.replace("serial", "nama_barang")
     event.preventDefault()
     open_modal()
     date_picker()
@@ -87,6 +92,9 @@ jQuery ->
           alert "Serial yang anda masukan tidak terdaftar"
           document.getElementById(jumlah).readOnly = false
           document.getElementById(kode_barang).readOnly = false
+          document.getElementById(nama_barang).value = ""
+          document.getElementById(kode_barang).value = ""
+          document.getElementById(jumlah).value = ""
 
   $('form').on 'click', '.remove_fields', (event) ->
     $(this).prev('input[type=hidden]').val('1')
