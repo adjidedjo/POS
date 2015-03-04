@@ -38,6 +38,11 @@ jQuery ->
   open_modal()
   date_picker()
   $('#index_of_sales').DataTable()
+  $('#sale_items').DataTable({
+    bPaginate: false,
+    bFilter: false,
+    bInfo: false
+  })
   $('#of_sales').DataTable({
     bPaginate: false,
     bFilter: false,

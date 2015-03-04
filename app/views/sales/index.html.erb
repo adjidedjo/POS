@@ -28,11 +28,11 @@
         <td><%= sale.so_manual %></td>
         <td>
           <% if current_user.admin? %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_sale_path(sale), :class => 'btn btn-default btn-xs' %>
+              <%#= link_to t('.edit', :default => t("helpers.links.edit")),
+    edit_sale_path(sale), :class => 'btn btn-default btn-xs' %>
           <% end %>
           <%= link_to "Print (PDF)", sale_path(sale, :format => 'pdf'), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+          <%#= link_to t('.destroy', :default => t("helpers.links.destroy")),
             sale_path(sale),
             :method => :delete,
             :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
