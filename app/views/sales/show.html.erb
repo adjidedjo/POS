@@ -34,7 +34,7 @@
             <td><%= sale_items.nama_barang %></td>
             <td>PCS</td>
             <td><%= sale_items.jumlah %></td>
-            <td><%= sale_items.bonus %></td>
+            <td><%= sale_items.bonus? ? "Bonus" : "-" %></td>
             <td><%= sale_items.tanggal_kirim %></td>
           </tr>
         <% end %>
@@ -71,7 +71,7 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
   sales_path, :class => 'btn btn-default'  %>
-<%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default btn-xs' %>
+<%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
 <% if current_user.admin? %>
     <%#= link_to t('.edit', :default => t("helpers.links.edit")),
   edit_sale_path(@sale), :class => 'btn btn-default' %>

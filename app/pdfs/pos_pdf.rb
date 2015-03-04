@@ -69,7 +69,7 @@ class PosPdf < Prawn::Document
   def line_item_rows
     [["Kode Barang", "Nama Barang", "Satuan", "Qty", "Bonus", "Tanggal Kirim"]] +
       @order.sale_items.map do |item|
-      [item.kode_barang, item.nama_barang, 'PCS', item.jumlah, item.bonus, item.tanggal_kirim]
+      [item.kode_barang, item.nama_barang, 'PCS', item.jumlah, (item.bonus? ? "Bonus" : "-"), item.tanggal_kirim]
     end
   end
 
