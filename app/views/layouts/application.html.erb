@@ -60,7 +60,9 @@
               <li><%= link_to "Report", ""  %></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li> <%= link_to 'Register User', new_user_registration_path %> </li>
+              <% if current_user.admin? %>
+                <li> <%= link_to 'Register User', new_user_registration_path %> </li>
+              <% end %>
               <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
             </ul>
           <% else %>

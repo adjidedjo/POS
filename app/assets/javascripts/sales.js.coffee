@@ -23,9 +23,11 @@ jQuery ->
     $('#kode_barang').val(($(this).attr("id")))
     $('#nama_barang').val(($(this).attr("id")).replace("kode", "nama"))
     $('#modal-content').modal('show')
+
   add_item_to_table = () -> $('.add_to_sales').on 'click', () ->
     document.getElementById($('#kode_barang').val()).value = $(this).data('kode')
     document.getElementById($('#nama_barang').val()).value = $(this).data('nama')
+    $('#modal-content').modal('hide')
 
   date_picker = () -> $('input.tanggal').datepicker({
     dateFormat: 'yy-mm-dd',
