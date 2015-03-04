@@ -1,0 +1,9 @@
+a = "<%= @element_id %>"
+kode_barang = a.replace("serial", "kode_barang")
+nama_barang = a.replace("serial", "nama_barang")
+jumlah_barang = a.replace("serial", "jumlah")
+document.getElementById(kode_barang).value = "<%= @kode %>"
+document.getElementById(nama_barang).value = "<%= @nama %>"
+document.getElementById(jumlah_barang).value = "1"
+document.getElementById(jumlah_barang).readOnly = true
+document.getElementById(kode_barang).readOnly = true

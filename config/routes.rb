@@ -8,7 +8,11 @@ Rails.application.routes.draw do
 
   get 'sale/update_stores', as: 'update_stores'
 
-  resources :sales
+  resources :sales do
+    collection do
+      get "get_kode_barang_from_serial"
+    end
+  end
 
   resources :showrooms
 

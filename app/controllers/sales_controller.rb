@@ -1,6 +1,17 @@
 class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
 
+  def get_kode_barang_from_serial
+    kode_serial = StatusBarcode.find_by_serial(params[:kode_barang]).kode_barang
+    @kode = Item.find_by_kode_barang(kode_serial).kode_barang
+    @nama = Item.find_by_kode_barang(kode_serial).nama
+    @element_id = params[:element_id]
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   # GET /sales GET /sales.json
   def index
     @sales = Sale.all

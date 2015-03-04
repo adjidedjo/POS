@@ -34,9 +34,23 @@ jQuery ->
     minDate: new Date()
   })
 
+  serial_change = () -> $('.serial').on 'change', () ->
+    get_id = "sale_sale_items_attributes_0_serial"
+    jumlah = get_id.replace("serial", "jumlah")
+    kode_barang = get_id.replace("serial", "kode_barang")
+    $.ajax
+      url: '/sales/get_kode_barang_from_serial',
+      data: {'kode_barang': $('.serial').val(), 'element_id': $(this).attr("id")},
+      datatype: 'script',
+      error: () ->
+          alert "Serial yang anda masukan tidak terdaftar"
+          document.getElementById(jumlah).readOnly = false
+          document.getElementById(kode_barang).readOnly = false
+
   add_item_to_table()
   open_modal()
   date_picker()
+  serial_change()
   $('#index_of_sales').DataTable()
   $('#sale_items').DataTable({
     bPaginate: false,
@@ -52,16 +66,29 @@ jQuery ->
       { 'bSortable': false, 'aTargets': [ -1,0,1,2,3,4,5,6,7 ] }
     ]
   })
+
   $('form').on 'click', '.add_fields', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(this).before($(this).data('fields').replace(regexp, time))
+    get_id = "sale_sale_items_attributes_"+time+"_serial"
+    jumlah = get_id.replace("serial", "jumlah")
+    kode_barang = get_id.replace("serial", "kode_barang")
     event.preventDefault()
     open_modal()
     date_picker()
+    serial_doc = document.getElementById(get_id)
+    serial_doc.addEventListener 'change', () ->
+      $.ajax
+        url: '/sales/get_kode_barang_from_serial',
+        data: {'kode_barang': $(this).val(), 'element_id': $(this).attr("id")},
+        datatype: 'script',
+        error: () ->
+          alert "Serial yang anda masukan tidak terdaftar"
+          document.getElementById(jumlah).readOnly = false
+          document.getElementById(kode_barang).readOnly = false
 
   $('form').on 'click', '.remove_fields', (event) ->
-    console.log($(this).closest('fieldset'))
     $(this).prev('input[type=hidden]').val('1')
     $(this).closest('fieldset').hide()
     event.preventDefault()
