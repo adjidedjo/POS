@@ -29,7 +29,7 @@ jQuery ->
     document.getElementById($('#nama_barang').val()).value = $(this).data('nama')
     $('#modal-content').modal('hide')
 
-  date_picker = () -> $('input.tanggal').datepicker({
+  date_picker = () -> $('.tanggal_kirim').datepicker({
     dateFormat: 'yy-mm-dd',
     minDate: new Date()
   })
@@ -46,7 +46,11 @@ jQuery ->
   $('#of_sales').DataTable({
     bPaginate: false,
     bFilter: false,
-    bInfo: false
+    bInfo: false,
+    bAutoWidth: false,
+    "aoColumnDefs": [
+      { 'bSortable': false, 'aTargets': [ -1,0,1,2,3,4,5,6,7 ] }
+    ]
   })
   $('form').on 'click', '.add_fields', (event) ->
     time = new Date().getTime()
@@ -55,3 +59,9 @@ jQuery ->
     event.preventDefault()
     open_modal()
     date_picker()
+
+  $('form').on 'click', '.remove_fields', (event) ->
+    console.log($(this).closest('fieldset'))
+    $(this).prev('input[type=hidden]').val('1')
+    $(this).closest('fieldset').hide()
+    event.preventDefault()
