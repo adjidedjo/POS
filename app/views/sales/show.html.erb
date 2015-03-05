@@ -12,7 +12,7 @@
   <div class="col-md-6">
     <dt><strong>No Dealer:</strong> <%= @sale.store.kode_customer %></dt><br />
     <dt><strong>Pameran/Showroom:</strong> <%= @sale.store.nama %></dt><br />
-    <dt><strong>Periode Pameran:</strong> <%= @sale.store.from_period.strftime('%d/%m/%Y') %>-<%= @sale.store.to_period.strftime('%d/%m/%Y') %></dt>
+    <dt><strong>Periode Pameran:</strong> <%= @sale.store.from_period.nil? ? '' : @sale.store.from_period.strftime('%d/%m/%Y') %>-<%=  @sale.store.to_period.nil? ? '' : @sale.store.to_period.strftime('%d/%m/%Y') %></dt>
   </div>
   <br />
   <div>
