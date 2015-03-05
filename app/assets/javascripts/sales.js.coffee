@@ -61,6 +61,10 @@ jQuery ->
     bFilter: false,
     bInfo: false
   })
+  $('#index_of_reports').DataTable({
+    bInfo: false,
+    responsive: true
+  })
   $('#of_sales').DataTable({
     bPaginate: false,
     bFilter: false,
