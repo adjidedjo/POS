@@ -15,6 +15,7 @@ class Sale < ActiveRecord::Base
   validates :no_kartu, :no_merchant, numericality: true, if: :paid_with_card?
 
   before_create do
+    self.user_id = current_user.id
     get_no_sale = Sale.where("month(created_at)", Date.today.month).count(:id)
     get_no_sale.nil? ? (self.no_sale = 1) : (self.no_sale = get_no_sale + 1)
     no_sale = self.no_sale.to_s.rjust(4, '0')

@@ -1,0 +1,31 @@
+<table id="index_of_reports" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="all">Kode Barang</th>
+      <th class="all">Nama</th>
+      <th class="min-tablet-l">Netto</th>
+      <th class="all">No SO</th>
+      <th class="min-tablet-l">No PPB</th>
+      <th class="min-tablet-l">No SJ</th>
+      <th class="min-tablet-l">Faktur</th>
+      <th class="all">Tanggal Kirim</th>
+      <th class="all">Keterangan</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales.each do |sale| %>
+      <tr>
+        <td><%= sale.kode_barang %></td>
+        <td><%= sale.nama_barang %></td>
+        <td><%= number_to_currency(Item.find_by_kode_barang(sale.kode_barang).harga, precision:0, unit: "", separator: ".", delimiter: ".") %></td>
+        <td><%= sale.no_so %></td>
+        <td><%= sale.no_ppb %></td>
+        <td><%= sale.no_sj %></td>
+        <td><%= sale.no_faktur %></td>
+        <td><%= sale.tanggal_kirim %></td>
+        <td><%= sale.sale.nota_bene %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
