@@ -1,9 +1,11 @@
 <table id="index_of_reports" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
   <thead>
     <tr>
+      <th class="all">Nama Customer</th>
       <th class="all">Kode Barang</th>
       <th class="all">Nama</th>
       <th class="min-tablet-l">Netto</th>
+      <th class="all">No SO POS</th>
       <th class="all">No SO</th>
       <th class="min-tablet-l">No PPB</th>
       <th class="min-tablet-l">No SJ</th>
@@ -16,9 +18,11 @@
   <tbody>
     <% @sales.each do |sale| %>
       <tr>
+        <td><%= sale.sale.customer %></td>
         <td><%= sale.kode_barang %></td>
         <td><%= sale.nama_barang %></td>
         <td><%= number_to_currency(Item.find_by_kode_barang(sale.kode_barang).harga, precision:0, unit: "", separator: ".", delimiter: ".") %></td>
+        <td><%= sale.sale.no_so %></td>
         <td><%= sale.no_so %></td>
         <td><%= sale.no_ppb %></td>
         <td><%= sale.no_sj %></td>
