@@ -106,91 +106,109 @@ class PosPdf < Prawn::Document
   end
 
   def footer
-    move_down 10
-    indent 5 do
-      text "Keterangan Pembayaran :", :size => 11, :style => :bold
-    end
-    bounding_box([0, cursor - 10], :width => 100) do
+    bounding_box([0, cursor], :width => 150) do
+      move_down 5
       indent 5 do
-        text "#{@order.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas'}", :size => 10, :style => :bold
+        text "Keterangan Pembayaran :", :size => 10, :style => :bold
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
+      end
+      move_down 15
+      indent 5 do
+        text "#{@order.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas'}", :size => 10
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
       end
     end
-    bounding_box([150, cursor + 10], :width => 100) do
-      text "Jenis Pembayaran :", :size => 10, :style => :bold
+    bounding_box([150, cursor + 43.5], :width => 373.4) do
+      move_down 5
+      indent 5 do
+        text "Jenis Pembayaran :", :size => 10, :style => :bold
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
+      end
+      move_down 15
+      indent 5 do
+        if @order.tipe_pembayaran == 'tunai'
+          text "#{@order.tipe_pembayaran.capitalize}", :size => 10
+        else
+          text "#{@order.tipe_pembayaran.capitalize}", :size => 10
+          bounding_box([100, cursor + 24], :width => 100) do
+            text "Kartu          : #{@order.nama_kartu.capitalize}", :size => 10
+            text "Atas Nama : #{@order.atas_nama.capitalize}", :size => 10
+          end
+          bounding_box([200, cursor + 22.5], :width => 200) do
+            text "No Kartu  : #{@order.no_kartu}", :size => 10
+            text "Merchant : #{@order.no_merchant}", :size => 10
+          end
+        end
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
+      end
     end
-    if @order.tipe_pembayaran == 'tunai'
-      bounding_box([150, cursor - 10], :width => 100) do
-        text "#{@order.tipe_pembayaran.capitalize}", :size => 10, :style => :bold
-      end
-    else
-      bounding_box([150, cursor - 10], :width => 200) do
-        text "Kartu : #{@order.nama_kartu.capitalize}", :size => 10, :style => :bold
-        move_down 5
-        text "Atas Nama : #{@order.atas_nama.capitalize}", :size => 10, :style => :bold
-      end
-      bounding_box([350, cursor + 33], :width => 200) do
-        text "No Kartu : #{@order.no_kartu}", :size => 10, :style => :bold
-        move_down 5
-        text "Merchant : #{@order.no_merchant}", :size => 10, :style => :bold
-      end
-    end
-    move_down 5
+    move_down 10
     indent 5 do
       text "Keterangan : #{@order.keterangan_customer}", :size => 10
     end
-    move_down 5
-    bounding_box([0, cursor - 5], :width => 200) do
-      indent 5 do
-        text "Pemesan  : ", :size => 10
-        move_down 5
-        text "Nama       : ", :size => 10
-        move_down 5
-        text "Tanggal    : ", :size => 10
+    move_down 10
+    bounding_box([80, cursor - 5], :width => 200) do
+      indent 30 do
+        text "Pemesan,", :size => 10
+        move_down 40
       end
+      text "(___________________)", :size => 10
     end
-    bounding_box([250, cursor + 45], :width => 200) do
-      text "Pemesan  : ", :size => 10
-      move_down 5
-      text "Nama       : ", :size => 10
-      move_down 5
-      text "Tanggal    : ", :size => 10
+    bounding_box([300, cursor + 62], :width => 200) do
+      indent 30 do
+        text "Sales,", :size => 10
+        move_down 40
+      end
+      text "(___________________)", :size => 10
     end
     move_down 10
     bounding_box([0, cursor - 10], :width => 500) do
       indent 5 do
-        text "Syarat Pemesanan (Khusus Direct Selling)  : ", :size => 9, :style => :italic
+        text "Syarat Pemesanan (Khusus Direct Selling)  : ", :size => 6, :style => :italic
         move_down 5
-        text "1. Batas waktu pemesanan barang adalah 90 hari dari tanggal Sales Order.", :size => 9, :style => :italic
+        text "1. Batas waktu pemesanan barang adalah 90 hari dari tanggal Sales Order.", :size => 6, :style => :italic
         move_down 5
-        text "2. Apabila dalam jangka waktu 90 hari barang tidak diambil dan tidak ada keterangan dari customer, maka pemesanan tersebut dianggap batal dan uang muka tidak dapat diambil kembali", :size => 9, :style => :italic
+        text "2. Apabila dalam jangka waktu 90 hari barang tidak diambil dan tidak ada keterangan dari customer, maka pemesanan tersebut dianggap batal dan uang muka tidak dapat diambil kembali", :size => 6, :style => :italic
         move_down 5
-        text "3. Harga pesanan tersebut dianggap mengikat (tidak dikenakan penyesuaian harga baru) apabila Customer telah membayar minimum 50% dari nota harga keseluruhan, dan tidak melebihi 90 hari sejak pemesanan barang.", :size => 9, :style => :italic
+        text "3. Harga pesanan tersebut dianggap mengikat (tidak dikenakan penyesuaian harga baru) apabila Customer telah membayar minimum 50% dari nota harga keseluruhan, dan tidak melebihi 90 hari sejak pemesanan barang.", :size => 6, :style => :italic
         move_down 5
-        text "4. Jika warna kain yang dipesan sudah habis, maka PT. Royal Abadi Sejahtera berhak mengganti warna kain denga kualitas yang setara.", :size => 9, :style => :italic
+        text "4. Jika warna kain yang dipesan sudah habis, maka PT. Royal Abadi Sejahtera berhak mengganti warna kain denga kualitas yang setara.", :size => 6, :style => :italic
         move_down 5
-        text "5. Pelunasan pada saat penyerahan barang harus dengan uang tunai. Pelunasan dengan BCA/Cek dianggap sah apabila dicairkan sebelum tanggal penyerahan barang.", :size => 9, :style => :italic
+        text "5. Pelunasan pada saat penyerahan barang harus dengan uang tunai. Pelunasan dengan BCA/Cek dianggap sah apabila dicairkan sebelum tanggal penyerahan barang.", :size => 6, :style => :italic
         move_down 5
-        text "6. Jika Sales Order dibatalkan, maka uang muka tidak dapat diambil kembali.", :size => 9, :style => :italic
+        text "6. Jika Sales Order dibatalkan, maka uang muka tidak dapat diambil kembali.", :size => 6, :style => :italic
         move_down 5
-        text "7. Menandatangani Sales Order ini berarti Customer telah setuju dengan syarat-syarat di atas.", :size => 9, :style => :italic
+        text "7. Menandatangani Sales Order ini berarti Customer telah setuju dengan syarat-syarat di atas.", :size => 6, :style => :italic
         move_down 5
       end
     end
     indent 10 do
       bounding_box([0, cursor - 10], :width => 100) do
-        text "R1: Customer", :size => 8
+        text "R1: Customer", :size => 5
       end
-      bounding_box([60, cursor + 9], :width => 100) do
-        text "R2: Sales Counter", :size => 8
+      bounding_box([60, cursor + 6], :width => 100) do
+        text "R2: Sales Counter", :size => 5
       end
-      bounding_box([140, cursor + 9], :width => 100) do
-        text "R3: Accounting Pusat", :size => 8
+      bounding_box([140, cursor + 6], :width => 100) do
+        text "R3: Accounting Pusat", :size => 5
       end
-      bounding_box([230, cursor + 9], :width => 100) do
-        text "R4: Accounting Cabang", :size => 8
+      bounding_box([230, cursor + 6], :width => 100) do
+        text "R4: Accounting Cabang", :size => 5
       end
-      bounding_box([330, cursor + 9], :width => 100) do
-        text "R5: Arsip", :size => 8
+      bounding_box([330, cursor + 6], :width => 100) do
+        text "R5: Arsip", :size => 5
       end
     end
   end
