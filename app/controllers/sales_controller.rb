@@ -14,7 +14,7 @@ class SalesController < ApplicationController
 
   # GET /sales GET /sales.json
   def index
-    @sales = current_user.admin? ? Sale.all : User.find(current_user.id).sales
+    @sales = current_user.admin? ? Sale.all : Sale.where(user_id: current_user.id)
     @items = Item.all
   end
 
