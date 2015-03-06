@@ -14,7 +14,7 @@ class SalesController < ApplicationController
 
   # GET /sales GET /sales.json
   def index
-    @sales = current_user.admin? ? Sale.all : Sale.where(user_id: current_user.id)
+    @sales = current_user.admin? ? Sale.all : User.find(current_user.id).sales
     @items = Item.all
   end
 
@@ -46,7 +46,9 @@ class SalesController < ApplicationController
   # POST /sales POST /sales.json
   def create
     @sale = Sale.new(sale_params)
-    @sale.user_id = current_user.id
+    @sale.sale_items.each do |sale_item|
+      sale_item.user_id = current_user.id
+    end
 
     respond_to do |format|
       if @sale.save
@@ -90,6 +92,6 @@ class SalesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
-    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :spg, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :_destroy])
+    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :spg, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy])
   end
 end

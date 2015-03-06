@@ -1,5 +1,6 @@
 class SaleItem < ActiveRecord::Base
   belongs_to :sale
+  belongs_to :user
 
   before_create do
     if taken == true

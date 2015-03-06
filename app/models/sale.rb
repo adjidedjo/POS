@@ -3,8 +3,6 @@ class Sale < ActiveRecord::Base
   accepts_nested_attributes_for :sale_items
   belongs_to :branch
   belongs_to :salesman
-  belongs_to :showroom
-  belongs_to :venue
   belongs_to :item
   belongs_to :store
   belongs_to :channel
