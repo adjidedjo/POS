@@ -46,6 +46,7 @@ class SalesController < ApplicationController
   # POST /sales POST /sales.json
   def create
     @sale = Sale.new(sale_params)
+    @sale.user_id = current_user.id
     @sale.sale_items.each do |sale_item|
       sale_item.user_id = current_user.id
     end
