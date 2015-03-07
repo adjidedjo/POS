@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
   get 'reports/index'
 
   devise_for :users, controllers: {registrations: "users/registrations"}

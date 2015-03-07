@@ -1,5 +1,5 @@
 <%= simple_form_for @store, :html => { :class => 'form-horizontal' } do |f| %>
-    <%= f.association :branch, label_method: :cabang, value_method: :id %>
+  <%= f.association :branch, label_method: :cabang, value_method: :id %>
   <%= error_span(@store[:branch_id]) %>
   <%= f.association :channel, label_method: :channel, value_method: :id %>
   <%= error_span(@store[:channel_id]) %>
@@ -7,12 +7,21 @@
   <%= error_span(@store[:nama]) %>
   <%= f.input :kota %>
   <%= error_span(@store[:kota]) %>
-  <%= f.input :from_period, as: :tanggal %>
+  <%= f.input :from_period, as: :tanggal, readonly: true %>
   <%= error_span(@store[:from_period]) %>
-  <%= f.input :to_period, as: :tanggal %>
+  <%= f.input :to_period, as: :tanggal, readonly: true %>
   <%= error_span(@store[:to_period]) %>
+  <label>Merchants</label>
+
+  <div class="row">
+    <%= f.simple_fields_for :merchants do |builder| %>
+      <%= render "merchant_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Add Merchants", f, :merchants %>
+  </div>
+  <br />
 
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                stores_path, :class => 'btn btn-default' %>
+    stores_path, :class => 'btn btn-default' %>
 <% end %>

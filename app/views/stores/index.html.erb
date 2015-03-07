@@ -5,26 +5,22 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:channel_id) %></th>
       <th><%= model_class.human_attribute_name(:nama) %></th>
       <th><%= model_class.human_attribute_name(:kota) %></th>
       <th><%= model_class.human_attribute_name(:from_period) %></th>
       <th><%= model_class.human_attribute_name(:to_period) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @stores.each do |store| %>
       <tr>
-        <td><%= link_to store.id, store_path(store) %></td>
-        <td><%= store.channel_id %></td>
-        <td><%= store.nama %></td>
+        <td><%= store.channel.channel %></td>
+        <td><%= link_to store.nama, store_path(store) %></td>
         <td><%= store.kota %></td>
         <td><%= store.from_period %></td>
         <td><%= store.to_period %></td>
-        <td><%=l store.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_store_path(store), :class => 'btn btn-default btn-xs' %>

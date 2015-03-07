@@ -3,25 +3,40 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:channel_id) %>:</strong></dt>
-  <dd><%= @store.channel_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:nama) %>:</strong></dt>
-  <dd><%= @store.nama %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:kota) %>:</strong></dt>
-  <dd><%= @store.kota %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:from_period) %>:</strong></dt>
-  <dd><%= @store.from_period %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:to_period) %>:</strong></dt>
-  <dd><%= @store.to_period %></dd>
-</dl>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Channel:</strong> <%= @store.channel.channel %></dt><br />
+    <dt><strong>Nama:</strong> <%= @store.nama %></dt><br />
+    <dt><strong>Kota:</strong> <%= @store.kota %></dt><br />
+    <dt><strong>Dari Tanggal:</strong> <%= @store.from_period %></dt><br />
+    <dt><strong>Ke Tanggal:</strong> <%= @store.to_period %></dt><br />
+  </div>
+</div>
+  <div>
+    <table id="sale_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama Merchant</th>
+          <th class="all">No Merchant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @store.merchants.each do |sale| %>
+          <tr>
+            <td><%= sale.nama %></td>
+            <td><%= sale.no_merchant %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-              stores_path, :class => 'btn btn-default'  %>
+  stores_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_store_path(@store), :class => 'btn btn-default' %>
+  edit_store_path(@store), :class => 'btn btn-default' %>
 <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              store_path(@store),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+  store_path(@store),
+  :method => 'delete',
+  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+  :class => 'btn btn-danger' %>

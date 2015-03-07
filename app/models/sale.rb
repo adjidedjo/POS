@@ -7,7 +7,7 @@ class Sale < ActiveRecord::Base
   belongs_to :store
   belongs_to :channel
 
-  validates :salesman_id, :spg, :customer, :phone_number, :alamat_kirim, :channel_id, :store_id, presence: true
+  validates :salesman_id, :spg, :customer, :phone_number, :alamat_kirim, :channel_id, :store_id, :email, presence: true
   validates :phone_number, numericality: true, length: {maximum: 12}
   validates :nama_kartu, :no_kartu, :no_merchant, :atas_nama, presence: true, if: :paid_with_card?
   validates :no_kartu, :no_merchant, numericality: true, if: :paid_with_card?

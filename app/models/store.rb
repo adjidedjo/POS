@@ -1,5 +1,7 @@
 class Store < ActiveRecord::Base
   has_many :sales
+  has_many :merchants, dependent: :destroy
+  accepts_nested_attributes_for :merchants
   belongs_to :channel
   belongs_to :branch
 

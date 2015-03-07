@@ -17,6 +17,8 @@
     <div class="col-md-6">
       <%= f.input :customer, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:customer]) %>
+      <%= f.input :email, :input_html => {:style => 'width: 250px'} %>
+      <%= error_span(@sale[:email]) %>
       <%= f.input :phone_number, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:phone_number]) %>
       <%= f.input :hp1, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 250px'} %>
