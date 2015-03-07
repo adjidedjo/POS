@@ -188,7 +188,7 @@ class PosPdf < Prawn::Document
         move_down 5
         text "3. Harga pesanan tersebut dianggap mengikat (tidak dikenakan penyesuaian harga baru) apabila Customer telah membayar minimum 50% dari nota harga keseluruhan, dan tidak melebihi 90 hari sejak pemesanan barang.", :size => 6, :style => :italic
         move_down 5
-        text "4. Jika warna kain yang dipesan sudah habis, maka PT. Royal Abadi Sejahtera berhak mengganti warna kain denga kualitas yang setara.", :size => 6, :style => :italic
+        text "4. Jika warna kain yang dipesan sudah habis, maka PT. Royal Abadi Sejahtera berhak mengganti warna kain dengan kualitas yang setara.", :size => 6, :style => :italic
         move_down 5
         text "5. Pelunasan pada saat penyerahan barang harus dengan uang tunai. Pelunasan dengan BCA/Cek dianggap sah apabila dicairkan sebelum tanggal penyerahan barang.", :size => 6, :style => :italic
         move_down 5
