@@ -87,16 +87,20 @@ class PosPdf < Prawn::Document
     bounding_box([350, cursor + 45], :width => 250) do
       text "Total       : Rp. ", :size => 10, :style => :bold
       move_down 5
+      text "Voucher : Rp. ", :size => 10, :style => :bold
+      move_down 5
       text "Bayar     : Rp. ", :size => 10, :style => :bold
       move_down 5
       text "Sisa        : Rp. ", :size => 10, :style => :bold
     end
-    bounding_box([250, cursor + 45], :width => 250) do
+    bounding_box([250, cursor + 61.5], :width => 250) do
       text "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
+      move_down 5
+      text "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       move_down 5
       text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       move_down 5
-      text "#{number_to_currency((@order.netto-@order.pembayaran), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
+      text "#{number_to_currency(((@order.netto-@order.voucher)-@order.pembayaran), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
     end
 
     stroke do
