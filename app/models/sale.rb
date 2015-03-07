@@ -9,8 +9,10 @@ class Sale < ActiveRecord::Base
 
   validates :salesman_id, :spg, :customer, :phone_number, :alamat_kirim, :channel_id, :store_id, :email, presence: true
   validates :phone_number, numericality: true, length: {maximum: 12}
-  validates :nama_kartu, :no_kartu, :no_merchant, :atas_nama, presence: true, if: :paid_with_card?
-  validates :no_kartu, :no_merchant, numericality: true, if: :paid_with_card?
+  validates :nama_kartu, :no_kartu, :no_merchant, :atas_nama, presence: true, if: :paid_with_credit?
+  validates :nama_kartu, :no_kartu, :atas_nama, presence: true, if: :paid_with_debit?
+  validates :no_kartu, numericality: true, if: :paid_with_credit?
+  validates :no_kartu, numericality: true, if: :paid_with_debit?
 
   before_create do
     get_no_sale = Sale.where("month(created_at)", Date.today.month).count(:id)
@@ -21,14 +23,19 @@ class Sale < ActiveRecord::Base
     kode_customer = self.store.kode_customer
     kode_cabang = self.store.branch.id.to_s.rjust(2, '0')
     self.no_so = 'SOM''-'+kode_cabang+'-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
-    if pembayaran < netto
+    self.voucher = voucher.nil? ? 0 : voucher
+    if pembayaran < (netto-self.voucher)
       self.cara_bayar = 'um'
     else
       self.cara_bayar = 'lunas'
     end
   end
 
-  def paid_with_card?
-    tipe_pembayaran == 'kartu'
+  def paid_with_credit?
+    tipe_pembayaran == 'kredit'
+  end
+
+  def paid_with_debit?
+    tipe_pembayaran == 'debit'
   end
 end

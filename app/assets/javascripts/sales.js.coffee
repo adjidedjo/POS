@@ -12,12 +12,19 @@ jQuery ->
       $('#sale_store_id').parent().hide()
 
   $('#sale_netto').on 'keyup', () ->
-    pembayaran = document.getElementById('sale_pembayaran').value
-    c = document.getElementById('sale_sisa').value = $(this).val() - pembayaran
+    pembayaran = document.getElementById('sale_voucher').value
+    voucher = document.getElementById('sale_pembayaran').value
+    c = document.getElementById('sale_sisa').value = $(this).val() - voucher - pembayaran
+
+  $('#sale_voucher').on 'keyup', () ->
+    pembayaran = document.getElementById('sale_voucher').value
+    netto = document.getElementById('sale_netto').value
+    c = document.getElementById('sale_sisa').value = netto - $(this).val() - pembayaran
 
   $('#sale_pembayaran').on 'keyup', () ->
     netto = document.getElementById('sale_netto').value
-    c = document.getElementById('sale_sisa').value = netto - $(this).val()
+    voucher = document.getElementById('sale_voucher').value
+    c = document.getElementById('sale_sisa').value = netto - voucher - $(this).val()
 
   open_modal = () -> $('.kode_barang').on 'click', () ->
     $('#kode_barang').val(($(this).attr("id")))

@@ -49,22 +49,23 @@
   <br />
   <div class="col-md-6">
     <dt><strong>Total:</strong> <%= number_to_currency(@sale.netto, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+    <dt><strong>Voucher:</strong> <%= number_to_currency(@sale.voucher, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
     <dt><strong>Bayar:</strong> <%= number_to_currency(@sale.pembayaran, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
-    <dt><strong>Sisa:</strong> <%= number_to_currency((@sale.netto - @sale.pembayaran), precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt>
+    <dt><strong>Sisa:</strong> <%= number_to_currency(((@sale.netto - @sale.voucher) - @sale.pembayaran), precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt>
     <br />
   </div>
   <br />
   <div class="col-md-6">
-    <dt><strong>Keterangan Pembayaran :</strong> <%= @sale.cara_bayar %></dt><br />
+    <dt><strong>Keterangan Pembayaran :</strong> <%= (@sale.cara_bayar == 'um') ? 'Uang Muka' : @sale.cara_bayar.capitalize %></dt><br />
   </div>
   <br />
   <div class="col-md-6">
-    <dt><strong>Jenis Pembayaran :</strong> <%= @sale.tipe_pembayaran.capitalize %></dt>
-    <% if @sale.tipe_pembayaran == 'kartu' %>
-      <dt><strong>Nama Kartu :</strong> <%= @sale.nama_kartu %></dt><br />
-      <dt><strong>No Kartu          :</strong> <%= @sale.no_kartu %></dt><br />
-      <dt><strong>No Merchant       :</strong> <%= @sale.no_merchant %></dt>
+    <dt><strong>Jenis Pembayaran :</strong> <%= @sale.tipe_pembayaran.capitalize %></dt><br />
+    <% if @sale.tipe_pembayaran == 'debit' || @sale.tipe_pembayaran == 'credit' %>
+      <dt><strong>Nama Kartu :</strong> <%= @sale.nama_kartu  %></dt>
       <dt><strong>Atas Nama       :</strong> <%= @sale.atas_nama %></dt>
+      <dt><strong>No Kartu          :</strong> <%= @sale.no_kartu %></dt>
+      <dt><strong>No Merchant       :</strong> <%= @sale.no_merchant %></dt>
     <% end %>
   </div>
 </div>
