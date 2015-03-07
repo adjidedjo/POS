@@ -69,6 +69,6 @@ class StoresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id)
+      params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, merchants_attributes: [:id, :nama, :no_merchant, :_destroy])
     end
 end
