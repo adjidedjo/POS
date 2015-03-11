@@ -53,9 +53,9 @@
                 <% if current_user.admin? %>
                   <%= drop_down "Masters" do %>
                     <%= menu_item "Pameran", stores_path %>
-                    <%= menu_item "Laporan", reports_index_path %>
                   <% end %>
-                <% end %>
+                <li><%= link_to "Laporan", reports_index_path %></li>
+              <% end %>
               </li>
               <% if current_user.role == 'supervisor' %>
                 <li><%= link_to "Transaksi", sales_path  %></li>
@@ -84,11 +84,11 @@
       <%= yield %>
     </div><!--/row-->
 
-    <%#*<footer>%>
-    <%#*<p>&copy; Company 2015</p>%>
-    <%#*</footer>%>
+<%#*<footer>%>
+<%#*<p>&copy; Company 2015</p>%>
+<%#*</footer>%>
 
-      </div> <!-- /container -->
+  </div> <!-- /container -->
 
-  </body>
+</body>
 </html>
