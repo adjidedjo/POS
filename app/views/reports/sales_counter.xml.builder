@@ -14,7 +14,12 @@ xml.data do
       xml.noso sale_item.no_so
       xml.keterangan sale_item.sale.keterangan_customer
       xml.NoPo sale_item.sale.no_so
-      xml.KeteranganSO sale_item.sale.keterangan_customer
+      sisa = sale_item.sale.sisa.to_s
+      if sale_item.sale.sisa?
+        xml.KeteranganSO sale_item.sale.keterangan_customer+";"+" "+("Sisa Pembayaran: Rp. "+sisa)
+      else
+        xml.KeteranganSO sale_item.sale.keterangan_customer
+      end
       xml.TglDelivery sale_item.tanggal_kirim.strftime("%m/%d/%Y")
       xml.AlamatKirim sale_item.sale.alamat_kirim
       xml.Customer sale_item.sale.customer

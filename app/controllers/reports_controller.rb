@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
     @sales = []
     Store.where(branch_id: current_user.branch_id).each do |store|
       store.sales.each do |sale|
-        SaleItem.where("sale_id = ? and taken = ? and created_at <= ? and exported =  ?", sale.id, false, Date.tomorrow, false).each do |sale_items|
+        SaleItem.where("sale_id = ? and created_at <= ? and exported =  ?", sale.id, Date.tomorrow, false).each do |sale_items|
           @sales << sale_items
         end
       end
