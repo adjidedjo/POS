@@ -44,6 +44,14 @@ class SalesController < ApplicationController
   end
 
   # GET /sales/1/edit
+  def edit_by_confirmation
+    if current_user.sales_promotion.store.supervisor_exhibition.user.valid_password?(params[:password])
+      redirect_to edit_sale_path(params[:sale])
+    else
+      redirect_to sale_path(params[:sale]), alert: 'Password supervisor yang anda masukkan salah.'
+    end
+  end
+
   def edit
   end
 
@@ -85,10 +93,14 @@ class SalesController < ApplicationController
 
   # DELETE /sales/1 DELETE /sales/1.json
   def destroy
-    @sale.destroy
-    respond_to do |format|
-      format.html { redirect_to sales_url, notice: 'Sale was successfully destroyed.' }
-      format.json { head :no_content }
+    if current_user.sales_promotion.store.supervisor_exhibition.user.valid_password?(params[:password])
+      @sale.destroy
+      respond_to do |format|
+        format.html { redirect_to sales_url, notice: 'Sale was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to sale_path(params[:sale]), alert: 'Password supervisor yang anda masukkan salah.'
     end
   end
 
