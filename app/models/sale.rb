@@ -1,4 +1,5 @@
 class Sale < ActiveRecord::Base
+  after_initialize :set_defaults
   has_many :sale_items, dependent: :destroy
   accepts_nested_attributes_for :sale_items
   belongs_to :branch
@@ -6,13 +7,18 @@ class Sale < ActiveRecord::Base
   belongs_to :item
   belongs_to :store
   belongs_to :channel
+  belongs_to :supervisor_exhibition
 
-  validates :salesman_id, :spg, :customer, :phone_number, :alamat_kirim, :channel_id, :store_id, :email, presence: true
+  validates :customer, :phone_number, :alamat_kirim, :email, :netto, :pembayaran, presence: true
   validates :phone_number, numericality: true, length: {maximum: 12}
-  validates :nama_kartu, :no_kartu, :no_merchant, :atas_nama, presence: true, if: :paid_with_credit?
+  validates :no_kartu, :no_merchant, :atas_nama, presence: true, if: :paid_with_credit?
   validates :nama_kartu, :no_kartu, :atas_nama, presence: true, if: :paid_with_debit?
   validates :no_kartu, numericality: true, if: :paid_with_credit?
   validates :no_kartu, numericality: true, if: :paid_with_debit?
+
+  def set_defaults
+    self.voucher = 0 if self.voucher.nil?
+  end
 
   before_create do
     get_no_sale = Sale.where("month(created_at)", Date.today.month).count(:id)
