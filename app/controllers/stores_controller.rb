@@ -15,6 +15,9 @@ class StoresController < ApplicationController
   # GET /stores/new
   def new
     @store = Store.new
+    @store.merchants.build
+    @store.build_supervisor_exhibition
+    @store.sales_promotions.build
   end
 
   # GET /stores/1/edit
@@ -69,6 +72,6 @@ class StoresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, merchants_attributes: [:id, :nama, :no_merchant, :_destroy])
+      params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, merchants_attributes: [:id, :nama, :no_merchant, :_destroy], supervisor_exhibition_attributes: [:id, :nama, :email, :nik], sales_promotions_attributes: [:id, :nama, :email, :nik])
     end
 end

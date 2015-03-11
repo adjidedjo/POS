@@ -38,15 +38,15 @@ class PosPdf < Prawn::Document
 
   def header
     indent 5 do
-      bounding_box([0, cursor - 20], :width => 250) do
+      bounding_box([0, cursor - 10], :width => 250) do
         text "No SO       : #{@order.no_so}", :size => 10, :style => :bold
         move_down 5
         text "Tanggal     : #{@order.created_at.to_date.strftime('%d-%m-%Y')}", :size => 10, :style => :bold
         move_down 5
-        text "Salesman  : #{@order.salesman.nama}", :size => 10, :style => :bold
+        text "Salesman  : #{@order.salesman.nil? ? "" : @order.salesman.nama}", :size => 10, :style => :bold
       end
     end
-    bounding_box([250, cursor + 55], :width => 250) do
+    bounding_box([250, cursor + 45], :width => 250) do
       text "No Dealer                   : #{@order.store.kode_customer}", :size => 10, :style => :bold
       move_down 5
       text "Pameran/Showroom : #{@order.store.nama}", :size => 10, :style => :bold
@@ -143,13 +143,13 @@ class PosPdf < Prawn::Document
           text "#{@order.tipe_pembayaran.capitalize}", :size => 10
         else
           text "#{@order.tipe_pembayaran.capitalize}", :size => 10
-          bounding_box([100, cursor + 24], :width => 100) do
+          bounding_box([50, cursor + 24], :width => 150) do
             text "Kartu          : #{@order.nama_kartu.capitalize}", :size => 10
             text "Atas Nama : #{@order.atas_nama.capitalize}", :size => 10
           end
           bounding_box([200, cursor + 22.5], :width => 200) do
             text "No Kartu  : #{@order.no_kartu}", :size => 10
-            text "Merchant : #{@order.no_merchant}", :size => 10
+            text "Merchant : #{@order.no_merchant.upcase}", :size => 10
           end
         end
       end

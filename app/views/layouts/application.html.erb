@@ -52,16 +52,22 @@
               <li>
                 <% if current_user.admin? %>
                   <%= drop_down "Masters" do %>
-                    <%= menu_item "Stores", stores_path %>
+                    <%= menu_item "Pameran", stores_path %>
+                    <%= menu_item "Laporan", reports_index_path %>
                   <% end %>
                 <% end %>
               </li>
-              <li><%= link_to "Transactions", sales_path  %></li>
-              <li><%= link_to "Report", reports_index_path %></li>
+              <% if current_user.role == 'supervisor' %>
+                <li><%= link_to "Transaksi", sales_path  %></li>
+              <% end %>
+              <% if current_user.role == 'sales_promotion' %>
+                <li><%= link_to "Transaksi", new_sale_path  %></li>
+              <% end %>
+              <% if current_user.role == 'sales_counter' %>
+                <li><%= link_to "Transaksi", reports_sales_counter_path  %></li>
+              <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <% if current_user.admin? %>
-              <% end %>
               <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
             </ul>
           <% else %>
@@ -78,11 +84,11 @@
       <%= yield %>
     </div><!--/row-->
 
-<%#*<footer>%>
-<%#*<p>&copy; Company 2015</p>%>
-<%#*</footer>%>
+    <%#*<footer>%>
+    <%#*<p>&copy; Company 2015</p>%>
+    <%#*</footer>%>
 
-  </div> <!-- /container -->
+      </div> <!-- /container -->
 
-</body>
+  </body>
 </html>

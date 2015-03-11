@@ -1,0 +1,27 @@
+<%= form_tag reports_export_xml_path(:format => :xml), :method => :get do %>
+  <table id="index_of_sales" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th></th>
+       <th class="all">Kode Barang</th>
+        <th class="all">Nama Barang</th>
+        <th class="min-tablet-l">Jumlah</th>
+        <th class="min-tablet-l">Tanggal Kirim</th>
+        <th class="min-tablet-l">Serial</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sales.each do |sale| %>
+        <tr>
+          <td><%= check_box_tag "sale_items_ids[]", sale.id %></td>
+          <td><%= sale.kode_barang %></td>
+          <td><%= sale.nama_barang %></td>
+          <td><%= sale.jumlah %></td>
+          <td><%= sale.tanggal_kirim %></td>
+          <td><%= sale.serial %></td>
+        <% end %>
+    </tbody>
+  </table>
+  <%= submit_tag "Export XML", :class => 'btn btn-default btn-xs' %>
+<% end %>

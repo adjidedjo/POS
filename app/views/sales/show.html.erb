@@ -1,18 +1,18 @@
 <%- model_class = Sale -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> <%= @sale.no_so %></h1>
+  <h1><%= @sale.no_so %></h1>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <dt><strong><%= model_class.human_attribute_name(:no_so) %>:</strong> <%= @sale.no_so %></dt><br />
-    <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d-%m-%Y') %></dt><br />
-    <dt><strong>Salesman:</strong> <%= @sale.salesman.nama %></dt>
+    <dt><strong>No Dealer:</strong> <%= @sale.store.kode_customer %></dt><br />
+    <dt><strong>Pameran:</strong> <%= @sale.store.nama %></dt><br />
+    <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d %B %Y') %></dt><br />
   </div>
   <div class="col-md-6">
-    <dt><strong>No Dealer:</strong> <%= @sale.store.kode_customer %></dt><br />
-    <dt><strong>Pameran/Showroom:</strong> <%= @sale.store.nama %></dt><br />
-    <dt><strong>Periode Pameran:</strong> <%= @sale.store.from_period.nil? ? '' : @sale.store.from_period.strftime('%d/%m/%Y') %>-<%=  @sale.store.to_period.nil? ? '' : @sale.store.to_period.strftime('%d/%m/%Y') %></dt>
+    <dt><strong>Periode Pameran:</strong> <%= @sale.store.from_period.nil? ? '' : @sale.store.from_period.strftime('%d %B %Y') %> - <%=  @sale.store.to_period.nil? ? '' : @sale.store.to_period.strftime('%d %B %Y') %></dt><br />
+    <dt><strong>Supervisor:</strong> <%= @sale.store.supervisor_exhibition.nama.capitalize %></dt><br />
+    <dt><strong>Spg/Spb:</strong> <%= @get_spg.nama.capitalize %></dt><br />
   </div>
   <br />
   <div>
@@ -35,14 +35,14 @@
             <td>PCS</td>
             <td><%= sale_items.jumlah %></td>
             <td><%= sale_items.bonus? ? "Bonus" : "-" %></td>
-            <td><%= sale_items.tanggal_kirim %></td>
+            <td><%= sale_items.tanggal_kirim.strftime('%d %B %Y') %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
   </div>
   <div class="col-md-6">
-    <dt><strong>Nama Customer :</strong> <%= @sale.customer %></dt><br />
+    <dt><strong>Nama Customer :</strong> <%= @sale.customer.capitalize %></dt><br />
     <dt><strong>No Telp/Hp          :</strong> <%= @sale.phone_number %>, <%= @sale.hp1 %>, <%= @sale.hp2 %></dt><br />
     <dt><strong>Alamat Kirim       :</strong> <%= @sale.alamat_kirim %></dt>
   </div>
@@ -62,8 +62,8 @@
   <div class="col-md-6">
     <dt><strong>Jenis Pembayaran :</strong> <%= @sale.tipe_pembayaran.capitalize %></dt><br />
     <% if @sale.tipe_pembayaran == 'debit' || @sale.tipe_pembayaran == 'credit' %>
-      <dt><strong>Nama Kartu :</strong> <%= @sale.nama_kartu  %></dt>
-      <dt><strong>Atas Nama       :</strong> <%= @sale.atas_nama %></dt>
+      <dt><strong>Nama Kartu :</strong> <%= @sale.nama_kartu.capitalize  %></dt>
+      <dt><strong>Atas Nama       :</strong> <%= @sale.atas_nama.capitalize %></dt>
       <dt><strong>No Kartu          :</strong> <%= @sale.no_kartu %></dt>
       <dt><strong>No Merchant       :</strong> <%= @sale.no_merchant %></dt>
     <% end %>
@@ -71,7 +71,7 @@
 </div>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-  sales_path, :class => 'btn btn-default'  %>
+  sales_path, :class => 'btn btn-default' %>
 <%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
 <% if current_user.admin? %>
     <%#= link_to t('.edit', :default => t("helpers.links.edit")),

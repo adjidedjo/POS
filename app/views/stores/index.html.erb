@@ -1,15 +1,15 @@
 <%- model_class = Store -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h1>Pameran-Pameran</h1>
 </div>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:channel_id) %></th>
+      <th>Channel</th>
       <th><%= model_class.human_attribute_name(:nama) %></th>
       <th><%= model_class.human_attribute_name(:kota) %></th>
-      <th><%= model_class.human_attribute_name(:from_period) %></th>
-      <th><%= model_class.human_attribute_name(:to_period) %></th>
+      <th>Dari Tanggal</th>
+      <th>Sampai Tanggal</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -19,12 +19,12 @@
         <td><%= store.channel.channel %></td>
         <td><%= link_to store.nama, store_path(store) %></td>
         <td><%= store.kota %></td>
-        <td><%= store.from_period %></td>
-        <td><%= store.to_period %></td>
+        <td><%= store.from_period.strftime('%d %B %Y') %></td>
+        <td><%= store.to_period.strftime('%d %B %Y') %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_store_path(store), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+          <%#= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       store_path(store),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },

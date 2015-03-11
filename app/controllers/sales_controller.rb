@@ -14,13 +14,14 @@ class SalesController < ApplicationController
 
   # GET /sales GET /sales.json
   def index
-    @sales = current_user.admin? ? Sale.all : Sale.where(user_id: current_user.id)
+    @sales = current_user.role == 'supervisor' ? current_user.supervisor_exhibition.sales : Sale.where(user_id: current_user.id)
     @items = Item.all
   end
 
   # GET /sales/1 GET /sales/1.json
   def show
     order_no = @sale.no_sale.to_s.rjust(4, '0')
+    @get_spg = SalesPromotion.find(@sale.sales_promotion_id)
     respond_to do |format|
       format.html
       format.pdf do
@@ -37,6 +38,9 @@ class SalesController < ApplicationController
     @sale = Sale.new
     @sale.sale_items.build
     @channels = Channel.all
+    @spg_transaksi = current_user.sales_promotion
+    @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition.id
+    @merchant = current_user.sales_promotion.store.merchants
   end
 
   # GET /sales/1/edit
@@ -50,6 +54,10 @@ class SalesController < ApplicationController
     @sale.sale_items.each do |sale_item|
       sale_item.user_id = current_user.id
     end
+    @spg_transaksi = current_user.sales_promotion
+    @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition.id
+    @merchant = current_user.sales_promotion.store.merchants
+    @sale.nama_kartu = current_user.sales_promotion.store.merchants.find_by_no_merchant(sale_params["no_merchant"]).nama if sale_params["tipe_pembayaran"] == 'kredit'
 
     respond_to do |format|
       if @sale.save
@@ -93,6 +101,6 @@ class SalesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
-    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :spg, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy])
+    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :supervisor_exhibition_id, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy])
   end
 end

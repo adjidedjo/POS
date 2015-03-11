@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   get 'reports/index'
+  get 'reports/sales_counter'
+  get 'reports/export_xml'
 
   devise_for :users, controllers: {registrations: "users/registrations"}
   get 'page/home'

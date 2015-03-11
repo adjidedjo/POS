@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nama: MyString
+  email: MyString
+  nik: MyString
+  store_id: 1
+  regex: MyString
+
+two:
+  nama: MyString
+  email: MyString
+  nik: MyString
+  store_id: 1
+  regex: MyString
