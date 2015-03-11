@@ -3,7 +3,7 @@
     <%= f.hidden_field :channel_id, value: @spg_transaksi.store.channel.id if f.object.new_record? %>
     <%= f.hidden_field :store_id, value: @spg_transaksi.store.id if f.object.new_record? %>
     <%= f.hidden_field :sales_promotion_id, value: @spg_transaksi.id if f.object.new_record? %>
-    <%= f.hidden_field :supervisor_exhibition_id, value: @spg_transaksi.id if f.object.new_record? %>
+    <%= f.hidden_field :supervisor_exhibition_id, value: @spv_transaksi.id if f.object.new_record? %>
     <div class="col-md-6">
       <%= f.input :customer, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:customer]) %>

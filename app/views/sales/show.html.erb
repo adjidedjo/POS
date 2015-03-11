@@ -70,10 +70,30 @@
   </div>
 </div>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
-  sales_path, :class => 'btn btn-default' %>
+<%#= link_to t('.back', :default => t("helpers.links.back")),
+sales_path, :class => 'btn btn-default' %>
+<%= link_to "new", new_sale_path, :class => 'btn btn-primary' %>
 <%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
-<% if current_user.admin? %>
-    <%#= link_to t('.edit', :default => t("helpers.links.edit")),
-  edit_sale_path(@sale), :class => 'btn btn-default' %>
-<% end %>
+<%#= link_to t('.edit', :default => t("helpers.links.edit")), '#edit_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+
+<div class="modal fade" id="destroy_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag sale_path(@sale), :method => :delete do %>
+          <%= label_tag(:password, "Masukkan supervisor password") %>
+        <%= password_field_tag :password %>
+          <%= hidden_field_tag :sale, @sale.id %>
+          <%= submit_tag "Hapus Order", :class => "btn btn-xs btn-danger" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>

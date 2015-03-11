@@ -1,6 +1,6 @@
 <%- model_class = Sale -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h1>Rekap Sales Order</h1>
 </div>
 <table id="index_of_sales" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
   <thead>
@@ -36,5 +36,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= link_to "new", new_sale_path, :class => 'btn btn-primary' %>

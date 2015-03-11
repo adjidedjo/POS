@@ -18,10 +18,12 @@ class Sale < ActiveRecord::Base
 
   def set_defaults
     self.voucher = 0 if self.voucher.nil?
+    self.netto = 0 if self.voucher.nil?
+    self.pembayaran = 0 if self.voucher.nil?
   end
 
   before_create do
-    get_no_sale = Sale.where("month(created_at)", Date.today.month).count(:id)
+    get_no_sale = Sale.where("month(created_at)", Date.today.month).size
     get_no_sale.nil? ? (self.no_sale = 1) : (self.no_sale = get_no_sale + 1)
     no_sale = self.no_sale.to_s.rjust(4, '0')
     bulan = Date.today.strftime('%m')

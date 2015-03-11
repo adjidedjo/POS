@@ -14,7 +14,7 @@ class SalesController < ApplicationController
 
   # GET /sales GET /sales.json
   def index
-    @sales = current_user.role == 'supervisor' ? current_user.supervisor_exhibition.sales : Sale.where(user_id: current_user.id)
+    @sales = current_user.role == 'supervisor' ? current_user.supervisor_exhibition.sales.where(cancel_order: false) : Sale.where(user_id: current_user.id, cancel_order: false)
     @items = Item.all
   end
 
@@ -39,11 +39,10 @@ class SalesController < ApplicationController
     @sale.sale_items.build
     @channels = Channel.all
     @spg_transaksi = current_user.sales_promotion
-    @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition.id
+    @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition
     @merchant = current_user.sales_promotion.store.merchants
   end
 
-  # GET /sales/1/edit
   def edit_by_confirmation
     if current_user.sales_promotion.store.supervisor_exhibition.user.valid_password?(params[:password])
       redirect_to edit_sale_path(params[:sale])
@@ -51,6 +50,7 @@ class SalesController < ApplicationController
       redirect_to sale_path(params[:sale]), alert: 'Password supervisor yang anda masukkan salah.'
     end
   end
+  # GET /sales/1/edit
 
   def edit
   end
@@ -63,7 +63,7 @@ class SalesController < ApplicationController
       sale_item.user_id = current_user.id
     end
     @spg_transaksi = current_user.sales_promotion
-    @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition.id
+    @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition
     @merchant = current_user.sales_promotion.store.merchants
     @sale.nama_kartu = current_user.sales_promotion.store.merchants.find_by_no_merchant(sale_params["no_merchant"]).nama if sale_params["tipe_pembayaran"] == 'kredit'
 
@@ -94,9 +94,9 @@ class SalesController < ApplicationController
   # DELETE /sales/1 DELETE /sales/1.json
   def destroy
     if current_user.sales_promotion.store.supervisor_exhibition.user.valid_password?(params[:password])
-      @sale.destroy
+      @sale.update_attributes!(cancel_order: true)
       respond_to do |format|
-        format.html { redirect_to sales_url, notice: 'Sale was successfully destroyed.' }
+        format.html { redirect_to sales_url, notice: 'Sale was successfully deleted.' }
         format.json { head :no_content }
       end
     else
