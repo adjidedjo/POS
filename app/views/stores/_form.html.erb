@@ -1,4 +1,4 @@
-<%= simple_form_for @store, :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for @store, :html => { :class => 'form-horizontal', :multipart=>true } do |f| %>
   <%= f.association :branch, label_method: :cabang, value_method: :id, :label => "Cabang" %>
   <%= error_span(@store[:branch_id]) %>
   <%= f.association :channel, label_method: :channel, value_method: :id %>
@@ -38,6 +38,11 @@
       <%= render "merchant_fields", :f => builder %>
     <% end %>
     <%= link_to_add_fields "Add Merchants", f, :merchants %>
+  </div>
+  <br />
+
+  <div class="row">
+    <%= f.file_field :stock_items %>
   </div>
   <br />
 

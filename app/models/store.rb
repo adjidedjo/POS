@@ -6,6 +6,7 @@ class Store < ActiveRecord::Base
   accepts_nested_attributes_for :supervisor_exhibition
   has_many :sales_promotions, dependent: :destroy
   accepts_nested_attributes_for :sales_promotions
+  has_many :sale_item_exhibitions
   belongs_to :channel
   belongs_to :branch
 
