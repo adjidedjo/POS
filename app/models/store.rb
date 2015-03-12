@@ -10,6 +10,8 @@ class Store < ActiveRecord::Base
   belongs_to :channel
   belongs_to :branch
 
+  validates :nama, :kota, :from_period, :to_period, :branch_id, :stock_items, :channel_id, presence: true
+
   before_create do
     self.kode_customer = SecureRandom.hex.first(4).upcase
   end
