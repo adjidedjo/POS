@@ -62,10 +62,7 @@
               <% end %>
               <% if current_user.role == 'sales_promotion' %>
                 <li><%= link_to "Transaksi", new_sale_path  %></li>
-                <li><%= link_to "Rekap Sales Order", sales_path  %></li>
-              <% end %>
-              <% if current_user.role == 'sales_counter' %>
-                <li><%= link_to "Transaksi", reports_sales_counter_path  %></li>
+                <li><%= link_to "Rekap Sales Order", reports_sales_counter_path  %></li>
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
