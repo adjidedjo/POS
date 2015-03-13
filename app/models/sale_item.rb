@@ -2,16 +2,13 @@ class SaleItem < ActiveRecord::Base
   belongs_to :sale
   belongs_to :user
 
-  validates :tanggal_kirim, presence: true, unless: :taken?
+  validates :tanggal_kirim, presence: true, unless: "taken?"
 
   before_create do
     if taken == true
       self.tanggal_kirim = Date.today
     end
 
-    def taken?
-      taken?
-    end
 #    no_sale = self.sale.no_sale.to_s.rjust(4, '0')
 #    bulan = Date.today.strftime('%m')
 #    tahun = Date.today.strftime('%y')

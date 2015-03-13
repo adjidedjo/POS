@@ -30,6 +30,20 @@ xml.data do
       xml.SampaiTanggal sale_item.sale.store.to_period.strftime("%m/%d/%Y")
       xml.AsalSo sale_item.sale.store_id.nil? ? 'SHOWROOM' : 'PAMERAN'
       xml.SPG SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.capitalize
+      xml.taken sale_item.taken
+      item = Item.find_by_kode_barang(sale_item.kode_barang)
+      xml.PriceList item.nil? ? '0' : item.harga
+      price_list = []
+      sale_item.sale.sale_items.each do |sale_item_harga|
+        get_price_list = Item.find_by_kode_barang(sale_item_harga.kode_barang)
+        price_list << get_price_list.harga unless get_price_list.nil?
+      end
+      total_price_list = price_list.sum
+      diskon = total_price_list - sale_item.sale.pembayaran
+      xml.Diskon diskon
+      dp = sale_item.sale.pembayaran - (sale_item.sale.netto - sale_item.sale.voucher)
+      xml.DP dp
+      xml.PPN
     end
   end
 end
