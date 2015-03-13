@@ -48,7 +48,8 @@ xml.data do
   end
 end
 xml_data = xml.target!
-file = File.new("#{Rails.root}/public/#{Time.now.strftime("%d%m%Y%H%M%S")}.xml", "wb")
+set_file_name = Time.now.strftime("%d%m%Y%H%M%S")
+file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
 file.write(xml_data)
 file.close
-UserMailer.order_pameran(@email, "#{Time.now.strftime("%d%m%Y%H%M%S")}").deliver_now
+UserMailer.order_pameran(@email, "#{set_file_name}").deliver_now
