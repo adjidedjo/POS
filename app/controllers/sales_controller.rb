@@ -2,9 +2,9 @@ class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
 
   def get_kode_barang_from_serial
-    kode_serial = StatusBarcode.find_by_serial(params[:kode_barang]).kode_barang
+    kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_store_id(params[:kode_barang], 1, current_user.sales_promotion.store_id).kode_barang
     @kode = Item.find_by_kode_barang(kode_serial).kode_barang
-    @nama = Item.find_by_kode_barang(kode_serial).nama
+    @nama = Item.find_by_kode_barang(kode_serial).produk
     @element_id = params[:element_id]
 
     respond_to do |format|

@@ -3,6 +3,7 @@ class SaleItem < ActiveRecord::Base
   belongs_to :user
 
   validates :tanggal_kirim, presence: true, unless: "taken?"
+  validates :serial, uniqueness: true, if: "serial.present?"
 
   before_create do
     if taken == true
@@ -19,5 +20,12 @@ class SaleItem < ActiveRecord::Base
 #    self.no_ppb = 'PPB'+kode_barang+'-'+kode_cabang+'-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
 #    self.no_faktur = 'FK'+kode_barang+'-'+kode_cabang+'-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
 #    self.no_sj = 'SJ'+kode_barang+'-'+kode_cabang+'-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
+  end
+
+  after_create do
+    if serial.present?
+      item = ExhibitionStockItem.find_by_serial(serial)
+      item.update_attributes(jumlah: (jumlah - 1))
+    end
   end
 end

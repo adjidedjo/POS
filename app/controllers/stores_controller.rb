@@ -25,10 +25,10 @@ class StoresController < ApplicationController
   # POST /stores POST /stores.json
   def create
     @store = Store.new(store_params)
-    create_stock_item_exhibition(store_params["stock_items"])
 
     respond_to do |format|
       if @store.save
+        create_stock_item_exhibition(store_params["stock_items"], @store.id)
         format.html { redirect_to @store, notice: 'Store was successfully created.' }
         format.json { render :show, status: :created, location: @store }
       else
@@ -71,13 +71,22 @@ class StoresController < ApplicationController
     params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, :stock_items, merchants_attributes: [:id, :nama, :no_merchant, :_destroy], supervisor_exhibition_attributes: [:id, :nama, :email, :nik], sales_promotions_attributes: [:id, :nama, :email, :nik])
   end
 
-  def create_stock_item_exhibition(file)
+  def create_stock_item_exhibition(file, store_id)
     tempfile = File.read(file.tempfile)
     doc = Nokogiri::XML(tempfile)
-    item = doc.xpath("data/pbjshow")
+    item = doc.xpath("data/sj")
     item.each do |si|
-      si_hash = {kode_barang: si.at_xpath("kodebrg").text}
-      si_record = StockItemExhibition.create(si_hash)
+      si_hash = {
+        kode_barang: si.at_xpath("KodeBrg").text,
+        serial: si.at_xpath("Serial").text,
+        no_so: si.at_xpath("NoSO").text,
+        no_pbj: si.at_xpath("NoPBJ").text,
+        no_sj: si.at_xpath("NoSJ").text,
+        tanggal_sj: si.at_xpath("TglSJ").text.to_date,
+        store_id: store_id,
+        jumlah: 1
+      }
+      si_record = ExhibitionStockItem.create(si_hash)
       si_record.save
     end
   end

@@ -1,3 +1,3 @@
 class Item < ActiveRecord::Base
-  has_many :status_barcode, primary_key: :kode_barang, foreign_key: :kode_barang
+  has_many :exhibition_stock_items, primary_key: :kode_barang, foreign_key: :kode_barang
 end
