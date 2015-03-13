@@ -11,7 +11,9 @@
         <thead>
           <tr>
             <th>Kode Barang</th>
-            <th>Nama Barang</th>
+            <th>Tipe</th>
+            <th>Produk</th>
+            <th>Ukuran</th>
             <th></th>
           </tr>
         </thead>
@@ -19,8 +21,10 @@
           <% Item.all.each do |item| %>
             <tr>
               <td><%= item.kode_barang %></td>
-              <td><%= item.nama %></td>
-              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"), :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
+              <td><%= item.tipe %></td>
+              <td><%= item.produk %></td>
+              <td><%= item.ukuran %></td>
+              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"), :data => {:kode => item.kode_barang, :nama => item.produk}, class: 'add_to_sales'  %> </td>
               </tr>
             <% end %>
           </tbody>
