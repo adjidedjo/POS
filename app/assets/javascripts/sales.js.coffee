@@ -62,6 +62,10 @@ jQuery ->
   open_modal()
   date_picker()
   serial_change()
+  $('#all_item_pos').DataTable({
+    bInfo: false,
+    responsive: true
+  })
   $('#index_of_sales').DataTable()
   $('#sale_items').DataTable({
     bPaginate: false,

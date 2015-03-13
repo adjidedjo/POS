@@ -1,13 +1,13 @@
 <div class="modal-dialog">
   <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h1>Barang</h1>
+    </div>
     <div class="modal-body">
-      <%- model_class = Item -%>
-      <div class="page-header">
-        <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-      </div>
       <%= hidden_field_tag "kode_barang" %>
       <%= hidden_field_tag "nama_barang" %>
-      <table id="a" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
+      <table id="all_item_pos" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>Kode Barang</th>
