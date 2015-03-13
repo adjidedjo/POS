@@ -1,32 +1,17 @@
 <fieldset>
-  <table id="of_sales" class="display table table-striped table-bordered nowrap">
-    <thead>
-      <tr>
-        <th class="all">Serial</th>
-        <th class="all">Kode Barang</th>
-        <th class="min-tablet-l">Nama</th>
-        <th class="all">Jumlah</th>
-        <th class="all">Tanggal Kirim</th>
-        <th class="all">Taken</th>
-        <th class="all">Bonus</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><%= f.text_field :serial, :class => "serial" %></td>
-        <td><%= f.text_field :kode_barang, :class => "kode_barang" %></td>
-        <td><%= f.text_field :nama_barang, :readonly => true, :class => "nama_barang" %></td>
-        <td><%= f.text_field :jumlah %></td>
-        <td><%= f.text_field :tanggal_kirim, :class => "tanggal_kirim" %></td>
-        <td><%= f.input_field :taken, label: false %></td>
-        <td><%= f.input_field :bonus, label: false   %></td>
-        <%= f.hidden_field :_destroy %>
-        <td><%= link_to "remove", '#', class: "remove_fields" %></td>
-        </tr>
-      </tbody>
-    </table>
-  </fieldset>
+  <%= f.text_field :serial, :class => "serial", placeholder: "Serial" %>
+  <%= f.text_field :kode_barang, :class => "kode_barang", placeholder: "Kode Barang" %>
+  <%= f.text_field :nama_barang, :readonly => true, :class => "nama_barang", placeholder: "Nama Barang" %>
+  <%= f.text_field :jumlah, placeholder: "Jumlah" %>
+  <%= f.text_field :tanggal_kirim, :readonly => true, :class => "tanggal_kirim", placeholder: "Tanggal Kirim" %>
+  <%= label_tag "Taken" %>
+  <%= f.input_field :taken, label: true %>
+  <%= label_tag "Bonus" %>
+  <%= f.input_field :bonus, label: true   %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to "remove", '#', class: "remove_fields btn-xs btn-danger" %>
+</fieldset>
+<hr>
 
   <div id="modal-content" class="modal fade" tabindex="-1" role="dialog">
     <%= render 'items/index' %>
