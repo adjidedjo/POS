@@ -11,9 +11,9 @@ default: &default
   reconnect: true
   pool: 5
   username: root
-  password: royalabadi
-  host: 192.168.101.220
-  port: 3306
+  password: root
+  host: root
+  port: root
 
 development:
   <<: *default
@@ -28,4 +28,4 @@ development:
 
 production:
   <<: *default
-  database: point_of_sales_development
+  database: point_of_sales_production
