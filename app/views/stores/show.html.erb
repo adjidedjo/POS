@@ -22,11 +22,13 @@
         </tr>
       </thead>
       <tbody>
+        <% if @store.supervisor_exhibition.present?  %>
         <tr>
           <td><%= @store.supervisor_exhibition.nama %></td>
           <td><%= @store.supervisor_exhibition.email %></td>
           <td><%= @store.supervisor_exhibition.nama.slice(0..2)+@store.supervisor_exhibition.regex %></td>
         </tr>
+        <% end %>
       </tbody>
     </table>
   </div>

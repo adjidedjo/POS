@@ -1,52 +1,57 @@
 <%= simple_form_for @store, :html => { :class => 'form-horizontal', :multipart=>true } do |f| %>
-  <%= f.association :branch, label_method: :cabang, value_method: :id, :label => "Cabang" %>
-  <%= error_span(@store[:branch_id]) %>
-  <%= f.association :channel, label_method: :channel, value_method: :id %>
-  <%= error_span(@store[:channel_id]) %>
-  <%= f.input :nama %>
-  <%= error_span(@store[:nama]) %>
-  <%= f.input :kota %>
-  <%= error_span(@store[:kota]) %>
-  <%= f.input :from_period, as: :tanggal, readonly: true, :label => "Dari Tanggal" %>
-  <%= error_span(@store[:from_period]) %>
-  <%= f.input :to_period, as: :tanggal, readonly: true, :label => "Sampai Tanggal" %>
-  <%= error_span(@store[:to_period]) %>
-
-  <label>Supervisor</label>
-  <div class="row">
-    <%= f.simple_fields_for :supervisor_exhibition do |builder| %>
-      <%= builder.input_field :nama, :placeholder => 'Nama Supervisor' %>
-      <%= builder.input_field :email, :placeholder => 'Email Supervisor' %>
-      <%= builder.input_field :nik, :placeholder => 'NIK Supervisor' %>
+  <% if f.object.new_record? %>
+    <div class="row">
+      <%= f.file_field :stock_items %>
     </div>
+    <br />
   <% end %>
-  <br />
+  <% unless f.object.new_record? %>
+    <%= f.association :branch, label_method: :cabang, value_method: :id, :label => "Cabang", :disabled => true %>
+    <%= error_span(@store[:branch_id]) %>
+    <%= f.association :channel, label_method: :channel, value_method: :id, :disabled => true %>
+    <%= error_span(@store[:channel_id]) %>
+    <%= f.input :nama, :disabled => true %>
+    <%= error_span(@store[:nama]) %>
+    <%= f.input :kota %>
+    <%= error_span(@store[:kota]) %>
+    <%= f.input :from_period, as: :tanggal, :disabled => true %>
+    <%= error_span(@store[:from_period]) %>
+    <%= f.input :to_period, as: :tanggal, :disabled => true %>
+    <%= error_span(@store[:to_period]) %>
 
-  <label>SPG/SPB</label>
-  <div class="row">
-    <%= f.simple_fields_for :sales_promotions do |builder| %>
-      <%= render "sales_promotion_fields", :f => builder %>
-    <% end %>
-    <%= link_to_add_fields "Add SPG/SPB", f, :sales_promotions %>
-  </div>
-  <br />
+    <label>Supervisor</label>
+    <div class="row">
+      <%= f.simple_fields_for :supervisor_exhibition do |builder| %>
+        <fieldset>
+          <%= builder.input_field :nama, :placeholder => 'Nama Supervisor' %>
+          <%= builder.input_field :email, :placeholder => 'Email Supervisor' %>
+          <%= builder.input_field :nik, :placeholder => 'NIK Supervisor' %>
+        </fieldset>
+      <% end %>
+    </div>
+    <br />
 
-  <label>Merchants</label>
+    <label>SPG/SPB</label>
+    <div class="row">
+      <%= f.simple_fields_for :sales_promotions do |builder| %>
+        <%= render "sales_promotion_fields", :f => builder %>
+      <% end %>
+      <%= link_to_add_fields "Tambah SPG/SPB", f, :sales_promotions %>
+    </div>
+    <br />
 
-  <div class="row">
-    <%= f.simple_fields_for :merchants do |builder| %>
-      <%= render "merchant_fields", :f => builder %>
-    <% end %>
-    <%= link_to_add_fields "Add Merchants", f, :merchants %>
-  </div>
-  <br />
+    <label>Merchants</label>
 
-  <div class="row">
-    <%= f.file_field :stock_items %>
-  </div>
-  <br />
+    <div class="row">
+      <%= f.simple_fields_for :merchants do |builder| %>
+        <%= render "merchant_fields", :f => builder %>
+      <% end %>
+      <%= link_to_add_fields "Tambah Merchants", f, :merchants %>
+    </div>
+    <br />
+  <% end %>
 
-  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= f.button :submit, f.object.new_record? ? "Create Pameran" : "Update Pameran", :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
     stores_path, :class => 'btn btn-default' %>
 <% end %>

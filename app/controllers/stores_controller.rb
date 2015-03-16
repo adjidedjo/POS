@@ -13,18 +13,34 @@ class StoresController < ApplicationController
   # GET /stores/new
   def new
     @store = Store.new
-    @store.merchants.build
     @store.build_supervisor_exhibition
+    @store.merchants.build
     @store.sales_promotions.build
   end
 
   # GET /stores/1/edit
   def edit
+    if @store.supervisor_exhibition.nil?
+      @store.build_supervisor_exhibition
+    end
   end
 
   # POST /stores POST /stores.json
   def create
-    @store = Store.new(store_params)
+    tempfile = File.read(store_params["stock_items"].tempfile)
+    doc = Nokogiri::XML(tempfile)
+    pameran = doc.xpath("data/pameran")
+    pameran_hash = {
+      channel_id: 5,
+      nama: pameran.at_xpath("NamaPameran").text,
+      branch_id: pameran.at_xpath("cabang").text.to_i,
+      kode_customer: pameran.at_xpath("KodePameran").text,
+      jenis_pameran: pameran.at_xpath("JenisPameran").text,
+      from_period: pameran.at_xpath("PeriodeAwal").text.to_date,
+      to_period: pameran.at_xpath("PeriodeAkhir").text.to_date,
+      keterangan: pameran.at_xpath("KeteranganPameran").text,
+    }
+    @store = Store.create(pameran_hash)
 
     respond_to do |format|
       if @store.save
@@ -68,7 +84,7 @@ class StoresController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def store_params
-    params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, :stock_items, merchants_attributes: [:id, :nama, :no_merchant, :_destroy], supervisor_exhibition_attributes: [:id, :nama, :email, :nik], sales_promotions_attributes: [:id, :nama, :email, :nik])
+    params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, :stock_items, :jenis_pameran, :keterangan, merchants_attributes: [:id, :nama, :no_merchant, :_destroy], supervisor_exhibition_attributes: [:id, :nama, :email, :nik, :_destroy], sales_promotions_attributes: [:id, :nama, :email, :nik, :_destroy])
   end
 
   def create_stock_item_exhibition(file, store_id)
