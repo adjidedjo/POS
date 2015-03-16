@@ -1,6 +1,4 @@
 class SupervisorExhibition < ActiveRecord::Base
-
-  validates :nama, :email, :nik, presence: true
   has_many :sales
   has_one :user, dependent: :destroy
   belongs_to :store
