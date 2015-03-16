@@ -14,7 +14,7 @@ class PosPdf < Prawn::Document
   def order_number
     indent 5 do
       bounding_box([0, cursor - 50], :width => 250) do
-        text "Sales Order", size: 20, style: :bold
+        text ( @order.cara_bayar == 'um') ? 'Sales Order' : 'Invoice', size: 20, style: :bold
         text "#{@order.store.branch.cabang}", size: 10
       end
     end
@@ -63,14 +63,14 @@ class PosPdf < Prawn::Document
       columns(1..3).align = :left
       self.cell_style = { :borders => [:top, :bottom] }
       self.header = true
-      self.column_widths = {0 => 100, 1 => 225, 2 => 50, 3 => 30, 4 => 50, 5 => 68}
+      self.column_widths = {0 => 100, 1 => 180, 2 => 50, 3 => 30, 4 => 50, 5 => 68, 6 => 45}
     end
   end
 
   def line_item_rows
-    [["Kode Barang", "Nama Barang", "Satuan", "Qty", "Bonus", "Tanggal Kirim"]] +
+    [["Kode Barang", "Nama Barang", "Satuan", "Qty", "Bonus", "Tanggal Kirim", "Taken"]] +
       @order.sale_items.map do |item|
-      [item.kode_barang, item.nama_barang, 'PCS', item.jumlah, (item.bonus? ? "Bonus" : "-"), item.tanggal_kirim]
+      [item.kode_barang, item.nama_barang, 'PCS', item.jumlah, (item.bonus? ? "Bonus" : "-"), item.tanggal_kirim.strftime("%d %B %Y"), item.taken? ? "Yes" : "No"]
     end
   end
 
