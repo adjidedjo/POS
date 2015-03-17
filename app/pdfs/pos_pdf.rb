@@ -14,8 +14,7 @@ class PosPdf < Prawn::Document
   def order_number
     indent 5 do
       bounding_box([0, cursor - 50], :width => 250) do
-        text ( @order.cara_bayar == 'um') ? 'Sales Order' : 'Invoice', size: 20, style: :bold
-        text "#{@order.store.branch.cabang}", size: 10
+        text "Faktur Penjualan", size: 20, style: :bold
       end
     end
     bounding_box([220, cursor + 70], :width => 100) do
@@ -84,19 +83,25 @@ class PosPdf < Prawn::Document
         text "Alamat Kirim          : #{@order.alamat_kirim}", :size => 10, :style => :bold
       end
     end
+    cek_voucher = @order.voucher == 0
     bounding_box([350, cursor + 45], :width => 250) do
       text "Total       : Rp. ", :size => 10, :style => :bold
-      move_down 5
-      text "Voucher : Rp. ", :size => 10, :style => :bold
+      unless cek_voucher
+        move_down 5
+        text "Voucher : Rp. ", :size => 10, :style => :bold
+      end
       move_down 5
       text "Bayar     : Rp. ", :size => 10, :style => :bold
       move_down 5
       text "Sisa        : Rp. ", :size => 10, :style => :bold
     end
-    bounding_box([250, cursor + 61.5], :width => 250) do
+    size = cek_voucher ? 45 : 61.5
+    bounding_box([250, cursor + size], :width => 250) do
       text "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
-      move_down 5
-      text "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
+      unless cek_voucher
+        move_down 5
+        text "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
+      end
       move_down 5
       text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       move_down 5

@@ -36,10 +36,14 @@
 
     <div class="row">
       <div class="col-md-6">
-        <%= f.input :netto, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px' } %>
+        <%= f.input :netto, as: :string, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px', :class => 'number'} %>
+        <span id="span_netto" style="position:absolute; width:200px;height:30px; top: 35px; left: 260px;"></span>
         <%= f.input :voucher, :input_html => {value: number_with_precision(f.object.voucher, precision: 2), :style => 'width: 250px' } %>
+        <span id="span_voucher"  style="position:absolute; width:200px;height:30px; top: 110px; left: 260px;"></span>
         <%= f.input :pembayaran, :input_html => {value: number_with_precision(f.object.pembayaran, precision: 2), :style => 'width: 250px' } %>
+        <span id="span_bayar" style="position:absolute; width:200px;height:30px; top: 182px; left: 260px;"></span>
         <%= f.input :sisa, :input_html => {value: number_with_precision(f.object.sisa, precision: 2), :style => 'width: 250px' }, :readonly => true %>
+        <span id="span_sisa" style="position:absolute; width:200px;height:30px; top: 255px; left: 260px;"></span>
       </div>
       <div class="col-md-6">
         <%= f.label :tipe_pembayaran %>

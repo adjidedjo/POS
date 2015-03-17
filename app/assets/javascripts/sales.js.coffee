@@ -1,5 +1,17 @@
 jQuery ->
 
+  $('#check_all').click ->
+    if @checked
+      # Iterate each checkbox
+      $(':checkbox').each ->
+        @checked = true
+        return
+    else
+      $(':checkbox').each ->
+        @checked = false
+        return
+    return
+
   stores = $('#sale_store_id').html()
   $('#sale_channel_id').change ->
     channel = $('#sale_channel_id :selected').text()
@@ -11,20 +23,42 @@ jQuery ->
       $('#sale_store_id').empty()
       $('#sale_store_id').parent().hide()
 
+  addCommas = (str) ->
+    parts = (str + '').split('.')
+    main = parts[0]
+    len = main.length
+    output = ''
+    i = len - 1
+    while i >= 0
+      output = main.charAt(i) + output
+      if (len - i) % 3 == 0 and i > 0
+        output = ',' + output
+      --i
+    # put decimal part back
+    if parts.length > 1
+      output += '.' + parts[1]
+    output
+
   $('#sale_netto').on 'keyup', () ->
+    document.getElementById('span_netto').innerHTML = addCommas(this.value)
     pembayaran = document.getElementById('sale_voucher').value
     voucher = document.getElementById('sale_pembayaran').value
     c = document.getElementById('sale_sisa').value = $(this).val() - voucher - pembayaran
+    document.getElementById('span_sisa').innerHTML = addCommas(c)
 
   $('#sale_voucher').on 'keyup', () ->
+    document.getElementById('span_voucher').innerHTML = addCommas(this.value)
     pembayaran = document.getElementById('sale_voucher').value
     netto = document.getElementById('sale_netto').value
     c = document.getElementById('sale_sisa').value = netto - $(this).val() - pembayaran
+    document.getElementById('span_sisa').innerHTML = addCommas(c)
 
   $('#sale_pembayaran').on 'keyup', () ->
+    document.getElementById('span_bayar').innerHTML = addCommas(this.value)
     netto = document.getElementById('sale_netto').value
     voucher = document.getElementById('sale_voucher').value
     c = document.getElementById('sale_sisa').value = netto - voucher - $(this).val()
+    document.getElementById('span_sisa').innerHTML = addCommas(c)
 
   open_modal = () -> $('.kode_barang').on 'click', () ->
     $('#kode_barang').val(($(this).attr("id")))
