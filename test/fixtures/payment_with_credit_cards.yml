@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  no_merchant: MyString
+  nama_kartu: MyString
+  no_kartu: MyString
+  atas_nama: MyString
+  jumlah: 9.99
+  sale_id: 1
+
+two:
+  no_merchant: MyString
+  nama_kartu: MyString
+  no_kartu: MyString
+  atas_nama: MyString
+  jumlah: 9.99
+  sale_id: 1

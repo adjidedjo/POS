@@ -1,5 +1,10 @@
 jQuery ->
 
+  $('#new_sale').validate
+    rules:
+      "tipe_pembayaran[]":
+        required: true
+
   $('#check_all').click ->
     if @checked
       # Iterate each checkbox
@@ -39,25 +44,26 @@ jQuery ->
       output += '.' + parts[1]
     output
 
-  $('#sale_netto').on 'keyup', () ->
-    document.getElementById('span_netto').innerHTML = addCommas(this.value)
-    pembayaran = document.getElementById('sale_voucher').value
-    voucher = document.getElementById('sale_pembayaran').value
-    c = document.getElementById('sale_sisa').value = $(this).val() - voucher - pembayaran
-    document.getElementById('span_sisa').innerHTML = addCommas(c)
-
-  $('#sale_voucher').on 'keyup', () ->
-    document.getElementById('span_voucher').innerHTML = addCommas(this.value)
-    pembayaran = document.getElementById('sale_voucher').value
+  $('.input_value').on 'keyup', () ->
     netto = document.getElementById('sale_netto').value
-    c = document.getElementById('sale_sisa').value = netto - $(this).val() - pembayaran
-    document.getElementById('span_sisa').innerHTML = addCommas(c)
+    document.getElementById('span_netto').innerHTML = addCommas(netto)
 
-  $('#sale_pembayaran').on 'keyup', () ->
-    document.getElementById('span_bayar').innerHTML = addCommas(this.value)
-    netto = document.getElementById('sale_netto').value
+    pembayaran = document.getElementById('sale_pembayaran').value
+    document.getElementById('span_bayar').innerHTML = addCommas(pembayaran)
+
+    debit = document.getElementById('sale_payment_with_debit_card_attributes_jumlah').value
+    document.getElementById('span_debit').innerHTML = addCommas(debit)
+
+    credit = document.getElementById('sale_payment_with_credit_cards_attributes_0_jumlah').value
+
+    credit1 = document.getElementById('sale_payment_with_credit_cards_attributes_1_jumlah').value
+    total_credit = Math.floor(credit) + Math.floor(credit1)
+    document.getElementById('span_credit').innerHTML = addCommas(total_credit)
+
+    total_payment = Math.floor(total_credit)+Math.floor(debit)+Math.floor(pembayaran)
     voucher = document.getElementById('sale_voucher').value
-    c = document.getElementById('sale_sisa').value = netto - voucher - $(this).val()
+    document.getElementById('span_voucher').innerHTML = addCommas(voucher)
+    c = document.getElementById('sale_sisa').value = netto - voucher - total_payment
     document.getElementById('span_sisa').innerHTML = addCommas(c)
 
   open_modal = () -> $('.kode_barang').on 'click', () ->

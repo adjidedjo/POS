@@ -10,21 +10,19 @@
       <table id="all_item_pos" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
         <thead>
           <tr>
+            <th class="desktop">Brand</th>
             <th class="desktop">Kode Barang</th>
-            <th>Tipe</th>
-            <th>Produk</th>
-            <th>Ukuran</th>
+            <th>Nama</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <% Item.all.each do |item| %>
             <tr>
+              <td><%= Brand.find(item.brand_id).brand %></td>
               <td><%= item.kode_barang %></td>
-              <td><%= item.tipe %></td>
-              <td><%= item.produk %></td>
-              <td><%= item.ukuran %></td>
-              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"), :data => {:kode => item.kode_barang, :nama => item.produk}, class: 'add_to_sales'  %> </td>
+              <td><%= item.nama %></td>
+              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"), :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
               </tr>
             <% end %>
           </tbody>

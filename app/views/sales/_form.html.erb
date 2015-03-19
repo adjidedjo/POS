@@ -5,7 +5,7 @@
     <%= f.hidden_field :sales_promotion_id, value: @spg_transaksi.id if f.object.new_record? %>
     <%= f.hidden_field :supervisor_exhibition_id, value: @spv_transaksi.id if f.object.new_record? %>
     <div class="col-md-6">
-      <%= f.input :customer, :input_html => {:style => 'width: 250px'} %>
+      <%= f.input :customer, label: "Konsumen", :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:customer]) %>
       <%= f.input :email, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:email]) %>
@@ -33,39 +33,69 @@
       <% end %>
       <%= link_to_add_fields "Add Item", f, :sale_items %>
     </div>
-
+    <br />
     <div class="row">
-      <div class="col-md-6">
-        <%= f.input :netto, as: :string, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px', :class => 'number'} %>
-        <span id="span_netto" style="position:absolute; width:200px;height:30px; top: 35px; left: 260px;"></span>
-        <%= f.input :voucher, :input_html => {value: number_with_precision(f.object.voucher, precision: 2), :style => 'width: 250px' } %>
-        <span id="span_voucher"  style="position:absolute; width:200px;height:30px; top: 110px; left: 260px;"></span>
-        <%= f.input :pembayaran, :input_html => {value: number_with_precision(f.object.pembayaran, precision: 2), :style => 'width: 250px' } %>
-        <span id="span_bayar" style="position:absolute; width:200px;height:30px; top: 182px; left: 260px;"></span>
-        <%= f.input :sisa, :input_html => {value: number_with_precision(f.object.sisa, precision: 2), :style => 'width: 250px' }, :readonly => true %>
-        <span id="span_sisa" style="position:absolute; width:200px;height:30px; top: 255px; left: 260px;"></span>
-      </div>
-      <div class="col-md-6">
-        <%= f.label :tipe_pembayaran %>
-        <%= f.collection_radio_buttons :tipe_pembayaran, [['tunai', 'Tunai'] ,['debit', 'Kartu Debit'],['kredit', 'Kartu Kredit']], :first, :last, item_wrapper_tag: :div %>
-        <div id="kk">
-          <div class="col-md-5">
-            <%= f.input :nama_kartu, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 200px'} %>
-            <%= error_span(@sale[:nama_kartu]) %>
-            <%= f.input :no_kartu, :input_html => {:style => 'width: 200px'} %>
-            <%= error_span(@sale[:no_kartu]) %>
-          </div>
-          <div class="col-md-5">
-            <%= f.input :no_merchant, collection: @merchant, label: "Merchant", label_method: :nama, value_method: :no_merchant, :input_html => {:style => 'width: 200px'} %>
-            <%= error_span(@sale[:no_merchant]) %>
-            <%= f.input :atas_nama, :input_html => {:style => 'width: 200px'} %>
-            <%= error_span(@sale[:atas_nama]) %>
-          </div>
+      <div class="col-md-12">
+        <div class="row-fluid">
+          <span class="cara_bayar" style="display: inline-block">
+            <%= f.input :netto, as: :string, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px', :class => 'input_value'} %>
+          </span>
+          <span id="span_netto" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;" ></span>
         </div>
-      </div>
-    </div>
+        <div class="row-fluid">
+          <span class="cara_bayar" style="display: inline-block">
+            <%= f.input :voucher, :input_html => {value: number_with_precision(f.object.voucher, precision: 2), :style => 'width: 250px' , :class => 'input_value'} %>
+          </span>
+          <span id="span_voucher"style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;"></span>
+        </div>
+        <%= f.label :cara_pembayaran %><br />
+        <%= check_box_tag 'tipe_pembayaran[]', "Tunai" %>Tunai
+        <div class="row-fluid" style="padding: 10px 10px 10px 87px">
+          <span class="cara_bayar" style="display: inline-block">
+            <%= f.input_field :pembayaran, label: false, :input_html => {:style => 'width: 200px;'}, :class => 'input_value' %>
+          </span>
+          <span id="span_bayar"style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;"></span>
+        </div>
+        <%= check_box_tag 'tipe_pembayaran[]', "Kartu Debit" %>Kartu Debit <br />
+        <div class="row" style="padding: 10px 10px 10px 100px">
+          <%= f.simple_fields_for :payment_with_debit_card, as: 'user_inline', wrapper: :inline_form, html: { class: 'form-inline' } do |builder| %>
+              <%= builder.input_field :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {:style => 'width: 200px;'}  %>
+              <%= builder.input_field :no_kartu, :placeholder => 'No Kartu', :input_html => {:style => 'width: 200px;'}  %>
+              <%= builder.input_field :atas_nama, :placeholder => 'Atas Nama', :input_html => {:style => 'width: 200px;'}  %>
+              <span class="cara_bayar" style="display: inline-block">
+                <%= builder.input_field :jumlah , :placeholder => 'Jumlah', :style => 'width: 200px;', :class => 'input_value' %>
+              </span>
+              <span id="span_debit" style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;"></span>
+            <% end %>
+          </div>
+          <%= check_box_tag 'tipe_pembayaran[]', "Kartu Kredit" %>Kartu Kredit <br />
+          <div class="row" style="padding: 10px 10px 10px 100px">
+            <%= f.simple_fields_for :payment_with_credit_cards, as: 'user_inline', wrapper: :inline_form, html: { class: 'form-inline' } do |builder| %>
+                <%= builder.input_field :no_kartu, collection: @merchant, label: "Merchant", label_method: :nama, value_method: :no_merchant  %>
+                <%= builder.input_field :atas_nama, :placeholder => 'Atas Nama', :input_html => {:style => 'width: 200px;'}  %>
+                <span class="cara_bayar" style="display: inline-block">
+                  <%= builder.input_field :jumlah , :placeholder => 'Jumlah', :style => 'width: 200px;', :class => 'input_value'  %>
+                </span>
+                <span id="span_credit" style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;"></span>
+                <span id="span_credit1" style="display: inline-block; padding: 0px 0 0 100px; text-indent: -50px; vertical-align: top;"></span>
+                <br />
+              <% end %>
+            </div>
+            <div class="row-fluid">
+              <span class="cara_bayar" style="display: inline-block">
+                <%= f.input :sisa, :input_html => {value: number_with_precision(f.object.sisa, precision: 2), :style => 'width: 250px;' }, :readonly => true %>
+              </span>
+              <span id="span_sisa" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;"></span>
+            </div>
+          </div>
+      <div class="col-md-6">
+            <div class="row-fluid">
+              <%= f.input :netto_elite, :input_html => {:style => 'width: 250px;'} %>
+              <%= f.input :netto_lady, :input_html => {:style => 'width: 250px;'} %>
+            </div></div>
+        </div>
 
-    <%= f.button :submit, :class => 'btn-primary' %>
-    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-      sales_path, :class => 'btn btn-default' %>
-  <% end %>
+        <%= f.button :submit, :class => 'btn-primary' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+          sales_path, :class => 'btn btn-default' %>
+      <% end %>

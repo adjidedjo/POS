@@ -22,6 +22,7 @@ class SalesController < ApplicationController
   def show
     order_no = @sale.no_sale.to_s.rjust(4, '0')
     @get_spg = SalesPromotion.find(@sale.sales_promotion_id)
+    @tipe_pembayaran = @sale.tipe_pembayaran.split(";")
     respond_to do |format|
       format.html
       format.pdf do
@@ -37,6 +38,8 @@ class SalesController < ApplicationController
   def new
     @sale = Sale.new
     @sale.sale_items.build
+    @sale.build_payment_with_debit_card
+    2.times {@sale.payment_with_credit_cards.build}
     @channels = Channel.all
     @spg_transaksi = current_user.sales_promotion
     @spv_transaksi = current_user.sales_promotion.store.supervisor_exhibition
@@ -59,6 +62,7 @@ class SalesController < ApplicationController
   def create
     @sale = Sale.new(sale_params)
     @sale.user_id = current_user.id
+    @sale.tipe_pembayaran = params[:tipe_pembayaran].join(';')
     @sale.sale_items.each do |sale_item|
       sale_item.user_id = current_user.id
     end
@@ -113,6 +117,6 @@ class SalesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
-    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :supervisor_exhibition_id, :sisa, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy])
+    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :supervisor_exhibition_id, :sisa, :netto_elite, :netto_lady, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy], payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah], payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
   end
 end

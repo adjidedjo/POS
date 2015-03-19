@@ -14,7 +14,7 @@ class PosPdf < Prawn::Document
   def order_number
     indent 5 do
       bounding_box([0, cursor - 50], :width => 250) do
-        text "Faktur Penjualan", size: 20, style: :bold
+        text "Faktur", size: 20, style: :bold
       end
     end
     bounding_box([220, cursor + 70], :width => 100) do
@@ -103,9 +103,10 @@ class PosPdf < Prawn::Document
         text "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       end
       move_down 5
-      text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
+      total_bayar = @order.pembayaran + @order.payment_with_debit_card.jumlah + @order.payment_with_credit_cards.sum(:jumlah)
+      text "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       move_down 5
-      text "#{number_to_currency(((@order.netto-@order.voucher)-@order.pembayaran), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
+      text "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
     end
 
     stroke do
@@ -145,16 +146,18 @@ class PosPdf < Prawn::Document
       move_down 15
       indent 5 do
         if @order.tipe_pembayaran == 'tunai'
-          text "#{@order.tipe_pembayaran.capitalize}", :size => 10
+          text "#{@order.tipe_pembayaran}", :size => 9
         else
-          text "#{@order.tipe_pembayaran.capitalize}", :size => 10
-          bounding_box([50, cursor + 24], :width => 150) do
-            text "Kartu          : #{@order.nama_kartu.capitalize}", :size => 10
-            text "Atas Nama : #{@order.atas_nama.capitalize}", :size => 10
+          text "#{@order.tipe_pembayaran}", :size => 9
+          bounding_box([150, cursor + 19.5], :width => 300) do
+            text "Debit   : #{@order.payment_with_debit_card.no_kartu.upcase}", :size => 9
+            no_credit = []
+            @order.payment_with_credit_cards.each do |cc|
+              no_credit << cc.no_kartu
+            end
+            text "Kredit  : #{no_credit.join(', ').upcase}", :size => 9
           end
           bounding_box([200, cursor + 22.5], :width => 200) do
-            text "No Kartu  : #{@order.no_kartu}", :size => 10
-            text "Merchant : #{@order.no_merchant.upcase}", :size => 10
           end
         end
       end
@@ -163,7 +166,7 @@ class PosPdf < Prawn::Document
         line(bounds.bottom_left, bounds.bottom_right)
       end
     end
-    move_down 10
+    move_down 30
     indent 5 do
       text "Keterangan : #{@order.keterangan_customer}", :size => 10
     end

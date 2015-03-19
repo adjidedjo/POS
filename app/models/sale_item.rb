@@ -10,6 +10,8 @@ class SaleItem < ActiveRecord::Base
       self.tanggal_kirim = Date.today
     end
 
+    self.brand_id = Item.find_by_kode_barang(self.kode_barang).brand_id
+
 #    no_sale = self.sale.no_sale.to_s.rjust(4, '0')
 #    bulan = Date.today.strftime('%m')
 #    tahun = Date.today.strftime('%y')

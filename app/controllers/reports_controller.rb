@@ -6,8 +6,9 @@ class ReportsController < ApplicationController
 
   def sales_counter
     @sales = []
+    brand_id = params[:brand_id]
     current_user.sales_promotion.store.sales.each do |sale|
-      SaleItem.where("sale_id = ? and created_at < ? and exported = ?", sale.id, Date.tomorrow, false).each do |sale_items|
+      SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id).each do |sale_items|
         @sales << sale_items
       end
     end

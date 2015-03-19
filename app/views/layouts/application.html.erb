@@ -61,8 +61,21 @@
                 <li><%= link_to "Transaksi", sales_path  %></li>
               <% end %>
               <% if current_user.role == 'sales_promotion' %>
-                <li><%= link_to "Transaksi", new_sale_path  %></li>
-                <li><%= link_to "Rekap Sales Order", reports_sales_counter_path  %></li>
+                <%= drop_down "Transaksi" do %>
+                  <li><%= link_to "Penerimaan Barang", "#"  %></li>
+                  <li><%= link_to "Sales Order", new_sale_path  %></li>
+                  <li><%= link_to "Nota Retur Display", "#" %></li>
+                <% end %>
+                <%= drop_down "Export Rekap SO" do %>
+                  <li><%= link_to "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %></li>
+                  <li><%= link_to "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %></li>
+                <% end %>
+                <%= drop_down "Report" do %>
+                  <li><%= link_to "Rekap SO", "#" %></li>
+                  <li><%= link_to "Laporan Mutasi Stock", "#"   %></li>
+                  <li><%= link_to "Selisih Intransit vs Peneriman", "#"   %></li>
+                 <li><%= link_to "Selisih Retur Display vs Laporan Stock Display", "#"  %></li>
+                <% end %>
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
