@@ -50,7 +50,7 @@ class PosPdf < Prawn::Document
       move_down 5
       text "Pameran/Showroom : #{@order.store.nama}", :size => 10, :style => :bold
       move_down 5
-      text "Periode Pameran       : #{ @order.store.from_period.nil? ? '' : @order.store.from_period.strftime('%d/%m/%Y')}-#{ @order.store.to_period.nil? ? '' : @order.store.to_period.strftime('%d/%m/%Y')}", :size => 10, :style => :bold
+      text "Periode Pameran       : #{ @order.store.from_period.nil? ? '' : @order.store.from_period.strftime('%d %b %Y')} - #{ @order.store.to_period.nil? ? '' : @order.store.to_period.strftime('%d %b %Y')}", :size => 10, :style => :bold
     end
   end
 
