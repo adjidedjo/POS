@@ -1,5 +1,8 @@
 jQuery ->
 
+  $('#new_sale').bind 'submit', ->
+    $(this).find(':input').removeAttr 'disabled'
+
   $('#new_sale').validate
     rules:
       "tipe_pembayaran[]":
@@ -90,13 +93,16 @@ jQuery ->
       url: '/sales/get_kode_barang_from_serial',
       data: {'kode_barang': $('.serial').val(), 'element_id': $(this).attr("id")},
       datatype: 'script',
+      success: () ->
+        document.getElementById(kode_barang).disabled = true
       error: () ->
-          alert "Serial yang anda masukan tidak terdaftar"
-          document.getElementById(jumlah).readOnly = false
-          document.getElementById(kode_barang).value = ""
-          document.getElementById(nama_barang).value = ""
-          document.getElementById(kode_barang).value = ""
-          document.getElementById(jumlah).value = ""
+        alert "Serial yang anda masukan tidak terdaftar"
+        document.getElementById(jumlah).readOnly = false
+        document.getElementById(kode_barang).value = ""
+        document.getElementById(kode_barang).disabled = false
+        document.getElementById(nama_barang).value = ""
+        document.getElementById(kode_barang).value = ""
+        document.getElementById(jumlah).value = ""
 
   add_item_to_table()
   open_modal()
