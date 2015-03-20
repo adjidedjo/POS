@@ -73,7 +73,8 @@
           <%= check_box_tag 'tipe_pembayaran[]', "Kartu Kredit" %>Kartu Kredit <br />
           <div class="row" style="padding: 10px 10px 10px 100px">
             <%= f.simple_fields_for :payment_with_credit_cards, as: 'user_inline', wrapper: :inline_form, html: { class: 'form-inline' } do |builder| %>
-                <%= builder.input_field :no_kartu, collection: @merchant, label: "Merchant", label_method: :nama, value_method: :no_merchant  %>
+                <%= builder.input_field :no_merchant, collection: @merchant, label: "Merchant", label_method: :nama, value_method: :no_merchant  %>
+                <%= builder.input_field :no_kartu, :placeholder => 'No Kartu', :input_html => {:style => 'width: 200px;'}  %>
                 <%= builder.input_field :atas_nama, :placeholder => 'Atas Nama', :input_html => {:style => 'width: 200px;'}  %>
                 <span class="cara_bayar" style="display: inline-block">
                   <%= builder.input_field :jumlah , :placeholder => 'Jumlah', :style => 'width: 200px;', :class => 'input_value'  %>

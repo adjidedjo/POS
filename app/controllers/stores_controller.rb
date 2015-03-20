@@ -33,14 +33,12 @@ class StoresController < ApplicationController
     pameran_hash = {
       channel_id: 5,
       nama: pameran.at_xpath("NamaPameran").text,
-      branch_id: pameran.at_xpath("cabang").text.to_i,
       kode_customer: pameran.at_xpath("KodePameran").text,
-      jenis_pameran: pameran.at_xpath("JenisPameran").text,
       from_period: pameran.at_xpath("PeriodeAwal").text.to_date,
       to_period: pameran.at_xpath("PeriodeAkhir").text.to_date,
-      keterangan: pameran.at_xpath("KeteranganPameran").text,
+      keterangan: pameran.at_xpath("KeteranganPameran").text
     }
-    @store = Store.create(pameran_hash)
+    @store = Store.where(kode_customer: pameran_hash[:kode_customer]).first_or_create(pameran_hash)
 
     respond_to do |format|
       if @store.save
@@ -90,20 +88,20 @@ class StoresController < ApplicationController
   def create_stock_item_exhibition(file, store_id)
     tempfile = File.read(file.tempfile)
     doc = Nokogiri::XML(tempfile)
-    item = doc.xpath("data/sj")
+    item = doc.xpath("data/pameran")
     item.each do |si|
       si_hash = {
         kode_barang: si.at_xpath("KodeBrg").text,
-        serial: si.at_xpath("Serial").text,
+        nama: si.at_xpath("Nama").text,
+        serial: ((si.at_xpath("Serial").text.length > 5) ? si.at_xpath("Serial").text : 0),
         no_so: si.at_xpath("NoSO").text,
         no_pbj: si.at_xpath("NoPBJ").text,
         no_sj: si.at_xpath("NoSJ").text,
         tanggal_sj: si.at_xpath("TglSJ").text.to_date,
         store_id: store_id,
-        jumlah: 1
+        jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1)
       }
-      si_record = ExhibitionStockItem.create(si_hash)
-      si_record.save
+      ExhibitionStockItem.where(kode_barang: si_hash[:kode_barang], serial: si_hash[:serial], no_sj: si_hash[:no_sj]).first_or_create(si_hash)
     end
   end
 end
