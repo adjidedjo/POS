@@ -19,6 +19,8 @@
     <div class="col-md-6">
       <%= f.input :alamat_kirim, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:alamat_kirim]) %>
+      <%= f.input :tanggal_kirim, as: :tanggal, :readonly => true, :input_html => {:style => 'width: 250px'} %>
+      <%= error_span(@sale[:tanggal_kirim]) %>
       <%= f.input :keterangan_customer, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:keterangan_customer]) %>
       <%= f.input :so_manual, :input_html => {:style => 'width: 250px'} %>
@@ -38,7 +40,7 @@
       <div class="col-md-12">
         <div class="row-fluid">
           <span class="cara_bayar" style="display: inline-block">
-            <%= f.input :netto, as: :string, :input_html => {value: number_with_precision(f.object.netto, precision: 2), :style => 'width: 250px', :class => 'input_value'} %>
+            <%= f.input :netto, as: :string, :input_html => {value: f.object.netto, :style => 'width: 250px', :class => 'input_value'} %>
           </span>
           <span id="span_netto" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;" ></span>
         </div>

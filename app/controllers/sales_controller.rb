@@ -2,9 +2,9 @@ class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
 
   def get_kode_barang_from_serial
-    kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_store_id(params[:kode_barang], 1, current_user.sales_promotion.store_id).kode_barang
+    kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_store_id_and_checked_in(params[:kode_barang], 1, current_user.sales_promotion.store_id, true).kode_barang
     @kode = Item.find_by_kode_barang(kode_serial).kode_barang
-    @nama = Item.find_by_kode_barang(kode_serial).produk
+    @nama = Item.find_by_kode_barang(kode_serial).nama
     @element_id = params[:element_id]
 
     respond_to do |format|
@@ -117,6 +117,6 @@ class SalesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
-    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :supervisor_exhibition_id, :sisa, :netto_elite, :netto_lady, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy], payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah], payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
+    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :supervisor_exhibition_id, :sisa, :netto_elite, :netto_lady, :tanggal_kirim, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy], payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah], payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
   end
 end

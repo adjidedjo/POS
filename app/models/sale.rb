@@ -13,10 +13,8 @@ class Sale < ActiveRecord::Base
   belongs_to :channel
   belongs_to :supervisor_exhibition
 
-  validates :customer, :phone_number, :alamat_kirim, :email, :netto, :netto_elite, :netto_lady, presence: true
+  validates :customer, :phone_number, :alamat_kirim, :email, :netto, :netto_elite, :netto_lady, :tanggal_kirim, presence: true
   validates :phone_number, numericality: true, length: {maximum: 12}
-  validates :no_kartu, :no_merchant, :atas_nama, presence: true, if: :paid_with_credit?
-  validates :nama_kartu, :no_kartu, :atas_nama, presence: true, if: :paid_with_debit?
   validates :no_kartu, numericality: true, if: :paid_with_credit?
   validates :no_kartu, numericality: true, if: :paid_with_debit?
 
@@ -39,8 +37,8 @@ class Sale < ActiveRecord::Base
   end
 
   after_create do
-    debit = self.payment_with_debit_card.jumlah
-    credit = self.payment_with_credit_cards.sum(:jumlah)
+    debit = self.payment_with_debit_card.jumlah.nil? ? 0 : self.payment_with_debit_card.jumlah
+    credit = self.payment_with_credit_cards.nil? ? 0 : self.payment_with_credit_cards.sum(:jumlah)
     tunai = self.pembayaran
     total_bayar = debit + credit + tunai
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'

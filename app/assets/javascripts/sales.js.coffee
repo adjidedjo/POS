@@ -93,7 +93,7 @@ jQuery ->
       error: () ->
           alert "Serial yang anda masukan tidak terdaftar"
           document.getElementById(jumlah).readOnly = false
-          document.getElementById(kode_barang).readOnly = false
+          document.getElementById(kode_barang).value = ""
           document.getElementById(nama_barang).value = ""
           document.getElementById(kode_barang).value = ""
           document.getElementById(jumlah).value = ""

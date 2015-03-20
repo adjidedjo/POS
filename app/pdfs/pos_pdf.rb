@@ -103,7 +103,8 @@ class PosPdf < Prawn::Document
         text "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       end
       move_down 5
-      total_bayar = @order.pembayaran + @order.payment_with_debit_card.jumlah + @order.payment_with_credit_cards.sum(:jumlah)
+      debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+      total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)
       text "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
       move_down 5
       text "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 10, :style => :bold, :align => :right
@@ -155,7 +156,7 @@ class PosPdf < Prawn::Document
             @order.payment_with_credit_cards.each do |cc|
               no_credit << cc.no_kartu
             end
-            text "Kredit  : #{no_credit.join(', ').upcase}", :size => 9
+            text "Kredit  : #{no_credit.join(' ').upcase}", :size => 9
           end
           bounding_box([200, cursor + 22.5], :width => 200) do
           end

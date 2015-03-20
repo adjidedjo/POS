@@ -62,9 +62,9 @@
               <% end %>
               <% if current_user.role == 'sales_promotion' %>
                 <%= drop_down "Transaksi" do %>
-                  <li><%= link_to "Penerimaan Barang", "#"  %></li>
+                  <li><%= link_to "Penerimaan Barang", item_receipts_receipt_path  %></li>
                   <li><%= link_to "Sales Order", new_sale_path  %></li>
-                  <li><%= link_to "Nota Retur Display", "#" %></li>
+                  <li><%= link_to "Nota Retur Display", return_items_return_path %></li>
                 <% end %>
                 <%= drop_down "Export Rekap SO" do %>
                   <li><%= link_to "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %></li>

@@ -1,0 +1,28 @@
+<%= form_tag item_receipts_process_receipt_path, :method => :put, :id => 'receipt_form' do %>
+  <table id="table_receipt" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th class="all">No SJ</th>
+        <th class="all">Tanggal SJ</th>
+        <th class="all">Kode Barang</th>
+        <th class="all">Nama Barang</th>
+        <th class="all">QTY</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @receipt.each do |resep| %>
+        <%= fields_for "receipt[]", resep do |f| %>
+          <tr>
+           <td><%= f.object.no_sj %></td>
+              <td><%= f.object.tanggal_sj %></td>
+              <td><%= link_to f.object.kode_barang, item_receipt_receipt_by_serial_path(kode_barang: f.object.kode_barang) %></td>
+              <%= f.hidden_field "kode_barang" %>
+              <td></td>
+              <td><%= f.text_field "jumlah", value: '' %></td>
+          <% end %>
+        <% end %>
+    </tbody>
+  </table>
+  <%= submit_tag "Check", :class => 'btn btn-primary' %>
+<% end %>

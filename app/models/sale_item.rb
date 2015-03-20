@@ -2,15 +2,22 @@ class SaleItem < ActiveRecord::Base
   belongs_to :sale
   belongs_to :user
 
-  validates :tanggal_kirim, presence: true, unless: "taken?"
   validates :serial, uniqueness: true, if: "serial.present?"
 
   before_create do
     if taken == true
       self.tanggal_kirim = Date.today
+    else
+      self.tanggal_kirim = self.sale.tanggal_kirim.to_date
     end
 
-    self.brand_id = Item.find_by_kode_barang(self.kode_barang).brand_id
+    get_brand_id = Item.find_by_kode_barang(self.kode_barang)
+    if get_brand_id.nil?
+      brand_id = Brand.find_by_id_merk(self.kode_barang[2]).id
+      self.brand_id = brand_id
+    else
+      self.brand_id = get_brand_id.brand_id
+    end
 
 #    no_sale = self.sale.no_sale.to_s.rjust(4, '0')
 #    bulan = Date.today.strftime('%m')

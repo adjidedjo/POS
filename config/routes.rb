@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
 
+  get 'return_items/return'
+  put 'return_items/process_return'
+  get 'return_items/return_by_serial'
+  put 'return_items/process_return_by_serial'
+
+  get 'item_receipts/receipt'
+  put 'item_receipts/process_receipt'
+  get 'item_receipts/receipt_by_serial'
+  put 'item_receipts/process_receipt_by_serial'
+
   get 'reports/index'
   get 'reports/sales_counter'
   get 'reports/export_xml'
