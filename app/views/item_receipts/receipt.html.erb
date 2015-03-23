@@ -16,7 +16,7 @@
           <tr>
            <td><%= f.object.no_sj %></td>
               <td><%= f.object.tanggal_sj %></td>
-              <td><%= link_to f.object.kode_barang, item_receipt_receipt_by_serial_path(kode_barang: f.object.kode_barang) %></td>
+              <td><%= link_to f.object.kode_barang, item_receipts_receipt_by_serial_path(kode_barang: f.object.kode_barang) %></td>
               <%= f.hidden_field "kode_barang" %>
               <td></td>
               <td><%= f.text_field "jumlah", value: '' %></td>
