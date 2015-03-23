@@ -22,12 +22,15 @@ class ReturnItemsController < ApplicationController
   end
 
   def process_return_by_serial
-    params[:return].each do |key, value|
-      @item_selected = value["kode_barang"]
-      item = ExhibitionStockItem.find_by_kode_barang_and_serial_and_store_id(value["kode_barang"], value["serial"], @user_store)
-      item.update_attributes!(checked_out: true, checked_out_by: current_user.id) if item.present?
-    end
-    redirect_to  return_items_return_by_serial_path(kode_barang: @item_selected)
+    #    params[:return].each do |key, value|
+    #      @item_selected = value["kode_barang"]
+    #      item = ExhibitionStockItem.find_by_kode_barang_and_serial_and_store_id(value["kode_barang"], value["serial"], @user_store)
+    #      item.update_attributes!(checked_out: true, checked_out_by: current_user.id) if item.present?
+    #    end
+    rc = ExhibitionStockItem.find_by_serial_and_store_id(params[:return_ids], @user_store)
+    @item_selected = rc.kode_barang
+    rc.update_attributes!(checked_out: true, checked_out_by: current_user.id) if rc.present?
+    redirect_to  item_receipts_receipt_by_serial_path(kode_barang: @item_selected)
   end
 
   private
