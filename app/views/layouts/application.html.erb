@@ -78,6 +78,9 @@
                 <% end %>
               <% end %>
               <% if current_user.role == 'sales_promotion' %>
+                <%= drop_down "Masters" do %>
+                  <%= menu_item "Pameran", stores_path %>
+                <% end %>
                 <%= drop_down "Transaksi" do %>
                   <li><%= link_to "Penerimaan Barang", item_receipts_receipt_path  %></li>
                   <li><%= link_to "Sales Order", new_sale_path  %></li>
@@ -96,6 +99,7 @@
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><%= link_to current_user.sales_promotion.nil? ? "Login As: #{current_user.supervisor_exhibition.nama}" : "Login As: #{current_user.sales_promotion.nama}" %></li>
               <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
             </ul>
           <% else %>
