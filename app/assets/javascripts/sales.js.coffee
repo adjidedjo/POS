@@ -69,6 +69,11 @@ jQuery ->
     c = document.getElementById('sale_sisa').value = netto - voucher - total_payment
     document.getElementById('span_sisa').innerHTML = addCommas(c)
 
+    elite = document.getElementById('sale_netto_elite').value
+    lady = document.getElementById('sale_netto_lady').value
+    document.getElementById('span_netto_elite').innerHTML = addCommas(elite)
+    document.getElementById('span_netto_lady').innerHTML = addCommas(lady)
+
   open_modal = () -> $('.kode_barang').on 'click', () ->
     $('#kode_barang').val(($(this).attr("id")))
     $('#nama_barang').val(($(this).attr("id")).replace("kode", "nama"))

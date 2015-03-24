@@ -1,0 +1,31 @@
+<table id="sales_rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Kode Barang</th>
+      <th>Nama Barang</th>
+      <th>Tanggal</th>
+      <th>Penerimaan</th>
+      <th>Pengeluaran</th>
+      <th>Saldo</th>
+      <th>Keterangan</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @report_stock.each do |rs| %>
+      <% ExhibitionStockItem.find_by_kode_barang(kode_barang: rs.kode_barang) %>
+      <tr>
+        <td><%= rs.kode_barang %></td>
+        <td><%= rs.nama %></td>
+        <td><%= rs.created_at.to_date   %></td>
+        <td><%=  %></td>
+        <td><%=  %></td>
+        <td><%=  %></td>
+        <td><%=  %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+<br />
+<%= link_to "Export to Excel", reports_rekap_stock_path(format: "xls"), :class => "btn btn-info" %>

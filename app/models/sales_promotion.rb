@@ -5,7 +5,7 @@ class SalesPromotion < ActiveRecord::Base
   before_create do
     self.nama = nama.downcase
     if nama.present?
-      regexp = SecureRandom.hex.first(5).upcase
+      regexp = '*12345'
       self.regex = regexp
       if email.empty?
         self.email = nama.downcase.gsub(' ','')+'@ras.co.id'

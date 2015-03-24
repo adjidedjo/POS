@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  store_id: 1
+  kode_barang: MyString
+  tanggal: 2015-03-24
+  in: 1
+  out: 1
+  keterangan: MyString
+
+two:
+  store_id: 1
+  kode_barang: MyString
+  tanggal: 2015-03-24
+  in: 1
+  out: 1
+  keterangan: MyString

@@ -2,7 +2,7 @@ class ReturnItemsController < ApplicationController
   before_action :get_store_id
 
   def return
-    @return = ExhibitionStockItem.where(store_id: @user_store, checked_in: true, checked_out: false).group(:kode_barang)
+    @return = ExhibitionStockItem.where("store_id = ? and checked_in = ? and checked_out = ? and jumlah > ?", @user_store, true, false, 0).group(:kode_barang)
   end
 
   def process_return
@@ -11,6 +11,7 @@ class ReturnItemsController < ApplicationController
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_out: true, checked_out_by: current_user.id)
+          StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: Date.today, qty_out: item.jumlah, keterangan: "B", no_sj: item.no_sj)
         end
       end
     end
@@ -18,7 +19,7 @@ class ReturnItemsController < ApplicationController
   end
 
   def return_by_serial
-    @return_by_serial = ExhibitionStockItem.where(store_id: @user_store, checked_in: true, checked_out: false, kode_barang: params[:kode_barang]).all
+    @return_by_serial = ExhibitionStockItem.where("store_id = ? and checked_in = ? and checked_out = ? and kode_barang = ? and jumlah > ?", @user_store, true, false, params[:kode_barang], 0).all
   end
 
   def process_return_by_serial
@@ -30,6 +31,7 @@ class ReturnItemsController < ApplicationController
     rc = ExhibitionStockItem.find(params[:return_ids])
     rc.each do |a|
       a.update_attributes!(checked_out: true, checked_out_by: current_user.id)
+      StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: Date.today, qty_out: a.jumlah, keterangan: "B", no_sj: a.no_sj)
       @item_selected = a.kode_barang
     end
     redirect_to  return_items_return_by_serial_path(kode_barang: @item_selected)

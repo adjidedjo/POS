@@ -9,7 +9,8 @@ jQuery ->
     "bFilter": false,
     "sScrollX": "100%",
     "bScrollCollapse": true,
-    "iDisplayLength": 10
+    "bPaginate": false,
+    "bInfo": false
   })
 
   $('#sales_rekap_so').DataTable({
@@ -19,7 +20,8 @@ jQuery ->
     "bFilter": false,
     "sScrollX": "110%",
     "bScrollCollapse": true,
-    "iDisplayLength": 10
+    "bPaginate": false,
+    "bInfo": false
   })
 
   $('#rekapsales').validate

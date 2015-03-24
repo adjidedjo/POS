@@ -1,5 +1,5 @@
 <%= form_tag reports_export_xml_path(:format => :xml), :method => :get, :id => 'rekapsales' do %>
-  <table style="layout: fixed" id="sales_rekap" class="display table-striped table-bordered" cellspacing="0" width="100%">
+  <table id="sales_rekap" class="display table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
       <tr>
         <th><%= check_box_tag "check_all" %></th>
@@ -91,6 +91,7 @@
         <% end %>
     </tbody>
   </table>
+<br />
   <%= label_tag "Masukkan email sales counter" %>
   <%= text_field_tag :email %><br />
   <%= submit_tag "Export & Kirim", :class => 'btn btn-default' %>

@@ -25,14 +25,14 @@ class Sale < ActiveRecord::Base
   end
 
   before_create do
-    get_no_sale = Sale.where("date(created_at) >= ? and date(created_at) <= ?", self.store.from_period, self.store.to_period).size
+    get_no_sale = Sale.where(store_id: self.store_id).size
     get_no_sale.nil? ? (self.no_sale = 1) : (self.no_sale = get_no_sale + 1)
     no_sale = self.no_sale.to_s.rjust(4, '0')
     bulan = Date.today.strftime('%m')
     tahun = Date.today.strftime('%y')
     kode_customer = self.store.kode_customer
-    kode_cabang = self.store.branch.id.to_s.rjust(2, '0')
-    self.no_so = 'SOM''-'+kode_cabang+'-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
+#    kode_cabang = self.store.branch.id.to_s.rjust(2, '0')
+    self.no_so = 'SOM''-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
     self.voucher = voucher.nil? ? 0 : voucher
   end
 

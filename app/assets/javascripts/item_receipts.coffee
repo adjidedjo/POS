@@ -6,5 +6,6 @@ jQuery ->
 
   $('#table_receipt').DataTable({
     bInfo: false,
-    responsive: true
+    responsive: true,
+    bPaginate: false
   })

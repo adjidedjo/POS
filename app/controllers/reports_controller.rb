@@ -1,5 +1,9 @@
 class ReportsController < ApplicationController
 
+  def rekap_stock
+    @report_stock = ExhibitionStockItem.where(kode_barang: 'LRLR0400000S200120')
+  end
+
   def rekap_so
     @sales = []
     Sale.where(cancel_order: false).each do |sale|

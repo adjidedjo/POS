@@ -5,7 +5,7 @@ class SupervisorExhibition < ActiveRecord::Base
 
   before_create do
     self.nama = nama.downcase
-    regexp = SecureRandom.hex.first(5).upcase
+    regexp = '*54321'
     self.regex = regexp
     if email.nil?
       self.email = nama.downcase.slice(0..2)+'@ras.co.id'

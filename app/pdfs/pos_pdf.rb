@@ -71,28 +71,17 @@ class PosPdf < Prawn::Document
     end
     cek_voucher = @order.voucher == 0
     bounding_box([300, cursor + 35], :width => 250) do
-      text "Total                     : Rp. ", :size => 8, :style => :bold
+      text "Total Payment     : Rp. ", :size => 8, :style => :bold
       unless cek_voucher
         move_down 3
         text "Voucher               : Rp. ", :size => 8, :style => :bold
       end
       move_down 3
-      text "Cash                     : Rp. ", :size => 8, :style => :bold
-      move_down 3
-      text "Debit                     : Rp. ", :size => 8, :style => :bold
-      move_down 3
-      text "Credit", :size => 8, :style => :bold
-      move_down 3
-      indent 5 do
-        @order.payment_with_credit_cards.each do |cc|
-          move_down 3
-          text "#{cc.nama_kartu}                    : Rp. ", :size => 8, :style => :bold if cc.nama_kartu.present?
-        end
-      end
+      text "Total Paid            : Rp. ", :size => 8, :style => :bold
       move_down 3
       text "Amount Due        : Rp. ", :size => 8, :style => :bold
     end
-    size = cek_voucher ? 67 : 100
+    size = cek_voucher ? 35 : 47
     bounding_box([250, cursor + size], :width => 250) do
       text "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
       unless cek_voucher
@@ -102,15 +91,15 @@ class PosPdf < Prawn::Document
       move_down 3
       debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
       total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)
-      text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
+      text "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
 
-      move_down 3
-      text "#{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
-      move_down 16
-      @order.payment_with_credit_cards.each do |cc|
-        move_down 3
-        text "#{number_to_currency(cc.jumlah, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right if cc.nama_kartu.present?
-      end
+      #      move_down 3
+      #      text "#{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
+      #      move_down 16
+      #      @order.payment_with_credit_cards.each do |cc|
+      #        move_down 3
+      #        text "#{number_to_currency(cc.jumlah, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right if cc.nama_kartu.present?
+      #      end
 
       move_down 3
       text "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
@@ -135,7 +124,7 @@ class PosPdf < Prawn::Document
       end
       move_down 15
       indent 5 do
-        text "#{@order.cara_bayar == 'um' ? 'Down Payment' : 'Paid'}", :size => 8
+        text "#{@order.cara_bayar == 'um' ? 'Down Payment' : 'Paid'}", :size => 7
       end
       stroke do
         line(bounds.bottom_right, bounds.top_right)
@@ -144,17 +133,20 @@ class PosPdf < Prawn::Document
       end
     end
     bounding_box([150, cursor + 37], :width => 373.4) do
-      move_down 3
       indent 5 do
+      move_down 4
         text "Method of Payment :", :size => 8, :style => :bold
       end
       stroke do
         line(bounds.bottom_right, bounds.top_right)
         line(bounds.bottom_left, bounds.bottom_right)
       end
-      move_down 15
       indent 5 do
-        text "#{@order.tipe_pembayaran.gsub(/Tunai/, 'Cash')}", :size => 8
+        move_down 3.5
+        debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+        text "Cash               : Rp. #{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6
+        text "Debit Card      : Rp. #{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6
+        text "Credit Card     : Rp. #{number_to_currency(@order.payment_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6
         bounding_box([200, cursor + 22.5], :width => 200) do
         end
       end

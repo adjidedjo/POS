@@ -50,6 +50,7 @@ class StoresController < ApplicationController
     respond_to do |format|
       if @store.save
         create_stock_item_exhibition(store_params["stock_items"], @store.id)
+        format.html { redirect_to root_path, notice: 'Store was successfully created.' } if current_user.role == 'sales_promotion'
         format.html { redirect_to @store, notice: 'Store was successfully created.' }
         format.json { render :show, status: :created, location: @store }
       else
@@ -96,11 +97,12 @@ class StoresController < ApplicationController
     tempfile = File.read(file.tempfile)
     doc = Nokogiri::XML(tempfile)
     item = doc.xpath("data/pameran")
+    @a = []
     item.each do |si|
       si_hash = {
         kode_barang: si.at_xpath("KodeBrg").text,
         nama: si.at_xpath("Nama").text,
-        serial: ((si.at_xpath("Serial").text.length > 5) ? si.at_xpath("Serial").text : 0),
+        serial: ((si.at_xpath("Serial").text.length > 5) ? si.at_xpath("Serial").text : ''),
         no_so: si.at_xpath("NoSO").text,
         no_pbj: si.at_xpath("NoPBJ").text,
         no_sj: si.at_xpath("NoSJ").text,
@@ -108,7 +110,12 @@ class StoresController < ApplicationController
         store_id: store_id,
         jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1)
       }
+      item_hash = {
+        kode_barang: si.at_xpath("KodeBrg").text,
+        nama: si.at_xpath("Nama").text
+      }
       ExhibitionStockItem.where(kode_barang: si_hash[:kode_barang], serial: si_hash[:serial], no_sj: si_hash[:no_sj]).first_or_create(si_hash)
+      Item.where(kode_barang: si_hash[:kode_barang]).first_or_create(item_hash)
     end
   end
 end
