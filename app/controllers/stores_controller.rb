@@ -34,11 +34,18 @@ class StoresController < ApplicationController
       channel_id: 5,
       nama: pameran.at_xpath("NamaPameran").text,
       kode_customer: pameran.at_xpath("KodePameran").text,
+      jenis_pameran: pameran.at_xpath("JenisPameran").text,
       from_period: pameran.at_xpath("PeriodeAwal").text.to_date,
       to_period: pameran.at_xpath("PeriodeAkhir").text.to_date,
       keterangan: pameran.at_xpath("KeteranganPameran").text
     }
+    supervisor_hash = {
+      nama: pameran.at_xpath("Supervisor").text
+    }
     @store = Store.where(kode_customer: pameran_hash[:kode_customer]).first_or_create(pameran_hash)
+    if @store.supervisor_exhibition.nil?
+      @supervisor = SupervisorExhibition.where(store_id: @store.id).first_or_create(supervisor_hash)
+    end
 
     respond_to do |format|
       if @store.save

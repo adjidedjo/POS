@@ -3,11 +3,12 @@ class SalesPromotion < ActiveRecord::Base
   belongs_to :store
 
   before_create do
+    self.nama = nama.downcase
     if nama.present?
       regexp = SecureRandom.hex.first(5).upcase
       self.regex = regexp
       if email.empty?
-        self.email = nama.gsub(' ','')+'@ras.co.id'
+        self.email = nama.downcase.gsub(' ','')+'@ras.co.id'
       end
     end
   end

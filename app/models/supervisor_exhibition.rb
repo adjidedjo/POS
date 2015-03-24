@@ -4,15 +4,16 @@ class SupervisorExhibition < ActiveRecord::Base
   belongs_to :store
 
   before_create do
+    self.nama = nama.downcase
     regexp = SecureRandom.hex.first(5).upcase
     self.regex = regexp
     if email.nil?
-      self.email = nama.slice(0..2)+'@ras.co.id'
+      self.email = nama.downcase.slice(0..2)+'@ras.co.id'
     end
   end
 
   after_create do
-    password = self.nama.slice(0..2)+self.regex
+    password = self.nama.downcase.slice(0..2)+self.regex
     User.create(email: self.email, password: password, supervisor_exhibition_id: self.id, role: 'supervisor')
   end
 end
