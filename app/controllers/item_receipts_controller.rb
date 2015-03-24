@@ -7,7 +7,7 @@ class ItemReceiptsController < ApplicationController
 
   def process_receipt
     params[:receipt].each do |key, value|
-      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"], store_id: @user_store)
+      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"], store_id: @user_store, checked_in: false)
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_in: true, checked_in_by: current_user.id)
@@ -27,10 +27,11 @@ class ItemReceiptsController < ApplicationController
     #      item = ExhibitionStockItem.find_by_kode_barang_and_serial_and_store_id(value["kode_barang"], value["serial"], @user_store)
     #      item.update_attributes!(checked_in: true, checked_in_by: current_user.id) if item.present?
     #    end
-
-    rc = ExhibitionStockItem.find_by_serial(params[:receipt_ids])
-    @item_selected = rc.kode_barang
-    rc.update_attributes!(checked_in: true, checked_in_by: current_user.id) if rc.present?
+    rc = ExhibitionStockItem.find(params[:receipt_ids])
+    rc.each do |a|
+      a.update_attributes!(checked_in: true, checked_in_by: current_user.id)
+      @item_selected = a.kode_barang
+    end
     redirect_to  item_receipts_receipt_by_serial_path(kode_barang: @item_selected)
   end
 

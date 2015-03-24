@@ -15,16 +15,18 @@
       <%= error_span(@sale[:hp1]) %>
       <%= f.input :hp2, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:hp2]) %>
+      <%= f.input :so_manual, :input_html => {:style => 'width: 250px'} %>
+      <%= error_span(@sale[:so_manual]) %>
     </div>
     <div class="col-md-6">
       <%= f.input :alamat_kirim, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:alamat_kirim]) %>
+      <%= f.input :kota, :input_html => {:style => 'width: 250px'} %>
+      <%= error_span(@sale[:kota]) %>
       <%= f.input :tanggal_kirim, as: :tanggal, :readonly => true, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:tanggal_kirim]) %>
       <%= f.input :keterangan_customer, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:keterangan_customer]) %>
-      <%= f.input :so_manual, :input_html => {:style => 'width: 250px'} %>
-      <%= error_span(@sale[:so_manual]) %>
       <%= f.input :nota_bene, :input_html => {:style => 'width: 250px'}, label: "Keterangan Internal" %>
       <%= error_span(@sale[:nota_bene]) %>
     </div>

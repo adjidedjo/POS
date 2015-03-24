@@ -66,7 +66,7 @@ class PosPdf < Prawn::Document
         move_down 3
         text "Phone/Mobile        : #{@order.phone_number}, #{@order.hp1}, #{@order.hp2},", :size => 8, :style => :bold
         move_down 3
-        text "Shipping Address : #{@order.alamat_kirim}", :size => 8, :style => :bold
+        text "Shipping Address : #{@order.alamat_kirim+". "+@order.kota.to_s}", :size => 8, :style => :bold
       end
     end
     cek_voucher = @order.voucher == 0

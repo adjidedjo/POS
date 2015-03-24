@@ -7,7 +7,7 @@ class ReturnItemsController < ApplicationController
 
   def process_return
     params[:return].each do |key, value|
-      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"], store_id: @user_store)
+      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"], store_id: @user_store, checked_in: true, checked_out: false)
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_out: true, checked_out_by: current_user.id)
@@ -27,10 +27,12 @@ class ReturnItemsController < ApplicationController
     #      item = ExhibitionStockItem.find_by_kode_barang_and_serial_and_store_id(value["kode_barang"], value["serial"], @user_store)
     #      item.update_attributes!(checked_out: true, checked_out_by: current_user.id) if item.present?
     #    end
-    rc = ExhibitionStockItem.find_by_serial_and_store_id(params[:return_ids], @user_store)
-    @item_selected = rc.kode_barang
-    rc.update_attributes!(checked_out: true, checked_out_by: current_user.id) if rc.present?
-    redirect_to  item_receipts_receipt_by_serial_path(kode_barang: @item_selected)
+    rc = ExhibitionStockItem.find(params[:return_ids])
+    rc.each do |a|
+      a.update_attributes!(checked_out: true, checked_out_by: current_user.id)
+      @item_selected = a.kode_barang
+    end
+    redirect_to  return_items_return_by_serial_path(kode_barang: @item_selected)
   end
 
   private

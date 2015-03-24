@@ -13,7 +13,7 @@ class Sale < ActiveRecord::Base
   belongs_to :channel
   belongs_to :supervisor_exhibition
 
-  validates :customer, :phone_number, :alamat_kirim, :email, :netto, :netto_elite, :netto_lady, :tanggal_kirim, presence: true
+  validates :customer, :phone_number, :alamat_kirim, :email, :netto, :netto_elite, :netto_lady, :tanggal_kirim, :kota, presence: true
   validates :phone_number, numericality: true, length: {maximum: 12}
   validates :no_kartu, numericality: true, if: :paid_with_credit?
   validates :no_kartu, numericality: true, if: :paid_with_debit?

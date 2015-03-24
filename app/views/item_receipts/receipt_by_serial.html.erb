@@ -16,7 +16,7 @@
         <% @receipt_by_serial.each do |resep| %>
           <%= fields_for "receipt[]", resep do |f| %>
             <tr>
-              <td><%= check_box_tag "receipt_ids[]", f.object.serial %></td>
+              <td><%= check_box_tag "receipt_ids[]", f.object.id %></td>
               <td><%= f.object.no_sj %></td>
               <td><%= f.object.tanggal_sj %></td>
               <td><%= f.object.kode_barang %></td>
@@ -30,4 +30,5 @@
     </tbody>
   </table>
   <%= submit_tag "Check", :class => 'btn btn-primary' %>
+  <%= link_to "Back", item_receipts_receipt_path,:class => 'btn btn-primary' %>
 <% end %>
