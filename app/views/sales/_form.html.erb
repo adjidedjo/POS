@@ -25,9 +25,9 @@
       <%= error_span(@sale[:kota]) %>
       <%= f.input :tanggal_kirim, as: :tanggal, :readonly => true, :input_html => {:style => 'width: 250px'} %>
       <%= error_span(@sale[:tanggal_kirim]) %>
-      <%= f.input :keterangan_customer, :input_html => {:style => 'width: 250px'} %>
+      <%= f.input :keterangan_customer, :input_html => {:style => 'width: 250px'}, label: "Keterangan (Untuk Ditampilkan di Invoice)" %>
       <%= error_span(@sale[:keterangan_customer]) %>
-      <%= f.input :nota_bene, :input_html => {:style => 'width: 250px'}, label: "Keterangan Internal" %>
+      <%= f.input :nota_bene, :input_html => {:style => 'width: 250px'}, label: "Keterangan (Khusus Internal Perusahaan)" %>
       <%= error_span(@sale[:nota_bene]) %>
     </div>
   </div>
