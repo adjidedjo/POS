@@ -53,6 +53,7 @@
                 <% if current_user.admin? %>
                   <%= drop_down "Masters" do %>
                     <%= menu_item "Pameran", stores_path %>
+                    <%= menu_item "Intransit", new_store_path %>
                   <% end %>
                 <li><%= link_to "Laporan", reports_index_path %></li>
               <% end %>
@@ -60,6 +61,7 @@
               <% if current_user.role == 'supervisor' %>
                 <%= drop_down "Masters" do %>
                   <%= menu_item "Pameran", stores_path %>
+                    <%= menu_item "Intransit", new_store_path %>
                 <% end %>
                 <%= drop_down "Transaksi" do %>
                   <li><%= link_to "Penerimaan Barang", item_receipts_receipt_path  %></li>
@@ -80,6 +82,7 @@
               <% if current_user.role == 'sales_promotion' %>
                 <%= drop_down "Masters" do %>
                   <%= menu_item "Pameran", stores_path %>
+                    <%= menu_item "Intransit", new_store_path %>
                 <% end %>
                 <%= drop_down "Transaksi" do %>
                   <li><%= link_to "Penerimaan Barang", item_receipts_receipt_path  %></li>
