@@ -18,7 +18,7 @@ class SaleItem < ActiveRecord::Base
 
       get_brand_id = Item.find_by_kode_barang(self.kode_barang)
       if get_brand_id.nil?
-        brand_id = Brand.find_by_id_merk(self.kode_barang[2]).id
+        brand_id = Brand.find_by_id_brand(self.kode_barang[2]).id
         self.brand_id = brand_id
       else
         self.brand_id = get_brand_id.brand_id
