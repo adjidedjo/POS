@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
 
   def rekap_stock
-    @report_stock = ExhibitionStockItem.where(kode_barang: 'LRLR0400000S200120')
+    @report_stock = StoreSalesAndStockHistory.all
   end
 
   def rekap_so

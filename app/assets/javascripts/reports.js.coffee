@@ -24,6 +24,17 @@ jQuery ->
     "bInfo": false
   })
 
+  $('#sales_rekap_stock').DataTable({
+    "bAutoWidth": true,
+    "bProcessing": false,
+    "sScrollXInner": "1500px",
+    "bFilter": false,
+    "sScrollX": "110%",
+    "bScrollCollapse": true,
+    "bPaginate": false,
+    "bInfo": false
+  })
+
   $('#rekapsales').validate
     rules:
       "email":
