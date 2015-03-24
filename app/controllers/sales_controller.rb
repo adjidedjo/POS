@@ -3,8 +3,8 @@ class SalesController < ApplicationController
 
   def get_kode_barang_from_serial
     kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_store_id_and_checked_in(params[:kode_barang], 1, current_user.sales_promotion.store_id, true).kode_barang
-    @kode = Item.find_by_kode_barang(kode_serial).kode_barang
-    @nama = Item.find_by_kode_barang(kode_serial).nama
+    @kode = ExhibitionStockItem.find_by_kode_barang(kode_serial).kode_barang
+    @nama = ExhibitionStockItem.find_by_kode_barang(kode_serial).nama
     @element_id = params[:element_id]
 
     respond_to do |format|
