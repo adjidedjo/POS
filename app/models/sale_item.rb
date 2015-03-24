@@ -6,18 +6,6 @@ class SaleItem < ActiveRecord::Base
 
     before_create do
       if taken == true
-        if serial.blank?
-          accessoris = ExhibitionStockItem.where("kode_barang like ?", kode_barang)
-          apart = jumlah/accessoris.sum(:jumlah)
-          no_sj = []
-          if apart == 0
-            accessoris.each do |acc|
-              get_sj = acc
-            end
-          end
-          accessoris = ExhibitionStockItem.where("kode_barang like ? and jumlah > ?", kode_barang, 0).first
-          self.ex_no_sj = get_accessoris.no_sj
-        end
         self.tanggal_kirim = Date.today
       else
         self.tanggal_kirim = self.sale.tanggal_kirim.to_date
