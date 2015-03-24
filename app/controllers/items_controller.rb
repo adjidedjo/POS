@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    items = Item.all
+    @itemsitems = Item.all
     exhibition_stock_item = ExhibitionStockItem.where("length(serial) <= ?", 5)
     @items = items << exhibition_stock_item
   end

@@ -110,7 +110,8 @@ sales_path, :class => 'btn btn-default' %>
 <%= link_to "new", new_sale_path, :class => 'btn btn-primary' %>
 <%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
 <%#= link_to t('.edit', :default => t("helpers.links.edit")), '#edit_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
-<%= link_to t('Batal Order'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<% check_exported =  @sale.sale_items.where(exported: true) %>
+<%= link_to t('Batal Order'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' if check_exported.present?%>
 
 <div class="modal fade" id="destroy_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
