@@ -97,13 +97,13 @@
           <div class="col-md-6">
             <div class="row-fluid">
               <span class="netto_elite" style="display: inline-block">
-                <%= f.input :netto_elite, :input_html => {value: number_with_precision(f.object.netto_elite, precision: 2), :style => 'width: 250px;' } %>
+                <%= f.input :netto_elite, as: :string, :input_html => {value: number_with_precision(f.object.netto_elite, precision: 2), :class => 'input_value', :style => 'width: 250px;' } %>
               </span>
               <span id="span_netto_elite" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;"></span>
             </div>
             <div class="row-fluid">
               <span class="netto_lady" style="display: inline-block">
-                <%= f.input :netto_lady, :input_html => {value: number_with_precision(f.object.netto_lady, precision: 2), :style => 'width: 250px;' } %>
+                <%= f.input :netto_lady, :input_html => {value: number_with_precision(f.object.netto_lady, precision: 2), :class => 'input_value', :style => 'width: 250px;' } %>
               </span>
               <span id="span_netto_lady" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;"></span>
             </div>

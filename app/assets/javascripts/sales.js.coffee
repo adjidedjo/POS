@@ -70,8 +70,8 @@ jQuery ->
     document.getElementById('span_sisa').innerHTML = addCommas(c)
 
     elite = document.getElementById('sale_netto_elite').value
-    lady = document.getElementById('sale_netto_lady').value
     document.getElementById('span_netto_elite').innerHTML = addCommas(elite)
+    lady = document.getElementById('sale_netto_lady').value
     document.getElementById('span_netto_lady').innerHTML = addCommas(lady)
 
   open_modal = () -> $('.kode_barang').on 'click', () ->
