@@ -7,6 +7,8 @@ jQuery ->
     rules:
       "tipe_pembayaran[]":
         required: true
+      "sale_sales_promotion_id":
+        required: true
 
   $('#check_all').click ->
     if @checked
@@ -77,11 +79,13 @@ jQuery ->
   open_modal = () -> $('.kode_barang').on 'click', () ->
     $('#kode_barang').val(($(this).attr("id")))
     $('#nama_barang').val(($(this).attr("id")).replace("kode", "nama"))
+    $('#jumlah').val(($(this).attr("id")).replace("kode_barang", "jumlah"))
     $('#modal-content').modal('show')
 
   add_item_to_table = () -> $('.add_to_sales').on 'click', () ->
     document.getElementById($('#kode_barang').val()).value = $(this).data('kode')
     document.getElementById($('#nama_barang').val()).value = $(this).data('nama')
+    document.getElementById($('#jumlah').val()).value = 1
     $('#modal-content').modal('hide')
 
   date_picker = () -> $('.tanggal_kirim').datepicker({
