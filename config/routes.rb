@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   get 'reports/sales_counter'
   get 'reports/export_xml'
   get 'reports/rekap_so'
-  get 'reports/rekap_stock'
+  get 'reports/mutasi_stock'
 
   devise_for :users, controllers: {registrations: "users/registrations"}
   get 'page/home'

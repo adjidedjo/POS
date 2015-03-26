@@ -11,6 +11,12 @@ class ItemReceiptsController < ApplicationController
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_in: true, checked_in_by: current_user.id)
+          cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan(item.kode_barang, item.no_sj,'R')
+          if cek_kode.nil?
+            StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: item.created_at.to_date, qty_in: item.jumlah, qty_out: 0, keterangan: "R", no_sj: item.no_sj)
+          else
+            cek_kode.update_attributes(qty_in: (item.jumlah + cek_kode.qty_in))
+          end
         end
       end
     end
@@ -30,6 +36,12 @@ class ItemReceiptsController < ApplicationController
     rc = ExhibitionStockItem.find(params[:receipt_ids])
     rc.each do |a|
       a.update_attributes!(checked_in: true, checked_in_by: current_user.id)
+      cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan(a.kode_barang, a.no_sj,'R')
+      if cek_kode.nil?
+        StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: a.created_at.to_date, qty_in: a.jumlah, qty_out: 0, keterangan: "R", no_sj: a.no_sj)
+      else
+        cek_kode.update_attributes(qty_in: (a.jumlah + cek_kode.qty_in))
+      end
       @item_selected = a.kode_barang
     end
     redirect_to  item_receipts_receipt_by_serial_path(kode_barang: @item_selected)
@@ -38,6 +50,6 @@ class ItemReceiptsController < ApplicationController
   private
 
   def get_store_id
-    @user_store = current_user.sales_promotion.store.id
+    @user_store = current_user.store.id
   end
 end

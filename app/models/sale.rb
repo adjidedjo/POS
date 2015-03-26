@@ -5,7 +5,7 @@ class Sale < ActiveRecord::Base
   accepts_nested_attributes_for :payment_with_debit_card
   has_many :payment_with_credit_cards, dependent: :destroy
   accepts_nested_attributes_for :payment_with_credit_cards
-  accepts_nested_attributes_for :sale_items
+  accepts_nested_attributes_for :sale_items, reject_if: proc { |a| a['kode_barang'].blank?}
   belongs_to :branch
   belongs_to :salesman
   belongs_to :item

@@ -19,16 +19,14 @@
     <%= f.input :to_period, as: :tanggal, :disabled => true %>
     <%= error_span(@store[:to_period]) %>
 
-    <label>Supervisor</label>
-    <div class="row">
-      <%= f.simple_fields_for :supervisor_exhibition do |builder| %>
-        <fieldset>
-          <%= builder.input_field :nama, :placeholder => 'Nama Supervisor' %>
-          <%= builder.input_field :email, :placeholder => 'Email Supervisor' %>
-          <%= builder.input_field :nik, :placeholder => 'NIK Supervisor' %>
-        </fieldset>
-      <% end %>
-    </div>
+    <%#*<label>Supervisor</label>%>
+    <%#*<div class="row">%>
+      <%#*<fieldset>%>
+        <%#= @store.users.input :nama, :placeholder => 'Nama Supervisor' %>
+        <%#= f.users.input :email, :placeholder => 'Email Supervisor' %>
+        <%#= f.users.input :nik, :placeholder => 'NIK Supervisor' %>
+      <%#*</fieldset>%>
+    <%#*</div>%>
     <br />
 
     <label>SPG/SPB</label>

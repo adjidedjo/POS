@@ -22,11 +22,11 @@
         </tr>
       </thead>
       <tbody>
-        <% if @store.supervisor_exhibition.present?  %>
+        <% if @supervisor.present?  %>
         <tr>
-          <td><%= @store.supervisor_exhibition.nama %></td>
-          <td><%= @store.supervisor_exhibition.email %></td>
-          <td><%= @store.supervisor_exhibition.nama.slice(0..2)+@store.supervisor_exhibition.regex %></td>
+          <td><%= @supervisor.nama.titleize %></td>
+          <td><%= @supervisor.email %></td>
+          <td><%= @supervisor.nama[0,3].downcase+"*54321" %></td>
         </tr>
         <% end %>
       </tbody>
@@ -47,7 +47,7 @@
       <tbody>
         <% @store.sales_promotions.each do |sp| %>
           <tr>
-            <td><%= sp.nama %></td>
+            <td><%= sp.nama.titleize %></td>
             <td><%= sp.email %></td>
             <td><%= sp.nama.slice(0..2)+sp.regex %></td>
           </tr>

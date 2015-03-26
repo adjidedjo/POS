@@ -7,7 +7,7 @@ class ReturnItemsController < ApplicationController
 
   def process_return
     params[:return].each do |key, value|
-      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"], store_id: @user_store, checked_in: true, checked_out: false)
+      items = ExhibitionStockItem.where("kode_barang = ? and store_id = ? and checked_in = ? and checked_out = ? and jumlah > 0", value["kode_barang"], @user_store, true, false)
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_out: true, checked_out_by: current_user.id)
@@ -40,6 +40,6 @@ class ReturnItemsController < ApplicationController
   private
 
   def get_store_id
-    @user_store = current_user.sales_promotion.store.id
+    @user_store = current_user.store.id
   end
 end

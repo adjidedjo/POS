@@ -29,7 +29,7 @@ class PosPdf < Prawn::Document
         move_down 3
         text "Date                          : #{@order.created_at.to_date.strftime('%d-%m-%Y')}", :size => 8, :style => :bold
         move_down 3
-        text "Product Consultant : #{SalesPromotion.find(@order.sales_promotion_id).nama.capitalize}", :size => 8, :style => :bold
+        text "Product Consultant : #{SalesPromotion.find(@order.sales_promotion_id).nama.titleize}", :size => 8, :style => :bold
       end
     end
     bounding_box([250, cursor + 38], :width => 250) do
@@ -157,7 +157,7 @@ class PosPdf < Prawn::Document
     end
     move_down 30
     indent 5 do
-      text "Note : #{@order.keterangan_customer}", :size => 8
+      text "Note : #{@order.keterangan_customer.titleize}", :size => 8
     end
     move_down 10
     bounding_box([80, cursor - 5], :width => 200) do

@@ -8,6 +8,7 @@ class StoresController < ApplicationController
 
   # GET /stores/1 GET /stores/1.json
   def show
+    @supervisor = @store.users.find_by_role("supervisor")
   end
 
   # GET /stores/new
@@ -39,13 +40,15 @@ class StoresController < ApplicationController
       to_period: pameran.at_xpath("PeriodeAkhir").text.to_date,
       keterangan: pameran.at_xpath("KeteranganPameran").text
     }
-    supervisor_hash = {
-      nama: pameran.at_xpath("Supervisor").text
-    }
     @store = Store.where(kode_customer: pameran_hash[:kode_customer]).first_or_create(pameran_hash)
-    if @store.supervisor_exhibition.nil?
-      @supervisor = SupervisorExhibition.where(store_id: @store.id).first_or_create(supervisor_hash)
-    end
+    supervisor_hash = {
+      nama: pameran.at_xpath("Supervisor").text.capitalize,
+      email: pameran.at_xpath("Supervisor").text.gsub(/ /, '')+"@ras.co.id",
+      password: pameran.at_xpath("Supervisor").text[0,3].downcase+"*54321",
+      role: "supervisor",
+      store_id: @store.id
+    }
+    User.where(nama: supervisor_hash[:nama], store_id: @store.id).first_or_create(supervisor_hash)
 
     respond_to do |format|
       if @store.save

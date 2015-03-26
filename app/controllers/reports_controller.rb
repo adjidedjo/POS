@@ -1,7 +1,14 @@
 class ReportsController < ApplicationController
 
-  def rekap_stock
-    @report_stock = StoreSalesAndStockHistory.all
+  def mutasi_stock
+    @report_stock_in = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id).where("qty_in > ?", 0)
+    @report_stock_out = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id, keterangan: "S").where("qty_out > ?", 0)
+    @report_stock_return = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id, keterangan: "B").where("qty_out > ?", 0)
+
+    respond_to do |format|
+      format.html
+      format.xls
+    end
   end
 
   def rekap_so
@@ -25,12 +32,12 @@ class ReportsController < ApplicationController
   def sales_counter
     @sales = []
     brand_id = params[:brand_id]
-    current_user.sales_promotion.store.sales.where(cancel_order: false).each do |sale|
+    current_user.store.sales.where(cancel_order: false).each do |sale|
       SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id).each do |sale_items|
         @sales << sale_items
       end
     end
-    get_branch = Branch.find(current_user.sales_promotion.store.branch_id).alias+Date.today.strftime('%Y%m%d').to_s
+    get_branch = Date.today.strftime('%Y%m%d').to_s
 
     respond_to do |format|
       format.html
@@ -51,7 +58,7 @@ class ReportsController < ApplicationController
         sale_item.update_attributes(exported: true, exported_at: Time.now, exported_by: current_user.id)
       end
     end
-    get_branch = Branch.find(current_user.sales_promotion.store.branch_id).alias+Time.now.strftime("%d%m%Y%H%M%S")
+    get_branch = Time.now.strftime("%d%m%Y%H%M%S")
 
     respond_to do |format|
       format.html

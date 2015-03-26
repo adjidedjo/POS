@@ -16,6 +16,16 @@ class SaleItem < ActiveRecord::Base
         self.ex_no_sj = get_ex_no_sj.no_sj
       end
 
+      if taken? && serial.blank?
+        cek_stock = ExhibitionStockItem.where("kode_barang = ? and store_id = ? and jumlah > 0 and checked_in = true and checked_out = false", kode_barang, self.sale.store_id).first
+        if cek_stock.present?
+          self.ex_no_sj = cek_stock.no_sj
+          if cek_stock.serial.present?
+            self.serial = cek_stock.serial
+          end
+        end
+      end
+
       get_brand_id = Item.find_by_kode_barang(self.kode_barang)
       if get_brand_id.nil?
         brand_id = Brand.find_by_id_brand(self.kode_barang[2]).id
@@ -45,12 +55,6 @@ class SaleItem < ActiveRecord::Base
         if cek_stock.present?
           StoreSalesAndStockHistory.create(exhibition_id: self.sale.store_id, kode_barang: self.kode_barang, nama: self.nama_barang, tanggal: Date.today, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial)
         end
-      end
-      if self.taken? && self.serial.blank?
-        cek_stock = ExhibitionStockItem.where("kode_barang = ? and store_id = ? and jumlah > 0 and checked_in = true and checked_out = false", self.kode_barang, self.sale.store_id).first
-        self.update_attributes(ex_no_sj: cek_stock.no_sj)
-        cek_stock.update_attributes(jumlah: (cek_stock.jumlah - self.jumlah))
-        StoreSalesAndStockHistory.create(exhibition_id: self.sale.store_id, kode_barang: self.kode_barang, nama: self.nama_barang, tanggal: Date.today, qty_out: self.jumlah, keterangan: "S", no_sj: cek_stock.no_sj)
       end
     end
   end
