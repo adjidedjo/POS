@@ -90,17 +90,23 @@ class PosPdf < Prawn::Document
               :width => 300,
               :at => [100,y_position-100]
             draw_text("Total Payment", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 5]), 0])
-            draw_text("Voucher", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 15]), 0])
+            if @order.voucher > 0
+              draw_text("Voucher", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 15]), 0])
+            end
             draw_text("Total Paid", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 25]), 0])
             draw_text("Amount Due", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 35]), 0])
             draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 5]), 0])
-            draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 15]), 0])
+            if @order.voucher > 0
+              draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 15]), 0])
+            end
             draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 25]), 0])
             draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 35]), 0])
             text_box "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
               :at => [420, cursor + 1], :width => 60, :height => 50, :align => :right
-            text_box "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
-              :at => [420, cursor - 9], :width => 60, :height => 50, :align => :right
+            if @order.voucher > 0
+              text_box "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
+                :at => [420, cursor - 9], :width => 60, :height => 50, :align => :right
+            end
             debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
             total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)
             text_box "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
