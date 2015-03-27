@@ -23,21 +23,26 @@ class PosPdf < Prawn::Document
   end
 
   def header
-    indent 5 do
-      bounding_box([0, cursor - 5], :width => 250) do
-        text "Invoice No                : #{@order.no_so}", :size => 8, :style => :bold
-        move_down 3
-        text "Date                          : #{@order.created_at.to_date.strftime('%d-%m-%Y')}", :size => 8, :style => :bold
-        move_down 3
-        text "Product Consultant : #{SalesPromotion.find(@order.sales_promotion_id).nama.titleize}", :size => 8, :style => :bold
+    bounding_box([0, cursor - 10], :width => 80) do
+      indent 5 do
+        draw_text("Invoice No", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 7]), 0])
+        draw_text("Date", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 18]), 0])
+        draw_text("Product Consultant", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 28]), 0])
+        draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 6.5]), 0])
+        draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 17.5]), 0])
+        draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 27.5]), 0])
+        draw_text("#{@order.no_so}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7]), 0])
+        draw_text("#{@order.created_at.to_date.strftime('%d-%m-%Y')}", :size => 8, :at => [([bounds.left + 85, bounds.top - 18]), 0])
+        draw_text("#{SalesPromotion.find(@order.sales_promotion_id).nama.titleize}", :size => 8, :at => [([bounds.left + 85, bounds.top - 28]), 0])
+        draw_text("Exhibition", :size => 8, :style => :bold, :at => [([bounds.left + 325, bounds.top - 7]), 0])
+        draw_text("Exhibition Period", :size => 8, :style => :bold, :at => [([bounds.left  + 325, bounds.top - 18]), 0])
+        draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 392, bounds.top - 7]), 0])
+        draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 392, bounds.top - 18]), 0])
+        draw_text("#{@order.store.nama}", :size => 8, :at => [([bounds.left + 400, bounds.top - 7]), 0])
+        draw_text("#{ @order.store.from_period.nil? ? '' : @order.store.from_period.strftime('%d %b %Y')} - #{ @order.store.to_period.nil? ? '' : @order.store.to_period.strftime('%d %b %Y')}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
       end
     end
-    bounding_box([250, cursor + 38], :width => 250) do
-      move_down 3
-      text "Exhibition             : #{@order.store.nama}", :size => 8, :style => :bold
-      move_down 3
-      text "Exhibition Period : #{ @order.store.from_period.nil? ? '' : @order.store.from_period.strftime('%d %b %Y')} - #{ @order.store.to_period.nil? ? '' : @order.store.to_period.strftime('%d %b %Y')}", :size => 8, :style => :bold
-    end
+    move_down 20
   end
 
   def line_items
@@ -60,102 +65,128 @@ class PosPdf < Prawn::Document
   end
 
   def second_header
-    bounding_box([0, cursor - 5], :width => 250) do
+    bounding_box([0, cursor - 5], :width => 100) do
       indent 5 do
-        text "Customer Name   : #{@order.customer}", :size => 8, :style => :bold
-        move_down 3
-        text "Phone/Mobile        : #{@order.phone_number}, #{@order.hp1}, #{@order.hp2},", :size => 8, :style => :bold
-        move_down 3
-        text "Shipping Address : #{@order.alamat_kirim+". "+@order.kota.to_s}", :size => 8, :style => :bold
+        move_down 2
+        bounding_box([0, cursor], :width => 10, :height => 10) do
+          indent 5 do
+            draw_text("Customer Name", :size => 8, :style => :bold, :at => [([bounds.left - 5, bounds.top - 3]), 0])
+            draw_text("Phone/Mobile", :size => 8, :style => :bold, :at => [([bounds.left - 5, bounds.top - 13]), 0])
+            draw_text("Shipping Address", :size => 8, :style => :bold, :at => [([bounds.left - 5, bounds.top - 23]), 0])
+            draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 70, bounds.top - 3]), 0])
+            draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 70, bounds.top - 13]), 0])
+            draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 70, bounds.top - 23]), 0])
+            draw_text("#{@order.customer}", :size => 8, :at => [([bounds.left + 75, bounds.top - 3]), 0])
+            draw_text("#{@order.phone_number}, #{@order.hp1}, #{@order.hp2}", :size => 8, :at => [([bounds.left + 75, bounds.top - 13]), 0])
+            y_position = cursor - 17
+            excess_text = text_box "#{@order.alamat_kirim.capitalize+". "+@order.kota.to_s.capitalize}",
+              :width => 200,
+              :height => 50,
+              :overflow => :truncate,
+              :at => [75, y_position],
+              :size => 8
+
+            text_box excess_text,
+              :width => 300,
+              :at => [100,y_position-100]
+            draw_text("Total Payment", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 5]), 0])
+            draw_text("Voucher", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 15]), 0])
+            draw_text("Total Paid", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 25]), 0])
+            draw_text("Amount Due", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 35]), 0])
+            draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 5]), 0])
+            draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 15]), 0])
+            draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 25]), 0])
+            draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 35]), 0])
+            text_box "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
+              :at => [420, cursor + 1], :width => 60, :height => 50, :align => :right
+            text_box "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
+              :at => [420, cursor - 9], :width => 60, :height => 50, :align => :right
+            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)
+            text_box "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
+              :at => [420, cursor - 19], :width => 60, :height => 50, :align => :right
+            text_box "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :at => [420, cursor - 29], :width => 60, :height => 50, :align => :right
+          end
+        end
       end
     end
-    cek_voucher = @order.voucher == 0
-    bounding_box([300, cursor + 35], :width => 250) do
-      text "Total Payment     : Rp. ", :size => 8, :style => :bold
-      unless cek_voucher
-        move_down 3
-        text "Voucher               : Rp. ", :size => 8, :style => :bold
-      end
-      move_down 3
-      text "Total Paid            : Rp. ", :size => 8, :style => :bold
-      move_down 3
-      text "Amount Due        : Rp. ", :size => 8, :style => :bold
-    end
-    size = cek_voucher ? 35 : 47
-    bounding_box([250, cursor + size], :width => 250) do
-      text "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
-      unless cek_voucher
-        move_down 3
-        text "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
-      end
-      move_down 3
-      debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
-      total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)
-      text "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
-
-      #      move_down 3
-      #      text "#{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
-      #      move_down 16
-      #      @order.payment_with_credit_cards.each do |cc|
-      #        move_down 3
-      #        text "#{number_to_currency(cc.jumlah, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right if cc.nama_kartu.present?
-      #      end
-
-      move_down 3
-      text "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :style => :bold, :align => :right
-    end
-
-    stroke do
-      move_down 3
-      horizontal_line(0, 523)
-    end
+    move_down 40
   end
 
   def footer
-    bounding_box([0, cursor], :width => 150) do
-      move_down 3
+    bounding_box([0, cursor], :width => 100) do
+      move_down 5
       indent 5 do
-        text "Payment Note :", :size => 8, :style => :bold
-      end
-      stroke do
-        line(bounds.bottom_right, bounds.top_right)
-        line(bounds.bottom_left, bounds.bottom_right)
-        line(bounds.bottom_left, bounds.top_left)
-      end
-      move_down 15
-      indent 5 do
-        text "#{@order.cara_bayar == 'um' ? 'Down Payment' : 'Paid'}", :size => 7
-      end
-      stroke do
-        line(bounds.bottom_right, bounds.top_right)
-        line(bounds.bottom_left, bounds.bottom_right)
-        line(bounds.bottom_left, bounds.top_left)
-      end
-    end
-    bounding_box([150, cursor + 37], :width => 373.4) do
-      indent 5 do
-      move_down 4
-        text "Method of Payment :", :size => 8, :style => :bold
-      end
-      stroke do
-        line(bounds.bottom_right, bounds.top_right)
-        line(bounds.bottom_left, bounds.bottom_right)
-      end
-      indent 5 do
-        move_down 3.5
-        debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
-        text "Cash               : Rp. #{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6
-        text "Debit Card      : Rp. #{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6
-        text "Credit Card     : Rp. #{number_to_currency(@order.payment_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6
-        bounding_box([200, cursor + 22.5], :width => 200) do
+        bounding_box([0, cursor], :width => 100.4) do
+          text "Payment Note :", :size => 8, :style => :bold
         end
       end
       stroke do
         line(bounds.bottom_right, bounds.top_right)
         line(bounds.bottom_left, bounds.bottom_right)
+        line(bounds.bottom_left, bounds.top_left)
+        line(bounds.top_left, bounds.top_right)
       end
     end
-    move_down 30
+
+    bounding_box([0, cursor], :width => 100) do
+      indent 5 do
+        move_down 15
+        bounding_box([0, cursor], :width => 100.4) do
+          text "#{@order.cara_bayar == 'um' ? 'Down Payment' : 'Paid'}", :size => 8
+        end
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
+        line(bounds.bottom_left, bounds.top_left)
+      end
+    end
+
+    bounding_box([100, cursor + 39], :width => 422) do
+      move_down 5
+      indent 5 do
+        bounding_box([0, cursor - 0.5], :width => 100.4) do
+          text "Method of Payment :", :size => 8, :style => :bold
+        end
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
+        line(bounds.bottom_left, bounds.top_left)
+        line(bounds.top_left, bounds.top_right)
+      end
+      bounding_box([0, cursor - 1], :width => 100) do
+        indent 5 do
+          move_down 2
+          bounding_box([0, cursor], :width => 100.4) do
+            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            text "Cash", :size => 6
+            text "Debit Card", :size => 6
+            text "Credit Card", :size => 6
+          end
+          bounding_box([50, cursor + 20.5], :width => 40.4) do
+            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            text ": Rp. ", :size => 6
+            text ": Rp. ", :size => 6
+            text ": Rp. ", :size => 6
+          end
+          bounding_box([0, cursor + 21], :width => 100.4) do
+            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
+            text "#{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
+            text "#{number_to_currency(@order.payment_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
+          end
+        end
+      end
+      stroke do
+        line(bounds.bottom_right, bounds.top_right)
+        line(bounds.bottom_left, bounds.bottom_right)
+        line(bounds.bottom_left, bounds.top_left)
+      end
+    end
+
+    move_down 10
     indent 5 do
       text "Note : #{@order.keterangan_customer.titleize}", :size => 8
     end
