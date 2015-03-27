@@ -94,10 +94,27 @@ class SalesController < ApplicationController
 
   # DELETE /sales/1 DELETE /sales/1.json
   def destroy
-    if current_user.sales_promotion.store.supervisor_exhibition.user.valid_password?(params[:password])
+    if User.find(current_user.id).valid_password?(params[:password])
       @sale.update_attributes!(cancel_order: true)
+      @sale.payment_with_debit_card.destroy!
+      @sale.payment_with_credit_cards.each do |pwcc|
+        pwcc.destroy!
+      end
+      @sale.sale_items.each do |co_si|
+        if co_si.serial.present?
+          esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out(co_si.kode_barang, co_si.serial, false)
+          ssah = StoreSalesAndStockHistory.where(kode_barang: co_si.kode_barang, serial: co_si.serial).first
+          esi.update_attributes(jumlah: (co_si.jumlah + esi.jumlah))
+          ssah.destroy
+        else
+          esi = ExhibitionStockItem.find_by_kode_barang_and_no_sj_and_checked_out(co_si.kode_barang, co_si.ex_no_sj, false)
+          ssah = StoreSalesAndStockHistory.where(kode_barang: co_si.kode_barang, no_sj: co_si.ex_no_sj).first
+          esi.update_attributes(jumlah: (co_si.jumlah + esi.jumlah))
+          ssah.destroy
+        end
+      end
       respond_to do |format|
-        format.html { redirect_to sales_url, notice: 'Sale was successfully deleted.' }
+        format.html { redirect_to root_path, notice: 'Sale was successfully deleted.' }
         format.json { head :no_content }
       end
     else

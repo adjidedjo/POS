@@ -13,7 +13,7 @@ class ItemReceiptsController < ApplicationController
           item.update_attributes!(checked_in: true, checked_in_by: current_user.id)
           cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan(item.kode_barang, item.no_sj,'R')
           if cek_kode.nil?
-            StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: item.created_at.to_date, qty_in: item.jumlah, qty_out: 0, keterangan: "R", no_sj: item.no_sj)
+            StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_in: item.jumlah, qty_out: 0, keterangan: "R", no_sj: item.no_sj, serial: item.serial)
           else
             cek_kode.update_attributes(qty_in: (item.jumlah + cek_kode.qty_in))
           end
@@ -38,7 +38,7 @@ class ItemReceiptsController < ApplicationController
       a.update_attributes!(checked_in: true, checked_in_by: current_user.id)
       cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan(a.kode_barang, a.no_sj,'R')
       if cek_kode.nil?
-        StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: a.created_at.to_date, qty_in: a.jumlah, qty_out: 0, keterangan: "R", no_sj: a.no_sj)
+        StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: Time.now, qty_in: a.jumlah, qty_out: 0, keterangan: "R", no_sj: a.no_sj, serial: a.serial)
       else
         cek_kode.update_attributes(qty_in: (a.jumlah + cek_kode.qty_in))
       end

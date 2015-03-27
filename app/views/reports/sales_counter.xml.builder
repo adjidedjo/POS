@@ -34,7 +34,7 @@ xml.data do
       xml.Hp1 sale_item.sale.hp1.blank? ? '-' : sale_item.sale.hp1
       xml.Hp2 sale_item.sale.hp2.blank? ? '-' : sale_item.sale.hp2
       xml.HargaNetto sale_item.sale.netto
-      dp = (sale_item.sale.netto - sale_item.sale.voucher) - (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah))
+      dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah))
       xml.DP dp
       xml.Sisa sale_item.sale.sisa
       xml.TipePembayaran sale_item.sale.tipe_pembayaran

@@ -11,7 +11,7 @@ class ReturnItemsController < ApplicationController
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_out: true, checked_out_by: current_user.id)
-          StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: Date.today, qty_out: item.jumlah, keterangan: "B", no_sj: item.no_sj)
+          StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_out: item.jumlah, keterangan: "B", no_sj: item.no_sj, serial: item.serial)
         end
       end
     end
@@ -31,7 +31,7 @@ class ReturnItemsController < ApplicationController
     rc = ExhibitionStockItem.find(params[:return_ids])
     rc.each do |a|
       a.update_attributes!(checked_out: true, checked_out_by: current_user.id)
-      StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: Date.today, qty_out: a.jumlah, keterangan: "B", no_sj: a.no_sj)
+      StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: TIme.now, qty_out: a.jumlah, keterangan: "B", no_sj: a.no_sj, serial: a.serial)
       @item_selected = a.kode_barang
     end
     redirect_to  return_items_return_by_serial_path(kode_barang: @item_selected)

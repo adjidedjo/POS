@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   get 'reports/export_xml'
   get 'reports/rekap_so'
   get 'reports/mutasi_stock'
+  get 'reports/selisi_intransit'
+  get 'reports/retur'
 
   devise_for :users, controllers: {registrations: "users/registrations"}
   get 'page/home'

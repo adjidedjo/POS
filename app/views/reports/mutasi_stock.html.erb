@@ -21,7 +21,7 @@
         <td><%= rs.tanggal   %></td>
         <td><%= rs.qty_in %></td>
         <td>0</td>
-        <td>0</td>
+        <td>-</td>
         <td>Stok Awal</td>
       </tr>
     <% end %>
@@ -32,7 +32,7 @@
         <td><%= rs.tanggal   %></td>
         <td>0</td>
         <td><%= rs.qty_out %></td>
-        <td>0</td>
+        <td>-</td>
         <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
       </tr>
     <% end %>
@@ -44,7 +44,7 @@
         <td>0</td>
         <td><%= rs.qty_out %></td>
         <% a = StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "R").sum(:qty_in) - StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "S").sum(:qty_out) %>
-        <td>0</td>
+        <td>-</td>
         <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
       </tr>
     <% end %>

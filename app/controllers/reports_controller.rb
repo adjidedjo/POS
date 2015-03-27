@@ -1,5 +1,13 @@
 class ReportsController < ApplicationController
 
+  def selisih_retur
+    
+  end
+
+  def selisih_intransit
+
+  end
+
   def mutasi_stock
     @report_stock_in = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id).where("qty_in > ?", 0)
     @report_stock_out = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id, keterangan: "S").where("qty_out > ?", 0)

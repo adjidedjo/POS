@@ -1,0 +1,39 @@
+<h1>Laporan Selisih Intransit vs Penerimaan <%= current_user.store.nama.titleize %></h1>
+
+<table id="sales_rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>No SJ</th>
+      <th>Kode Barang</th>
+      <th>Nama Barang</th>
+      <th>Intransit</th>
+      <th>Penerimaan</th>
+      <th>Selisih</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @report_stock_in.each do |rs| %>
+      <tr>
+        <td><%= rs.kode_barang %></td>
+        <td><%= rs.nama %></td>
+        <td><%= rs.tanggal   %></td>
+        <td><%= rs.qty_in %></td>
+        <td>0</td>
+        <td>-</td>
+      </tr>
+    <% end %>
+    <% @report_stock_out.each do |rs| %>
+      <tr>
+        <td><%= rs.kode_barang %></td>
+        <td><%= rs.nama %></td>
+        <td><%= rs.tanggal   %></td>
+        <td>0</td>
+        <td><%= rs.qty_out %></td>
+        <td>-</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br />
+<%= link_to "Export to Excel", reports_mutasi_stock_path(format: "xls"), :class => "btn btn-info" %>
