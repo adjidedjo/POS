@@ -20,12 +20,10 @@
         <td><%= ExhibitionStockItem.find_by_kode_barang(ins.kode_barang).nama %></td>
         <% inst = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj).sum(:jumlah)  %>
         <td><%= inst %></td>
-        <% receipt = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true, checked_out: false).sum(:jumlah)  %>
+        <% receipt = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true).sum(:jumlah)  %>
         <td><%= receipt %></td>
         <td><%= inst - receipt %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<br />
-<%= link_to "Export to Excel", reports_selisih_intransit_path(format: "xls"), :class => "btn btn-info" %>

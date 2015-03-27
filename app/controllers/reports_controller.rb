@@ -1,11 +1,21 @@
 class ReportsController < ApplicationController
 
   def selisih_retur
-    
+    @retur = ExhibitionStockItem.where(store_id: current_user.store.id, checked_in: true).group(:kode_barang, :no_sj)
+
+    respond_to do |format|
+      format.html
+      format.xls
+    end
   end
 
   def selisih_intransit
+    @intransit = ExhibitionStockItem.where(store_id: current_user.store.id).group(:kode_barang, :no_sj)
 
+    respond_to do |format|
+      format.html
+      format.xls
+    end
   end
 
   def mutasi_stock
