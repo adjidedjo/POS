@@ -1,5 +1,37 @@
 jQuery ->
 
+  serial_change = () -> $('.serial').on 'change', () ->
+    get_id = "sale_sale_items_attributes_0_serial"
+    jumlah = get_id.replace("serial", "jumlah")
+    kode_barang = get_id.replace("serial", "kode_barang")
+    nama_barang = get_id.replace("serial", "nama_barang")
+    $.ajax
+      url: '/sales/get_kode_barang_from_serial',
+      data: {'kode_barang': $('.serial').val(), 'element_id': $(this).attr("id")},
+      datatype: 'script',
+      success: () ->
+        document.getElementById(kode_barang).disabled = true
+      error: () ->
+        alert "Serial yang anda masukan tidak terdaftar"
+        document.getElementById(jumlah).readOnly = false
+        document.getElementById(kode_barang).value = ""
+        document.getElementById(kode_barang).disabled = false
+        document.getElementById(nama_barang).value = ""
+        document.getElementById(kode_barang).value = ""
+        document.getElementById(jumlah).value = ""
+
+  get_first_tenor = () -> $('#sale_payment_with_credit_cards_attributes_0_no_merchant').on 'change', () ->
+    get_id = "sale_payment_with_credit_cards_attributes_0_no_merchant"
+    $.ajax
+      url: '/sales/get_mid_from_merchant',
+      data: {'merchant': $('#sale_payment_with_credit_cards_attributes_0_no_merchant').val()}
+
+  get_second_tenor = () -> $('#sale_payment_with_credit_cards_attributes_1_no_merchant').on 'change', () ->
+    get_id = "sale_payment_with_credit_cards_attributes_1_no_merchant"
+    $.ajax
+      url: '/sales/get_second_mid_from_merchant',
+      data: {'merchant': $('#sale_payment_with_credit_cards_attributes_1_no_merchant').val()}
+
   $('#new_sale').bind 'submit', ->
     $(this).find(':input').removeAttr 'disabled'
 
@@ -93,30 +125,13 @@ jQuery ->
     minDate: new Date()
   })
 
-  serial_change = () -> $('.serial').on 'change', () ->
-    get_id = "sale_sale_items_attributes_0_serial"
-    jumlah = get_id.replace("serial", "jumlah")
-    kode_barang = get_id.replace("serial", "kode_barang")
-    nama_barang = get_id.replace("serial", "nama_barang")
-    $.ajax
-      url: '/sales/get_kode_barang_from_serial',
-      data: {'kode_barang': $('.serial').val(), 'element_id': $(this).attr("id")},
-      datatype: 'script',
-      success: () ->
-        document.getElementById(kode_barang).disabled = true
-      error: () ->
-        alert "Serial yang anda masukan tidak terdaftar"
-        document.getElementById(jumlah).readOnly = false
-        document.getElementById(kode_barang).value = ""
-        document.getElementById(kode_barang).disabled = false
-        document.getElementById(nama_barang).value = ""
-        document.getElementById(kode_barang).value = ""
-        document.getElementById(jumlah).value = ""
-
   add_item_to_table()
   open_modal()
   date_picker()
   serial_change()
+  get_second_tenor()
+  get_first_tenor()
+
   $('#all_item_pos').DataTable({
     bInfo: false,
     responsive: true

@@ -93,7 +93,7 @@ class StoresController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def store_params
-    params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, :stock_items, :jenis_pameran, :keterangan, merchants_attributes: [:id, :nama, :no_merchant, :_destroy], supervisor_exhibition_attributes: [:id, :nama, :email, :nik, :_destroy], sales_promotions_attributes: [:id, :nama, :email, :nik, :_destroy])
+    params.require(:store).permit(:channel_id, :nama, :kota, :from_period, :to_period, :branch_id, :stock_items, :jenis_pameran, :keterangan, merchants_attributes: [:id, :nama, :no_merchant, :tenor, :mid, :_destroy], supervisor_exhibition_attributes: [:id, :nama, :email, :nik, :_destroy], sales_promotions_attributes: [:id, :nama, :email, :nik, :_destroy])
   end
 
   def create_stock_item_exhibition(file, store_id)

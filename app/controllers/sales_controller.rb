@@ -1,6 +1,28 @@
 class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
 
+  def get_second_mid_from_merchant
+    @tenor = []
+    Merchant.where(no_merchant: params[:merchant]).each do |nm|
+      @tenor << [nm.tenor, nm.mid]
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def get_mid_from_merchant
+    @tenor = []
+    Merchant.where(no_merchant: params[:merchant]).each do |nm|
+      @tenor << [nm.tenor, nm.mid]
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def get_kode_barang_from_serial
     kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_store_id_and_checked_in_and_checked_out(params[:kode_barang], 1, current_user.sales_promotion.store_id, true, false).kode_barang
     @kode = ExhibitionStockItem.find_by_kode_barang(kode_serial).kode_barang
@@ -41,8 +63,14 @@ class SalesController < ApplicationController
     @sale.build_payment_with_debit_card
     2.times {@sale.payment_with_credit_cards.build}
     @channels = Channel.all
-    @merchant = current_user.store.merchants
+    @merchant = current_user.store.merchants.group(:nama)
+    @tenor = []
     @sales_promotion = current_user.store.sales_promotions
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def edit_by_confirmation
@@ -131,6 +159,6 @@ class SalesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
-    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :sisa, :netto_elite, :netto_lady, :tanggal_kirim, :kota, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy, :keterangan], payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah], payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
+    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :sisa, :netto_elite, :netto_lady, :tanggal_kirim, :kota, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy, :keterangan], payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah, :tenor, :mid], payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
   end
 end
