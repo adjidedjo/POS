@@ -41,11 +41,11 @@ xml.data do
       xml.no_kartu_debit sale_item.sale.payment_with_debit_card.no_kartu.blank? ? '-' : sale_item.sale.payment_with_debit_card.no_kartu
       xml.nama_kartu_debit sale_item.sale.payment_with_debit_card.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_debit_card.nama_kartu
       xml.atas_nama_debit sale_item.sale.payment_with_debit_card.atas_nama.blank? ? '-' : sale_item.sale.payment_with_debit_card.atas_nama
-      xml.NoMerchant sale_item.sale.payment_with_credit_cards.first.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.no_merchant
+      xml.NoMerchant sale_item.sale.payment_with_credit_cards.first.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.mid
       xml.NoKartu sale_item.sale.payment_with_credit_cards.first.no_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.no_kartu
       xml.NamaKartu sale_item.sale.payment_with_credit_cards.first.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.nama_kartu
       xml.AtasNama sale_item.sale.payment_with_credit_cards.first.atas_nama.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.atas_nama
-      xml.NoMerchant1 sale_item.sale.payment_with_credit_cards.last.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.no_merchant
+      xml.NoMerchant1 sale_item.sale.payment_with_credit_cards.last.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.mid
       xml.NoKartu1 sale_item.sale.payment_with_credit_cards.last.no_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.no_kartu
       xml.NamaKartu1 sale_item.sale.payment_with_credit_cards.last.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.nama_kartu
       xml.AtasNama1 sale_item.sale.payment_with_credit_cards.last.atas_nama.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.atas_nama
