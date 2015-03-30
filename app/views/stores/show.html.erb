@@ -22,11 +22,11 @@
         </tr>
       </thead>
       <tbody>
-        <% if @supervisor.present?  %>
+        <% @supervisor.each do |spv|  %>
         <tr>
-          <td><%= @supervisor.nama.titleize %></td>
-          <td><%= @supervisor.email %></td>
-          <td><%= @supervisor.nama[0,3].downcase+"*54321" %></td>
+          <td><%= spv.nama.titleize %></td>
+          <td><%= spv.email %></td>
+          <td><%= spv.nama[0,3].downcase+"*54321" %></td>
         </tr>
         <% end %>
       </tbody>

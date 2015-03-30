@@ -8,7 +8,7 @@ class StoresController < ApplicationController
 
   # GET /stores/1 GET /stores/1.json
   def show
-    @supervisor = @store.users.find_by_role("supervisor")
+    @supervisor = @store.users.where(role: "supervisor")
   end
 
   # GET /stores/new
