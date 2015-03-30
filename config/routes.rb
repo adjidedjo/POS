@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
   resources :sales do
     collection do
+      get "get_mid_from_merchant"
+      get "get_second_mid_from_merchant"
       get "get_kode_barang_from_serial"
       get "edit_by_confirmation"
       get "destroy_by_confirmation"
