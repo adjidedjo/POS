@@ -31,22 +31,42 @@ class PosPdf < Prawn::Document
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 6.5]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 17.5]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 27.5]), 0])
-        draw_text("#{@order.no_so}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7]), 0])
+        draw_text("#{@order.no_so.upcase}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7]), 0])
         draw_text("#{@order.created_at.to_date.strftime('%d-%m-%Y')}", :size => 8, :at => [([bounds.left + 85, bounds.top - 18]), 0])
         draw_text("#{SalesPromotion.find(@order.sales_promotion_id).nama.titleize}", :size => 8, :at => [([bounds.left + 85, bounds.top - 28]), 0])
-        draw_text("Exhibition", :size => 8, :style => :bold, :at => [([bounds.left + 325, bounds.top - 7]), 0])
-        draw_text("Exhibition Period", :size => 8, :style => :bold, :at => [([bounds.left  + 325, bounds.top - 18]), 0])
-        draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 392, bounds.top - 7]), 0])
-        draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 392, bounds.top - 18]), 0])
-        draw_text("#{@order.store.nama}", :size => 8, :at => [([bounds.left + 400, bounds.top - 7]), 0])
-        draw_text("#{ @order.store.from_period.nil? ? '' : @order.store.from_period.strftime('%d %b %Y')} - #{ @order.store.to_period.nil? ? '' : @order.store.to_period.strftime('%d %b %Y')}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
+        if @order.channel_customer.channel.channel == 'SHOWROOM'
+          draw_text("Showroom", :size => 8, :style => :bold, :at => [([bounds.left + 325, bounds.top - 7]), 0])
+          draw_text("Address", :size => 8, :style => :bold, :at => [([bounds.left  + 325, bounds.top - 18]), 0])
+          draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 370, bounds.top - 7]), 0])
+          draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 370, bounds.top - 18]), 0])
+          draw_text("#{@order.channel_customer.nama.titleize}", :size => 8, :at => [([bounds.left + 375, bounds.top - 7]), 0])
+#          draw_text("#{@order.showroom.address.titleize}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
+          y_position = cursor - 12.5
+            excess_text = text_box "#{@order.channel_customer.alamat.titleize}",
+              :width => 140,
+              :height => 500,
+              :overflow => :truncate,
+              :at => [375, y_position],
+              :size => 8
+
+            text_box excess_text,
+              :width => 200,
+              :at => [500,y_position-100]
+        else
+          draw_text("Exhibition", :size => 8, :style => :bold, :at => [([bounds.left + 325, bounds.top - 7]), 0])
+          draw_text("Exhibition Period", :size => 8, :style => :bold, :at => [([bounds.left  + 325, bounds.top - 18]), 0])
+          draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 392, bounds.top - 7]), 0])
+          draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 392, bounds.top - 18]), 0])
+          draw_text("#{@order.channel_customer.nama}", :size => 8, :at => [([bounds.left + 400, bounds.top - 7]), 0])
+          draw_text("#{ @order.channel_customer.dari_tanggal.nil? ? '' : @order.channel_customer.dari_tanggal.strftime('%d %b %Y')} - #{ @order.channel_customer.sampai_tanggal.nil? ? '' : @order.channel_customer.sampai_tanggal.strftime('%d %b %Y')}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
+        end
       end
     end
     move_down 20
   end
 
   def line_items
-    move_down 20
+    move_down 30
     table line_item_rows, :width => 523 do
       row(0).font_style = :bold
       self.cell_style = { size: 6 }
