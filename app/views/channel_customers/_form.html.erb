@@ -1,0 +1,51 @@
+<%= simple_form_for(@channel_customer) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <% if current_user.admin? %>
+      <%= f.input :kode_channel_customer %>
+      <%= f.input :channel_id, collection: @channel, label_method: :channel, value_method: :id, prompt: "--Pilih Channel--" %>
+      <%= f.input :nama %>
+    <% end  %>
+    <%= f.input :alamat %>
+    <%= f.input :kota %>
+    <% if current_user.admin? %>
+      <%= f.input :dari_tanggal, as: :tanggal, readonly: true %>
+      <%= error_span(@channel_customer[:dari_tanggal]) %>
+      <%= f.input :sampai_tanggal, as: :tanggal, readonly: true %>
+      <%= error_span(@channel_customer[:sampai_tanggal]) %>
+    <% end %>
+  </div>
+
+  <label>Supervisor</label>
+  <div class="row">
+    <%= f.simple_fields_for :supervisor_exhibitions do |builder| %>
+      <%= render "supervisor_exhibition_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Supervisor", f, :supervisor_exhibitions %>
+  </div>
+  <br />
+
+  <label>SPG/SPB</label>
+  <div class="row">
+    <%= f.simple_fields_for :sales_promotions do |builder| %>
+      <%= render "sales_promotion_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah SPG/SPB", f, :sales_promotions %>
+  </div>
+  <br />
+
+  <label>Merchants</label>
+  <div class="row">
+    <%= f.simple_fields_for :merchants do |builder| %>
+      <%= render "merchant_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Merchants", f, :merchants %>
+  </div>
+  <br />
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= link_to "Ganti Password?", edit_user_registration_path, class: "btn btn-default" unless current_user.admin? %><br />
+  </div>
+<% end %>

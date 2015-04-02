@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
 
   def selisih_retur
-    @retur = ExhibitionStockItem.where(store_id: current_user.store.id, checked_in: true).group(:kode_barang, :no_sj)
+    @retur = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).group(:kode_barang, :no_sj)
 
     respond_to do |format|
       format.html
@@ -10,7 +10,7 @@ class ReportsController < ApplicationController
   end
 
   def selisih_intransit
-    @intransit = ExhibitionStockItem.where(store_id: current_user.store.id).group(:kode_barang, :no_sj)
+    @intransit = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).group(:kode_barang, :no_sj)
 
     respond_to do |format|
       format.html
@@ -19,9 +19,9 @@ class ReportsController < ApplicationController
   end
 
   def mutasi_stock
-    @report_stock_in = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id).where("qty_in > ?", 0)
-    @report_stock_out = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id, keterangan: "S").where("qty_out > ?", 0)
-    @report_stock_return = StoreSalesAndStockHistory.where(exhibition_id: current_user.store.id, keterangan: "B").where("qty_out > ?", 0)
+    @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id).where("qty_in > ?", 0)
+    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "S").where("qty_out > ?", 0)
+    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B").where("qty_out > ?", 0)
 
     respond_to do |format|
       format.html
@@ -31,7 +31,7 @@ class ReportsController < ApplicationController
 
   def rekap_so
     @sales = []
-    Sale.where(cancel_order: false).each do |sale|
+    Sale.where(channel_customer_id: current_user.channel_customer.id, cancel_order: false).each do |sale|
       SaleItem.where(sale_id: sale.id).each do |sale_item|
         @sales << sale_item
       end
@@ -50,7 +50,7 @@ class ReportsController < ApplicationController
   def sales_counter
     @sales = []
     brand_id = params[:brand_id]
-    current_user.store.sales.where(cancel_order: false).each do |sale|
+    current_user.channel_customer.sales.where(cancel_order: false).each do |sale|
       SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id).each do |sale_items|
         @sales << sale_items
       end
@@ -68,7 +68,7 @@ class ReportsController < ApplicationController
 
   def export_xml
     @sales = []
-    @user = current_user
+    @user = current_user.channel_customer
     @email = params[:email]
     params[:sale_items_ids].each do |sale_item_ids|
       SaleItem.where("id = ?", sale_item_ids.to_i).each do |sale_item|

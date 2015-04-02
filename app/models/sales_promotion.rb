@@ -1,6 +1,8 @@
 class SalesPromotion < ActiveRecord::Base
   has_one :user, dependent: :destroy
   belongs_to :store
+  belongs_to :showroom
+  belongs_to :channel_customer
 
   before_create do
     self.nama = nama.downcase
@@ -10,13 +12,6 @@ class SalesPromotion < ActiveRecord::Base
       if email.empty?
         self.email = nama.downcase.gsub(' ','')+'@ras.co.id'
       end
-    end
-  end
-
-  after_create do
-    if self.nama.present?
-      password = self.nama.slice(0..2)+self.regex
-      User.create(email: self.email, password: password, sales_promotion_id: self.id, role: 'sales_promotion')
     end
   end
 end

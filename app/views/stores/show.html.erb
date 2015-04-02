@@ -1,90 +1,95 @@
-<%- model_class = Store -%>
+<%- model_class = ChannelCustomer -%>
 <div class="page-header">
-  <h1>Pameran <%= @store.nama %></h1>
+  <h1><%= @channel_customer.nama %></h1>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>Kota:</strong> <%= @store.kota %></dt><br />
-    <dt><strong>Dari Tanggal:</strong> <%= @store.from_period.strftime('%d %B %Y') %></dt><br />
-    <dt><strong>Ke Tanggal:</strong> <%= @store.to_period.strftime('%d %B %Y') %></dt><br />
+    <dt><strong>Kota:</strong> <%= @channel_customer.kota %></dt><br />
+    <dt><strong>Dari Tanggal:</strong> <%= @channel_customer.from_period.strftime('%d %B %Y') %></dt><br />
+    <dt><strong>Ke Tanggal:</strong> <%= @channel_customer.to_period.strftime('%d %B %Y') %></dt><br />
   </div>
 </div>
-<div class="row">
-  <div class="col-md-6">
-    <dt><strong>Akses Login Untuk Supervisor Pameran <%= @store.nama %></strong></dt><br />
-    <table id="supervisor_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th class="all">Nama Supervisor</th>
-          <th class="all">Email</th>
-          <th class="all">Password</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @supervisor.each do |spv|  %>
-        <tr>
-          <td><%= spv.nama.titleize %></td>
-          <td><%= spv.email %></td>
-          <td><%= spv.nama[0,3].downcase+"*54321" %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-6">
-    <dt><strong>Akses Login Untuk SPG/SPB Pameran <%= @store.nama %></strong></dt><br />
-    <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th class="all">Nama SPG/SPB</th>
-          <th class="all">Email</th>
-          <th class="all">Password</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @store.sales_promotions.each do |sp| %>
+<% unless @supervisor.nil? %>
+  <div class="row">
+    <div class="col-md-6">
+      <dt><strong>Akses Login Untuk Supervisor Pameran <%= @channel_customer.nama %></strong></dt><br />
+      <table id="show_channel_customer" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
           <tr>
-            <td><%= sp.nama.titleize %></td>
-            <td><%= sp.email %></td>
-            <td><%= sp.nama.slice(0..2)+sp.regex %></td>
+            <th class="all">Nama Supervisor</th>
+            <th class="all">Email</th>
+            <th class="all">Password</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @supervisor.each do |spv|  %>
+            <tr>
+              <td><%= spv.nama.titleize %></td>
+              <td><%= spv.email %></td>
+              <td><%= spv.nama[0,3].downcase+"*54321" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-<div>
-  <table id="merchant_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th class="all">Nama Merchant</th>
-        <th class="all">No Merchant</th>
-        <th class="all">Tenor</th>
-        <th class="all">MID</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @store.merchants.each do |sale| %>
-        <tr>
-          <td><%= sale.nama %></td>
-          <td><%= sale.no_merchant %></td>
-          <td><%= sale.tenor %></td>
-          <td><%= sale.mid %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<% end %>
+<% if @sales_promotions.present? %>
+  <div class="row">
+    <div class="col-md-6">
+      <dt><strong>Akses Login Untuk SPG/SPB Pameran <%= @channel_customer.nama %></strong></dt><br />
+      <table id="show_channel_customer" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="all">Nama SPG/SPB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @sales_promotions.each do |sp| %>
+            <tr>
+              <td><%= sp.nama.titleize %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+<% if @merchants.present? %>
+  <div class="row">
+    <div class="col-md-6">
+      <table id="show_channel_customer" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th class="all">Nama Merchant</th>
+            <th class="all">No Merchant</th>
+            <th class="all">Tenor</th>
+            <th class="all">MID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @merchants.each do |sale| %>
+            <tr>
+              <td><%= sale.nama %></td>
+              <td><%= sale.no_merchant %></td>
+              <td><%= sale.tenor %></td>
+              <td><%= sale.mid %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
   stores_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
-  edit_store_path(@store), :class => 'btn btn-default' %>
+  edit_store_path(@channel_customer), :class => 'btn btn-default' %>
 <%#= link_to t('.destroy', :default => t("helpers.links.destroy")),
-  store_path(@store),
-  :method => 'delete',
-  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-  :class => 'btn btn-danger' %>
+store_path(@channel_customer),
+:method => 'delete',
+:data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+:class => 'btn btn-danger' %>

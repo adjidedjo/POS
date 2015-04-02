@@ -5,20 +5,18 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:branch_id) %></th>
-      <th><%= model_class.human_attribute_name(:city) %></th>
+      <th>Nama</th>
+      <th>Cabang</th>
+      <th>Kota</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @showrooms.each do |showroom| %>
       <tr>
-        <td><%= link_to showroom.id, showroom_path(showroom) %></td>
-        <td><%= showroom.name %></td>
-        <td><%= Branch.find(showroom.branch_id).  cabang %></td>
-        <td><%= showroom.city %></td>
+        <td><%= link_to showroom.name.titleize, showroom_path(showroom) %></td>
+        <td><%= Branch.find(showroom.branch_id).cabang.gsub(/Cabang/, '') %></td>
+        <td><%= showroom.city.titleize %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_showroom_path(showroom), :class => 'btn btn-default btn-xs' %>

@@ -1,0 +1,80 @@
+<%- model_class = Store -%>
+<div class="page-header">
+  <h1><%= @channel_customer.nama %></h1>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Alamat:</strong> <%= @channel_customer.alamat.titleize %></dt><br />
+    <dt><strong>Kota:</strong> <%= @channel_customer.kota.titleize %></dt><br />
+    <%  if @channel_customer.dari_tanggal.present? %>
+      <dt><strong>Dari Tanggal:</strong> <%= @channel_customer.dari_tanggal.strftime('%d %B %Y')  %></dt><br />
+      <dt><strong>Ke Tanggal:</strong> <%= @channel_customer.sampai_tanggal.strftime('%d %B %Y') %></dt>
+    <% end %>
+    <br />
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Supervisor <%= @channel_customer.nama %></strong></dt><br />
+    <table id="supervisor_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama Supervisor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @supervisors.each do |spv|  %>
+          <tr>
+            <td><%= spv.nama.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>SPG/SPB <%= @channel_customer.nama %></strong></dt><br />
+    <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama SPG/SPB</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sales_promotions.each do |sp| %>
+          <tr>
+            <td><%= sp.nama.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div>
+  <dt><strong>Merchant-merchant <%= @channel_customer.nama %></strong></dt><br />
+  <table id="merchant_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th class="all">Nama Merchant</th>
+        <th class="all">No Merchant</th>
+        <th class="all">Tenor</th>
+        <th class="all">MID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @merchants.each do |sale| %>
+        <tr>
+          <td><%= sale.nama %></td>
+          <td><%= sale.no_merchant %></td>
+          <td><%= sale.tenor %></td>
+          <td><%= sale.mid %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<%= link_to 'Channel customer Baru', new_channel_customer_path, class: "btn btn-default" if current_user.admin? %>
+<%= link_to 'Edit', edit_channel_customer_path(current_user.channel_customer), class: "btn btn-default" unless current_user.admin?%>
+<%= link_to 'Back', channel_customers_path, class: "btn btn-default" if current_user.admin? %>

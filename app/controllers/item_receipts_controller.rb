@@ -2,29 +2,36 @@ class ItemReceiptsController < ApplicationController
   before_action :get_store_id
 
   def receipt
-    @receipt = ExhibitionStockItem.where(store_id: @user_store, checked_in: false).group(:kode_barang)
+      @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer,
+        checked_in: false).group(:kode_barang)
   end
 
   def process_receipt
     params[:receipt].each do |key, value|
-      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"], store_id: @user_store, checked_in: false)
+      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"],
+        channel_customer_id: current_user.channel_customer, checked_in: false)
       if items.sum(:jumlah) == value["jumlah"].to_i
         items.each do |item|
           item.update_attributes!(checked_in: true, checked_in_by: current_user.id)
-          cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan(item.kode_barang, item.no_sj,'R')
+          cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan_and_channel_customer_id(
+            item.kode_barang, item.no_sj,'R', current_user.channel_customer)
           if cek_kode.nil?
-            StoreSalesAndStockHistory.create(exhibition_id: item.store_id, kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_in: item.jumlah, qty_out: 0, keterangan: "R", no_sj: item.no_sj, serial: item.serial)
+            StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
+              kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_in: item.jumlah, qty_out: 0,
+              keterangan: "R", no_sj: item.no_sj, serial: item.serial)
           else
             cek_kode.update_attributes(qty_in: (item.jumlah + cek_kode.qty_in))
           end
         end
       end
     end
-    redirect_to  item_receipts_receipt_path, notice: 'Jika barang sudah di cek, tetapi masih tampil. Silahkan scan sesuai serial dengan mengklik kode barang'
+    redirect_to  item_receipts_receipt_path, notice: 'Jika barang sudah di cek, tetapi masih tampil.
+Silahkan scan sesuai serial dengan mengklik kode barang'
   end
 
   def receipt_by_serial
-    @receipt_by_serial = ExhibitionStockItem.where(store_id: @user_store, checked_in: false, kode_barang: params[:kode_barang]).all
+    @receipt_by_serial = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer,
+      checked_in: false, kode_barang: params[:kode_barang]).all
   end
 
   def process_receipt_by_serial
@@ -36,9 +43,12 @@ class ItemReceiptsController < ApplicationController
     rc = ExhibitionStockItem.find(params[:receipt_ids])
     rc.each do |a|
       a.update_attributes!(checked_in: true, checked_in_by: current_user.id)
-      cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan(a.kode_barang, a.no_sj,'R')
+      cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan_and_channel_customer_id(
+        a.kode_barang, a.no_sj,'R', current_user.channel_customer)
       if cek_kode.nil?
-        StoreSalesAndStockHistory.create(exhibition_id: a.store_id, kode_barang: a.kode_barang, nama: a.nama, tanggal: Time.now, qty_in: a.jumlah, qty_out: 0, keterangan: "R", no_sj: a.no_sj, serial: a.serial)
+        StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
+          kode_barang: a.kode_barang, nama: a.nama, tanggal: Time.now, qty_in: a.jumlah, qty_out: 0,
+          keterangan: "R", no_sj: a.no_sj, serial: a.serial)
       else
         cek_kode.update_attributes(qty_in: (a.jumlah + cek_kode.qty_in))
       end
@@ -50,6 +60,7 @@ class ItemReceiptsController < ApplicationController
   private
 
   def get_store_id
-    @user_store = current_user.store.id
+    @user_store = current_user.store.present? ? current_user.store.id : 0
+    @user_showroom = current_user.showroom.present? ? current_user.showroom.id : 0
   end
 end

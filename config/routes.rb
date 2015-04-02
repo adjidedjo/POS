@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :channel_customers do
+    collection do
+      get "import_intransit"
+      post "proses_import_intransit"
+    end
+  end
+
   get 'return_items/return'
   put 'return_items/process_return'
   get 'return_items/return_by_serial'
@@ -18,7 +25,7 @@ Rails.application.routes.draw do
   get 'reports/selisih_intransit'
   get 'reports/selisih_retur'
 
-  devise_for :users, controllers: {registrations: "users/registrations"}
+  devise_for :users
   get 'page/home'
 
   resources :stores
@@ -37,7 +44,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :showrooms
+  resources :showrooms do
+    collection do
+      get "import_intransit"
+      post "proses_import_intransit"
+    end
+  end
 
   resources :venues
 

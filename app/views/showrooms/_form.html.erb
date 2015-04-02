@@ -6,7 +6,25 @@
   <%= f.input :city %>
   <%= error_span(@showroom[:city]) %>
 
+  <label>SPG/SPB</label>
+  <div class="row">
+    <%= f.simple_fields_for :sales_promotions do |builder| %>
+      <%= render "sales_promotion_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah SPG/SPB", f, :sales_promotions %>
+  </div>
+  <br />
+  <label>Merchants</label>
+
+  <div class="row">
+    <%= f.simple_fields_for :merchants do |builder| %>
+      <%= render "merchant_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Merchants", f, :merchants %>
+  </div>
+  <br />
+
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                showrooms_path, :class => 'btn btn-default' %>
+    showrooms_path, :class => 'btn btn-default' %>
 <% end %>

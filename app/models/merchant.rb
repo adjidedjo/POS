@@ -1,3 +1,3 @@
 class Merchant < ActiveRecord::Base
-  belongs_to :store
+  belongs_to :channel_customer
 end

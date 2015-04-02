@@ -1,0 +1,2 @@
+module ChannelCustomersHelper
+end

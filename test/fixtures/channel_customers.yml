@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  kode_channel_customer: MyString
+  channel_id: 1
+  nama: MyString
+  alamat: MyText
+  dari_tanggal: 2015-04-02
+  sampai_tanggal: 2015-04-02
+
+two:
+  kode_channel_customer: MyString
+  channel_id: 1
+  nama: MyString
+  alamat: MyText
+  dari_tanggal: 2015-04-02
+  sampai_tanggal: 2015-04-02

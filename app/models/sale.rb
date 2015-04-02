@@ -10,8 +10,10 @@ class Sale < ActiveRecord::Base
   belongs_to :salesman
   belongs_to :item
   belongs_to :store
+  belongs_to :showroom
   belongs_to :channel
   belongs_to :supervisor_exhibition
+  belongs_to :channel_customer
 
   validates :customer, :phone_number, :alamat_kirim, :email, :netto, :netto_elite, :netto_lady, :tanggal_kirim, :kota, presence: true
   validates :phone_number, numericality: true, length: {maximum: 12}
@@ -25,14 +27,18 @@ class Sale < ActiveRecord::Base
   end
 
   before_create do
-    get_no_sale = Sale.where(store_id: self.store_id).size
-    get_no_sale.nil? ? (self.no_sale = 1) : (self.no_sale = get_no_sale + 1)
-    no_sale = self.no_sale.to_s.rjust(4, '0')
-    bulan = Date.today.strftime('%m')
-    tahun = Date.today.strftime('%y')
-    kode_customer = self.store.kode_customer
+#    get_no_sale = Sale.where(store_id: self.store_id).size
+#    get_no_sale.nil? ? (self.no_sale = 1) : (self.no_sale = get_no_sale + 1)
+#    no_sale = self.no_sale.to_s.rjust(4, '0')
+#    bulan = Date.today.strftime('%m')
+#    tahun = Date.today.strftime('%y')
+#    kode_customer = self.store.kode_customer
 #    kode_cabang = self.store.branch.id.to_s.rjust(2, '0')
-    self.no_so = 'SOM''-'+kode_customer+'-'+tahun+bulan+'-'+no_sale
+    first_code = ChannelCustomer.find(channel_customer_id).channel.kode
+    self.no_so = loop do
+      random_token = first_code + SecureRandom.hex.first(6)
+      break random_token unless Sale.exists?(no_so: random_token)
+    end
     self.voucher = voucher.nil? ? 0 : voucher
   end
 

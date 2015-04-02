@@ -1,7 +1,7 @@
 <table style="layout: fixed" id="sales_rekap_so" class="display table-striped table-bordered" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th>Lokasi Pameran</th>
+      <th>Channel Customer</th>
       <th>Nama SPG/SPB</th>
       <th>No SO</th>
       <th>Tanggal SO</th>
@@ -48,8 +48,8 @@
   <tbody>
     <% @sales.each do |sale_item| %>
       <tr>
-        <td><%= sale_item.sale.store.nama %></td>
-        <td><%= sale_item.sale.store.sales_promotions.find(sale_item.sale.sales_promotion_id).nama.titleize %></td>
+        <td><%= sale_item.sale.channel_customer.nama %></td>
+        <td><%= sale_item.sale.channel_customer.sales_promotions.find(sale_item.sale.sales_promotion_id).nama.titleize %></td>
         <td><%= sale_item.sale.no_so %></td>
         <td><%= sale_item.sale.tanggal_kirim %></td>
         <td><%= sale_item.sale.customer %></td>
@@ -71,9 +71,9 @@
           <td><%= cc.no_merchant.present? ? cc.no_merchant : '-' %> </td>
           <td><%= cc.nama_merchant.present? ? cc.nama_merchant : '-' %> </td>
         <% end %>
-        <td><%= sale_item.sale.store.kode_customer %></td>
-        <td><%= sale_item.sale.store.from_period %></td>
-        <td><%= sale_item.sale.store.to_period %></td>
+        <td><%= sale_item.sale.channel_customer.kode_channel_customer %></td>
+        <td><%= sale_item.sale.channel_customer.dari_tanggal %></td>
+        <td><%= sale_item.sale.channel_customer.sampai_tanggal %></td>
         <td><%= sale_item.sale.phone_number %></td>
         <td><%= sale_item.sale.alamat_kirim %></td>
         <td><%= sale_item.sale.kota %></td>

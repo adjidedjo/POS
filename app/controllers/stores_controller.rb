@@ -111,6 +111,7 @@ class StoresController < ApplicationController
         no_sj: si.at_xpath("NoSJ").text,
         tanggal_sj: si.at_xpath("TglSJ").text.to_date,
         store_id: store_id,
+        showroom_id: 0,
         jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1)
       }
       item_hash = {

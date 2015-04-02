@@ -19,11 +19,11 @@ xml.data do
       xml.AlamatKirim sale_item.sale.alamat_kirim
       xml.Customer sale_item.sale.customer
       xml.Alamat1 sale_item.sale.alamat_kirim
-      xml.KodePameran sale_item.sale.store.kode_customer
-      xml.NamaPameran sale_item.sale.store.nama
-      xml.DariTanggal sale_item.sale.store.from_period.strftime("%m/%d/%Y")
-      xml.SampaiTanggal sale_item.sale.store.to_period.strftime("%m/%d/%Y")
-      xml.AsalSo sale_item.sale.store_id.nil? ? 'SHOWROOM' : 'PAMERAN'
+      xml.KodePameran sale_item.sale.channel_customer.kode_channel_customer
+      xml.NamaPameran sale_item.sale.channel_customer.nama
+      xml.DariTanggal sale_item.sale.channel_customer.dari_tanggal.strftime("%m/%d/%Y")
+      xml.SampaiTanggal sale_item.sale.channel_customer.sampai_tanggal.strftime("%m/%d/%Y")
+      xml.AsalSo sale_item.sale.channel_customer.channel.channel
       xml.SPG SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.capitalize
       xml.Taken (sale_item.taken? ? 'Y' : 'T')
       xml.Serial sale_item.serial.blank? ? '-' : sale_item.serial
@@ -61,4 +61,4 @@ set_file_name = Time.now.strftime("%d%m%Y%H%M%S")
 file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
 file.write(xml_data)
 file.close
-UserMailer.order_pameran(@email, "#{set_file_name}").deliver_now
+UserMailer.order_pameran(@email, "#{set_file_name}", @user).deliver_now

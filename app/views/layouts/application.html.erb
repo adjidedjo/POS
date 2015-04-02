@@ -52,34 +52,34 @@
               <li>
                 <% if current_user.admin? %>
                   <%= drop_down "Masters" do %>
-                    <%= menu_item "Intransit", new_store_path %>
+                    <%= menu_item "Channel Customers", channel_customers_path %>
                   <% end %>
-                <% end %>
-              </li>
-              <% if current_user.role == 'supervisor' %>
-                <%= drop_down "Masters" do %>
-                  <%= menu_item "Pameran", stores_path %>
-                  <%= menu_item "Intransit", new_store_path %>
-                <% end %>
+                <% else %>
+                </li>
                 <%= drop_down "Transaksi" do %>
-                  <li><%= link_to "Penerimaan Barang", item_receipts_receipt_path  %></li>
-                  <li><%= link_to "Sales Order", new_sale_path  %></li>
-                  <li><%= link_to "Nota Retur Display", return_items_return_path %></li>
+                  <%= menu_item "Penerimaan Barang", item_receipts_receipt_path  %>
+                  <%= menu_item "Sales Order", new_sale_path  %>
+                  <%= menu_item "Nota Retur Display", return_items_return_path %>
                 <% end %>
                 <%= drop_down "Export Rekap SO" do %>
-                  <li><%= link_to "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %></li>
-                  <li><%= link_to "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %></li>
+                  <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
+                  <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
                 <% end %>
                 <%= drop_down "Report" do %>
-                  <li><%= link_to "Rekap SO", reports_rekap_so_path %></li>
-                  <li><%= link_to "Laporan Mutasi Stock", reports_mutasi_stock_path   %></li>
-                  <li><%= link_to "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path   %></li>
-                  <li><%= link_to "Selisih Stock vs Retur Display", reports_selisih_retur_path  %></li>
+                  <%= menu_item "Rekap SO", reports_rekap_so_path %>
+                  <%= menu_item "Laporan Mutasi Stock", reports_mutasi_stock_path   %>
+                  <%= menu_item "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path   %>
+                  <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path  %>
                 <% end %>
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><%= link_to current_user.nama.titleize, '#' %></li>
+              <% unless current_user.admin? %>
+                <%= drop_down current_user.channel_customer.nama.upcase do %>
+                  <%= menu_item "Upload Intransit", import_intransit_channel_customers_path %>
+                  <%= menu_item "Pengaturan Akun", edit_channel_customer_path(current_user.channel_customer)   %>
+                <% end %>
+              <% end %>
               <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
             </ul>
           <% else %>

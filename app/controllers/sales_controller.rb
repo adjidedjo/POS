@@ -1,5 +1,6 @@
 class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
+  before_action :get_current_user, only: [:new, :show, :edit, :update, :destroy, :create]
 
   def get_second_mid_from_merchant
     @tenor = []
@@ -24,7 +25,8 @@ class SalesController < ApplicationController
   end
 
   def get_kode_barang_from_serial
-    kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_store_id_and_checked_in_and_checked_out(params[:kode_barang], 1, current_user.sales_promotion.store_id, true, false).kode_barang
+    kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_checked_in_and_checked_out_and_channel_customer_id(
+      params[:kode_barang], 1, true, false, current_user.channel_customer.id).kode_barang
     @kode = ExhibitionStockItem.find_by_kode_barang(kode_serial).kode_barang
     @nama = ExhibitionStockItem.find_by_kode_barang(kode_serial).nama
     @element_id = params[:element_id]
@@ -63,9 +65,9 @@ class SalesController < ApplicationController
     @sale.build_payment_with_debit_card
     2.times {@sale.payment_with_credit_cards.build}
     @channels = Channel.all
-    @merchant = current_user.store.merchants.group(:nama)
+    @merchant = current_user.channel_customer.merchants.group([:nama, :no_merchant])
     @tenor = []
-    @sales_promotion = current_user.store.sales_promotions
+    @sales_promotion = current_user.channel_customer.sales_promotions
 
     respond_to do |format|
       format.html
@@ -88,13 +90,10 @@ class SalesController < ApplicationController
   # POST /sales POST /sales.json
   def create
     @sale = Sale.new(sale_params)
-    @sale.user_id = current_user.id
+    @sale.channel_customer_id = current_user.channel_customer.id
     @sale.tipe_pembayaran = params[:tipe_pembayaran].join(';')
-    @sale.sale_items.each do |sale_item|
-      sale_item.user_id = current_user.id
-    end
-    @merchant = current_user.store.merchants
-    @sale.nama_kartu = current_user.sales_promotion.store.merchants.find_by_no_merchant(sale_params["no_merchant"]).nama if sale_params["tipe_pembayaran"] == 'kredit'
+    @merchant = current_user.channel_customer.merchants
+    @sale.nama_kartu = @merchant.find_by_no_merchant(sale_params["no_merchant"]).nama if sale_params["tipe_pembayaran"] == 'kredit'
 
     respond_to do |format|
       if @sale.save
@@ -151,6 +150,11 @@ class SalesController < ApplicationController
   end
 
   private
+
+  def get_current_user
+    @user = current_user.store.nil? ? current_user.showroom : current_user.store
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_sale
     @sale = Sale.find(params[:id])
@@ -159,6 +163,13 @@ class SalesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
-    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id, :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher, :sales_promotion_id, :sisa, :netto_elite, :netto_lady, :tanggal_kirim, :kota, sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial, :nama_barang, :user_id, :_destroy, :keterangan], payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah, :tenor, :mid], payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
+    params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id,
+      :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran,
+      :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher,
+      :sales_promotion_id, :sisa, :netto_elite, :netto_lady, :tanggal_kirim, :kota, :showroom_id,
+      sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
+        :nama_barang, :user_id, :_destroy, :keterangan],
+      payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah, :tenor, :mid],
+      payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
   end
 end

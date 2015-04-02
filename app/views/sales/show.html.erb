@@ -1,20 +1,13 @@
 <%- model_class = Sale -%>
 <div class="page-header">
-  <h1><%= @sale.no_so %></h1>
+  <h1><%= @sale.no_so.upcase %></h1>
 </div>
 
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>No Dealer:</strong> <%= @sale.store.kode_customer %></dt><br />
-    <dt><strong>Pameran:</strong> <%= @sale.store.nama %></dt><br />
+    <dt><strong>Channel Customer:</strong> <%= current_user.channel_customer.nama.titleize %></dt><br />
     <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d %B %Y') %></dt><br />
-  </div>
-  <div class="col-md-6">
-    <dt><strong>Periode Pameran:</strong> <%= @sale.store.from_period.nil? ? '' : @sale.store.from_period.strftime('%d %B %Y') %> - <%=  @sale.store.to_period.nil? ? '' : @sale.store.to_period.strftime('%d %B %Y') %></dt><br />
-    <dt><strong>Supervisor:</strong> <%= @sale.store.users.find_by_role("supervisor").nama.downcase.titleize %></dt><br />
-    <dt><strong>Spg/Spb:</strong> <%= @get_spg.nama.titleize %></dt><br />
-  </div>
-  <br />
+  </div><br />
   <div>
     <table id="sale_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
