@@ -3,11 +3,11 @@ class ChannelCustomer < ActiveRecord::Base
   belongs_to :user
   has_many :sales, dependent: :destroy
   has_many :sales_promotions, dependent: :destroy
-  accepts_nested_attributes_for :sales_promotions, reject_if: proc { |a| a['nama'].blank?}
+  accepts_nested_attributes_for :sales_promotions, allow_destroy: true, reject_if: proc { |a| a['nama'].blank?}
   has_many :merchants, dependent: :destroy
-  accepts_nested_attributes_for :merchants, reject_if: proc { |a| a['no_merchant'].blank?}
+  accepts_nested_attributes_for :merchants, allow_destroy: true, reject_if: proc { |a| a['no_merchant'].blank?}
   has_many :supervisor_exhibitions, dependent: :destroy
-  accepts_nested_attributes_for :supervisor_exhibitions, reject_if: proc { |a| a['nama'].blank?}
+  accepts_nested_attributes_for :supervisor_exhibitions, allow_destroy: true, reject_if: proc { |a| a['nama'].blank?}
 
   validates :nama, :channel_id, :alamat, :kota, presence: true
 

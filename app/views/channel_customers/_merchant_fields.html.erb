@@ -4,7 +4,7 @@
   <%= f.select :tenor, options_for_select(["Reguler", "Debit", "3 Bulan", "6 Bulan", "12 Bulan"],
     selected: (f.object.nil? ? '' : f.object.tenor)), include_blank: '--Pilih Tenor--' %>
   <%= f.input_field :mid, :placeholder => 'MID' %>
-  <%= link_to "remove", '#', class: "remove_fields  btn btn-danger btn-xs" %>
     <%= f.hidden_field :_destroy %>
+  <%= link_to "remove", '#', class: "remove_fields  btn btn-danger btn-xs" %>
   </fieldset>
   <br />
