@@ -128,7 +128,8 @@ class PosPdf < Prawn::Document
                 :at => [420, cursor - 9], :width => 60, :height => 50, :align => :right
             end
             debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
-            total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)
+            transfer = @order.jumlah_transfer.nil? ? 0 : @order.jumlah_transfer
+            total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)+transfer
             text_box "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
               :at => [420, cursor - 19], :width => 60, :height => 50, :align => :right
             text_box "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :at => [420, cursor - 29], :width => 60, :height => 50, :align => :right
