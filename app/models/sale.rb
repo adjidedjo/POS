@@ -6,6 +6,8 @@ class Sale < ActiveRecord::Base
   has_many :payment_with_credit_cards, inverse_of: :sale, dependent: :destroy
   accepts_nested_attributes_for :payment_with_credit_cards
   accepts_nested_attributes_for :sale_items, reject_if: proc { |a| a['kode_barang'].blank?}
+  has_many :netto_sale_brands
+  has_many :brands, through: :netto_sale_brands
   belongs_to :branch
   belongs_to :salesman
   belongs_to :item
@@ -80,7 +82,11 @@ class Sale < ActiveRecord::Base
     transfer = self.jumlah_transfer.nil? ? 0 : self.jumlah_transfer
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
-    self.update_attributes!(cara_bayar: ket_lunas, netto_elite: total_bayar.to_i/2, netto_lady: total_bayar.to_i/2)
+    self.update_attributes!(cara_bayar: ket_lunas)
+    sum_brand = self.sale_items.where(bonus: false).group("brand_id").count.size
+    self.sale_items.where(bonus: false).group("brand_id").each do |a|
+      NettoSaleBrand.create(brand_id: a.brand_id, sale_id: self.id, netto: total_bayar/sum_brand)
+    end
   end
 
   def paid_with_credit?

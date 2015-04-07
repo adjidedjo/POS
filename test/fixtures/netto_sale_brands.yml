@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  brand_id: 1
+  sale_id: 1
+  netto: 9.99
+
+two:
+  brand_id: 1
+  sale_id: 1
+  netto: 9.99
