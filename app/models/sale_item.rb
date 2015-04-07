@@ -1,5 +1,5 @@
 class SaleItem < ActiveRecord::Base
-  belongs_to :sale
+  belongs_to :sale, inverse_of: :sale_items
   belongs_to :user
 
   validates :serial, uniqueness: true, if: "serial.present?"

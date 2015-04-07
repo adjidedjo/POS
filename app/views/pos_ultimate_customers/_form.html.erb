@@ -1,0 +1,17 @@
+<%= simple_form_for(@pos_ultimate_customer) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :nama %>
+    <%= f.input :alamat %>
+    <%= f.input :email %>
+    <%= f.input :no_telepon %>
+    <%= f.input :handphone %>
+    <%= f.input :handphone1 %>
+    <%= f.input :kode_customer %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

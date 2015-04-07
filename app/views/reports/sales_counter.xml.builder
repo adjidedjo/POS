@@ -16,13 +16,14 @@ xml.data do
       xml.NoPo sale_item.sale.no_so
       xml.keterangan sale_item.keterangan.blank? ? "-"  : sale_item.keterangan
       xml.TglDelivery sale_item.tanggal_kirim.strftime("%m/%d/%Y")
-      xml.AlamatKirim sale_item.sale.alamat_kirim
-      xml.Customer sale_item.sale.customer
-      xml.Alamat1 sale_item.sale.alamat_kirim
+      xml.AlamatKirim sale_item.sale.pos_ultimate_customer.alamat
+      xml.Customer sale_item.sale.pos_ultimate_customer.nama
+      xml.Alamat1 sale_item.sale.pos_ultimate_customer.alamat
       xml.KodePameran sale_item.sale.channel_customer.kode_channel_customer
       xml.NamaPameran sale_item.sale.channel_customer.nama
-      xml.DariTanggal sale_item.sale.channel_customer.dari_tanggal.strftime("%m/%d/%Y")
-      xml.SampaiTanggal sale_item.sale.channel_customer.sampai_tanggal.strftime("%m/%d/%Y")
+      siscc = sale_item.sale.channel_customer
+      xml.DariTanggal siscc.dari_tanggal.nil? ? '' : siscc.dari_tanggal.strftime("%m/%d/%Y")
+      xml.SampaiTanggal siscc.sampai_tanggal.nil? ? '' : siscc.sampai_tanggal.strftime("%m/%d/%Y")
       xml.AsalSo sale_item.sale.channel_customer.channel.channel
       xml.SPG SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.capitalize
       xml.Taken (sale_item.taken? ? 'Y' : 'T')
@@ -30,9 +31,9 @@ xml.data do
       item = Item.find_by_kode_barang(sale_item.kode_barang)
       xml.PriceList item.nil? ? '0' : item.harga
       xml.Voucher sale_item.sale.voucher
-      xml.Phone sale_item.sale.phone_number
-      xml.Hp1 sale_item.sale.hp1.blank? ? '-' : sale_item.sale.hp1
-      xml.Hp2 sale_item.sale.hp2.blank? ? '-' : sale_item.sale.hp2
+      xml.Phone sale_item.sale.pos_ultimate_customer.no_telepon
+      xml.Hp1 sale_item.sale.pos_ultimate_customer.handphone.blank? ? '-' : sale_item.sale.pos_ultimate_customer.handphone
+      xml.Hp2 sale_item.sale.pos_ultimate_customer.handphone1.blank? ? '-' : sale_item.sale.pos_ultimate_customer.handphone1
       xml.HargaNetto sale_item.sale.netto
       dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah))
       xml.DP dp

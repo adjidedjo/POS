@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Pos Ultimate Customers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Alamat</th>
+      <th>Email</th>
+      <th>No telepon</th>
+      <th>Handphone</th>
+      <th>Handphone1</th>
+      <th>Kode customer</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pos_ultimate_customers.each do |pos_ultimate_customer| %>
+      <tr>
+        <td><%= pos_ultimate_customer.nama %></td>
+        <td><%= pos_ultimate_customer.alamat %></td>
+        <td><%= pos_ultimate_customer.email %></td>
+        <td><%= pos_ultimate_customer.no_telepon %></td>
+        <td><%= pos_ultimate_customer.handphone %></td>
+        <td><%= pos_ultimate_customer.handphone1 %></td>
+        <td><%= pos_ultimate_customer.kode_customer %></td>
+        <td><%= link_to 'Show', pos_ultimate_customer %></td>
+        <td><%= link_to 'Edit', edit_pos_ultimate_customer_path(pos_ultimate_customer) %></td>
+        <td><%= link_to 'Destroy', pos_ultimate_customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Pos ultimate customer', new_pos_ultimate_customer_path %>

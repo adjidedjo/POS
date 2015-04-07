@@ -35,10 +35,10 @@
     </table>
   </div>
   <div class="col-md-4">
-    <dt><strong>Nama Customer :</strong> <%= @sale.customer.capitalize %></dt><br />
-    <dt><strong>No Telp/Hp          :</strong> <%= @sale.phone_number %>, <%= @sale.hp1 %>, <%= @sale.hp2 %></dt><br />
-    <dt><strong>Alamat Kirim       :</strong> <%= @sale.alamat_kirim %></dt><br />
-    <dt><strong>Kota       :</strong> <%= @sale.kota %></dt>
+    <dt><strong>Nama Customer :</strong> <%= @sale.pos_ultimate_customer.nama.capitalize %></dt><br />
+    <dt><strong>No Telp/Hp          :</strong> <%= @sale.pos_ultimate_customer.no_telepon %>, <%= @sale.pos_ultimate_customer.handphone %>, <%= @sale.pos_ultimate_customer.handphone1 %></dt><br />
+    <dt><strong>Alamat Kirim       :</strong> <%= @sale.pos_ultimate_customer.alamat %></dt><br />
+    <dt><strong>Kota       :</strong> <%= @sale.pos_ultimate_customer.kota %></dt>
   </div>
   <br />
   <div class="col-md-7">

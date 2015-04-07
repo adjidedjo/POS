@@ -1,5 +1,17 @@
 jQuery ->
 
+  $('#sale_nama').autocomplete
+    source: $('#sale_nama').data('autocomplete-source'),
+    select: (event, ui) ->
+       $.ajax
+        url: '/pos_ultimate_customers/get_customer_info',
+        data: {'nama': ui.item.value},
+        datatype: 'script'
+    response: (event, ui) ->
+      if (ui.content.length == 0)
+        $('#sale_email, #sale_no_telepon, #sale_handphone, #sale_handphone1, #sale_alamat, #sale_kota').each ->
+          $(this).val('')
+
   serial_change = () -> $('.serial').on 'change', () ->
     get_id = "sale_sale_items_attributes_0_serial"
     jumlah = get_id.replace("serial", "jumlah")
@@ -41,6 +53,9 @@ jQuery ->
         required: true
       "sale_sales_promotion_id":
         required: true
+      "sale_pembayaran":
+        required: (element) ->
+          $('#tipe_pembayaran_').val('Tunai').is(':checked')
 
   $('#check_all').click ->
     if @checked
@@ -97,7 +112,10 @@ jQuery ->
     total_credit = Math.floor(credit) + Math.floor(credit1)
     document.getElementById('span_credit').innerHTML = addCommas(total_credit)
 
-    total_payment = Math.floor(total_credit)+Math.floor(debit)+Math.floor(pembayaran)
+    transfer = document.getElementById('sale_jumlah_transfer').value
+    document.getElementById('span_transfer').innerHTML = addCommas(transfer)
+
+    total_payment = Math.floor(total_credit)+Math.floor(debit)+Math.floor(pembayaran)+Math.floor(transfer)
     voucher = document.getElementById('sale_voucher').value
     document.getElementById('span_voucher').innerHTML = addCommas(voucher)
     c = document.getElementById('sale_sisa').value = netto - voucher - total_payment

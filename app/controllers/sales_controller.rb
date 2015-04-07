@@ -68,6 +68,7 @@ class SalesController < ApplicationController
     @merchant = current_user.channel_customer.merchants.group([:nama, :no_merchant])
     @tenor = []
     @sales_promotion = current_user.channel_customer.sales_promotions
+    @ultimate_customer = PosUltimateCustomer.order(:nama).map(&:nama)
 
     respond_to do |format|
       format.html
@@ -93,7 +94,8 @@ class SalesController < ApplicationController
     @sale.channel_customer_id = current_user.channel_customer.id
     @sale.tipe_pembayaran = params[:tipe_pembayaran].join(';')
     @merchant = current_user.channel_customer.merchants
-    @sale.nama_kartu = @merchant.find_by_no_merchant(sale_params["no_merchant"]).nama if sale_params["tipe_pembayaran"] == 'kredit'
+    get_credit_card = sale_params["tipe_pembayaran"].split(";").include?('Credit Card') if sale_params["tipe_pembayaran"].present?
+    @sale.nama_kartu = @merchant.find_by_no_merchant(sale_params["no_merchant"]).nama if get_credit_card == true
 
     respond_to do |format|
       if @sale.save
@@ -164,12 +166,13 @@ class SalesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def sale_params
     params.require(:sale).permit(:asal_so, :salesman_id, :nota_bene, :keterangan_customer, :venue_id,
-      :customer, :phone_number, :hp1, :hp2, :alamat_kirim, :so_manual, :store_id, :channel_id, :tipe_pembayaran,
-      :no_kartu, :no_merchant, :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :email, :voucher,
-      :sales_promotion_id, :sisa, :netto_elite, :netto_lady, :tanggal_kirim, :kota, :showroom_id,
+      :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_merchant,
+      :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :voucher, :sales_promotion_id, :sisa,
+      :netto_elite, :netto_lady, :tanggal_kirim, :showroom_id, :channel_customer_id, :nama, :email, :alamat, :no_telepon,
+      :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
         :nama_barang, :user_id, :_destroy, :keterangan],
-      payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu, :atas_nama, :jumlah, :tenor, :mid],
-      payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu, :atas_nama, :jumlah])
+      payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
+      payment_with_debit_card_attributes: [:id, :nama_kartu, :no_kartu_debit, :atas_nama, :jumlah])
   end
 end
