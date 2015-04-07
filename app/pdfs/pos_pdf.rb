@@ -40,18 +40,18 @@ class PosPdf < Prawn::Document
           draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 370, bounds.top - 7]), 0])
           draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 370, bounds.top - 18]), 0])
           draw_text("#{@order.channel_customer.nama.titleize}", :size => 8, :at => [([bounds.left + 375, bounds.top - 7]), 0])
-#          draw_text("#{@order.showroom.address.titleize}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
+          #          draw_text("#{@order.showroom.address.titleize}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
           y_position = cursor - 12.5
-            excess_text = text_box "#{@order.channel_customer.alamat.titleize}",
-              :width => 140,
-              :height => 500,
-              :overflow => :truncate,
-              :at => [375, y_position],
-              :size => 8
+          excess_text = text_box "#{@order.channel_customer.alamat.titleize}",
+            :width => 140,
+            :height => 500,
+            :overflow => :truncate,
+            :at => [375, y_position],
+            :size => 8
 
-            text_box excess_text,
-              :width => 200,
-              :at => [500,y_position-100]
+          text_box excess_text,
+            :width => 200,
+            :at => [500,y_position-100]
         else
           draw_text("Exhibition", :size => 8, :style => :bold, :at => [([bounds.left + 325, bounds.top - 7]), 0])
           draw_text("Exhibition Period", :size => 8, :style => :bold, :at => [([bounds.left  + 325, bounds.top - 18]), 0])
@@ -96,10 +96,10 @@ class PosPdf < Prawn::Document
             draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 70, bounds.top - 3]), 0])
             draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 70, bounds.top - 13]), 0])
             draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 70, bounds.top - 23]), 0])
-            draw_text("#{@order.customer}", :size => 8, :at => [([bounds.left + 75, bounds.top - 3]), 0])
-            draw_text("#{@order.phone_number}, #{@order.hp1}, #{@order.hp2}", :size => 8, :at => [([bounds.left + 75, bounds.top - 13]), 0])
-            y_position = cursor - 17
-            excess_text = text_box "#{@order.alamat_kirim.capitalize+". "+@order.kota.to_s.capitalize}",
+            draw_text("#{@order.pos_ultimate_customer.nama.titleize}", :size => 8, :at => [([bounds.left + 75, bounds.top - 3.3]), 0])
+            draw_text("#{@order.pos_ultimate_customer.no_telepon}, #{@order.pos_ultimate_customer.handphone}, #{@order.pos_ultimate_customer.handphone1}", :size => 8, :at => [([bounds.left + 75, bounds.top - 13.5]), 0])
+            y_position = cursor - 18
+            excess_text = text_box "#{@order.pos_ultimate_customer.alamat.capitalize+". "+@order.pos_ultimate_customer.kota.to_s.capitalize}",
               :width => 200,
               :height => 50,
               :overflow => :truncate,
@@ -155,7 +155,7 @@ class PosPdf < Prawn::Document
       end
     end
 
-    bounding_box([0, cursor], :width => 100) do
+    bounding_box([0, cursor + 10], :width => 100, :height => 41) do
       indent 5 do
         move_down 15
         bounding_box([0, cursor], :width => 100.4) do
@@ -169,10 +169,10 @@ class PosPdf < Prawn::Document
       end
     end
 
-    bounding_box([100, cursor + 39], :width => 422) do
+    bounding_box([100, cursor + 45.5], :width => 422) do
       move_down 5
       indent 5 do
-        bounding_box([0, cursor - 0.5], :width => 100.4) do
+        bounding_box([0, cursor], :width => 100.4) do
           text "Method of Payment :", :size => 8, :style => :bold
         end
       end
@@ -188,20 +188,26 @@ class PosPdf < Prawn::Document
           bounding_box([0, cursor], :width => 100.4) do
             debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
             text "Cash", :size => 6
+            text "Transfer", :size => 6
             text "Debit Card", :size => 6
             text "Credit Card", :size => 6
           end
-          bounding_box([50, cursor + 20.5], :width => 40.4) do
+          bounding_box([50, cursor + 27.5], :width => 50.4) do
             debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
           end
-          bounding_box([0, cursor + 21], :width => 100.4) do
+          bounding_box([0, cursor + 28], :width => 100.4) do
             debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
-            text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
+            text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6,
+              :align => :right
+            text "#{number_to_currency(@order.jumlah_transfer.nil? ? 0 : @order.jumlah_transfer, precision:0, unit: "",
+            separator: ".", delimiter: ".")}", :size => 6, :align => :right
             text "#{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
-            text "#{number_to_currency(@order.payment_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
+            text "#{number_to_currency(@order.payment_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".",
+            delimiter: ".")}", :size => 6, :align => :right
           end
         end
       end

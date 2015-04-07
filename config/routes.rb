@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :bank_accounts
+
+  resources :pos_ultimate_customers do
+    collection do
+      get 'get_customer_info'
+    end
+  end
+
   resources :channel_customers do
     collection do
       get "import_intransit"
