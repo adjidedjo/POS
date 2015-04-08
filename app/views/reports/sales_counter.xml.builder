@@ -36,7 +36,7 @@ xml.data do
       xml.Hp1 sale_item.sale.pos_ultimate_customer.handphone.blank? ? '-' : sale_item.sale.pos_ultimate_customer.handphone
       xml.Hp2 sale_item.sale.pos_ultimate_customer.handphone1.blank? ? '-' : sale_item.sale.pos_ultimate_customer.handphone1
       xml.HargaNetto sale_item.sale.netto
-      dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah))
+      dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah)+sale_item.sale.jumlah_transfer)
       xml.DP dp
       xml.Sisa sale_item.sale.sisa
       xml.TipePembayaran sale_item.sale.tipe_pembayaran
@@ -55,6 +55,9 @@ xml.data do
       xml.ExSJ sale_item.ex_no_sj.blank? ? '-' : sale_item.ex_no_sj
       netto_brand = sale_item.brand_id == 2 ? sale_item.sale.netto_elite : sale_item.sale.netto_lady
       xml.NettoBrand netto_brand
+      xml.NamaRekening sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name
+      xml.NoRekening sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number
+      xml.JumlahTransfer sale_item.sale.jumlah_transfer
     end
   end
 end
