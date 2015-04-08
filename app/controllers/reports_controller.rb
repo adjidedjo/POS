@@ -36,6 +36,7 @@ class ReportsController < ApplicationController
         @sales << sale_item
       end
     end
+
     respond_to do |format|
       format.html
       format.xls

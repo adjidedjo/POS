@@ -8,7 +8,6 @@
       <th class="all">No SO</th>
       <th class="all"><%= model_class.human_attribute_name(:customer) %></th>
       <th class="min-tablet-l"><%= model_class.human_attribute_name(:phone_number) %></th>
-      <th class="min-tablet-l"><%= model_class.human_attribute_name(:nota_bene) %></th>
       <th class="min-tablet-l"><%= model_class.human_attribute_name(:so_manual) %></th>
       <th class="all"><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -18,9 +17,8 @@
     <% @sales.each do |sale| %>
       <tr>
         <td><%= link_to sale.no_so, sale_path(sale) %></td>
-        <td><%= sale.customer %></td>
-        <td><%= sale.phone_number %></td>
-        <td><%= sale.nota_bene %></td>
+        <td><%= sale.pos_ultimate_customer.nama %></td>
+        <td><%= sale.pos_ultimate_customer.no_telepon %></td>
         <td><%= sale.so_manual %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

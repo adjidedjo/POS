@@ -38,7 +38,7 @@ class SalesController < ApplicationController
 
   # GET /sales GET /sales.json
   def index
-    @sales = current_user.role == 'supervisor' ? current_user.supervisor_exhibition.sales.where(cancel_order: false) : Sale.where(user_id: current_user.id, cancel_order: false)
+    @sales = Sale.all
     @items = Item.all
   end
 

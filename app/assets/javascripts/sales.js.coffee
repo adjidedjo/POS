@@ -154,15 +154,22 @@ jQuery ->
     get_second_tenor()
     get_first_tenor()
 
+    $('#all_item_pos').DataTable({
+      bInfo: false,
+      responsive: true,
+      bDestroy: true
+    })
     $('#index_of_sales').DataTable()
-    $('#sale_items').DataTable({
+    $('#sale_item').DataTable({
       bPaginate: false,
       bFilter: false,
-      bInfo: false
+      bInfo: false,
+      bDestroy: true
     })
     $('#index_of_reports').DataTable({
       bInfo: false,
-      responsive: true
+      responsive: true,
+      bDestroy: true
     })
     $('#of_sales').DataTable({
       bPaginate: false,
@@ -171,7 +178,8 @@ jQuery ->
       bAutoWidth: false,
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ -1,0,1,2,3,4,5,6,7 ] }
-      ]
+      ],
+      bDestroy: true
     })
 
     $('form').on 'click', '.add_fields', (event) ->

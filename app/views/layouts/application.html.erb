@@ -55,6 +55,9 @@
                     <%= menu_item "Channel Customers", channel_customers_path %>
                     <%= menu_item "Ultimate Customers", pos_ultimate_customers_path %>
                   <% end %>
+                <%= drop_down "Report" do %>
+                  <%= menu_item "Penjualan", sales_path %>
+                <% end %>
                 <% else %>
                 </li>
                 <%= drop_down "Stok" do %>

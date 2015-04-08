@@ -5,11 +5,11 @@
 
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>Channel Customer:</strong> <%= current_user.channel_customer.nama.titleize %></dt><br />
+    <dt><strong>Channel Customer:</strong> <%= @sale.channel_customer.nama.titleize %></dt><br />
     <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d %B %Y') %></dt><br />
   </div><br />
   <div>
-    <table id="sale_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+    <table id="sale_item" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
           <th class="all">Kode Barang</th>
