@@ -11,12 +11,22 @@ class ChannelCustomer < ActiveRecord::Base
 
   validates :nama, :channel_id, :alamat, :kota, presence: true
 
+  before_create do
+    up_nama = nama.upcase
+    if up_nama.include?("SHOWROOM") or up_nama.include?("PAMERAN")
+      get_word = up_nama.partition(' ').first
+      self.nama = up_nama.gsub(get_word,'').strip.downcase
+    end
+  end
+
   after_create do
     get_email = (self.nama.partition(' ').first) + "@ras.co.id"
     new_password = (self.nama.partition(' ').first) + "*54321"
+    new_username = (self.channel.kode.downcase+self.nama.partition(' ').first)
     user_hash = {
       email: get_email,
-      password: new_password
+      password: new_password,
+      username: new_username
     }
     user = User.where(email: get_email).first_or_create(user_hash)
     self.update_attributes!(user_id: user.id)

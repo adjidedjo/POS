@@ -15,6 +15,7 @@ class PosUltimateCustomersController < ApplicationController
     @pos_ultimate_customers = PosUltimateCustomer.order(:nama).where("nama like ?", "%#{params[:term]}%")
 
     respond_to do |format|
+      format.html
       format.json {render json: @pos_ultimate_customers.map(&:nama)}
     end
   end

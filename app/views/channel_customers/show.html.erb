@@ -1,10 +1,11 @@
 <%- model_class = Store -%>
 <div class="page-header">
-  <h1><%= @channel_customer.nama %></h1>
+  <h1><%= @channel_customer.nama.titleize %></h1>
 </div>
 
 <div class="row">
   <div class="col-md-6">
+    <dt><strong>Channel:</strong> <%= @channel_customer.channel.channel %></dt><br />
     <dt><strong>Alamat:</strong> <%= @channel_customer.alamat.titleize %></dt><br />
     <dt><strong>Kota:</strong> <%= @channel_customer.kota.titleize %></dt><br />
     <%  if @channel_customer.dari_tanggal.present? %>
