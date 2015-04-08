@@ -2,7 +2,7 @@
 
 <h1>Listing Pos Ultimate Customers</h1>
 
-<table>
+<table class="display table table-striped table-bordered responsive nowrap">
   <thead>
     <tr>
       <th>Nama</th>
@@ -11,24 +11,20 @@
       <th>No telepon</th>
       <th>Handphone</th>
       <th>Handphone1</th>
-      <th>Kode customer</th>
-      <th colspan="3"></th>
+      <th>Action</th>
     </tr>
   </thead>
 
   <tbody>
     <% @pos_ultimate_customers.each do |pos_ultimate_customer| %>
       <tr>
-        <td><%= pos_ultimate_customer.nama %></td>
+        <td><%= pos_ultimate_customer.nama.titleize %></td>
         <td><%= pos_ultimate_customer.alamat %></td>
         <td><%= pos_ultimate_customer.email %></td>
         <td><%= pos_ultimate_customer.no_telepon %></td>
         <td><%= pos_ultimate_customer.handphone %></td>
         <td><%= pos_ultimate_customer.handphone1 %></td>
-        <td><%= pos_ultimate_customer.kode_customer %></td>
-        <td><%= link_to 'Show', pos_ultimate_customer %></td>
-        <td><%= link_to 'Edit', edit_pos_ultimate_customer_path(pos_ultimate_customer) %></td>
-        <td><%= link_to 'Destroy', pos_ultimate_customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_pos_ultimate_customer_path(pos_ultimate_customer), class: "btn btn-info btn-xs" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -36,4 +32,4 @@
 
 <br>
 
-<%= link_to 'New Pos ultimate customer', new_pos_ultimate_customer_path %>
+<%= link_to 'New Pos ultimate customer', new_pos_ultimate_customer_path, class: "btn btn-primary" %>
