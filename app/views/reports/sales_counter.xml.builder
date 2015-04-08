@@ -25,7 +25,8 @@ xml.data do
       xml.DariTanggal siscc.dari_tanggal.nil? ? '' : siscc.dari_tanggal.strftime("%m/%d/%Y")
       xml.SampaiTanggal siscc.sampai_tanggal.nil? ? '' : siscc.sampai_tanggal.strftime("%m/%d/%Y")
       xml.AsalSo sale_item.sale.channel_customer.channel.channel
-      xml.SPG SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.capitalize
+      xml.SPG sale_item.sale.sales_promotion_id.nil? ? @user.channel_customer.nama.titleize :
+  sale_item.sale.channel_customer.sales_promotions.find(sale_item.sale.sales_promotion_id).nama.titleize
       xml.Taken (sale_item.taken? ? 'Y' : 'T')
       xml.Serial sale_item.serial.blank? ? '-' : sale_item.serial
       item = Item.find_by_kode_barang(sale_item.kode_barang)
