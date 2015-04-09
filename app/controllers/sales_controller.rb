@@ -2,6 +2,16 @@ class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :destroy, :create]
 
+  def exhibition_stock
+    @stock = ExhibitionStockItem.order(:serial).where("serial like ? and channel_customer_id = ? and checked_in = true",
+      "%#{params[:term]}%", current_user.channel_customer.id)
+
+    respond_to do |format|
+      format.html
+      format.json {render json: @stock.map(&:serial)}
+    end
+  end
+
   def get_second_mid_from_merchant
     @tenor = []
     Merchant.where(no_merchant: params[:merchant]).each do |nm|

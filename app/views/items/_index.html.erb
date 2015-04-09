@@ -8,6 +8,7 @@
       <%= hidden_field_tag "kode_barang" %>
       <%= hidden_field_tag "nama_barang" %>
       <%= hidden_field_tag "jumlah" %>
+      <%= hidden_field_tag "serial" %>
       <table id="all_item_pos" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
         <thead>
           <tr>
@@ -23,7 +24,8 @@
               <td><%= Brand.find(item.brand_id).brand %></td>
               <td><%= item.kode_barang %></td>
               <td><%= item.nama %></td>
-              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"), :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
+              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"),
+  :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
               </tr>
             <% end %>
           </tbody>

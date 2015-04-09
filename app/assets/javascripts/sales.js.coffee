@@ -16,25 +16,28 @@ jQuery ->
                $('#sale_email, #sale_no_telepon, #sale_handphone, #sale_handphone1, #sale_alamat, #sale_kota').each ->
                $(this).val('')
 
-    serial_change = () -> $('.serial').on 'change', () ->
+    serial_change = () -> $('.serial').on 'focus', () ->
       get_id = "sale_sale_items_attributes_0_serial"
       jumlah = get_id.replace("serial", "jumlah")
       kode_barang = get_id.replace("serial", "kode_barang")
       nama_barang = get_id.replace("serial", "nama_barang")
-      $.ajax
-        url: '/sales/get_kode_barang_from_serial',
-        data: {'kode_barang': $('.serial').val(), 'element_id': $(this).attr("id")},
-        datatype: 'script',
-        success: () ->
-          document.getElementById(kode_barang).disabled = true
-        error: () ->
-          alert "Serial yang anda masukan tidak terdaftar"
-          document.getElementById(jumlah).readOnly = false
-          document.getElementById(kode_barang).value = ""
-          document.getElementById(kode_barang).disabled = false
-          document.getElementById(nama_barang).value = ""
-          document.getElementById(kode_barang).value = ""
-          document.getElementById(jumlah).value = ""
+      $('#sale_sale_items_attributes_0_serial').autocomplete
+        source: $('#sale_sale_items_attributes_0_serial').data('autocomplete-source'),
+        select: (event, ui) ->
+          $.ajax
+            url: '/sales/get_kode_barang_from_serial',
+            data: {'kode_barang': ui.item.value, 'element_id': $(this).attr("id")},
+            datatype: 'script',
+            success: () ->
+              document.getElementById(kode_barang).readOnly = true
+            error: () ->
+              alert "Serial yang anda masukan tidak terdaftar"
+              document.getElementById(jumlah).readOnly = false
+              document.getElementById(kode_barang).value = ""
+              document.getElementById(kode_barang).disabled = false
+              document.getElementById(nama_barang).value = ""
+              document.getElementById(kode_barang).value = ""
+              document.getElementById(jumlah).value = ""
 
     get_first_tenor = () -> $('#sale_payment_with_credit_cards_attributes_0_no_merchant').on 'change', () ->
       get_id = "sale_payment_with_credit_cards_attributes_0_no_merchant"
@@ -134,9 +137,11 @@ jQuery ->
       $('#kode_barang').val(($(this).attr("id")))
       $('#nama_barang').val(($(this).attr("id")).replace("kode", "nama"))
       $('#jumlah').val(($(this).attr("id")).replace("kode_barang", "jumlah"))
+      $('#serial').val(($(this).attr("id")).replace("kode_barang", "serial"))
       $('#modal-content').modal('show')
 
     add_item_to_table = () -> $('.add_to_sales').on 'click', () ->
+      document.getElementById($('#serial').val()).value = ''
       document.getElementById($('#kode_barang').val()).value = $(this).data('kode')
       document.getElementById($('#nama_barang').val()).value = $(this).data('nama')
       document.getElementById($('#jumlah').val()).value = 1
@@ -194,18 +199,20 @@ jQuery ->
       open_modal()
       date_picker()
       serial_doc = document.getElementById(get_id)
-      serial_doc.addEventListener 'change', () ->
-        $.ajax
-          url: '/sales/get_kode_barang_from_serial',
-          data: {'kode_barang': $(this).val(), 'element_id': $(this).attr("id")},
-          datatype: 'script',
-          error: () ->
-            alert "Serial yang anda masukan tidak terdaftar"
-            document.getElementById(jumlah).readOnly = false
-            document.getElementById(kode_barang).readOnly = false
-            document.getElementById(nama_barang).value = ""
-            document.getElementById(kode_barang).value = ""
-            document.getElementById(jumlah).value = ""
+      $("#sale_sale_items_attributes_"+time+"_serial").autocomplete
+        source: $("#sale_sale_items_attributes_"+time+"_serial").data('autocomplete-source'),
+        select: (event, ui) ->
+          $.ajax
+            url: '/sales/get_kode_barang_from_serial',
+            data: {'kode_barang': ui.item.value, 'element_id': $(this).attr("id")},
+            datatype: 'script',
+            error: () ->
+              alert "Serial yang anda masukan tidak terdaftar"
+              document.getElementById(jumlah).readOnly = false
+              document.getElementById(kode_barang).readOnly = false
+              document.getElementById(nama_barang).value = ""
+              document.getElementById(kode_barang).value = ""
+              document.getElementById(jumlah).value = ""
 
     $('form').on 'click', '.remove_fields', (event) ->
       $(this).prev('input[type=hidden]').val('1')
