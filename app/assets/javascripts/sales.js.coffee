@@ -4,6 +4,21 @@ jQuery ->
 
   $(document).on "ready page:load", ->
 
+    setCharAt = (str, index, chr) ->
+      if index > str.length - 1
+        return str
+      str.substr(0, index) + chr + str.substr(index + 1)
+
+    resize_items = () -> $('.resize_fields').on 'click', (event) ->
+      serial_id =  $(this).closest('fieldset').find("input[class='kode_barang']").attr("id")
+      nama_barang_id = serial_id.replace("kode_barang", "nama_barang")
+      document.getElementById(serial_id).readOnly = false
+      document.getElementById(nama_barang_id).readOnly = false
+      str_value = document.getElementById(serial_id).value
+      t_value = setCharAt(str_value,11,'T')
+      document.getElementById(serial_id).value = t_value
+      event.preventDefault()
+
     $('#sale_nama').autocomplete
       source: $('#sale_nama').data('autocomplete-source'),
       select: (event, ui) ->
@@ -145,6 +160,8 @@ jQuery ->
       document.getElementById($('#kode_barang').val()).value = $(this).data('kode')
       document.getElementById($('#nama_barang').val()).value = $(this).data('nama')
       document.getElementById($('#jumlah').val()).value = 1
+      document.getElementById($('#kode_barang').val()).readOnly = true
+      document.getElementById($('#nama_barang').val()).readOnly = true
       $('#modal-content').modal('hide')
 
     date_picker = () -> $('.tanggal_kirim').datepicker({
@@ -158,6 +175,7 @@ jQuery ->
     serial_change()
     get_second_tenor()
     get_first_tenor()
+    resize_items()
 
     $('#all_item_pos').DataTable({
       bInfo: false,
@@ -195,6 +213,7 @@ jQuery ->
       jumlah = get_id.replace("serial", "jumlah")
       kode_barang = get_id.replace("serial", "kode_barang")
       nama_barang = get_id.replace("serial", "nama_barang")
+      resize_items()
       event.preventDefault()
       open_modal()
       date_picker()

@@ -30,8 +30,8 @@
       </div>
     </div>
     <hr>
-    <div class="row">
-      <%= f.simple_fields_for :sale_items, as: 'user_inline', wrapper: :inline_form, html: { class: 'form-inline' } do |builder| %>
+    <div class="row form-inline">
+      <%= f.simple_fields_for :sale_items, as: 'user_inline', wrapper: :inline_form do |builder| %>
           <%= render "sale_item_fields", :f => builder %>
         <% end %>
         <%= link_to_add_fields "Add Item", f, :sale_items %>
