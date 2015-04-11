@@ -71,7 +71,7 @@ class SalesController < ApplicationController
   # GET /sales/new
   def new
     @sale = Sale.new
-    @sale.sale_items.build
+#    @sale.sale_items.build
     @sale.build_payment_with_debit_card
     2.times {@sale.payment_with_credit_cards.build}
     @channels = Channel.all

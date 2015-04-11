@@ -6,7 +6,6 @@ class ItemsController < ApplicationController
   def index
     @itemsitems = Item.all
     exhibition_stock_item = ExhibitionStockItem.where("length(serial) <= ?", 5)
-    @items = items << exhibition_stock_item
   end
 
   # GET /items/1

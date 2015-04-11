@@ -1,0 +1,19 @@
+id = document.getElementsByClassName("id-form")[0].id;
+id_kode = id.replace("serial", "kode_barang");
+id_nama = id.replace("serial", "nama_barang");
+id_jumlah = id.replace("serial", "jumlah");
+$(".a-unique-class").html("<%= j render 'items/index' %>");
+$('.add_to_sales').on('click', function() {
+  document.getElementById(id).value = '';
+  document.getElementById(id_kode).value = $(this).data('kode');
+  document.getElementById(id_nama).value = $(this).data('nama');
+  document.getElementById(id_jumlah).value = 1;
+  document.getElementById(id_kode).readOnly = true;
+  document.getElementById(id_nama).readOnly = true;
+  $('#MyModal').modal('hide');
+});
+$('#all_item_pos').DataTable({
+  bInfo: false,
+  responsive: true,
+  bDestroy: true
+});

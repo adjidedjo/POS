@@ -1,8 +1,11 @@
 <fieldset>
-  <%= f.text_field :serial, :class => "serial", placeholder: "Serial", data: {autocomplete_source: exhibition_stock_sales_path} %>
+  <%= f.text_field :serial, :class => "serial nested_sale_item", placeholder: "Serial",
+    data: {autocomplete_source: exhibition_stock_sales_path} %>
   <%= f.text_field :kode_barang, :class => "kode_barang", placeholder: "Kode Barang", readonly: true %>
+  <%= link_to '', items_path, :class => "btn btn-xs link_fields fa fa-search", :remote => true,
+    data: {toggle: "modal", target: "#MyModal"} %>
   <%= f.text_field :nama_barang, :readonly => true, :class => "nama_barang", placeholder: "Nama Barang" %>
-  <%= f.text_field :jumlah, :class => "jumlah", placeholder: "Jumlah" %>
+  <%= f.text_field :jumlah, :class => "jumlah nested_sale_item", placeholder: "Jumlah" %>
   <%#= f.text_field :tanggal_kirim, :readonly => true, :class => "tanggal_kirim", placeholder: "Tanggal Kirim" %>
   <%= f.input_field :taken %>
   <%= label_tag "Taken?" %>
@@ -15,6 +18,19 @@
 </fieldset>
 <hr>
 
-<div id="modal-content" class="modal fade" tabindex="-1" role="dialog">
-  <%= render 'items/index' %>
+<div id="MyModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h1>Barang</h1>
+      </div>
+      <div class="id-form"></div>
+      <div class="modal-body a-unique-class">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div>

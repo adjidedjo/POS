@@ -1,38 +1,24 @@
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      <h1>Barang</h1>
-    </div>
-    <div class="modal-body">
-      <%= hidden_field_tag "kode_barang" %>
-      <%= hidden_field_tag "nama_barang" %>
-      <%= hidden_field_tag "jumlah" %>
-      <%= hidden_field_tag "serial" %>
-      <table id="all_item_pos" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
-        <thead>
-          <tr>
-            <th class="desktop">Brand</th>
-            <th class="desktop">Kode Barang</th>
-            <th>Nama</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% Item.all.each do |item| %>
-            <tr>
-              <td><%= Brand.find(item.brand_id).brand %></td>
-              <td><%= item.kode_barang %></td>
-              <td><%= item.nama %></td>
-              <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"),
-  :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+<%= hidden_field_tag "kode_barang" %>
+<%= hidden_field_tag "nama_barang" %>
+<%= hidden_field_tag "jumlah" %>
+<%= hidden_field_tag "serial" %>
+<table id="all_item_pos" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
+  <thead>
+    <tr>
+      <th class="desktop">Brand</th>
+      <th class="desktop">Kode Barang</th>
+      <th>Nama</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Item.all.each do |item| %>
+      <tr>
+        <td><%= Brand.find(item.brand_id).brand %></td>
+        <td><%= item.kode_barang %></td>
+        <td><%= item.nama %></td>
+        <td><%= link_to 'add', '#', remote: true,  :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

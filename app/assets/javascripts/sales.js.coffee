@@ -10,13 +10,15 @@ jQuery ->
       str.substr(0, index) + chr + str.substr(index + 1)
 
     resize_items = () -> $('.resize_fields').on 'click', (event) ->
-      serial_id =  $(this).closest('fieldset').find("input[class='kode_barang']").attr("id")
-      nama_barang_id = serial_id.replace("kode_barang", "nama_barang")
-      document.getElementById(serial_id).readOnly = false
+      kode_id =  $(this).closest('fieldset').find("input[class='kode_barang']").attr("id")
+      nama_barang_id = kode_id.replace("kode_barang", "nama_barang")
+      serial_id = kode_id.replace("kode_barang", "serial")
+      document.getElementById(serial_id).value = ''
+      document.getElementById(kode_id).readOnly = false
       document.getElementById(nama_barang_id).readOnly = false
-      str_value = document.getElementById(serial_id).value
+      str_value = document.getElementById(kode_id).value
       t_value = setCharAt(str_value,11,'T')
-      document.getElementById(serial_id).value = t_value
+      document.getElementById(kode_id).value = t_value
       event.preventDefault()
 
     $('#sale_nama').autocomplete
@@ -148,40 +150,21 @@ jQuery ->
       lady = document.getElementById('sale_netto_lady').value
       document.getElementById('span_netto_lady').innerHTML = addCommas(lady)
 
-    open_modal = () -> $('.kode_barang').on 'click', () ->
-      $('#kode_barang').val(($(this).attr("id")))
-      $('#nama_barang').val(($(this).attr("id")).replace("kode", "nama"))
-      $('#jumlah').val(($(this).attr("id")).replace("kode_barang", "jumlah"))
-      $('#serial').val(($(this).attr("id")).replace("kode_barang", "serial"))
-      $('#modal-content').modal('show')
-
-    add_item_to_table = () -> $('.add_to_sales').on 'click', () ->
-      document.getElementById($('#serial').val()).value = ''
-      document.getElementById($('#kode_barang').val()).value = $(this).data('kode')
-      document.getElementById($('#nama_barang').val()).value = $(this).data('nama')
-      document.getElementById($('#jumlah').val()).value = 1
-      document.getElementById($('#kode_barang').val()).readOnly = true
-      document.getElementById($('#nama_barang').val()).readOnly = true
-      $('#modal-content').modal('hide')
+    open_modal = (id) ->
+      $('#MyModal').on 'shown.bs.modal', (e) ->
+        $(e.currentTarget).find('div.id-form').attr("id", id)
 
     date_picker = () -> $('.tanggal_kirim').datepicker({
       dateFormat: 'yy-mm-dd',
       minDate: new Date()
     })
 
-    add_item_to_table()
-    open_modal()
     date_picker()
     serial_change()
     get_second_tenor()
     get_first_tenor()
     resize_items()
 
-    $('#all_item_pos').DataTable({
-      bInfo: false,
-      responsive: true,
-      bDestroy: true
-    })
     $('#index_of_sales').DataTable()
     $('#sale_item').DataTable({
       bPaginate: false,
@@ -215,7 +198,7 @@ jQuery ->
       nama_barang = get_id.replace("serial", "nama_barang")
       resize_items()
       event.preventDefault()
-      open_modal()
+      open_modal(get_id)
       date_picker()
       serial_doc = document.getElementById(get_id)
       $("#sale_sale_items_attributes_"+time+"_serial").autocomplete
@@ -225,6 +208,9 @@ jQuery ->
             url: '/sales/get_kode_barang_from_serial',
             data: {'kode_barang': ui.item.value, 'element_id': $(this).attr("id")},
             datatype: 'script',
+            success: () ->
+              document.getElementById(kode_barang).readOnly = true
+              document.getElementById(nama_barang).readOnly = true
             error: () ->
               alert "Serial yang anda masukan tidak terdaftar"
               document.getElementById(jumlah).readOnly = false
