@@ -1,0 +1,25 @@
+<% @sale = Sale.find_by_no_so(params[:so]) %>
+<div class="row form-inline" style="padding: 10px 10px 10px 63px">
+  <%= simple_form_for(@sale)  do |f| %>
+    <%= f.simple_fields_for :payment_with_credit_cards, as: 'user_inline', wrapper: :inline_form,
+      html: { class: 'form-inline' } do |builder| %>
+     <% merchant = @merchant.nil? ? [] : @merchant  %>
+      <% tenor = @tenor.nil? ? [] : @tenor  %>
+      <%= builder.input :no_merchant, collection: merchant, label_method: :nama, value_method: :no_merchant,
+        :input_html => {class: "nested_inline_form"}, include_blank: "Pilih Merchant"%>
+      <%= builder.input :tenor, collection: tenor, label_method: :tenor, value_method: :mid,
+        :input_html => {class: "nested_inline_form"}, include_blank: "Pilih Tenor" %>
+      <%= builder.input :no_kartu_kredit, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form"}  %>
+      <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form"}  %>
+      <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form"}  %>
+      <span class="cara_bayar" style="display: inline-block">
+        <%= builder.input :jumlah , :placeholder => 'Jumlah', :input_html => {class: "nested_inline_form input_value"}  %>
+      </span>
+     <span id="span_credit" style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;">
+      </span>
+      <span id="span_credit1" style="display: inline-block; padding: 0px 0 0 100px; text-indent: -50px; vertical-align: top;">
+      </span>
+      <br />
+    <% end %>
+  <% end %>
+</div>

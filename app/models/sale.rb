@@ -8,6 +8,7 @@ class Sale < ActiveRecord::Base
   accepts_nested_attributes_for :sale_items, reject_if: proc { |a| a['kode_barang'].blank?}
   has_many :netto_sale_brands
   has_many :brands, through: :netto_sale_brands
+  has_many :acquittances, dependent: :destroy
   belongs_to :branch
   belongs_to :salesman
   belongs_to :item
@@ -19,12 +20,23 @@ class Sale < ActiveRecord::Base
   belongs_to :pos_ultimate_customer
   belongs_to :bank_account
 
+  has_paper_trail
+
   attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1
 
   validates :netto, :tanggal_kirim, presence: true
-  validates :nama, :email, :alamat, :kota, :no_telepon, presence: true
-#  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
+  validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
+  #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
+
+  def self.set_exported_items(sale_item)
+    sale_item.each do |a|
+      get_sale = Sale.find(a)
+      if get_sale.sale_items.where(exported: false).blank?
+        get_sale.update_attributes!(all_items_exported: true)
+      end
+    end
+  end
 
   def ultimate_customer_name
     ultimate_customer.try(:name)

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sale:</strong>
+  <%= @acquittance.sale_id %>
+</p>
+
+<p>
+  <strong>No reference:</strong>
+  <%= @acquittance.no_reference %>
+</p>
+
+<p>
+  <strong>Method of payment:</strong>
+  <%= @acquittance.method_of_payment %>
+</p>
+
+<%= link_to 'Edit', edit_acquittance_path(@acquittance) %> |
+<%= link_to "Print (PDF)", acquittance_path(@acquittance, :format => 'pdf'), :class => 'btn btn-default' %> |
+<%= link_to 'Back', acquittances_path %>

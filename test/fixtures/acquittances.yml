@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sale_id: 1
+  no_reference: MyString
+  method_of_payment: MyString
+
+two:
+  sale_id: 1
+  no_reference: MyString
+  method_of_payment: MyString

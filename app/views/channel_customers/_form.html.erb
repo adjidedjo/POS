@@ -1,11 +1,11 @@
 <%= simple_form_for(@channel_customer) do |f| %>
   <%= f.error_notification %>
-
+  <hr>
   <div class="form-inputs">
     <% if current_user.admin? %>
-      <%= f.input :kode_channel_customer %>
       <%= f.input :channel_id, collection: @channel, label_method: :channel, value_method: :id, prompt: "--Pilih Channel--" %>
       <%= f.input :nama %>
+      <%= f.input :group, input_html: {data: {autocomplete_channel: channel_customers_path}} %>
     <% end  %>
     <%= f.input :alamat %>
     <%= f.input :kota %>
@@ -48,4 +48,5 @@
     <%= f.button :submit %>
     <%= link_to "Ganti Password?", edit_user_registration_path, class: "btn btn-default" unless current_user.admin? %><br />
   </div>
+  <hr>
 <% end %>

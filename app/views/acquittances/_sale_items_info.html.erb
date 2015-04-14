@@ -1,0 +1,24 @@
+<table id="sale_item" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="all">Kode Barang</th>
+      <th class="all">Nama Barang</th>
+      <th class="min-tablet-l">Satuan</th>
+      <th class="all">Jumlah</th>
+      <th class="min-tablet-l">Bonus</th>
+      <th class="min-tablet-l">Tanggal Kirim</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Sale.find_by_no_so(params[:so]).sale_items.each do |sale_items| %>
+      <tr>
+        <td><%= sale_items.kode_barang %></td>
+        <td><%= sale_items.nama_barang %></td>
+        <td>PCS</td>
+        <td><%= sale_items.jumlah %></td>
+        <td><%= sale_items.bonus? ? "Bonus" : "-" %></td>
+        <td><%= sale_items.tanggal_kirim.strftime('%d %B %Y') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

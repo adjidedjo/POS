@@ -21,12 +21,12 @@ jQuery ->
       document.getElementById(kode_id).value = t_value
       event.preventDefault()
 
-    $('#sale_nama').autocomplete
-      source: $('#sale_nama').data('autocomplete-source'),
+    $('#sale_no_telepon').autocomplete
+      source: $('#sale_no_telepon').data('autocomplete-source'),
       select: (event, ui) ->
          $.ajax
            url: '/pos_ultimate_customers/get_customer_info',
-           data: {'nama': ui.item.value},
+           data: {'no_telepon': ui.item.value},
            datatype: 'script'
            response: (event, ui) ->
              if (ui.content.length == 0)
@@ -152,7 +152,7 @@ jQuery ->
 
     open_modal = (id) ->
       $('#MyModal').on 'shown.bs.modal', (e) ->
-        $(e.currentTarget).find('div.id-form').attr("id", id)
+        $(e.currentTarget).find('.id_form').val(id)
 
     date_picker = () -> $('.tanggal_kirim').datepicker({
       dateFormat: 'yy-mm-dd',

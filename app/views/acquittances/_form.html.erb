@@ -1,0 +1,109 @@
+<%= simple_form_for(@acquittance) do |f| %>
+  <%= f.error_notification %>
+
+  <hr>
+  <div class="form-inputs">
+    <%= f.input :no_so, input_html: {data: {autocomplete_sales: search_sales_acquittances_path}},
+      label: "Cari No Sales Order" %>
+  </div>
+
+  <div class="row sale-info" style="display: none; ">
+    <div class="col-sm-2">
+      <dt style="padding-top: -8px; padding-bottom: 10px;"><strong>Channel Customer:</strong></dt><br />
+      <dt class="dt_show"><strong>Tanggal:</strong></dt><br />
+      <dt class="dt_show"><strong>No SO:</strong></dt><br />
+      <dt class="dt_show"><strong>Sisa:</strong></dt>
+    </div>
+    <div class="col-sm-2">
+      <dt><%= text_field_tag 'channel_customer', '', class: 'info_channel_customer', readonly: true %></dt><br />
+      <dt><%= text_field_tag 'tanggal', '', class: 'info_channel_customer', readonly: true %></dt><br />
+      <dt><%= text_field_tag 'no_so', '', class: 'info_channel_customer', readonly: true %></dt><br />
+      <dt><%= text_field_tag 'sisa', '', class: 'info_channel_customer', readonly: true %></dt><br />
+    </div>
+    <div class="col-sm-2">
+      <dt style="padding-bottom: 5px; padding-left: 10px;"><strong>Nama Customer :</strong></dt><br />
+      <dt style="padding-bottom: 8px; padding-left: 10px;"><strong>No Telp/Hp          :</strong></dt><br />
+      <dt style="padding-bottom: 43px; padding-left: 10px;"><strong>Alamat Kirim       :</strong></dt><br />
+      <dt style="padding-bottom: 30px; padding-left: 10px;"><strong>Kota:</strong></dt>
+    </div>
+    <div class="col-sm-2">
+      <dt><%= text_field_tag 'nama_customer', '', class: 'info_channel_customer', readonly: true %></dt><br />
+      <dt><%= text_field_tag 'no_telepon', '', class: 'info_channel_customer', readonly: true %></dt><br />
+      <dt><%= text_area_tag 'alamat', '', class: 'info_channel_customer', readonly: true %></dt><br />
+      <dt><%= text_field_tag 'kota', '', class: 'info_channel_customer', readonly: true %></dt><br />
+    </div>
+  </div>
+
+  <div class="row sale-items-info">
+  </div>
+
+  <div class="row input_pembayaran_tunai" style="display: none">
+    <h3>Cara Pelunasan</h3><br />
+    <%= check_box_tag 'tipe_pembayaran[]', "Tunai" %>Tunai
+    <div class="row-fluid" style="padding: 10px 10px 10px 50px">
+      <span class="cara_bayar" style="display: inline-block">
+        <%= f.input :cash_amount, label: false, :input_html => {class: "nested_inline_form input_value"} %>
+      </span>
+      <span id="span_bayar_acq"style="display: inline-block; padding: 9px 0 0 20px; text-indent: -50px; vertical-align: top;"></span>
+    </div>
+    <%= check_box_tag 'tipe_pembayaran[]', "Transfer" %>Transfer
+    <div class="row-fluid" style="padding: 10px 10px 10px 63px">
+      <%= f.input :bank_account_id, as: :radio_buttons , collection: BankAccount.all,
+        label_method: :name, value_method: :id, label: false %>
+      <span class="cara_bayar" style="display: inline-block">
+        <%= f.input :transfer_amount, label: "Jumlah Transfer", input_html: {class: 'input_value nested_inline_form'},
+            placeholder: "Jumlah Transfer" %>
+      </span>
+      <span id="span_transfer_acq" style="display: inline-block; padding: 35px 0 0 20px; text-indent: -50px; vertical-align: top;">
+      </span>
+    </div>
+  </div>
+
+  <div class="row input_pembayaran_kartu_debit" style="display: none">
+    <%= check_box_tag 'tipe_pembayaran[]', "Debit Card" %>Kartu Debit
+    <div class="row form-inline" style="padding: 10px 10px 10px 63px">
+      <%= f.simple_fields_for :acquittance_with_debit_card, wrapper: :inline_form do |builder| %>
+        <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form_acq"}  %>
+        <%= builder.input :no_kartu_debit, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form_acq"}  %>
+        <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form_acq"}  %>
+        <span class="cara_bayar" style="display: inline-block">
+          <%= builder.input :jumlah , placeholder: 'Jumlah', :input_html => {class: "nested_inline_form_acq input_value"} %>
+        </span>
+        <span id="span_debit_acq" style="display: inline-block; padding: 7px 0 0 50px; text-indent: -50px; vertical-align: top;">
+        </span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row input_pembayaran_kartu_kredit" style="display: none">
+    <%= check_box_tag 'tipe_pembayaran[]', "Credit Card" %>Kartu Kredit
+    <div class="row form-inline" style="padding: 10px 10px 10px 63px">
+      <%= f.simple_fields_for :acquittance_with_credit_cards, wrapper: :inline_form do |builder| %>
+        <% merchant = @merchant.nil? ? [] : @merchant  %>
+        <% tenor = @tenor.nil? ? [] : @tenor  %>
+        <%= builder.input :no_merchant, collection: merchant, label_method: :nama, value_method: :no_merchant,
+          :input_html => {class: "nested_inline_form_acq"}, include_blank: "Pilih Merchant"%>
+        <%= builder.input :tenor, collection: tenor, label_method: :tenor, value_method: :mid,
+          :input_html => {class: "nested_inline_form_acq"}, include_blank: "Pilih Tenor" %>
+        <%= builder.input :no_kartu_kredit, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form_acq"}  %>
+        <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form_acq"}  %>
+        <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form_acq"}  %>
+        <span class="cara_bayar" style="display: inline-block">
+          <%= builder.input :jumlah , :placeholder => 'Jumlah', :input_html => {class: "nested_inline_form_acq input_value"}  %>
+        </span>
+        <span id="span_credit_acq" style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;">
+        </span>
+        <span id="span_credit1_acq" style="display: inline-block; padding: 0px 0 0 100px; text-indent: -50px; vertical-align: top;">
+        </span>
+        <br />
+      <% end %>
+    </div>
+  </div>
+  <br />
+
+  <div class="form-actions" style="display: none">
+    <%= f.button :submit, "Buat Pelunasan", class: "btn btn-primary" %>
+  </div>
+  <hr>
+  <%= link_to 'Kembali', acquittances_path, class: "btn btn-default" %>
+<% end %>
