@@ -1,8 +1,9 @@
-class PosPdf < Prawn::Document
+class AcqPdf < Prawn::Document
   include ActionView::Helpers::NumberHelper
-  def initialize(order, order_no)
+  def initialize(order)
     super({:page_size => 'A4', :margin => [100, 40, 30, 40]})
-    @order = order
+    @acq = order
+    @order = order.sale
     order_number
     header
     line_items
@@ -25,26 +26,24 @@ class PosPdf < Prawn::Document
   def header
     bounding_box([0, cursor - 10], :width => 80) do
       indent 5 do
-        draw_text("Invoice No", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 7]), 0])
-        draw_text("Date", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 18]), 0])
-        draw_text("Product Consultant", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 28]), 0])
+        draw_text("Ref No", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 7]), 0])
+        draw_text("Invoice No", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 18]), 0])
+        draw_text("Date", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 28]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 6.5]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 17.5]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 27.5]), 0])
-        draw_text("#{@order.no_so.upcase}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7]), 0])
-        draw_text("#{@order.created_at.to_date.strftime('%d-%m-%Y')}", :size => 8, :at => [([bounds.left + 85, bounds.top - 18]), 0])
-        sp = SalesPromotion.find(@order.sales_promotion_id)
-        draw_text("#{sp.nama.titleize}" + " / " + "#{sp.handphone.nil? ? '-' : sp.handphone}",
-          :size => 8, :at => [([bounds.left + 85, bounds.top - 28]), 0])
-        if @order.channel_customer.channel.channel == 'SHOWROOM'
+        draw_text("#{@acq.no_reference.upcase}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7.5]), 0])
+        draw_text("#{@order.no_so.upcase}", :size => 8, :at => [([bounds.left + 85, bounds.top - 18.5]), 0])
+        draw_text("#{@acq.created_at.to_date.strftime('%d-%m-%Y')}", :size => 8, :at => [([bounds.left + 85, bounds.top - 28.5]), 0])
+        if @acq.channel_customer.channel.channel == 'SHOWROOM'
           draw_text("Showroom", :size => 8, :style => :bold, :at => [([bounds.left + 325, bounds.top - 7]), 0])
           draw_text("Address", :size => 8, :style => :bold, :at => [([bounds.left  + 325, bounds.top - 18]), 0])
           draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 370, bounds.top - 7]), 0])
           draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 370, bounds.top - 18]), 0])
-          draw_text("#{@order.channel_customer.nama.titleize}", :size => 8, :at => [([bounds.left + 375, bounds.top - 7]), 0])
+          draw_text("#{@acq.channel_customer.nama.upcase}", :size => 8, :at => [([bounds.left + 375, bounds.top - 7.5]), 0])
           #          draw_text("#{@order.showroom.address.titleize}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
           y_position = cursor - 12.5
-          excess_text = text_box "#{@order.channel_customer.alamat.titleize}",
+          excess_text = text_box "#{@acq.channel_customer.alamat.titleize}",
             :width => 140,
             :height => 500,
             :overflow => :truncate,
@@ -111,30 +110,20 @@ class PosPdf < Prawn::Document
             text_box excess_text,
               :width => 300,
               :at => [100,y_position-100]
-            draw_text("Total Payment", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 5]), 0])
-            if @order.voucher > 0
-              draw_text("Voucher", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 15]), 0])
-            end
+            draw_text("Total Balance", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 5]), 0])
             draw_text("Total Paid", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 25]), 0])
             draw_text("Amount Due", :size => 8, :style => :bold, :at => [([bounds.left + 320, bounds.top - 35]), 0])
             draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 5]), 0])
-            if @order.voucher > 0
-              draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 15]), 0])
-            end
             draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 25]), 0])
             draw_text(": Rp. ", :size => 8, :at => [([bounds.left + 380, bounds.top - 35]), 0])
-            text_box "#{number_to_currency(@order.netto, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
+            text_box "#{number_to_currency(@order.previous_version.sisa, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
               :at => [420, cursor + 1], :width => 60, :height => 50, :align => :right
-            if @order.voucher > 0
-              text_box "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
-                :at => [420, cursor - 9], :width => 60, :height => 50, :align => :right
-            end
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
-            transfer = @order.jumlah_transfer.nil? ? 0 : @order.jumlah_transfer
-            total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)+transfer
+            debit =  @acq.acquittance_with_debit_card.jumlah.nil? ? 0 : @acq.acquittance_with_debit_card.jumlah
+            transfer = @acq.transfer_amount.nil? ? 0 : @acq.transfer_amount
+            total_bayar = @acq.cash_amount + debit + @acq.acquittance_with_credit_cards.sum(:jumlah)+ transfer
             text_box "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
               :at => [420, cursor - 19], :width => 60, :height => 50, :align => :right
-            text_box "#{number_to_currency(((@order.netto-@order.voucher)-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :at => [420, cursor - 29], :width => 60, :height => 50, :align => :right
+            text_box "#{number_to_currency((@order.previous_version.sisa-total_bayar), precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8, :at => [420, cursor - 29], :width => 60, :height => 50, :align => :right
           end
         end
       end
@@ -203,13 +192,13 @@ class PosPdf < Prawn::Document
             text ": Rp. ", :size => 6
           end
           bounding_box([0, cursor + 28], :width => 100.4) do
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
-            text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6,
+            debit =  @acq.acquittance_with_debit_card.jumlah.nil? ? 0 : @acq.acquittance_with_debit_card.jumlah
+            text "#{number_to_currency(@acq.cash_amount, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6,
               :align => :right
-            text "#{number_to_currency(@order.jumlah_transfer.nil? ? 0 : @order.jumlah_transfer, precision:0, unit: "",
+            text "#{number_to_currency(@acq.transfer_amount.nil? ? 0 : @acq.transfer_amount, precision:0, unit: "",
             separator: ".", delimiter: ".")}", :size => 6, :align => :right
             text "#{number_to_currency(debit, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6, :align => :right
-            text "#{number_to_currency(@order.payment_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".",
+            text "#{number_to_currency(@acq.acquittance_with_credit_cards.sum(:jumlah), precision:0, unit: "", separator: ".",
             delimiter: ".")}", :size => 6, :align => :right
           end
         end
@@ -223,7 +212,7 @@ class PosPdf < Prawn::Document
 
     move_down 10
     indent 5 do
-      text "Note : #{@order.keterangan_customer.titleize}", :size => 8
+      text "Note : ", :size => 8
     end
     move_down 10
     bounding_box([80, cursor - 5], :width => 200) do

@@ -36,6 +36,8 @@ gem 'jquery-datatables-rails', '~> 3.1.1'
 gem 'prawn', '~> 0.12.0'
 # #devise
 gem 'devise'
+#
+gem 'paper_trail', '~> 4.0.0.beta'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 

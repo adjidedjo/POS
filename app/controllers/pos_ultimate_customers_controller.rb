@@ -2,7 +2,7 @@ class PosUltimateCustomersController < ApplicationController
   before_action :set_pos_ultimate_customer, only: [:show, :edit, :update, :destroy]
 
   def get_customer_info
-    @cust_info = PosUltimateCustomer.find_by_nama(params[:nama])
+    @cust_info = PosUltimateCustomer.find_by_no_telepon(params[:no_telepon])
 
     respond_to do |format|
       format.js
@@ -12,11 +12,11 @@ class PosUltimateCustomersController < ApplicationController
   # GET /pos_ultimate_customers
   # GET /pos_ultimate_customers.json
   def index
-    @pos_ultimate_customers = PosUltimateCustomer.order(:nama).where("nama like ?", "%#{params[:term]}%")
+    @pos_ultimate_customers = PosUltimateCustomer.order(:no_telepon).where("no_telepon like ?", "%#{params[:term]}%")
 
     respond_to do |format|
       format.html
-      format.json {render json: @pos_ultimate_customers.map(&:nama)}
+      format.json {render json: @pos_ultimate_customers.map(&:no_telepon)}
     end
   end
 

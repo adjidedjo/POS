@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :acquittances do
+    collection do
+      get 'get_sale_info'
+      get 'search_sales'
+      get "get_mid_from_merchant"
+      get "get_second_mid_from_merchant"
+    end
+  end
+
   resources :bank_accounts
 
   resources :pos_ultimate_customers do

@@ -77,6 +77,7 @@ class ReportsController < ApplicationController
         sale_item.update_attributes(exported: true, exported_at: Time.now, exported_by: current_user.id)
       end
     end
+    Sale.set_exported_items(@sales.group_by(&:sale_id).keys)
     get_branch = Time.now.strftime("%d%m%Y%H%M%S")
 
     respond_to do |format|

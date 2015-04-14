@@ -46,6 +46,12 @@ class ChannelCustomersController < ApplicationController
   # GET /channel_customers.json
   def index
     @channel_customers = ChannelCustomer.all
+    @cc = ChannelCustomer.order(:nama).where("nama like ?", "%#{params[:term]}%")
+
+    respond_to do |format|
+      format.html
+      format.json {render json: @cc.map(&:nama)}
+    end
   end
 
   # GET /channel_customers/1
@@ -116,9 +122,10 @@ class ChannelCustomersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def channel_customer_params
     params.require(:channel_customer).permit(:kode_channel_customer, :channel_id, :nama,
-      :alamat, :dari_tanggal, :sampai_tanggal, :kota, merchants_attributes: [:id, :nama, :no_merchant, :tenor, :mid, :_destroy],
-      supervisor_exhibition_attributes: [:id, :nama, :email, :nik, :_destroy],
-      sales_promotions_attributes: [:id, :nama, :email, :nik, :_destroy],
-      supervisor_exhibitions_attributes: [:id, :nama, :email, :nik, :_destroy])
+      :alamat, :dari_tanggal, :sampai_tanggal, :kota, :group,
+      merchants_attributes: [:id, :nama, :no_merchant, :tenor, :mid, :_destroy],
+      supervisor_exhibition_attributes: [:id, :nama, :email, :nik, :handphone, :handphone1, :_destroy],
+      sales_promotions_attributes: [:id, :nama, :email, :nik, :handphone, :handphone1, :_destroy],
+      supervisor_exhibitions_attributes: [:id, :nama, :email, :nik, :handphone, :handphone1, :_destroy])
   end
 end
