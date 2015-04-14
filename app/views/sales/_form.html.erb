@@ -73,7 +73,7 @@
             <div class="row form-inline" style="padding: 10px 10px 10px 63px">
               <%= f.simple_fields_for :payment_with_debit_card, wrapper: :inline_form do |builder| %>
                   <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form"}  %>
-                  <%= builder.input :no_kartu_debit, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form"}  %>
+                  <%= builder.input :no_kartu, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form"}  %>
                   <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form"}  %>
                   <span class="cara_bayar" style="display: inline-block">
                     <%= builder.input :jumlah , placeholder: 'Jumlah', :input_html => {class: "nested_inline_form input_value"} %>
