@@ -67,6 +67,9 @@
 
                 <% end %>
                 <%= menu_item "Sales Order", new_sale_path  %>
+                <% if current_user.channel_customer.channel_id == 3 %>
+                  <%= menu_item "Pelunasan", new_acquittance_path %>
+                <% end %>
                 <%= drop_down "Export Rekap SO" do %>
                   <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
                   <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
