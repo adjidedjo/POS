@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :sales_counters
+
   resources :acquittances do
     collection do
       get 'get_sale_info'
