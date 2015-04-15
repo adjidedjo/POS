@@ -42,7 +42,7 @@
     <%= check_box_tag 'tipe_pembayaran[]', "Tunai" %>Tunai
     <div class="row-fluid" style="padding: 10px 10px 10px 50px">
       <span class="cara_bayar" style="display: inline-block">
-        <%= f.input :cash_amount, label: false, :input_html => {class: "nested_inline_form input_value"} %>
+        <%= f.input :cash_amount, label: false, :input_html => {class: "nested_inline_form input_acq"} %>
       </span>
       <span id="span_bayar_acq"style="display: inline-block; padding: 9px 0 0 20px; text-indent: -50px; vertical-align: top;"></span>
     </div>
@@ -51,7 +51,7 @@
       <%= f.input :bank_account_id, as: :radio_buttons , collection: BankAccount.all,
         label_method: :name, value_method: :id, label: false %>
       <span class="cara_bayar" style="display: inline-block">
-        <%= f.input :transfer_amount, label: "Jumlah Transfer", input_html: {class: 'input_value nested_inline_form'},
+        <%= f.input :transfer_amount, label: "Jumlah Transfer", input_html: {class: 'input_acq nested_inline_form'},
             placeholder: "Jumlah Transfer" %>
       </span>
       <span id="span_transfer_acq" style="display: inline-block; padding: 35px 0 0 20px; text-indent: -50px; vertical-align: top;">
@@ -67,7 +67,7 @@
         <%= builder.input :no_kartu_debit, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form_acq"}  %>
         <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form_acq"}  %>
         <span class="cara_bayar" style="display: inline-block">
-          <%= builder.input :jumlah , placeholder: 'Jumlah', :input_html => {class: "nested_inline_form_acq input_value"} %>
+          <%= builder.input :jumlah , placeholder: 'Jumlah', :input_html => {class: "nested_inline_form_acq input_acq"} %>
         </span>
         <span id="span_debit_acq" style="display: inline-block; padding: 7px 0 0 50px; text-indent: -50px; vertical-align: top;">
         </span>
@@ -89,7 +89,7 @@
         <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form_acq"}  %>
         <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form_acq"}  %>
         <span class="cara_bayar" style="display: inline-block">
-          <%= builder.input :jumlah , :placeholder => 'Jumlah', :input_html => {class: "nested_inline_form_acq input_value"}  %>
+          <%= builder.input :jumlah , :placeholder => 'Jumlah', :input_html => {class: "nested_inline_form_acq input_acq"}  %>
         </span>
         <span id="span_credit_acq" style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;">
         </span>

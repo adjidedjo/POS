@@ -35,6 +35,15 @@
   </div>
   <br />
 
+  <label>Sales Counter</label>
+  <div class="row form-inline">
+    <%= f.simple_fields_for :recipients do |builder| %>
+      <%= render "recipient_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Sales Counter", f, :recipients %>
+  </div>
+  <br />
+
   <label>Merchants</label>
   <div class="row">
     <%= f.simple_fields_for :merchants do |builder| %>

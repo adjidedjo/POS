@@ -95,10 +95,6 @@ class Sale < ActiveRecord::Base
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
     self.update_attributes!(cara_bayar: ket_lunas)
-    sum_brand = self.sale_items.where(bonus: false).group("brand_id").count.size
-    self.sale_items.where(bonus: false).group("brand_id").each do |a|
-      NettoSaleBrand.create(brand_id: a.brand_id, sale_id: self.id, netto: total_bayar/sum_brand)
-    end
   end
 
   def paid_with_credit?

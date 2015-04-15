@@ -56,22 +56,18 @@ class ReportsController < ApplicationController
         @sales << sale_items
       end
     end
-    get_branch = Date.today.strftime('%Y%m%d').to_s
 
     respond_to do |format|
       format.html
-      format.xml do
-        stream = render_to_string(:template=>"reports/sales_counter.xml.builder" )
-        send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
-      end
     end
   end
 
   def export_xml
     @sales = []
     @user = current_user.channel_customer
+    @chosen_sale_item = params[:sale_items_ids]
     @email = params[:email]
-    params[:sale_items_ids].each do |sale_item_ids|
+    @chosen_sale_item.each do |sale_item_ids|
       SaleItem.where("id = ?", sale_item_ids.to_i).each do |sale_item|
         @sales << sale_item
         sale_item.update_attributes(exported: true, exported_at: Time.now, exported_by: current_user.id)
@@ -81,10 +77,10 @@ class ReportsController < ApplicationController
     get_branch = Time.now.strftime("%d%m%Y%H%M%S")
 
     respond_to do |format|
-      format.html
       format.xml do
         stream = render_to_string(:template=>"reports/sales_counter.xml.builder" )
         send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
+        render(:template=>"reports/sales_counter.html" )
       end
     end
   end

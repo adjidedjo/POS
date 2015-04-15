@@ -1,6 +1,6 @@
 <%- model_class = Store -%>
 <div class="page-header">
-  <h1><%= @channel_customer.nama.titleize %></h1>
+  <h1><%= @channel_customer.nama.upcase %></h1>
 </div>
 
 <div class="row">
@@ -17,7 +17,7 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>Supervisor <%= @channel_customer.nama %></strong></dt><br />
+    <dt><strong>Supervisor <%= @channel_customer.nama.upcase %></strong></dt><br />
     <table id="supervisor_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
@@ -36,7 +36,7 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>SPG/SPB <%= @channel_customer.nama %></strong></dt><br />
+    <dt><strong>SPG/SPB <%= @channel_customer.nama.upcase %></strong></dt><br />
     <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
@@ -53,8 +53,27 @@
     </table>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Sales Counter <%= @channel_customer.nama.upcase %></strong></dt><br />
+    <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama Sales Counter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @channel_customer.recipients.each do |rc| %>
+          <tr>
+            <td><%= rc.sales_counter.nama.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div>
-  <dt><strong>Merchant-merchant <%= @channel_customer.nama %></strong></dt><br />
+  <dt><strong>Merchant-merchant <%= @channel_customer.nama.upcase %></strong></dt><br />
   <table id="merchant_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
     <thead>
       <tr>

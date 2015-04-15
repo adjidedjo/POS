@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Sales Counters</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Nik</th>
+      <th>Email</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales_counters.each do |sales_counter| %>
+      <tr>
+        <td><%= sales_counter.nama %></td>
+        <td><%= sales_counter.nik %></td>
+        <td><%= sales_counter.email %></td>
+        <td><%= link_to 'Show', sales_counter %></td>
+        <td><%= link_to 'Edit', edit_sales_counter_path(sales_counter) %></td>
+        <td><%= link_to 'Destroy', sales_counter, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sales counter', new_sales_counter_path %>

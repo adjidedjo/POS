@@ -1,6 +1,4 @@
 class ChannelCustomer < ActiveRecord::Base
-  belongs_to :channel
-  belongs_to :user
   has_many :acquittances, dependent: :destroy
   has_many :sales, dependent: :destroy
   has_many :sales_promotions, dependent: :destroy
@@ -9,6 +7,10 @@ class ChannelCustomer < ActiveRecord::Base
   accepts_nested_attributes_for :merchants, allow_destroy: true, reject_if: proc { |a| a['no_merchant'].blank?}
   has_many :supervisor_exhibitions, dependent: :destroy
   accepts_nested_attributes_for :supervisor_exhibitions, allow_destroy: true, reject_if: proc { |a| a['nama'].blank?}
+  has_many :recipients, dependent: :destroy
+  accepts_nested_attributes_for :recipients, allow_destroy: true, reject_if: proc { |a| a['sales_counter_id'].blank?}
+  belongs_to :channel
+  belongs_to :user
 
   validates :nama, :channel_id, :alamat, :kota, presence: true
 

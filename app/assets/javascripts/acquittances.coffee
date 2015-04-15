@@ -27,7 +27,7 @@ jQuery ->
         output += '.' + parts[1]
       output
 
-    $('.input_value').on 'keyup', () ->
+    $('.input_acq').on 'keyup', () ->
 
       pembayaran = document.getElementById('acquittance_cash_amount').value
       document.getElementById('span_bayar_acq').innerHTML = addCommas(pembayaran)
