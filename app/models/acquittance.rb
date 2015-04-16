@@ -21,7 +21,10 @@ class Acquittance < ActiveRecord::Base
   end
 
   before_create do
-    self.no_reference = 'AQ'+Time.now.strftime("%y%m%d%H%M%S")
+    self.no_so = loop do
+      random_token = 'AQ' + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8]
+      break random_token unless Acquittance.exists?(no_reference: random_token)
+    end
     self.sale_id = Sale.where(no_so: no_so).first.id
   end
 

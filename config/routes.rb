@@ -44,7 +44,8 @@ Rails.application.routes.draw do
   get 'reports/selisih_intransit'
   get 'reports/selisih_retur'
 
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
+
   get 'page/home'
 
   resources :stores
