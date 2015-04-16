@@ -21,6 +21,10 @@
  *= require_self
 */
 
+.money {
+  text-align: right;
+}
+
 .form-login {
     background-color: #F8F8F8;
     padding-top: 10px;

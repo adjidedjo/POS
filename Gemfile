@@ -38,6 +38,8 @@ gem 'prawn', '~> 0.12.0'
 gem 'devise'
 #
 gem 'paper_trail', '~> 4.0.0.beta'
+#
+#gem 'activeadmin', github: 'activeadmin'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 

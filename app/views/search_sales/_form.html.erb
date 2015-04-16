@@ -1,0 +1,15 @@
+<%= form_for @search do |f| %>
+  <div class="field">
+    <%= f.label :keywords %><br />
+    <%= f.text_field :keywords %>
+  </div>
+  <div class="field">
+    <%= f.label :channel_id %><br />
+    <%= f.collection_select :channel_id, Channel.order(:channel), :id, :channel, include_blank: true %>
+  </div>
+  <div class="field">
+    <%= f.label :channel_customer_id %><br />
+    <%= f.collection_select :channel_customer_id, ChannelCustomer.order(:nama), :id, :nama, include_blank: true %>
+  </div>
+  <div class="actions"><%= f.submit "Search" %></div>
+<% end %>

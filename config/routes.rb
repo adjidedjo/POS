@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :search_sales
+
   resources :sales_counters
 
   resources :acquittances do
