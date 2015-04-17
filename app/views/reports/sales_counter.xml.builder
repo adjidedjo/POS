@@ -1,8 +1,7 @@
 xml = Builder::XmlMarkup.new
 xml.instruct!
-sale_item_by_brand = []
 @sales.group_by(&:brand_id).keys.each do |group|
-  sale_item_by_brand << SaleItem.find_by_id_and_brand_id(@chosen_sale_item, group)
+  sale_item_by_brand = SaleItem.where(id: @chosen_sale_item, brand_id: group)
   xml.data do
     sale_item_by_brand.each do |sale_item|
       xml.pbjshow do

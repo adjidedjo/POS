@@ -80,7 +80,6 @@ class ReportsController < ApplicationController
       format.xml do
         stream = render_to_string(:template=>"reports/sales_counter.xml.builder" )
         send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
-        render(:template=>"reports/sales_counter.html" )
       end
     end
   end
