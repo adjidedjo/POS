@@ -16,6 +16,7 @@ class Sale < ActiveRecord::Base
   belongs_to :showroom
   belongs_to :channel
   belongs_to :supervisor_exhibition
+  belongs_to :sales_promotion
   belongs_to :channel_customer
   belongs_to :pos_ultimate_customer
   belongs_to :bank_account
@@ -28,6 +29,28 @@ class Sale < ActiveRecord::Base
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
+
+  before_update do
+    puc = {
+      email: email,
+      nama: nama,
+      no_telepon: no_telepon,
+      handphone: handphone,
+      handphone1: handphone1,
+      alamat: alamat,
+      kota: kota
+    }
+    if no_telepon.present?
+      ultimate_customer = PosUltimateCustomer.where("no_telepon like ?", no_telepon)
+      if ultimate_customer.empty?
+        puc[:nama] = nama.titleize
+        PosUltimateCustomer.create(puc)
+      else
+        ultimate_customer.first.update_attributes!(puc)
+      end
+      self.pos_ultimate_customer_id = ultimate_customer.first.id
+    end
+  end
 
   def self.set_exported_items(sale_item)
     sale_item.each do |a|
@@ -70,7 +93,7 @@ class Sale < ActiveRecord::Base
       alamat: alamat,
       kota: kota
     }
-    ultimate_customer = PosUltimateCustomer.where("nama like ?", nama)
+    ultimate_customer = PosUltimateCustomer.where("no_telepon like ?", no_telepon)
     if ultimate_customer.empty?
       puc[:nama] = nama.titleize
       PosUltimateCustomer.create(puc)

@@ -21,6 +21,10 @@
  *= require_self
 */
 
+.mini_size {
+  font-size: 12px;
+}
+
 .money {
   text-align: right;
 }

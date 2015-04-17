@@ -5,27 +5,27 @@
       <%= f.input :sales_promotion_id, collection: @sales_promotion, label_method: :nama, value_method: :id,
         input_html: {style: 'width: 250px'} %>
       <%= error_span(@sale[:sales_promotion_id]) %>
-        <%= f.input :no_telepon, input_html: { maxlength: 12, style: 'width: 250px',
-          data: {autocomplete_source: pos_ultimate_customers_path}}, label: 'Nomor Telepon' %>
-        <%= error_span(@sale[:no_telepon]) %>
-      <%= f.input :nama, label: "Nama Konsumen", :input_html => {:style => 'width: 250px'} %>
-      <%= f.input :email, :input_html => {class: "puc"}, value: f.object.email %>
-        <%= error_span(@sale[:email]) %>
-        <%= f.input :handphone, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 250px'} %>
-        <%= error_span(@sale[:handphone]) %>
-        <%= f.input :handphone1, input_html: { maxlength: 12 }, :input_html => {:style => 'width: 250px'} %>
-        <%= error_span(@sale[:handphone1]) %>
+      <%= f.input :no_telepon, input_html: { maxlength: 12, style: 'width: 250px',
+          data: {autocomplete_source: pos_ultimate_customers_path}, value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.no_telepon)}, label: 'Nomor Telepon' %>
+      <%= error_span(@sale[:no_telepon]) %>
+      <%= f.input :nama, label: "Nama Konsumen", input_html: {style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.nama)} %>
+     <%= f.input :email, input_html: {class: "puc", value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.email)} %>
+      <%= error_span(@sale[:email]) %>
+      <%= f.input :handphone, input_html: { maxlength: 12, style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.handphone)} %>
+      <%= error_span(@sale[:handphone]) %>
+     <%= f.input :handphone1, input_html: { maxlength: 12, style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.handphone1)} %>
+      <%= error_span(@sale[:handphone1]) %>
     </div>
     <div class="col-md-6">
-      <%= f.input :alamat, as: :text, :input_html => {:style => 'width: 250px'} %>
+      <%= f.input :alamat, as: :text, input_html: {style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.alamat)} %>
       <%= error_span(@sale[:alamat]) %>
-      <%= f.input :kota, :input_html => {:style => 'width: 250px'} %>
+      <%= f.input :kota, input_html: {style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.kota)} %>
       <%= error_span(@sale[:kota]) %>
-      <%= f.input :so_manual, :input_html => {:style => 'width: 250px'} %>
-     <%= error_span(@sale[:so_manual]) %>
-     <%= f.input :tanggal_kirim, as: :tanggal, :readonly => true, :input_html => {:style => 'width: 250px'} %>
+      <%= f.input :so_manual, input_html: {style: 'width: 250px'} %>
+      <%= error_span(@sale[:so_manual]) %>
+      <%= f.input :tanggal_kirim, as: :tanggal, readonly: true, input_html: {style: 'width: 250px'} %>
       <%= error_span(@sale[:tanggal_kirim]) %>
-      <%= f.input :keterangan_customer, :input_html => {:style => 'width: 250px'},
+      <%= f.input :keterangan_customer, input_html: {style: 'width: 250px'},
         label: "Keterangan (Untuk Ditampilkan di Invoice)" %>
       <%= error_span(@sale[:keterangan_customer]) %>
     </div>

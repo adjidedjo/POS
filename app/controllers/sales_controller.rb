@@ -64,6 +64,7 @@ class SalesController < ApplicationController
         send_data pdf.render, filename: "#{@sale.no_so}",
           type: "application/pdf",
           disposition: "inline"
+        @sale.update_attributes(printed: true)
       end
     end
   end
@@ -96,6 +97,11 @@ class SalesController < ApplicationController
   # GET /sales/1/edit
 
   def edit
+    @channels = Channel.all
+    @merchant = current_user.channel_customer.merchants.group([:nama, :no_merchant])
+    @tenor = []
+    @sales_promotion = current_user.channel_customer.sales_promotions
+    @ultimate_customer = PosUltimateCustomer.order(:nama).map(&:nama)
   end
 
   # POST /sales POST /sales.json
@@ -121,7 +127,9 @@ class SalesController < ApplicationController
   # PATCH/PUT /sales/1 PATCH/PUT /sales/1.json
   def update
     respond_to do |format|
-      if @sale.update(sale_params)
+      if @sale.readonly?
+        format.html { redirect_to @sale, alert: 'SO ini sudah di print, tidak bisa dirubah' }
+      elsif @sale.update(sale_params)
         format.html { redirect_to @sale, notice: 'Sale was successfully updated.' }
         format.json { render :show, status: :ok, location: @sale }
       else
@@ -171,6 +179,9 @@ class SalesController < ApplicationController
   def set_sale
     @sale = Sale.find(params[:id])
     @channels = Channel.all
+    if @sale.printed == true
+      redirect_to root_path, alert: "SO yang anda akan rubah sudah di print."
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -179,7 +190,7 @@ class SalesController < ApplicationController
       :so_manual, :store_id, :channel_id, :tipe_pembayaran, :no_merchant,
       :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :voucher, :sales_promotion_id, :sisa,
       :netto_elite, :netto_lady, :tanggal_kirim, :showroom_id, :channel_customer_id, :nama, :email, :alamat, :no_telepon,
-      :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported,
+      :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
         :nama_barang, :user_id, :_destroy, :keterangan],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
