@@ -1,6 +1,18 @@
 jQuery ->
   $(document).on 'ready page:load', ->
 
+    $('#table_pelunasan').DataTable({
+      "bAutoWidth": true,
+      "bProcessing": false,
+      "sScrollXInner": "7000px",
+      "bFilter": true,
+      "sScrollX": "110%",
+      "bScrollCollapse": true,
+      "bPaginate": false,
+      "bInfo": false,
+      "bDestroy": true
+    })
+
     $('#new_acquittance').validate
       rules:
         "tipe_pembayaran[]":

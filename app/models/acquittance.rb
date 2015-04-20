@@ -21,7 +21,8 @@ class Acquittance < ActiveRecord::Base
   end
 
   before_create do
-    self.no_so = loop do
+    self.exported_at = Time.now
+    self.no_reference = loop do
       random_token = 'AQ' + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8]
       break random_token unless Acquittance.exists?(no_reference: random_token)
     end
@@ -29,6 +30,7 @@ class Acquittance < ActiveRecord::Base
   end
 
   after_create do
+    self.exported = true
     total_pelunasan = self.cash_amount + self.transfer_amount
     debit_card = self.acquittance_with_debit_card.jumlah
     credit_card = self.acquittance_with_credit_cards.sum(:jumlah)

@@ -16,7 +16,8 @@ jQuery ->
       "sScrollX": "100%",
       "bScrollCollapse": true,
       "bPaginate": false,
-      "bInfo": false
+      "bInfo": false,
+      "bDestroy": true
     })
 
     $('#sales_rekap_so').DataTable({
@@ -27,7 +28,8 @@ jQuery ->
       "sScrollX": "110%",
       "bScrollCollapse": true,
       "bPaginate": false,
-      "bInfo": false
+      "bInfo": false,
+      "bDestroy": true
     })
 
     $('#sales_rekap_stock').DataTable({
@@ -38,7 +40,8 @@ jQuery ->
       "sScrollX": "110%",
       "bScrollCollapse": true,
       "bPaginate": false,
-      "bInfo": false
+      "bInfo": false,
+      "bDestroy": true
     })
 
     $('#rekapsales').validate

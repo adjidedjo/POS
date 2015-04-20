@@ -196,11 +196,21 @@ jQuery ->
       jumlah = get_id.replace("serial", "jumlah")
       kode_barang = get_id.replace("serial", "kode_barang")
       nama_barang = get_id.replace("serial", "nama_barang")
+      taken = get_id.replace("serial", "taken")
       resize_items()
       event.preventDefault()
       open_modal(get_id)
       date_picker()
       serial_doc = document.getElementById(get_id)
+      $('#'+taken).click ->
+        if $(this).is(':checked')
+          $.ajax
+            url: '/sales/stock_availability',
+            data: {
+              'kode_barang': $("#"+ kode_barang).val(),
+              'element_id': $(this).attr("id"),
+              'jumlah': $('#'+jumlah).val()}
+            datatype: 'script'
       $("#sale_sale_items_attributes_"+time+"_serial").autocomplete
         source: $("#sale_sale_items_attributes_"+time+"_serial").data('autocomplete-source'),
         select: (event, ui) ->

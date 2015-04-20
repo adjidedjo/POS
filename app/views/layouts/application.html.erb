@@ -64,15 +64,18 @@
                   <%= menu_item "Upload Intransit", import_intransit_channel_customers_path %>
                   <%= menu_item "Penerimaan Barang", item_receipts_receipt_path  %>
                   <%= menu_item "Nota Retur Display", return_items_return_path %>
-
                 <% end %>
                 <%= menu_item "Sales Order", new_sale_path  %>
                 <% if current_user.channel_customer.channel_id == 3 %>
                   <%= menu_item "Pelunasan", new_acquittance_path %>
+                  <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
                 <% end %>
-                <%= drop_down "Export Rekap SO" do %>
+                <%= drop_down "Export" do %>
                   <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
                   <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
+                  <% if current_user.channel_customer.channel_id == 3 %>
+                    <%= menu_item "Pelunasan", rekap_pelunasan_acquittances_path %>
+                  <% end %>
                 <% end %>
                 <%= drop_down "Report" do %>
                   <%= menu_item "Rekap SO", reports_rekap_so_path %>

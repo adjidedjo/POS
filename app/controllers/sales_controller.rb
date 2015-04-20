@@ -2,6 +2,18 @@ class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :destroy, :create]
 
+  def stock_availability
+    stock = ExhibitionStockItem.where(kode_barang: params[:kode_barang],
+      channel_customer_id: current_user.channel_customer.id, checked_in: true)
+    @element_id = params[:element_id]
+    @request_order = params[:jumlah]
+    @total_stock = stock.sum(:jumlah)
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def exhibition_stock
     @stock = ExhibitionStockItem.order(:serial).where("serial like ? and channel_customer_id = ? and checked_in = true",
       "%#{params[:term]}%", current_user.channel_customer.id)

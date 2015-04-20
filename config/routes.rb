@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       get 'search_sales'
       get "get_mid_from_merchant"
       get "get_second_mid_from_merchant"
+      get "rekap_pelunasan"
+      get "export_xml"
     end
   end
 
@@ -64,6 +66,7 @@ Rails.application.routes.draw do
       get "edit_by_confirmation"
       get "destroy_by_confirmation"
       get "exhibition_stock"
+      get "stock_availability"
     end
   end
 

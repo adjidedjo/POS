@@ -1,6 +1,29 @@
 class AcquittancesController < ApplicationController
   before_action :set_acquittance, only: [:show, :edit, :update, :destroy]
 
+  def export_xml
+    @acquittance = Acquittance.find(params[:acqs_ids])
+    @user = current_user.channel_customer
+    get_branch = Time.now.strftime("%d%m%Y%H%M%S")
+
+    respond_to do |format|
+      format.xml do
+        stream = render_to_string(:template=>"acquittances/rekap_pelunasan.xml.builder" )
+        send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
+      end
+    end
+  end
+
+  def rekap_pelunasan
+    @sales = Acquittance.where(channel_customer_id: current_user.channel_customer.id, exported: false)
+
+
+    respond_to do |format|
+      format.html
+      format.xls
+    end
+  end
+
   def get_second_mid_from_merchant
     @tenor = []
     Merchant.where(no_merchant: params[:merchant]).each do |nm|

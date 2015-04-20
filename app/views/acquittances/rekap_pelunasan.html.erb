@@ -1,0 +1,85 @@
+<%= form_tag export_xml_acquittances_path(:format => :xml), :method => :get, :id => 'rekapsales' do %>
+  <table id="table_pelunasan" class="display table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th><%= check_box_tag "check_all" %></th>
+        <th>Lokasi Pameran</th>
+        <th>Nama SPG/SPB</th>
+       <th>No SO</th>
+        <th>Tanggal SO</th>
+        <th>Nama Konsumen</th>
+       <th>Netto Penjualan</th>
+        <th>Pembayaran Tunai</th>
+        <th>Nama Bank</th>
+        <th>No Rekening</th>
+        <th>Jumlah Transfer</th>
+        <th>Nominal Kartu Debit</th>
+       <th>No Kartu Debit</th>
+        <th>Atas Nama</th>
+        <th>Nama Bank</th>
+        <th>Nominal Kartu Kredit</th>
+        <th>Nama Kartu Kredit</th>
+        <th>No Kartu Kredit</th>
+        <th>Atas Nama</th>
+        <th>No Merchant</th>
+       <th>Nama Merchant</th>
+       <th>Nominal Kartu Kredit</th>
+        <th>Nama Kartu Kredit</th>
+        <th>No Kartu Kredit</th>
+        <th>Atas Nama</th>
+        <th>No Merchant</th>
+        <th>Nama Merchant</th>
+        <th>Kode Pameran</th>
+        <th>Dari Tanggal</th>
+        <th>Ke Tanggal</th>
+        <th>No Telp</th>
+        <th>Alamat Kirim</th>
+        <th>Kota</th>
+        <th>Email</th>
+        <th>Jenis Pembayaran</th>
+        <th>Sisa</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sales.each do |acq| %>
+        <tr>
+          <td><%= check_box_tag "acqs_ids[]", acq.id %></td>
+          <td><%= acq.sale.channel_customer.nama.upcase %></td>
+          <td><%= acq.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
+  acq.sale.channel_customer.sales_promotions.find(acq.sale.sales_promotion_id).nama.titleize %></td>
+          <td><%= link_to acq.sale.no_so.upcase, sale_path(acq.sale.id) %></td>
+          <td><%= acq.sale.tanggal_kirim %></td>
+          <td><%= acq.sale.pos_ultimate_customer.nama %></td>
+          <td><%= currency(acq.sale.netto) %></td>
+          <td><%= currency(acq.sale.pembayaran) %></td>
+          <td><%= acq.bank_account.nil? ? '' : acq.bank_account.name %></td>
+          <td><%= acq.bank_account.nil? ? '' : acq.bank_account.account_number %></td>
+          <td><%= currency(acq.cash_amount) %></td>
+          <td><%= currency(acq.acquittance_with_debit_card.jumlah) %></td>
+          <td><%= acq.acquittance_with_debit_card.no_kartu_debit %></td>
+          <td><%= acq.acquittance_with_debit_card.atas_nama %></td>
+          <td><%= acq.acquittance_with_debit_card.nama_kartu %></td>
+          <% acq.acquittance_with_credit_cards.each do |cc| %>
+            <td><%= currency(cc.jumlah) %></td>
+            <td><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </td>
+            <td><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </td>
+            <td><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </td>
+            <td><%= cc.no_merchant.present? ? cc.no_merchant : '-' %> </td>
+            <td><%= cc.nama_merchant.present? ? cc.nama_merchant : '-' %> </td>
+          <% end %>
+          <td><%= acq.sale.channel_customer.kode_channel_customer %></td>
+          <td><%= acq.sale.channel_customer.dari_tanggal %></td>
+          <td><%= acq.sale.channel_customer.sampai_tanggal %></td>
+          <td><%= acq.sale.pos_ultimate_customer.no_telepon %></td>
+          <td><%= acq.sale.pos_ultimate_customer.alamat %></td>
+          <td><%= acq.sale.pos_ultimate_customer.kota %></td>
+          <td><%= acq.sale.pos_ultimate_customer.email %></td>
+          <td><%= currency(acq.method_of_payment) %></td>
+          <td><%= currency(acq.sale.sisa) %></td>
+        <% end %>
+    </tbody>
+  </table>
+<br />
+  <%= submit_tag "Export & Kirim", :class => 'btn btn-default export' %>
+<% end %>
