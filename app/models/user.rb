@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
   before_create do
     self.role = 'admin' if admin?
     old_signin = self.last_sign_in_at
-    super
     if self.last_sign_in_at != old_signin
       UserTracing.create :user_id => self.id, :action => "login", :ip => self.last_sign_in_ip
     end
