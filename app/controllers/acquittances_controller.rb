@@ -4,7 +4,7 @@ class AcquittancesController < ApplicationController
   def export_xml
     @acquittance = Acquittance.find(params[:acqs_ids])
     @user = current_user.channel_customer
-    get_branch = Time.now.strftime("%d%m%Y%H%M%S")
+    get_branch = "P"+Time.now.strftime("%d%m%Y%H%M%S")
 
     respond_to do |format|
       format.xml do

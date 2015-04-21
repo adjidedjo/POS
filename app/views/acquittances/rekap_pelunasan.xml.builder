@@ -5,6 +5,7 @@ xml.data do
     xml.pelunasan do
       xml.noso acq.sale.no_so
       xml.nopelunasan acq.no_reference
+      xml.TglPelunasan acq.created_at.strftime("%m/%d/%Y")
       xml.KeteranganSO acq.sale.keterangan_customer
       xml.NoPo acq.sale.no_so
       xml.AlamatKirim acq.sale.pos_ultimate_customer.alamat
@@ -46,13 +47,13 @@ xml.data do
       xml.JumlahTransfer acq.transfer_amount
     end
   end
-  xml_data = xml.target!
-  set_file_name = Time.now.strftime("%d%m%Y%H%M%S")
-  file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
-  file.write(xml_data)
-  file.close
-  @acquittance.each do |acq_user|
-    acq_user.update_attributes!(exported: true, exported_by: @user.id, exported_at: Time.now)
-    UserMailer.pelunasan(acq_user.sale.channel_customer.recipients.first.sales_counter.email, "#{set_file_name}", @user).deliver_now
-  end
+end
+xml_data = xml.target!
+set_file_name = "P" + Time.now.strftime("%d%m%Y%H%M%S")
+file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
+file.write(xml_data)
+file.close
+@acquittance.each do |acq_user|
+  acq_user.update_attributes!(exported: true, exported_by: @user.id, exported_at: Time.now)
+  UserMailer.pelunasan(acq_user.sale.channel_customer.recipients.first.sales_counter.email, "#{set_file_name}", @user).deliver_now
 end
