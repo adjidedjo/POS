@@ -27,7 +27,7 @@ class Sale < ActiveRecord::Base
 
   validates :netto, :tanggal_kirim, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
-  validates :sale_items, presence: true
+  validates :sale_items, presence: true, on: :create
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 

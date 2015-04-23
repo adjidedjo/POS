@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   belongs_to :supervisor_exhibition
   belongs_to :sales_promotion
   belongs_to :store
+  belongs_to :branch
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 

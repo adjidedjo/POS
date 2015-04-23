@@ -34,7 +34,7 @@ class ChannelCustomersController < ApplicationController
     current_user.channel_customer.update_attributes!(kode_channel_customer: @kode_channel_customer_hash[:kode_channel_customer]) if current_user.channel_customer.kode_channel_customer.blank?
 
     respond_to do |format|
-      format.html { redirect_to current_user.channel_customer, notice: 'Intransit sudah berhasil di upload.' }
+      format.html { redirect_to item_receipts_receipt_path, notice: 'Intransit sudah berhasil di upload dan lakukan penerimaan barang.' }
       format.json { render :show, status: :created, location: @showroom }
     end
   end

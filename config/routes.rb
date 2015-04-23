@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
 
+  namespace :accounting do
+   get 'stocks/mutasi_stock'
+   get 'stocks/view_stock'
+   get 'stocks/view_selisih_intransit'
+   get 'stocks/view_selisih_stock'
+    resources :verifying_payments do
+      collection do
+        put 'verify'
+      end
+    end
+  end
+
   resources :search_sales
 
   resources :sales_counters

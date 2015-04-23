@@ -58,6 +58,13 @@
                 <%= drop_down "Report" do %>
                   <%= menu_item "Penjualan", new_search_sale_path %>
                 <% end %>
+                <% elsif current_user.role == 'accounting' %>
+                  <%= menu_item "Verify Payment", accounting_verifying_payments_path %>
+                  <%= drop_down "Stok" do %>
+                    <%= menu_item "Mutasi Stock", accounting_stocks_mutasi_stock_path   %>
+                    <%= menu_item "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path   %>
+                    <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path  %>
+                  <% end %>
                 <% else %>
                 </li>
                 <%= drop_down "Stok" do %>
@@ -87,7 +94,7 @@
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <% unless current_user.admin? %>
+              <% unless current_user.admin? || current_user.role == 'accounting' %>
                 <%= drop_down current_user.channel_customer.nama.upcase do %>
                   <%= menu_item "Pengaturan Akun", edit_channel_customer_path(current_user.channel_customer)   %>
                 <% end %>

@@ -1,4 +1,5 @@
 class ChannelCustomer < ActiveRecord::Base
+  has_many :exhibition_stock_items, dependent: :destroy
   has_many :acquittances, dependent: :destroy
   has_many :sales, dependent: :destroy
   has_many :sales_promotions, dependent: :destroy
