@@ -1,6 +1,18 @@
 class ItemReceiptsController < ApplicationController
   before_action :get_store_id
 
+  def check_item_value
+    check_stok = ExhibitionStockItem.where(kode_barang: params[:kodebrg], no_sj: params[:nosj], channel_customer_id: params[:cc]).sum(:jumlah)
+    @element_id = params[:element_id]
+    if check_stok != params[:val].to_i
+      raise params[:val]
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def receipt
       @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer,
         checked_in: false).group(:kode_barang)

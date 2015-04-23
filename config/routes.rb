@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   get 'item_receipts/receipt'
   put 'item_receipts/process_receipt'
   get 'item_receipts/receipt_by_serial'
+  get 'item_receipts/check_item_value'
   put 'item_receipts/process_receipt_by_serial'
 
   get 'reports/index'

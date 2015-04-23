@@ -19,6 +19,7 @@
               <td><%= link_to f.object.kode_barang, item_receipts_receipt_by_serial_path(kode_barang: f.object.kode_barang) %></td>
               <%= f.hidden_field "kode_barang" %>
               <%= f.hidden_field "no_sj" %>
+              <%= f.hidden_field "channel_customer_id" %>
               <td><%= f.object.nama %></td>
               <td><%= f.text_field "jumlah", value: '' %></td>
           <% end %>
