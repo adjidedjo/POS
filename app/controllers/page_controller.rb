@@ -6,4 +6,16 @@ class PageController < ApplicationController
       format.html
     end
   end
+
+  def download_manual_book
+    respond_to do |format|
+      format.pdf do
+        send_file(
+          "#{Rails.root}/public/pos_user_manual.pdf",
+          filename: "pos_user_manual.pdf",
+          type: "application/pdf"
+        )
+      end
+    end
+  end
 end

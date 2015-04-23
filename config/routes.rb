@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: "users/sessions" }
 
   get 'page/home'
+  get 'page/download_manual_book'
 
   resources :stores
 
