@@ -31,6 +31,19 @@ class Sale < ActiveRecord::Base
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 
+  validate :uniqueness_of_items
+
+  def uniqueness_of_items
+    hash = {}
+    sale_items.each do |si|
+      if hash[si.kode_barang]
+        errors.add(:"si.kode_barang", "duplicate error")
+        si.errors.add(:kode_barang, "has already been taken")
+      end
+      hash[si.kode_barang] = true
+    end
+  end
+
   before_update do
     puc = {
       email: email,
