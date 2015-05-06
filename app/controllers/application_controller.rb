@@ -7,13 +7,18 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resources)
-    unless resources.channel_customer.nil?
-      if resources.channel_customer.exhibition_stock_items.blank?
-        import_intransit_channel_customers_path
-      elsif resources.channel_customer.exhibition_stock_items.where(checked_in: true).blank?
-        item_receipts_receipt_path
-      else
-        root_path
+#    raise resources.inspect
+    if resources.role == "admin"
+      root_path
+    else
+      unless resources.channel_customer.nil?
+        if resources.channel_customer.exhibition_stock_items.blank?
+          import_intransit_channel_customers_path
+        elsif resources.channel_customer.exhibition_stock_items.where(checked_in: true).blank?
+          item_receipts_receipt_path
+        else
+          root_path
+        end
       end
     end
   end
