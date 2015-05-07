@@ -12,7 +12,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer', platforms: :ruby
+#gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -28,7 +28,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 # #bootstrap
-gem "less-rails"
+#gem "less-rails"
 gem 'twitter-bootstrap-rails'
 gem 'simple_form'
 gem 'jquery-datatables-rails', '~> 3.1.1'
