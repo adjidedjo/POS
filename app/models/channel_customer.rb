@@ -34,5 +34,11 @@ class ChannelCustomer < ActiveRecord::Base
     }
     user = User.where(email: get_email).first_or_create(user_hash)
     self.update_attributes!(user_id: user.id)
+
+    all_email = []
+    self.supervisor_exhibitions.each do |se|
+      all_email << se.email
+    end
+    UserMailer.new_channel(all_email, self,  new_password,  new_username).deliver_now
   end
 end
