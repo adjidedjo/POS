@@ -1,6 +1,6 @@
 jQuery ->
   $(document).on "page:fetch", ->
-    Turbolinks.enableTransitionCache();
+    Turbolinks.pagesCached(0);
 
   $(document).on "ready page:load", ->
 

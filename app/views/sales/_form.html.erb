@@ -32,7 +32,7 @@
     </div>
   </div>
   <hr>
-  <div class="row form-inline">
+  <div id="barnag" class="row form-inline">
     <%= f.simple_fields_for :sale_items, as: 'user_inline', wrapper: :inline_form do |builder| %>
       <%= render "sale_item_fields", :f => builder %>
     <% end %>

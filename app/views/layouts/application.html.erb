@@ -74,7 +74,7 @@
                   <%= menu_item "Penerimaan Barang", item_receipts_receipt_path  %>
                   <%= menu_item "Nota Retur Display", return_items_return_path %>
                 <% end %>
-                <%= menu_item "Sales Order", new_sale_path  %>
+                <%= menu_item "Sales Order", new_sale_path, 'data-no-turbolink' => true %>
                 <% if current_user.channel_customer.channel_id == 3 %>
                   <%= menu_item "Pelunasan", new_acquittance_path %>
                   <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
