@@ -16,10 +16,12 @@ class ChannelCustomersController < ApplicationController
         no_so: si.at_xpath("NoSO").text,
         no_pbj: si.at_xpath("NoPBJ").text,
         no_sj: si.at_xpath("NoSJ").text,
+        sj_pusat: si.at_xpath("SJPusat").text,
         tanggal_sj: si.at_xpath("TglSJ").text.to_date,
         channel_customer_id: channel_customer,
         store_id: 0,
-        jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1)
+        jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1),
+        stok_awal: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1)
       }
       item_hash = {
         kode_barang: si.at_xpath("KodeBrg").text,

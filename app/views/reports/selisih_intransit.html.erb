@@ -18,9 +18,9 @@
         <td><%= ins.no_sj %></td>
         <td><%= ins.kode_barang %></td>
         <td><%= ExhibitionStockItem.find_by_kode_barang(ins.kode_barang).nama %></td>
-        <% inst = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj).sum(:jumlah)  %>
+        <% inst = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, channel_customer_id: current_user.channel_customer.id).sum(:stok_awal)  %>
         <td><%= inst %></td>
-        <% receipt = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true, checked_out: false).sum(:jumlah)  %>
+        <% receipt = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true, channel_customer_id: current_user.channel_customer.id).sum(:stok_awal)  %>
         <td><%= receipt %></td>
         <td><%= inst - receipt %></td>
       </tr>

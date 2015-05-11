@@ -98,7 +98,7 @@
             <ul class="nav navbar-nav navbar-right">
               <% unless current_user.admin? || current_user.role == 'accounting' %>
                 <%= drop_down current_user.channel_customer.nama.upcase do %>
-                  <%= menu_item "Pengaturan Akun", edit_channel_customer_path(current_user.channel_customer)   %>
+                  <%= menu_item "Pengaturan Akun", edit_channel_customer_path(current_user.channel_customer), 'data-no-turbolink' => true  %>
                 <% end %>
               <% end %>
               <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>

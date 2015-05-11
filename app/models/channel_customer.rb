@@ -39,6 +39,6 @@ class ChannelCustomer < ActiveRecord::Base
     self.supervisor_exhibitions.each do |se|
       all_email << se.email
     end
-    UserMailer.new_channel(all_email, self,  new_password,  new_username).deliver_now
+    UserMailer.new_channel(all_email, self,  new_password,  new_username).deliver_now if all_email.present?
   end
 end
