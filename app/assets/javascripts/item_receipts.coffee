@@ -9,7 +9,8 @@ jQuery ->
     $('#table_receipt').DataTable({
       bInfo: false,
       responsive: true,
-      bPaginate: false
+      bPaginate: false,
+      bDestroy: true
     })
 
     $('#table_receipt').on 'change', 'td', (event) ->
