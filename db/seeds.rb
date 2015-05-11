@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 User.create!(username: "adminpos", email: "adminpos@ras.co.id", password: "admind6f8", role: "admin")
+
 User.create!(username: "acc_bandung", email: "acc_bandung@ras.co.id", password: "accbandung", role: "accounting", branch_id: 2)
 User.create!(username: "acc_narogong", email: "acc_narogong@ras.co.id", password: "accnarogong", role: "accounting", branch_id: 3)
 User.create!(username: "acc_bali", email: "acc_bali@ras.co.id", password: "accbali", role: "accounting", branch_id: 4)
@@ -23,3 +24,6 @@ User.create!(username: "acc_pekanbaru", email: "acc_pekanbaru@ras.co.id", passwo
 User.create!(username: "acc_jember", email: "acc_jember@ras.co.id", password: "accjember", role: "accounting", branch_id: 22)
 User.create!(username: "acc_tangerang", email: "acc_tangerang@ras.co.id", password: "acctangerang", role: "accounting", branch_id: 23)
 User.create!(username: "acc_yogya2", email: "acc_yogya2@ras.co.id", password: "accyogya2", role: "accounting", branch_id: 24)
+
+BankAccount.create!(name: "PT. Lady Americana Indonesia", account_number: "1234567890")
+BankAccount.create!(name: "PT. Royal Abadi Sejahtera", account_number: "0987654321")
