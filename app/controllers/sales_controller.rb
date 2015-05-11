@@ -120,6 +120,7 @@ class SalesController < ApplicationController
   def create
     @sale = Sale.new(sale_params)
     @sale.channel_customer_id = current_user.channel_customer.id
+    @sale.channel_id = current_user.channel_customer.channel.id
     @sale.tipe_pembayaran = params[:tipe_pembayaran].join(';')
     @merchant = current_user.channel_customer.merchants
     get_credit_card = sale_params["tipe_pembayaran"].split(";").include?('Credit Card') if sale_params["tipe_pembayaran"].present?
