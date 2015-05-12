@@ -6,7 +6,7 @@ class ChannelCustomersController < ApplicationController
     channel_customer = current_user.channel_customer.id
     #    tempfile = File.read(tempfile)
     doc = Nokogiri::XML(tempfile)
-    item = doc.xpath("data/pameran")
+    item = doc.xpath("data/sj")
     @a = []
     item.each do |si|
       si_hash = {

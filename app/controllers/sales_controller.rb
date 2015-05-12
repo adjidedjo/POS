@@ -1,5 +1,6 @@
 class SalesController < ApplicationController
-  before_action :set_sale, only: [:show, :edit, :update, :destroy]
+  before_action :set_sale, only: [:edit, :update]
+  before_action :sale_after_printed, only: [:show, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :destroy, :create]
 
   def stock_availability
@@ -190,6 +191,10 @@ class SalesController < ApplicationController
     if @sale.printed == true
       redirect_to root_path, alert: "SO yang anda akan rubah sudah di print."
     end
+  end
+
+  def sale_after_printed
+    @sale = Sale.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

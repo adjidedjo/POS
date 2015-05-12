@@ -10,11 +10,11 @@ class ReturnItemsController < ApplicationController
     params[:return].each do |key, value|
       items = ExhibitionStockItem.where("kode_barang = ? and channel_customer_id = ? and checked_in = ?
 and checked_out = ? and jumlah > 0", value["kode_barang"], current_user.channel_customer, true, false)
-      if items.sum(:jumlah) == value["jumlah"].to_i
-        items.each do |item|
-          item.update_attributes!(checked_out: true, checked_out_by: current_user.id)
+      items.each do |item|
+        unless value["jumlah"].blank?
+          item.update_attributes!(jumlah: (item.jumlah - value["jumlah"].to_i))
           StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
-            kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_out: item.jumlah, keterangan: "B",
+            kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_out: value["jumlah"].to_i, keterangan: "B",
             no_sj: item.no_sj, serial: item.serial)
         end
       end
