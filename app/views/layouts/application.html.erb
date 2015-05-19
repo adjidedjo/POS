@@ -57,9 +57,9 @@
                     <%= menu_item "Channel Customers", channel_customers_path %>
                     <%= menu_item "Ultimate Customers", pos_ultimate_customers_path %>
                   <% end %>
-                <%= drop_down "Report" do %>
-                  <%= menu_item "Penjualan", new_search_sale_path %>
-                <% end %>
+                  <%= drop_down "Report" do %>
+                    <%= menu_item "Penjualan", new_search_sale_path %>
+                  <% end %>
                 <% elsif current_user.role == 'accounting' %>
                   <%= menu_item "Verify Payment", accounting_verifying_payments_path %>
                   <%= drop_down "Stok" do %>
@@ -77,7 +77,7 @@
                 <%= menu_item "Sales Order", new_sale_path, 'data-no-turbolink' => true %>
                 <% if current_user.channel_customer.channel_id == 3 %>
                   <%= menu_item "Pelunasan", new_acquittance_path %>
-                  <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
+      <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
                 <% end %>
                 <%= drop_down "Export" do %>
                   <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
@@ -117,11 +117,11 @@
       <%= yield %>
     </div><!--/row-->
 
-<%#*<footer>%>
-<%#*<p>&copy; Company 2015</p>%>
-<%#*</footer>%>
+    <div class="navbar-default navbar-fixed-bottom">
+      <p class="copyright-footer">&copy; Royal Abadi Sejahtera 2015</p>
+      <p class="manual-footer">Butuh Buku Manual? <%= link_to 'Download',
+          page_download_manual_book_path(format: 'pdf'), class: "link_download" %></p>
+    </div>
 
-  </div> <!-- /container -->
-
-</body>
+  </body>
 </html>

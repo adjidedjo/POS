@@ -21,6 +21,75 @@
  *= require_self
 */
 
+@media screen and (max-width:500px) {
+
+  h1 {
+    font-size: 14px;
+  }
+
+  .navbar-brand {
+    font-size: 12px;
+  }
+
+  .nav navbar-nav {
+    font-size: 12px;
+  }
+
+  .copyright-footer {
+    margin-top: 10px;
+    margin-left: 5px;
+    font-size: 8px;
+    float: left;
+  }
+
+  .manual-footer {
+    margin-top: 10px;
+    float: right;
+    margin-right: 5px;
+    font-size: 8px;
+  }
+}
+@media screen and (min-width:501px) and (max-width:800px) {
+  p {
+    font-size: 8px;
+  }
+}
+@media screen and (min-width:801px) and (max-width:1024px) {
+  .copyright-footer {
+    margin-top: 10px;
+    margin-left: 100px;
+    float: left;
+    font-size: 5px;
+  }
+
+  .manual-footer {
+    margin-top: 10px;
+    float: right;
+    margin-right: 150px;
+  }
+}
+@media screen and (min-width:1025px) {
+  .copyright-footer {
+    margin-top: 10px;
+    margin-left: 100px;
+    font-size: 14px;
+    float: left;
+  }
+
+  .manual-footer {
+    margin-top: 10px;
+    float: right;
+    margin-right: 150px;
+    font-size: 14px;
+  }
+}
+
+html,
+  body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+  }
+
 .mini_size {
   font-size: 12px;
 }
@@ -30,28 +99,28 @@
 }
 
 .form-login {
-    background-color: #F8F8F8;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 15px;
-    border-color:#d2d2d2;
-    border-width: 5px;
-    box-shadow:0 1px 0 #cfcfcf;
+  background-color: #F8F8F8;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 15px;
+  border-color:#d2d2d2;
+  border-width: 5px;
+  box-shadow:0 1px 0 #cfcfcf;
 }
 
 h4 {
- border:0 solid #fff;
- border-bottom-width:1px;
- padding-bottom:10px;
- text-align: center;
+  border:0 solid #fff;
+  border-bottom-width:1px;
+  padding-bottom:10px;
+  text-align: center;
 }
 
 .form-control {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .wrapper {
-    text-align: center;
+  text-align: center;
 }

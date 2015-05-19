@@ -65,6 +65,7 @@ Rails.application.routes.draw do
 
   get 'page/home'
   get 'page/download_manual_book'
+  get 'page/admin_master_landing_page'
 
   resources :stores
 
