@@ -1,0 +1,10 @@
+<%= link_to 'Akun Bank Baru', new_bank_account_path, class: "ui-btn", 'data-no-turbolink' => true %>
+<div data-role="main" class="ui-content">
+  <%= link_to 'Akun Bank Baru', new_bank_account_path, class: "ui-btn", 'data-no-turbolink' => true %>
+  <h1>List Bank Accounts</h1>
+  <ul data-role="listview" data-inset="true">
+    <% @bank_accounts.each do |bank_account|  %>
+      <li><a href="#"><%=  bank_account.name %></a></li>
+    <% end %>
+  </ul>
+</div>

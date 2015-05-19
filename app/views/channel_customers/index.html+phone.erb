@@ -1,0 +1,10 @@
+<%= link_to 'Channel Customer Baru', new_channel_customer_path, class: "ui-btn", 'data-no-turbolink' => true %>
+<div data-role="main" class="ui-content">
+  <%= link_to 'Channel Customer Baru', new_channel_customer_path, class: "ui-btn", 'data-no-turbolink' => true %>
+  <h1>List Channel Customers</h1>
+  <ul data-role="listview" data-inset="true">
+    <% @channel_customers.each do |channel_customer| %>
+      <li><a href="#"><%= channel_customer.nama.titleize %></a></li>
+    <% end %>
+  </ul>
+</div>

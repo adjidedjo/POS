@@ -1,0 +1,9 @@
+<div data-role="main" class="ui-content">
+  <%= link_to 'Sales Counter Baru', new_sales_counter_path, class: "ui-btn", 'data-no-turbolink' => true %>
+  <h1>List Sales Counters</h1>
+  <ul data-role="listview" data-inset="true">
+    <% @sales_counters.each do |sales_counter| %>
+      <li><a href="#"><%=  sales_counter.nama.titleize %></a></li>
+    <% end %>
+  </ul>
+</div>

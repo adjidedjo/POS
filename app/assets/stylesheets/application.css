@@ -25,6 +25,7 @@
 
   h1 {
     font-size: 14px;
+    font-weight: bold;
   }
 
   .navbar-brand {
@@ -85,10 +86,10 @@
 }
 
 html,
-  body {
-    height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
-  }
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
 
 .mini_size {
   font-size: 12px;
