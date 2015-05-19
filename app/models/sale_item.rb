@@ -71,10 +71,10 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
       get_no_sj_from_serial = ExhibitionStockItem.find_by_serial(self.serial)
       StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
         nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
-        serial: get_no_sj_from_serial.serial)
+        serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)
     elsif self.serial.blank? && self.ex_no_sj.present? && cek_stock.present?
       StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
-        nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: self.ex_no_sj)
+        nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: self.ex_no_sj, sale_id: self.sale.id)
     end
   end
 

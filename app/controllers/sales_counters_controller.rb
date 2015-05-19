@@ -1,5 +1,6 @@
 class SalesCountersController < ApplicationController
   before_action :set_sales_counter, only: [:show, :edit, :update, :destroy]
+  before_action :branches, only: [:new, :edit]
 
   # GET /sales_counters
   # GET /sales_counters.json
@@ -62,6 +63,10 @@ class SalesCountersController < ApplicationController
   end
 
   private
+    def branches
+      @branches = Branch.all
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_sales_counter
       @sales_counter = SalesCounter.find(params[:id])
@@ -69,6 +74,6 @@ class SalesCountersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sales_counter_params
-      params.require(:sales_counter).permit(:nama, :nik, :email)
+      params.require(:sales_counter).permit(:nama, :nik, :email, :branch_id)
     end
 end

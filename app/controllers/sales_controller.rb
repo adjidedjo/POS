@@ -164,7 +164,7 @@ class SalesController < ApplicationController
           esi.update_attributes(jumlah: (co_si.jumlah + esi.jumlah))
         else
           ssah = StoreSalesAndStockHistory.where(kode_barang: co_si.kode_barang,
-            channel_customer_id: current_user.channel_customer.id, keterangan: "S").first
+            channel_customer_id: current_user.channel_customer.id, keterangan: "S", sale_id: @sale.id).first
           esi = ExhibitionStockItem.find_by_kode_barang_and_channel_customer_id(co_si.kode_barang, current_user.channel_customer.id)
           esi.update_attributes(jumlah: (co_si.jumlah + esi.jumlah))
           ssah.destroy

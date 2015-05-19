@@ -73,6 +73,8 @@ jQuery ->
 
     $('#new_sale').validate
       rules:
+        "sale_jumlah_transfer":
+          required: true
         "tipe_pembayaran[]":
           required: true
         "sale_sales_promotion_id":

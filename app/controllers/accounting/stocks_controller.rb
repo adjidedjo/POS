@@ -29,6 +29,14 @@ class Accounting::StocksController < ApplicationController
   end
 
   def mutasi_stock
-    @channel_customer = ChannelCustomer.all
+    @channel_customer = []
+    channel = current_user.branch.sales_counters
+    if channel.present?
+      current_user.branch.sales_counters.each do |sc|
+        sc.recipients.each do |scr|
+          @channel_customer << scr.channel_customer
+        end
+      end
+    end
   end
 end

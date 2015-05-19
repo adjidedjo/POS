@@ -8,6 +8,7 @@
       <th>Nama</th>
       <th>Nik</th>
       <th>Email</th>
+      <th>Cabang</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,6 +19,7 @@
         <td><%= sales_counter.nama %></td>
         <td><%= sales_counter.nik %></td>
         <td><%= sales_counter.email %></td>
+        <td><%= sales_counter.branch.cabang.titleize %></td>
         <td><%= link_to 'Show', sales_counter %></td>
         <td><%= link_to 'Edit', edit_sales_counter_path(sales_counter) %></td>
         <td><%= link_to 'Destroy', sales_counter, method: :delete, data: { confirm: 'Are you sure?' } %></td>

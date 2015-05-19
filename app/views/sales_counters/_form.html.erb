@@ -5,6 +5,7 @@
     <%= f.input :nama %>
     <%= f.input :nik %>
     <%= f.input :email %>
+    <%= f.input :branch_id, collection: @branches, label_method: :cabang, value_method: :id, prompt: "--Pilih Cabang--" %>
   </div>
 
   <div class="form-actions">
