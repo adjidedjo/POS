@@ -41,6 +41,8 @@ gem 'paper_trail', '~> 4.0.0.beta'
 #
 #gem 'activeadmin', github: 'activeadmin'
 
+gem "browser"
+
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server gem 'unicorn'
