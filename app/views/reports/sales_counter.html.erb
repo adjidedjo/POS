@@ -101,5 +101,5 @@
     </tbody>
   </table>
 <br />
-  <%= submit_tag "Export & Kirim", :class => 'btn btn-default export' %>
+  <%= submit_tag "Export & Kirim", :class => 'btn btn-default export' if @sales.present? %>
 <% end %>

@@ -63,24 +63,29 @@ class ReportsController < ApplicationController
   end
 
   def export_xml
+    raise params[:brand_id].inspect
     @sales = []
     @user = current_user.channel_customer
     @chosen_sale_item = params[:sale_items_ids]
     @email = params[:email]
-    @chosen_sale_item.each do |sale_item_ids|
-      SaleItem.where("id = ?", sale_item_ids.to_i).each do |sale_item|
-        @sales << sale_item
-        sale_item.update_attributes(exported: true, exported_at: Time.now, exported_by: current_user.id)
+    if @chosen_sale_item.present?
+      @chosen_sale_item.each do |sale_item_ids|
+        SaleItem.where("id = ?", sale_item_ids.to_i).each do |sale_item|
+          @sales << sale_item
+          sale_item.update_attributes(exported: true, exported_at: Time.now, exported_by: current_user.id)
+        end
       end
-    end
-    Sale.set_exported_items(@sales.group_by(&:sale_id).keys)
-    get_branch = Time.now.strftime("%d%m%Y%H%M%S")
+      Sale.set_exported_items(@sales.group_by(&:sale_id).keys)
+      get_branch = Time.now.strftime("%d%m%Y%H%M%S")
 
-    respond_to do |format|
-      format.xml do
-        stream = render_to_string(:template=>"reports/sales_counter.xml.builder" )
-        send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
+      respond_to do |format|
+        format.xml do
+          stream = render_to_string(:template=>"reports/sales_counter.xml.builder" )
+          send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
+        end
       end
+    else
+      redirect_to reports_sales_counter_path(brand_id: params[:brand_id]), alert: "Silahkan centang penjualan yang akan dikirim"
     end
   end
 end
