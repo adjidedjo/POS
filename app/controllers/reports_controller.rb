@@ -63,7 +63,6 @@ class ReportsController < ApplicationController
   end
 
   def export_xml
-    raise params[:brand_id].inspect
     @sales = []
     @user = current_user.channel_customer
     @chosen_sale_item = params[:sale_items_ids]
