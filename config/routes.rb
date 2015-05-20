@@ -46,6 +46,7 @@ Rails.application.routes.draw do
   put 'return_items/process_return'
   get 'return_items/return_by_serial'
   put 'return_items/process_return_by_serial'
+  get 'return_items/print_return'
 
   get 'item_receipts/receipt'
   put 'item_receipts/process_receipt'
