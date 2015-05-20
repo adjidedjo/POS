@@ -1,6 +1,25 @@
 class ReturnItemsController < ApplicationController
   before_action :get_store_id
 
+  def print_return
+    @unprint_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B", printed: false)
+    @doc_code = "RT" + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8]
+    @current_channel = current_user.channel_customer
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ReturnPdf.new(@unprint_return, @doc_code, @current_channel)
+        send_data pdf.render, filename: "#{@doc_code}",
+          type: "application/pdf",
+          disposition: "inline"
+        @unprint_return.each do |rt|
+          rt.update_attributes(printed: true)
+        end
+      end
+    end
+  end
+
   def return
     @return = ExhibitionStockItem.where("channel_customer_id = ? and checked_in = ? and checked_out = ? and jumlah > ?",
       current_user.channel_customer, true, false, 0).group(:kode_barang)
