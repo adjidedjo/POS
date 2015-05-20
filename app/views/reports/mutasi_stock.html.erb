@@ -43,7 +43,7 @@
         <td><%= rs.tanggal   %></td>
         <td>0</td>
         <td><%= rs.qty_out %></td>
-        <% a = StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "S", channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
+        <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "S", channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
         <td>-</td>
         <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
       </tr>
@@ -55,7 +55,7 @@
         <td><%= rs.tanggal   %></td>
         <td>-</td>
         <td>-</td>
-        <% a = StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
+        <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
         <td><%= a %></td>
         <td>Saldo Akhir</td>
       </tr>
