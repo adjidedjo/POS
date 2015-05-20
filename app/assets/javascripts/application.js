@@ -17,7 +17,6 @@
 //= require dataTables/extras/dataTables.responsive
 //= require jquery-ui
 //= require jquery.validate.min
-//= require jquery.mobile-1.4.5.min
 //= require bootstrap-select
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap

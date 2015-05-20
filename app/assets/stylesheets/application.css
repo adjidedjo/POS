@@ -69,26 +69,18 @@
     margin-right: 150px;
   }
 }
-@media screen and (min-width:1025px) {
-  .copyright-footer {
-    margin-top: 10px;
-    margin-left: 100px;
-    font-size: 14px;
-    float: left;
-  }
-
-  .manual-footer {
-    margin-top: 10px;
-    float: right;
-    margin-right: 150px;
-    font-size: 14px;
-  }
+.copyright-footer {
+  margin-top: 10px;
+  margin-left: 100px;
+  font-size: 14px;
+  float: left;
 }
 
-html,
-body {
-  height: 100%;
-  /* The html and body elements cannot have any padding or margin. */
+.manual-footer {
+  margin-top: 10px;
+  float: right;
+  margin-right: 150px;
+  font-size: 14px;
 }
 
 .mini_size {

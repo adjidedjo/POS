@@ -18,8 +18,6 @@ jQuery ->
 
     $('#new_channel_customer').validate
       rules:
-        "channel_customer_channel_id":
-          required: true
         "channel_customer_nama":
           required: true
         "channel_customer_alamat":
