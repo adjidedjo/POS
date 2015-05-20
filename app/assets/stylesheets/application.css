@@ -69,6 +69,16 @@
     margin-right: 150px;
   }
 }
+
+html, body {
+  height: 100%
+}
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+}
+
 .copyright-footer {
   margin-top: 10px;
   margin-left: 100px;

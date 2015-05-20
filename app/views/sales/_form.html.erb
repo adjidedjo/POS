@@ -139,8 +139,7 @@
         </div>
       </div>
     </div>
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")), sales_path, :class => 'btn btn-default' %>
   </div>
-
-  <%= f.button :submit, :class => 'btn-primary' %>
-  <%= link_to t('.cancel', :default => t("helpers.links.cancel")), sales_path, :class => 'btn btn-default' %>
 <% end %>
