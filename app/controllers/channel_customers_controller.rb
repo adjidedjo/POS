@@ -17,7 +17,7 @@ class ChannelCustomersController < ApplicationController
         no_pbj: si.at_xpath("NoPBJ").text,
         no_sj: si.at_xpath("NoSJ").text,
         sj_pusat: si.at_xpath("SJPusat").text,
-        tanggal_sj: si.at_xpath("TglSJ").text.to_date,
+        tanggal_sj: Date.strptime(si.at_xpath("TglSJ").text, '%m/%d/%Y'),
         channel_customer_id: channel_customer,
         store_id: 0,
         jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1),
