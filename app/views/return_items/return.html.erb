@@ -25,5 +25,5 @@
     </tbody>
   </table>
   <%= submit_tag "Check", :class => 'btn btn-primary' %>
-  <%= link_to "Print Nota Retur", return_items_print_return_path(:format => 'pdf'), :class => 'btn btn-primary' %>
+  <%= link_to "Print Nota Retur", return_items_print_return_path(:format => 'pdf'), :class => 'btn btn-primary' if @return.present? %>
 <% end %>
