@@ -1,4 +1,5 @@
-<h2>Verifikasi Pembayaran</h2>
+<div class="container">
+<h1>Verifikasi Pembayaran</h1>
 <hr>
 <%= form_tag verify_accounting_verifying_payments_path(@sales), method: :put do  %>
   <p><b>Total Cash</b>: <%= currency(@sales.sum(:pembayaran)) %></p>
@@ -86,3 +87,4 @@
     <%= submit_tag "Verifiy", :class => 'btn btn-primary export' %>
   <% end %>
 <% end %>
+</div>

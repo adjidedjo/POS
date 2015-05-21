@@ -53,6 +53,25 @@
               </ul>
             </div>
           <% end %>
+          <% if current_user.role == 'accounting' %>
+            <div data-role="navbar">
+              <ul>
+                <li><%= link_to "Verify Payment", accounting_verifying_payments_path, "data-icon"=>"grid" %></li>
+                <li><%= link_to "Laporan Stok", accounting_stocks_mutasi_stock_path, "data-icon"=>"grid" %></li>
+                <li><%= link_to 'Sign Out', destroy_user_session_path, :method => :delete, "data-icon"=>"action" %></li>
+              </ul>
+            </div>
+          <% end %>
+          <% unless current_user.admin? || current_user.role == 'accounting' %>
+            <div data-role="navbar">
+              <ul>
+                <li><%= link_to "Stok", import_intransit_channel_customers_path, "data-icon"=>"grid" %></li>
+                <li><%= link_to "Sales Order", new_sale_path, "data-icon"=>"grid" %></li>
+                <li><%= link_to 'Pelunasan', new_acquittance_path, "data-icon"=>"action" %></li>
+                <li><%= link_to 'Sign Out', destroy_user_session_path, :method => :delete, "data-icon"=>"action" %></li>
+              </ul>
+            </div>
+          <% end %>
         <% else %>
           <div data-role="navbar">
             <ul>
