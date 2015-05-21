@@ -84,13 +84,13 @@
       <div data-role="main" class="ui-content">
         <%= yield %>
       </div>
-    </div>
 
-    <div class="navbar-default navbar-fixed-bottom">
-      <p class="copyright-footer">&copy; Royal Abadi Sejahtera 2015</p>
-      <p class="manual-footer">Butuh Buku Manual? <%= link_to 'Download',
+      <div data-role="footer" data-position="fixed">
+        <p class="copyright-footer">&copy; Royal Abadi Sejahtera 2015</p>
+        <p class="manual-footer">Butuh Buku Manual? <%= link_to 'Download',
           page_download_manual_book_path(format: 'pdf'), class: "link_download" %></p>
       </div>
+    </div>
 
     </body>
   </html>
