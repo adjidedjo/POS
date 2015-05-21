@@ -25,6 +25,7 @@
 
   h1 {
     font-weight: bold;
+    font-size: 8px;
   }
 
   .copyright-footer {
@@ -45,6 +46,7 @@
 
   h1 {
     font-weight: bold;
+    font-size: 12px;
   }
 
   p.copyright-footer {
@@ -61,7 +63,9 @@
     font-size: 10px;
   }
 }
+
 @media screen and (min-width:801px) and (max-width:1024px) {
+  
   .copyright-footer {
     margin-top: 10px;
     margin-left: 100px;
