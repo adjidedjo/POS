@@ -2,7 +2,7 @@
   <div class="col-md-offset-4 col-md-3">
     <div class="form-login">
       <h4>Point Of Sales</h4>
-      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), :html => {'data-ajax' => 'false'}) do |f| %>
         <%= f.input :username, required: false, autofocus: true, input_html: {class: "field-control"} %>
         <%= f.input :password, required: false %>
         <div class="wrapper">

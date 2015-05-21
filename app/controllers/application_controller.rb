@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   def set_device_type
     request.variant = :phone if browser.mobile?
+    request.variant = :tablet if browser.tablet?
   end
 
   protected
