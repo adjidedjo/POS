@@ -20,8 +20,8 @@ class ReportsController < ApplicationController
 
   def mutasi_stock
     @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id).where("qty_in > ?", 0).group([:kode_barang, :no_sj])
-    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "S").where("qty_out > ?", 0).group([:kode_barang, :no_sj])
-    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B").where("qty_out > ?", 0).group([:kode_barang, :no_sj])
+    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "S").where("qty_out > ?", 0)
+    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B").where("qty_out > ?", 0)
 
     respond_to do |format|
       format.html
