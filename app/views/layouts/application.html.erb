@@ -62,11 +62,7 @@
                   <% end %>
                 <% elsif current_user.role == 'accounting' %>
                   <%= menu_item "Verify Payment", accounting_verifying_payments_path %>
-                  <%= drop_down "Stok" do %>
-                    <%= menu_item "Mutasi Stock", accounting_stocks_mutasi_stock_path   %>
-                    <%= menu_item "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path   %>
-                    <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path  %>
-                  <% end %>
+                  <%= menu_item "Stock & Penjualan", accounting_stocks_mutasi_stock_path   %>
                 <% else %>
                 </li>
                 <%= drop_down "Stok" do %>

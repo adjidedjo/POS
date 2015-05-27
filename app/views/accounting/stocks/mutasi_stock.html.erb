@@ -12,6 +12,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -21,6 +22,7 @@
         <td><%= cc.alamat %></td>
         <td><%= cc.dari_tanggal.nil? ? '-' : cc.dari_tanggal.strftime("%d %B %Y") %></td>
         <td><%= cc.sampai_tanggal.nil? ? '-' : cc.sampai_tanggal.strftime("%d %B %Y") %></td>
+        <td><%= link_to "Penjualan", accounting_stocks_view_penjualan_path(cc_id: cc.id) %></td>
         <td><%= link_to "Mutasi Stock", accounting_stocks_view_stock_path(cc_id: cc.id) %></td>
         <td><%= link_to "Selisih Intransit vs Penerimaan", accounting_stocks_view_selisih_intransit_path(cc_id: cc.id) %></td>
         <td><%= link_to "Selisih Stock vs Retur", accounting_stocks_view_selisih_stock_path(cc_id: cc.id) %></td>

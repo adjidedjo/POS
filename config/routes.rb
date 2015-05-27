@@ -5,6 +5,7 @@ Rails.application.routes.draw do
    get 'stocks/view_stock'
    get 'stocks/view_selisih_intransit'
    get 'stocks/view_selisih_stock'
+   get 'stocks/view_penjualan'
     resources :verifying_payments do
       collection do
         put 'verify'
