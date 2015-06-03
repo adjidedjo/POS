@@ -204,6 +204,8 @@ jQuery ->
       open_modal(get_id)
       date_picker()
       serial_doc = document.getElementById(get_id)
+      $('#'+jumlah).focus ->
+        $('#'+taken).prop("checked", false);
       $('#'+taken).click ->
         if $(this).is(':checked')
           $.ajax

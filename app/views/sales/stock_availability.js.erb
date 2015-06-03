@@ -1,7 +1,7 @@
 element_id = "<%= @element_id %>"
 jumlah_barang = element_id.replace("taken", "jumlah")
-total_stock = "<%= @total_stock.to_i %>"
-request_order = "<%= @request_order.to_i %>"
+total_stock = <%= @total_stock.to_i %>
+request_order = <%= @request_order.to_i %>
 if (total_stock < request_order){
   alert('Stock kurang dari jumlah order');
   document.getElementById(jumlah_barang).value = total_stock;
