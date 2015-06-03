@@ -14,12 +14,16 @@
       <% @return.each do |resep| %>
         <%= fields_for "return[]", resep do |f| %>
           <tr>
-           <td><%= f.object.no_sj %></td>
-              <td><%= f.object.tanggal_sj %></td>
-              <td><%= link_to f.object.kode_barang, return_items_return_by_serial_path(kode_barang: f.object.kode_barang) %></td>
-              <%= f.hidden_field "kode_barang" %>
-              <td><%=  f.object.nama %></td>
+            <td><%= f.object.no_sj %></td>
+            <td><%= f.object.tanggal_sj %></td>
+            <td><%= link_to f.object.kode_barang, return_items_return_by_serial_path(kode_barang: f.object.kode_barang) %></td>
+            <%= f.hidden_field "kode_barang" %>
+            <td><%=  f.object.nama %></td>
+            <% if f.object.serial.present? %>
+            <td></td>
+            <% else %>
               <td><%= f.text_field "jumlah", value: '' %></td>
+            <% end %>
           <% end %>
         <% end %>
     </tbody>

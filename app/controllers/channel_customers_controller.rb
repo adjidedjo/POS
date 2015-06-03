@@ -25,7 +25,9 @@ class ChannelCustomersController < ApplicationController
       }
       item_hash = {
         kode_barang: si.at_xpath("KodeBrg").text,
-        nama: si.at_xpath("Nama").text
+        nama: si.at_xpath("Nama").text,
+        harga: 0,
+        jenis: si.at_xpath("KodeBrg").text[0..1]
       }
       @kode_channel_customer_hash = {
         kode_channel_customer: si.at_xpath("KodePameran").text,
