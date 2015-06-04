@@ -118,8 +118,8 @@ class Sale < ActiveRecord::Base
     # end create
     first_code = ChannelCustomer.find(channel_customer_id).channel.kode
     self.no_so = loop do
-      random_token = first_code + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8]
-      break random_token unless Sale.exists?(no_so: random_token)
+      random_token = first_code.upcase + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8].upcase
+      break random_token unless Sale.exists?(no_so: random_token.upcase)
     end
     self.voucher = voucher.nil? ? 0 : voucher
   end

@@ -1,10 +1,11 @@
 <table style="layout: fixed" id="sales_rekap_so" class="display table-striped table-bordered" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th>Lokasi Pameran</th>
+      <th>Channel Customer</th>
       <th>Nama SPG/SPB</th>
       <th>No SO</th>
       <th>Tanggal SO</th>
+      <th>SO Manual</th>
       <th>Nama Konsumen</th>
       <th>Kode Barang</th>
       <th>Nama Barang</th>
@@ -15,22 +16,30 @@
       <th>Nama Bank</th>
       <th>No Rekening</th>
       <th>Jumlah Transfer</th>
-      <th>Nominal Kartu Debit</th>
+
       <th>No Kartu Debit</th>
-      <th>Atas Nama</th>
       <th>Nama Bank</th>
-      <th>Nominal Kartu Kredit</th>
-      <th>Nama Kartu Kredit</th>
-      <th>No Kartu Kredit</th>
       <th>Atas Nama</th>
-      <th>No Merchant</th>
+      <th>Nominal Kartu Debit</th>
+
+      <th>No Mesin</th>
       <th>Nama Merchant</th>
-      <th>Nominal Kartu Kredit</th>
-      <th>Nama Kartu Kredit</th>
+      <th>No MID/Merchant</th>
+      <th>Tenor</th>
       <th>No Kartu Kredit</th>
+      <th>Nama Kartu Kredit</th>
       <th>Atas Nama</th>
-      <th>No Merchant</th>
+      <th>Nominal Kartu Kredit</th>
+
+      <th>No Mesin</th>
       <th>Nama Merchant</th>
+      <th>No MID/Merchant</th>
+      <th>Tenor</th>
+      <th>No Kartu Kredit</th>
+      <th>Nama Kartu Kredit</th>
+      <th>Atas Nama</th>
+      <th>Nominal Kartu Kredit</th>
+
       <th>Kode Pameran</th>
       <th>Dari Tanggal</th>
       <th>Ke Tanggal</th>
@@ -53,9 +62,10 @@
       <tr>
         <td><%= sale_item.sale.channel_customer.nama %></td>
         <td><%= sale_item.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
-  sale_item.sale.channel_customer.sales_promotions.find(sale_item.sale.sales_promotion_id).nama.titleize %></td>
-        <td><%= sale_item.sale.no_so.upcase %></td>
-        <td><%= sale_item.sale.tanggal_kirim %></td>
+            sale_item.sale.channel_customer.sales_promotions.find(sale_item.sale.sales_promotion_id).nama.titleize %></td>
+        <td><%= link_to sale_item.sale.no_so.upcase, sale_path(sale_item.sale.id) %></td>
+        <td><%= sale_item.sale.created_at.strftime('%d-%b-%Y') %></td>
+        <td><%= sale_item.sale.so_manual %></td>
         <td><%= sale_item.sale.pos_ultimate_customer.nama %></td>
         <td><%= sale_item.kode_barang %></td>
         <td><%= sale_item.nama_barang %></td>
@@ -66,17 +76,19 @@
         <td><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></td>
         <td><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></td>
         <td><%= currency(sale_item.sale.jumlah_transfer) %></td>
-        <td><%= currency(sale_item.sale.payment_with_debit_card.jumlah) %></td>
         <td><%= sale_item.sale.payment_with_debit_card.no_kartu_debit %></td>
-        <td><%= sale_item.sale.payment_with_debit_card.atas_nama %></td>
         <td><%= sale_item.sale.payment_with_debit_card.nama_kartu %></td>
+        <td><%= sale_item.sale.payment_with_debit_card.atas_nama %></td>
+        <td><%= currency(sale_item.sale.payment_with_debit_card.jumlah) %></td>
         <% sale_item.sale.payment_with_credit_cards.each do |cc| %>
-          <td><%= currency(cc.jumlah) %></td>
-          <td><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </td>
-          <td><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </td>
-          <td><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </td>
           <td><%= cc.no_merchant.present? ? cc.no_merchant : '-' %> </td>
           <td><%= cc.nama_merchant.present? ? cc.nama_merchant : '-' %> </td>
+          <td><%= cc.mid.present? ? cc.mid : '-' %> </td>
+          <td><%= cc.tenor.present? ? cc.tenor : '-' %> </td>
+          <td><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </td>
+          <td><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </td>
+          <td><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </td>
+          <td><%= currency(cc.jumlah) %></td>
         <% end %>
         <td><%= sale_item.sale.channel_customer.kode_channel_customer %></td>
         <td><%= sale_item.sale.channel_customer.dari_tanggal %></td>
