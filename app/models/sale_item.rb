@@ -66,7 +66,7 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
               else
                 last_stock = stock_awal - jumlah_beli
                 s_noserial.update_attributes!(jumlah: last_stock)
-                st = last_stock
+                st = jumlah_beli
               end
               @exsj << s_noserial.no_sj
               StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,

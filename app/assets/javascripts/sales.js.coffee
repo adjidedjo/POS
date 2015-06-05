@@ -47,6 +47,7 @@ jQuery ->
             datatype: 'script',
             success: () ->
               document.getElementById(kode_barang).readOnly = true
+              document.getElementById(jumlah).readOnly = true
             error: () ->
               alert "Serial yang anda masukan tidak terdaftar"
               document.getElementById(jumlah).readOnly = false
@@ -215,6 +216,15 @@ jQuery ->
               'element_id': $(this).attr("id"),
               'jumlah': $('#'+jumlah).val()}
             datatype: 'script'
+            error: () ->
+              alert "Silahkan Cari barang terlebih dahulu"
+              document.getElementById(taken).checked = false
+        if !$(this).is(':checked')
+          document.getElementById(serial).readOnly = false
+          document.getElementById(serial).value = ""
+          document.getElementById(kode_barang).value = ""
+          document.getElementById(nama_barang).value = ""
+          document.getElementById(jumlah).value = ""
       $("#sale_sale_items_attributes_"+time+"_serial").autocomplete
         source: $("#sale_sale_items_attributes_"+time+"_serial").data('autocomplete-source'),
         select: (event, ui) ->

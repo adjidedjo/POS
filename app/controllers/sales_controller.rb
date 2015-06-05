@@ -9,6 +9,7 @@ class SalesController < ApplicationController
     @element_id = params[:element_id]
     @request_order = params[:jumlah]
     @total_stock = stock.sum(:jumlah)
+    @serial_item = stock.first.serial.present?
 
     respond_to do |format|
       format.js
@@ -16,7 +17,7 @@ class SalesController < ApplicationController
   end
 
   def exhibition_stock
-    @stock = ExhibitionStockItem.order(:serial).where("serial like ? and channel_customer_id = ? and checked_in = true",
+    @stock = ExhibitionStockItem.order(:serial).where("serial like ? and channel_customer_id = ? and checked_in = true and jumlah > 0",
       "%#{params[:term]}%", current_user.channel_customer.id)
 
     respond_to do |format|
