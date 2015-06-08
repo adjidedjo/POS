@@ -62,7 +62,7 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
               if jumlah_beli > stock_awal
                 last_stock = jumlah_beli - stock_awal
                 s_noserial.update_attributes!(jumlah: 0)
-                st = stock_awal - (jumlah_beli - last_stock)
+                st = stock_awal
               else
                 last_stock = stock_awal - jumlah_beli
                 s_noserial.update_attributes!(jumlah: last_stock)
