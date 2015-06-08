@@ -3,6 +3,16 @@ class SearchSale < ActiveRecord::Base
     @sales = find_sales
   end
 
+  def self.report_by_brand(user, brand)
+    if brand.present? && brand == 4
+      Sale.where(channel_customer_id: user).sum(:netto_lady) if brand.present? && brand == 4
+    elsif brand.present? && brand == 2
+      Sale.where(channel_customer_id: user).sum(:netto_elite) if brand.present? && brand == 2
+    else
+      return 0
+    end
+  end
+
 private
   def find_sales
     sales = Sale.where(cancel_order: false).order(:no_so)

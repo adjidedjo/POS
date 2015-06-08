@@ -7,8 +7,8 @@ module ApplicationHelper
     end
     link_to(name, '#', class: "add_fields btn btn-info btn-xs", data: {id: id, fields: fields.gsub("\n", "")})
     end
-    
+
     def currency(price)
-      number_to_currency(price, :precision => 0, :unit => "", :delimiter => ".")
+      number_to_currency(price, precision:0, unit: "Rp. ", separator: ".", delimiter: ".")
     end
   end
