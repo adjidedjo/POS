@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     collection do
       get 'get_sale_info'
       get 'search_sales'
+      get "search_sales_by_phone"
       get "get_mid_from_merchant"
       get "get_second_mid_from_merchant"
       get "rekap_pelunasan"

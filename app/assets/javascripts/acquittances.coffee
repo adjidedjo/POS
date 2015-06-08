@@ -78,6 +78,14 @@ jQuery ->
           data: {'so': ui.item.value},
           datatype: 'script'
 
+    $('#no_telepon').autocomplete
+      source: $('#no_telepon').data('autocomplete-phone')
+      select: (event, ui) ->
+        $.ajax
+          url: '/acquittances/get_sale_info',
+          data: {'so': ui.item.value},
+          datatype: 'script'
+
     $('#acquittance_acquittance_with_credit_cards_attributes_0_no_merchant').on 'change', () ->
       get_id = "acquittance_acquittance_with_credit_cards_attributes_0_no_merchant"
       $.ajax

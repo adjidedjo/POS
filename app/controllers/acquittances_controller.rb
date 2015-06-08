@@ -63,6 +63,15 @@ class AcquittancesController < ApplicationController
     end
   end
 
+  def search_sales_by_phone
+    @all_sales = PosUltimateCustomer.where("no_telepon like ?", "#{params[:term]}%").first.sales
+
+    respond_to do |format|
+      format.html
+      format.json {render json: @all_sales.map(&:no_so)}
+    end
+  end
+
   # GET /acquittances GET /acquittances.json
   def index
     @acquittances = Acquittance.all
