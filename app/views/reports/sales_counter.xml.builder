@@ -21,7 +21,7 @@ xml.instruct!
             xml.NoPo sale_item.sale.no_so
             xml.keterangan sale_item.keterangan.blank? ? "-"  : sale_item.keterangan
             xml.TglDelivery sale_item.tanggal_kirim.strftime("%m/%d/%Y")
-            xml.AlamatKirim sale_item.sale.pos_ultimate_customer.alamat
+            xml.AlamatKirim sale_item.sale.pos_ultimate_customer.alamat+" "+ sale_item.sale.pos_ultimate_customer.kota.capitalize
             xml.Customer sale_item.sale.pos_ultimate_customer.nama
             xml.Alamat1 sale_item.sale.pos_ultimate_customer.alamat
             xml.KodePameran sale_item.sale.channel_customer.kode_channel_customer
@@ -85,7 +85,7 @@ xml.instruct!
             xml.NoPo sale_item.sale.no_so
             xml.keterangan sale_item.keterangan.blank? ? "-"  : sale_item.keterangan
             xml.TglDelivery sale_item.tanggal_kirim.strftime("%m/%d/%Y")
-            xml.AlamatKirim sale_item.sale.pos_ultimate_customer.alamat
+            xml.AlamatKirim sale_item.sale.pos_ultimate_customer.alamat+". "+ sale_item.sale.pos_ultimate_customer.kota.capitalize
             xml.Customer sale_item.sale.pos_ultimate_customer.nama
             xml.Alamat1 sale_item.sale.pos_ultimate_customer.alamat
             xml.KodePameran sale_item.sale.channel_customer.kode_channel_customer
