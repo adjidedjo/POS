@@ -43,14 +43,6 @@ class Accounting::StocksController < ApplicationController
   end
 
   def mutasi_stock
-    @channel_customer = []
-    channel = current_user.branch.sales_counters
-    if channel.present?
-      current_user.branch.sales_counters.each do |sc|
-        sc.recipients.group(:channel_customer_id, :sales_counter_id, :brand_id).each do |scr|
-          @channel_customer << scr.channel_customer
-        end
-      end
+    @channel_customer = current_user.channel_customer
     end
   end
-end
