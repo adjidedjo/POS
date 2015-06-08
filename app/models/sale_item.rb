@@ -1,6 +1,8 @@
 class SaleItem < ActiveRecord::Base
   belongs_to :sale, inverse_of: :sale_items
   belongs_to :user
+  belongs_to :channel_customer_id
+  belongs_to :item, foreign_key: :kode_barang, primary_key: :kode_barang
 
   validates :serial, uniqueness: true, if: "serial.present?"
     validates :kode_barang, :jumlah, presence: true
@@ -10,6 +12,7 @@ class SaleItem < ActiveRecord::Base
     }
 
     before_create do
+      self.channel_customer_id = self.sale.channel_customer_id
       if taken == true
         self.tanggal_kirim = Date.today
       else

@@ -72,7 +72,7 @@
                 <% end %>
                 <%= menu_item "Sales Order", new_sale_path, 'data-no-turbolink' => true %>
                 <%= menu_item "Pelunasan", new_acquittance_path %>
-      <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
+    <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
                 <%= drop_down "Export" do %>
                   <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
                   <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
@@ -83,7 +83,11 @@
                   <%= menu_item "Laporan Mutasi Stock", reports_mutasi_stock_path   %>
                   <%= menu_item "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path   %>
                   <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path  %>
-                  <%= menu_item "Laporan Penjualan", '#'  %>
+                  <% if current_user.admin? %>
+                    <%= menu_item "Laporan Penjualan", new_search_sale_path  %>
+                  <% else %>
+                    <%= menu_item "Laporan Penjualan", search_sales_path  %>
+                  <% end %>
                 <% end %>
               <% end %>
             </ul>

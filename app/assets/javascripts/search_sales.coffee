@@ -8,3 +8,20 @@ jQuery ->
     $('#index_of_sales_reports').DataTable({
       iDisplayLength: 100
     })
+
+    $('#total_acv').DataTable({
+      bInfo: false,
+      responsive: true,
+      bPaginate: false,
+      bFilter: false,
+      bDestroy: true
+    })
+
+    $('#top_10_items').DataTable({
+      bInfo: false,
+      responsive: true,
+      bPaginate: false,
+      bFilter: false,
+      bSort: false,
+      bDestroy: true
+    })

@@ -170,6 +170,7 @@ class SalesController < ApplicationController
           esi.update_attributes(jumlah: (co_si.jumlah + esi.jumlah))
           ssah.destroy
         end
+        co_si.update_attributes!(cancel: true)
       end
       respond_to do |format|
         format.html { redirect_to root_path, notice: 'Sale was successfully deleted.' }

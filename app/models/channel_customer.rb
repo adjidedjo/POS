@@ -2,6 +2,7 @@ class ChannelCustomer < ActiveRecord::Base
   has_many :exhibition_stock_items, dependent: :destroy
   has_many :acquittances, dependent: :destroy
   has_many :sales, dependent: :destroy
+  has_many :sale_items
   has_many :sales_promotions, dependent: :destroy
   accepts_nested_attributes_for :sales_promotions, allow_destroy: true, reject_if: proc { |a| a['nama'].blank?}
   has_many :merchants, dependent: :destroy

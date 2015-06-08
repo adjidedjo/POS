@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-xs-4">
+    <h5 style="text-align: center; font-weight: bold;">Laporan Penjualan <%= @channel_customer.nama.titleize %> per Brand</h5>
+    <h5 style="text-align: center; font-size: 12px;">(tidak termasuk Aksesoris)</h5>
+    <table id="total_acv" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Penjualan</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @brand.each do |brand| %>
+          <tr>
+            <td><%= brand.brand %></td>
+            <td style="text-align: right"><%= currency(SearchSale.report_by_brand(current_user.channel_customer.id, brand.id)) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-xs-4">
+    <h5 style="text-align: center; font-weight: bold;">10 Barang Terjual Populer <%= @channel_customer.nama.titleize %></h5>
+    <h5 style="text-align: center; font-size: 12px;">(tidak termasuk Aksesoris)</h5>
+    <table id="top_10_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Jumlah</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @top_10_items.each do |top_item| %>
+          <tr>
+            <td style="font-size: 10px;"><%= top_item.item.blank? ? top_item.kode_barang : top_item.item.nama %></td>
+            <td style="text-align: right"><%= top_item.sum_jumlah %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-xs-4">
+    <h5 style="text-align: center; font-weight: bold;">10 Produk Konsultan Populer <%= @channel_customer.nama.titleize %></h5>
+    <h5 style="text-align: center; font-size: 12px;">(termasuk Aksesoris)</h5>
+    <table id="top_10_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Jumlah</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @top_pc.each do |sale| %>
+          <tr>
+            <td><%= sale.sales_promotion.nama.capitalize %></td>
+            <td style="text-align: right"><%= currency((sale.elite + sale.lady)) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
