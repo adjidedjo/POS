@@ -32,10 +32,4 @@ $(document).ready(function(){
       return false;
     }
   });
-
-  $("#user_password").focus(function(){
-        this.type = "text";
-    }).blur(function(){
-        this.type = "password";
-    })
 })
