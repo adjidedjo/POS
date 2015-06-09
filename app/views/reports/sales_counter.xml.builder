@@ -73,7 +73,7 @@ xml.instruct!
           xml.pbjshow do
             xml.ExSJ '-'
             xml.kodebrg items.kode_barang
-            xml.namabrg Item.find_by_kode_barang(items.kode_barang).nil? ? '-' : Item.find_by_kode_barang(items.kode_barang).nama
+            xml.namabrg items.nama_barang
             xml.qty items.jumlah
             xml.status 1
             xml.satuan "PCS"
