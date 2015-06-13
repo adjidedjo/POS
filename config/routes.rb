@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :verifying_payments do
       collection do
         put 'verify'
+        get 'show_channel_payment'
       end
     end
   end
