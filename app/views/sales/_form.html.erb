@@ -7,22 +7,36 @@
         input_html: {style: 'width: 250px'} %>
       <%= error_span(@sale[:sales_promotion_id]) %>
       <%= f.input :no_telepon, input_html: { maxlength: 12, style: 'width: 250px',
-          data: {autocomplete_source: pos_ultimate_customers_path}, value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.no_telepon)}, label: 'Nomor Telepon Konsumen' %>
+          data: {autocomplete_source: pos_ultimate_customers_path},
+          value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:no_telepon] : nil) :
+              f.object.pos_ultimate_customer.no_telepon)},
+          label: 'Nomor Telepon Konsumen' %>
       <%= error_span(@sale[:no_telepon]) %>
-      <%= f.input :nama, label: "Nama Konsumen", input_html: {style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.nama)} %>
-     <%= f.input :email, label: "Email Konsumen", input_html: {class: "puc", value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.email)} %>
+      <%= f.input :nama, label: "Nama Konsumen", input_html: {style: 'width: 250px',
+         value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:nama] : nil) :
+          f.object.pos_ultimate_customer.nama)} %>
+     <%= f.input :email, label: "Email Konsumen", input_html: {class: "puc",
+         value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:email] : nil) :
+             f.object.pos_ultimate_customer.email)} %>
       <%= error_span(@sale[:email]) %>
-      <%= f.input :handphone, label: "Handphone Konsumen", input_html: { maxlength: 12, style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.handphone)} %>
+      <%= f.input :handphone, label: "Handphone Konsumen", input_html: { maxlength: 12, style: 'width: 250px',
+        value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:handphone] : nil) :
+            f.object.pos_ultimate_customer.handphone)} %>
       <%= error_span(@sale[:handphone]) %>
-     <%= f.input :handphone1, label: "Handphone Konsumen", input_html: { maxlength: 12, style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.handphone1)} %>
+     <%= f.input :handphone1, label: "Handphone Konsumen", input_html: { maxlength: 12, style: 'width: 250px',
+       value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:handphone1] : nil) :
+           f.object.pos_ultimate_customer.handphone1)} %>
       <%= error_span(@sale[:handphone1]) %>
     </div>
     <div class="col-md-6">
-      <%= f.input :alamat, label: "Alamat Konsumen", as: :text, input_html: {style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.alamat)} %>
+      <%= f.input :alamat, label: "Alamat Konsumen", as: :text, input_html: {style: 'width: 250px',
+        value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:alamat] : nil) : f.object.pos_ultimate_customer.alamat)} %>
       <%= error_span(@sale[:alamat]) %>
-      <%= f.input :kota, label: "Kota Konsumen", input_html: {style: 'width: 250px', value: (f.object.new_record? ? '' : f.object.pos_ultimate_customer.kota)} %>
+      <%= f.input :kota, label: "Kota Konsumen", input_html: {style: 'width: 250px',
+        value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:kota] : nil) : f.object.pos_ultimate_customer.kota)} %>
       <%= error_span(@sale[:kota]) %>
-      <%= f.input :so_manual, input_html: {style: 'width: 250px'} %>
+      <%= f.input :so_manual, label: "SO Manual(Tidak Lebih dari 200 Karakter)",
+        input_html: {maxlength: 200, style: 'width: 250px', value: params[:sale].present? ? params[:sale][:so_manual] : nil } %>
       <%= error_span(@sale[:so_manual]) %>
       <%= f.input :tanggal_kirim, as: :tanggal, readonly: true, input_html: {style: 'width: 250px'} %>
       <%= error_span(@sale[:tanggal_kirim]) %>

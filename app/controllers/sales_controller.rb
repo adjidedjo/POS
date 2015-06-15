@@ -135,6 +135,8 @@ class SalesController < ApplicationController
         format.json { render :show, status: :created, location: @sale }
       else
         format.html { render :new }
+        @sales_promotion = current_user.channel_customer.sales_promotions
+        @no_telepon = params[:sale].present? ? params[:sale][:no_telepon] : nil
         format.json { render json: @sale.errors, status: :unprocessable_entity }
       end
     end
