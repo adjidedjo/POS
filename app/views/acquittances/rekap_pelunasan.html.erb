@@ -6,7 +6,8 @@
         <th>Lokasi Pameran</th>
         <th>Nama SPG/SPB</th>
        <th>No SO</th>
-        <th>Tanggal SO</th>
+       <th>No Pelunasan</th>
+        <th>Tanggal Pelunasan</th>
         <th>Nama Konsumen</th>
        <th>Netto Penjualan</th>
         <th>Pembayaran Tunai</th>
@@ -49,7 +50,8 @@
           <td><%= acq.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
   acq.sale.channel_customer.sales_promotions.find(acq.sale.sales_promotion_id).nama.titleize %></td>
           <td><%= link_to acq.sale.no_so.upcase, sale_path(acq.sale.id) %></td>
-          <td><%= acq.sale.tanggal_kirim %></td>
+          <td><%= link_to acq.no_reference.upcase, acquittance_path(acq.id) %></td>
+          <td><%= acq.created_at.strftime('%d-%b-%Y') %></td>
           <td><%= acq.sale.pos_ultimate_customer.nama %></td>
           <td><%= currency(acq.sale.netto) %></td>
           <td><%= currency(acq.sale.pembayaran) %></td>

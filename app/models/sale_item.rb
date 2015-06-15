@@ -83,11 +83,9 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
         end
       end
 
-      cek_stock = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang = ? and jumlah > 0
-and checked_in = true and checked_out = false", self.sale.channel_customer_id, self.kode_barang).first
-      if self.serial.present? && cek_stock.present?
-        cek_stock.update_attributes(jumlah: (cek_stock.jumlah - self.jumlah))
+      if self.serial.present?
         get_no_sj_from_serial = ExhibitionStockItem.find_by_serial(self.serial)
+        get_no_sj_from_serial.update_attributes(jumlah: (get_no_sj_from_serial.jumlah - self.jumlah))
         StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
           nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
           serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)

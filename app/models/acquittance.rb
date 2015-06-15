@@ -23,7 +23,7 @@ class Acquittance < ActiveRecord::Base
   before_create do
     self.exported_at = Time.now
     self.no_reference = loop do
-      random_token = 'AQ' + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8]
+      random_token = 'AQ' + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8].upcase
       break random_token unless Acquittance.exists?(no_reference: random_token)
     end
     self.sale_id = Sale.where(no_so: no_so).first.id

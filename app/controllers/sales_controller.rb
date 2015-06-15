@@ -62,7 +62,8 @@ class SalesController < ApplicationController
 
   # GET /sales GET /sales.json
   def index
-    @sales = Sale.all
+    @channel_customer = current_user.channel_customer
+    @sales = Sale.all.where(cancel_order: false, channel_customer_id: @channel_customer.id)
     @items = Item.all
   end
 
