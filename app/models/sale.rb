@@ -23,12 +23,12 @@ class Sale < ActiveRecord::Base
 
   has_paper_trail
 
-  attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1, :so_manual
+  attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1
 
   validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
   validates :sale_items, presence: true, on: :create
-  validates :so_manual, length: { maximum: 3 }, on: :create
+  validates :so_manual, length: { maximum: 200 }, on: :create
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 

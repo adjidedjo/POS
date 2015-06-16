@@ -68,10 +68,10 @@
       </div>
 
       <div class="row-fluid form-inline" style="width: 500px; padding-bottom: 5px;">
-        <% if @tipe_pembayaran.method_of_payment.include? ("Transfer") %>
+        <% if @tipe_pembayaran.include? ("Transfer") %>
           <dt><strong>Transfer To</strong></dt>
-          <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= @tipe_pembayaran.bank_account.name %>:</strong></dt>
-          <dt style="text-align: right; display: inline-block; width: 200px;"><%= currency(@tipe_pembayaran.transfer_amount) %></dt><br />
+          <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= @sale.bank_account.name %>:</strong></dt>
+          <dt style="text-align: right; display: inline-block; width: 200px;"><%= currency(@sale.jumlah_transfer) %></dt><br />
         <% end %>
       </div>
 
