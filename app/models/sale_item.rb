@@ -63,19 +63,22 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
             if jumlah_beli > 0
               stock_awal = s_noserial.jumlah
               if jumlah_beli > stock_awal
-                last_stock = jumlah_beli - stock_awal
-                s_noserial.update_attributes!(jumlah: 0)
-                st = stock_awal
+                sisa_jumlah_beli = jumlah_beli - stock_awal
+                jumlah_beli_pertama = jumlah_beli - sisa_jumlah_beli
+                last_stock = ((jumlah_beli - (jumlah_beli - stock_awal)) - stock_awal)
+                s_noserial.update_attributes!(jumlah: last_stock)
+                st = sisa_jumlah_beli
               else
                 last_stock = stock_awal - jumlah_beli
+                jumlah_beli_pertama = jumlah_beli
                 s_noserial.update_attributes!(jumlah: last_stock)
-                st = jumlah_beli
+                st = 0
               end
               @exsj << s_noserial.no_sj
               StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
-                nama: self.nama_barang, tanggal: Time.now, qty_out: st, keterangan: "S", no_sj: s_noserial.no_sj, sale_id: self.sale.id,
+                nama: self.nama_barang, tanggal: Time.now, qty_out: jumlah_beli_pertama, keterangan: "S", no_sj: s_noserial.no_sj, sale_id: self.sale.id,
                 serial: (s_noserial.serial.blank? ? '-' : s_noserial.serial))
-              jumlah_beli = last_stock
+              jumlah_beli = st
             end
             break if jumlah_beli <= 0
           end
@@ -84,8 +87,8 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
       end
 
       if self.serial.present?
-        get_no_sj_from_serial = ExhibitionStockItem.find_by_serial(self.serial)
-        get_no_sj_from_serial.update_attributes(jumlah: (get_no_sj_from_serial.jumlah - self.jumlah))
+        get_no_sj_from_serial = ExhibitionStockItem.find_by_serial_and_channel_customer_id(self.serial, self.channel_customer_id)
+        get_no_sj_from_serial.update_attributes!(jumlah: (get_no_sj_from_serial.jumlah - self.jumlah))
         StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
           nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
           serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)
