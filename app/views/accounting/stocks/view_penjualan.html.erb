@@ -1,100 +1,48 @@
-<h1>Laporan Penjualan</h1>
-
-<table style="layout: fixed" id="view_penjualan" class="display table-striped table-bordered" cellspacing="0" width="100%">
+<%- model_class = Sale -%>
+<div class="page-header">
+  <h1>Penjualan <%= @channel_customer.nama.titleize  %></h1>
+</div>
+<table id="v_penjualan" class="display table table-striped table-bordered responsive nowrap mini_size" cellspacing="0" width="100%">
   <thead>
     <tr>
+      <th>Channel</th>
       <th>Channel Customer</th>
-      <th>Nama SPG/SPB</th>
+      <th>PC</th>
       <th>No SO</th>
-      <th>Tanggal SO</th>
-      <th>Nama Konsumen</th>
-      <th>Kode Barang</th>
-      <th>Nama Barang</th>
-      <th>QTY</th>
-      <th>Tanggal Kirim</th>
-      <th>Netto Penjualan</th>
-      <th>Pembayaran Tunai</th>
-      <th>Nama Bank</th>
-      <th>No Rekening</th>
-      <th>Jumlah Transfer</th>
-      <th>Nominal Kartu Debit</th>
-      <th>No Kartu Debit</th>
-      <th>Atas Nama</th>
-      <th>Nama Bank</th>
-      <th>Nominal Kartu Kredit</th>
-      <th>Nama Kartu Kredit</th>
-      <th>No Kartu Kredit</th>
-      <th>Atas Nama</th>
-      <th>No Merchant</th>
-      <th>Nama Merchant</th>
-      <th>Nominal Kartu Kredit</th>
-      <th>Nama Kartu Kredit</th>
-      <th>No Kartu Kredit</th>
-      <th>Atas Nama</th>
-      <th>No Merchant</th>
-      <th>Nama Merchant</th>
-      <th>Kode Pameran</th>
-      <th>Dari Tanggal</th>
-      <th>Ke Tanggal</th>
-      <th>No Telp</th>
-      <th>Alamat Kirim</th>
-      <th>Kota</th>
-      <th>Email</th>
-      <th>Voucher</th>
-      <th>Jenis Pembayaran</th>
-      <th>Sisa</th>
-      <th>Brand</th>
-      <th>Bonus</th>
-      <th>Taken</th>
-      <th>Serial</th>
+      <th>Customer</th>
+      <th>Ket Pembayaran</th>
+      <th>Cara Pembayaran</th>
+      <th>Total Pembayaran</th>
+      <th>Total Keseluruhan</th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @sales.each do |sale_item| %>
+    <% @sales.each do |sale| %>
       <tr>
-        <td><%= sale_item.sale.channel_customer.nama %></td>
-        <td><%= sale_item.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
-  sale_item.sale.channel_customer.sales_promotions.find(sale_item.sale.sales_promotion_id).nama.titleize %></td>
-        <td><%= sale_item.sale.created_at.strftime('%d-%b-%Y') %></td>
-        <td><%= sale_item.sale.tanggal_kirim %></td>
-        <td><%= sale_item.sale.pos_ultimate_customer.nama %></td>
-        <td><%= sale_item.kode_barang %></td>
-        <td><%= sale_item.nama_barang %></td>
-        <td><%= sale_item.jumlah %></td>
-        <td><%= sale_item.tanggal_kirim %></td>
-        <td><%= currency(sale_item.sale.netto) %></td>
-        <td><%= currency(sale_item.sale.pembayaran) %></td>
-        <td><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></td>
-        <td><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></td>
-        <td><%= currency(sale_item.sale.jumlah_transfer) %></td>
-        <td><%= currency(sale_item.sale.payment_with_debit_card.jumlah) %></td>
-        <td><%= sale_item.sale.payment_with_debit_card.no_kartu_debit %></td>
-        <td><%= sale_item.sale.payment_with_debit_card.atas_nama %></td>
-        <td><%= sale_item.sale.payment_with_debit_card.nama_kartu %></td>
-        <% sale_item.sale.payment_with_credit_cards.each do |cc| %>
-          <td><%= currency(cc.jumlah) %></td>
-          <td><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </td>
-          <td><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </td>
-          <td><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </td>
-          <td><%= cc.no_merchant.present? ? cc.no_merchant : '-' %> </td>
-          <td><%= cc.nama_merchant.present? ? cc.nama_merchant : '-' %> </td>
-        <% end %>
-        <td><%= sale_item.sale.channel_customer.kode_channel_customer %></td>
-        <td><%= sale_item.sale.channel_customer.dari_tanggal %></td>
-        <td><%= sale_item.sale.channel_customer.sampai_tanggal %></td>
-        <td><%= sale_item.sale.pos_ultimate_customer.no_telepon %></td>
-        <td><%= sale_item.sale.pos_ultimate_customer.alamat %></td>
-        <td><%= sale_item.sale.pos_ultimate_customer.kota %></td>
-        <td><%= sale_item.sale.pos_ultimate_customer.email %></td>
-        <td><%= currency(sale_item.sale.voucher) %></td>
-        <td><%= currency(sale_item.sale.tipe_pembayaran) %></td>
-        <td><%= currency(sale_item.sale.sisa) %></td>
-        <td><%= Brand.find(sale_item.brand_id).brand %></td>
-        <td><%= sale_item.bonus? ? "BONUS" : "-" %></td>
-        <td><%= sale_item.taken? ? "Yes" : "No" %></td>
-        <td><%= sale_item.serial %></td>
-      <% end %>
+        <td><%= sale.channel_customer.channel.channel %></td>
+        <td><%= sale.channel_customer.nama.upcase %></td>
+        <td><%= sale.sales_promotion.nama.upcase %></td>
+        <td><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
+        <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
+        <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
+        <td><%= sale.tipe_pembayaran %></td>
+        <% total = (sale.pembayaran+sale.payment_with_debit_card.jumlah+sale.payment_with_credit_cards.sum(:jumlah)+sale.jumlah_transfer) %>
+        <td class="money"><%= currency(total) %></td>
+        <td class="money"><%= currency(sale.netto) %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_sale_path(sale), :class => 'btn btn-default btn-xs' if current_user.role == 'supervisor' %>
+          <%= link_to "Print (PDF)", sale_path(sale, :format => 'pdf'), :class => 'btn btn-default btn-xs' %>
+  <%#= link_to t('.destroy', :default => t("helpers.links.destroy")),
+  sale_path(sale),
+  :method => :delete,
+  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+  :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 <br />

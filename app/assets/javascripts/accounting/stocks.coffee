@@ -13,3 +13,5 @@ jQuery ->
       "bInfo": false,
       "bDestroy": true
     })
+
+    $('#v_penjualan').DataTable()
