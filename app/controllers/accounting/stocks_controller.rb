@@ -1,7 +1,13 @@
 class Accounting::StocksController < ApplicationController
   def view_penjualan
+    @sale_items = []
     @channel_customer = ChannelCustomer.find(params[:cc_id])
     @sales = Sale.all.where(cancel_order: false, channel_customer_id: @channel_customer.id)
+    @sales.where(channel_customer_id: params[:cc_id], cancel_order: false).each do |sale|
+      SaleItem.where(sale_id: sale.id).each do |sale_item|
+        @sale_items << sale_item
+      end
+    end
 
     respond_to do |format|
       format.html
