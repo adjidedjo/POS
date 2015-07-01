@@ -89,8 +89,8 @@ class SalesController < ApplicationController
     @sale = Sale.new
     #    @sale.sale_items.build
 #    @sale.build_payment_with_debit_card
-    4.times {@sale.payment_with_debit_cards.build}
-    4.times {@sale.payment_with_credit_cards.build}
+    1.times {@sale.payment_with_debit_cards.build}
+    2.times {@sale.payment_with_credit_cards.build}
     @channels = Channel.all
     @merchant = current_user.channel_customer.merchants.group([:nama, :no_merchant])
     @tenor = []

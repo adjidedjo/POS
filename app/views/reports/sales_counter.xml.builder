@@ -105,15 +105,15 @@ xml.instruct!
             xml.Hp1 sale_item.sale.pos_ultimate_customer.handphone.blank? ? '-' : sale_item.sale.pos_ultimate_customer.handphone
             xml.Hp2 sale_item.sale.pos_ultimate_customer.handphone1.blank? ? '-' : sale_item.sale.pos_ultimate_customer.handphone1
             xml.HargaNetto sale_item.sale.netto
-            dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah)+sale_item.sale.jumlah_transfer)
+            dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_cards.sum(:jumlah)+sale_item.sale.payment_with_credit_cards.sum(:jumlah)+sale_item.sale.jumlah_transfer)
             xml.DP dp
             xml.Sisa sale_item.sale.sisa
             xml.TipePembayaran sale_item.sale.tipe_pembayaran
             xml.Tunai sale_item.sale.pembayaran
-            xml.no_kartu_debit sale_item.sale.payment_with_debit_card.no_kartu_debit.blank? ? '-' : sale_item.sale.payment_with_debit_card.no_kartu_debit
-            xml.nama_kartu_debit sale_item.sale.payment_with_debit_card.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_debit_card.nama_kartu
-            xml.atas_nama_debit sale_item.sale.payment_with_debit_card.atas_nama.blank? ? '-' : sale_item.sale.payment_with_debit_card.atas_nama
-            xml.JumlahDebit sale_item.sale.payment_with_debit_card.jumlah
+            xml.no_kartu_debit sale_item.sale.payment_with_debit_cards.first.no_kartu_debit.blank? ? '-' : sale_item.sale.payment_with_debit_cards.first.no_kartu_debit
+            xml.nama_kartu_debit sale_item.sale.payment_with_debit_cards.first.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_debit_cards.first.nama_kartu
+            xml.atas_nama_debit sale_item.sale.payment_with_debit_cards.first.atas_nama.blank? ? '-' : sale_item.sale.payment_with_debit_cards.first.atas_nama
+            xml.JumlahDebit sale_item.sale.payment_with_debit_cards.first.jumlah
             xml.NoMerchant sale_item.sale.payment_with_credit_cards.first.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.mid
             xml.NoKartu sale_item.sale.payment_with_credit_cards.first.no_kartu_kredit.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.no_kartu_kredit
             xml.NamaKartu sale_item.sale.payment_with_credit_cards.first.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.nama_kartu
