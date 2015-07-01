@@ -1,8 +1,8 @@
 class Sale < ActiveRecord::Base
   after_initialize :set_defaults
   has_many :sale_items, inverse_of: :sale, dependent: :destroy
-  has_one :payment_with_debit_card, inverse_of: :sale, dependent: :destroy
-  accepts_nested_attributes_for :payment_with_debit_card
+  has_many :payment_with_debit_cards, inverse_of: :sale, dependent: :destroy
+  accepts_nested_attributes_for :payment_with_debit_cards
   has_many :payment_with_credit_cards, inverse_of: :sale, dependent: :destroy
   accepts_nested_attributes_for :payment_with_credit_cards
   accepts_nested_attributes_for :sale_items, reject_if: proc { |a| a['kode_barang'].blank?}
@@ -117,16 +117,24 @@ class Sale < ActiveRecord::Base
     end
     self.pos_ultimate_customer_id = ultimate_customer.first.id
     # end create
-    first_code = ChannelCustomer.find(channel_customer_id).channel.kode
-    self.no_so = loop do
-      random_token = first_code.upcase + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8].upcase
-      break random_token unless Sale.exists?(no_so: random_token.upcase)
-    end
+    first_code = 'SOX'
+    #    self.no_so = loop do
+    #      random_token = first_code.upcase + Digest::SHA1.hexdigest([Time.now, rand].join)[0..7].upcase
+    #      break random_token unless Sale.exists?(no_so: random_token.upcase)
+    #    end
     self.voucher = voucher.nil? ? 0 : voucher
+    last_order = Sale.where(channel_customer_id: channel_customer_id).last
+    dom = Date.today.strftime('%m')
+    self.no_order = if last_order.present? && (last_order.no_order[0,2] == dom)
+      last_order.no_order.succ
+    else
+      (Date.today.strftime('%m') + Date.today.strftime('%y') + '0001')
+    end
+    self.no_so = first_code + (sprintf '%03d', channel_customer_id) + self.no_order
   end
 
   after_create do
-    debit = self.payment_with_debit_card.jumlah.nil? ? 0 : self.payment_with_debit_card.jumlah
+    debit = self.payment_with_debit_cards.nil? ? 0 : self.payment_with_debit_cards.sum(:jumlah)
     credit = self.payment_with_credit_cards.nil? ? 0 : self.payment_with_credit_cards.sum(:jumlah)
     tunai = self.pembayaran
     transfer = self.jumlah_transfer.nil? ? 0 : self.jumlah_transfer

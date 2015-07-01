@@ -77,8 +77,13 @@
 
       <div class="row-fluid form-inline" style="width: 500px; padding-bottom: 5px;">
         <% if @tipe_pembayaran.include? ("Debit Card") %>
-          <dt style="display: inline-block; width: 90px;"><strong>Kartu Debit:</strong></dt>
-          <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(@sale.payment_with_debit_card.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+          <dt><strong>Kartu Debit</strong></dt>
+          <% @sale.payment_with_debit_cards.each do |cc| %>
+            <% unless cc.nama_kartu.blank? %>
+              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>:</strong></dt>
+              <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(cc.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+            <% end %>
+          <% end %>
         <% end %>
       </div>
 

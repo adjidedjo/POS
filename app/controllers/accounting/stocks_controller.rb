@@ -1,4 +1,14 @@
 class Accounting::StocksController < ApplicationController
+  def available_stock
+    @stock = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).where.not(jumlah: 0).group(:kode_barang)
+    @channel = ChannelCustomer.find(params[:cc_id])
+
+    respond_to do |format|
+      format.html
+      format.xls
+    end
+  end
+
   def view_penjualan
     @sale_items = []
     @channel_customer = ChannelCustomer.find(params[:cc_id])

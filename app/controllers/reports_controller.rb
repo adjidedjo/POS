@@ -1,5 +1,15 @@
 class ReportsController < ApplicationController
 
+  def available_stock
+    @stock = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).where.not(jumlah: 0).group(:kode_barang)
+    @channel = ChannelCustomer.find(current_user.channel_customer.id)
+
+    respond_to do |format|
+      format.html
+      format.xls
+    end
+  end
+
   def selisih_retur
     @retur = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).group(:kode_barang, :no_sj)
 

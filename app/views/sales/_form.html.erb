@@ -105,7 +105,7 @@
       </div>
       <%= check_box_tag 'tipe_pembayaran[]', "Debit Card" %>Kartu Debit (Ceklis ini jika pembayaran menggunakan KARTU DEBIT)<br />
       <div class="row form-inline" style="padding: 10px 10px 10px 63px">
-        <%= f.simple_fields_for :payment_with_debit_card, wrapper: :inline_form do |builder| %>
+        <%= f.simple_fields_for :payment_with_debit_cards, wrapper: :inline_form do |builder| %>
           <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form"}  %>
           <%= builder.input :no_kartu_debit, :placeholder => 'No Kartu', :input_html => {class: "nested_inline_form"}  %>
           <%= builder.input :atas_nama, :placeholder => 'Atas Nama', :input_html => {class: "nested_inline_form"}  %>
@@ -114,6 +114,7 @@
           </span>
           <span id="span_debit" style="display: inline-block; padding: 7px 0 0 50px; text-indent: -50px; vertical-align: top;">
           </span>
+          <br />
         <% end %>
       </div>
       <%= check_box_tag 'tipe_pembayaran[]', "Credit Card" %>Kartu Kredit (Ceklis ini jika pembayaran menggunakan KARTU KREDIT)<br />

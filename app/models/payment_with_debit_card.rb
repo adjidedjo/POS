@@ -1,5 +1,5 @@
 class PaymentWithDebitCard < ActiveRecord::Base
-  belongs_to :sale, inverse_of: :payment_with_debit_card
+  belongs_to :sale, inverse_of: :payment_with_debit_cards
 
   validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   validates :nama_kartu, presence: true, if: :paid_with_debit?

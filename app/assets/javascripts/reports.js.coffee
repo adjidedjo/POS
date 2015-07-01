@@ -8,6 +8,11 @@ jQuery ->
     $(':checkbox').each ->
       this.checked = false
 
+    $('#rekap_stock').DataTable({
+      "iDisplayLength": 100,
+      bDestroy: true
+    })
+
     $('#sales_rekap').DataTable({
       "bAutoWidth": true,
       "bProcessing": false,

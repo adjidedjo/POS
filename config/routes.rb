@@ -6,6 +6,7 @@ Rails.application.routes.draw do
    get 'stocks/view_selisih_intransit'
    get 'stocks/view_selisih_stock'
    get 'stocks/view_penjualan'
+   get 'stocks/available_stock'
     resources :verifying_payments do
       collection do
         put 'verify'
@@ -64,6 +65,7 @@ Rails.application.routes.draw do
   get 'reports/mutasi_stock'
   get 'reports/selisih_intransit'
   get 'reports/selisih_retur'
+  get 'reports/available_stock'
 
   devise_for :users, controllers: { sessions: "users/sessions" }
 
@@ -82,9 +84,11 @@ Rails.application.routes.draw do
       get "get_mid_from_merchant"
       get "get_second_mid_from_merchant"
       get "get_kode_barang_from_serial"
+      get "get_kode_barang_from_nama_barang"
       get "edit_by_confirmation"
       get "destroy_by_confirmation"
       get "exhibition_stock"
+      get "item_master"
       get "stock_availability"
     end
   end
