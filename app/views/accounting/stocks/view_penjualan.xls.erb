@@ -68,11 +68,11 @@
         <td><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></td>
         <td><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></td>
         <td><%= currency(sale_item.sale.jumlah_transfer) %></td>
-        <td><%= currency(sale_item.sale.payment_with_debit_card.jumlah) %></td>
         <% sale_item.sale.payment_with_debit_cards.each do |cd| %>
-        <td><%= cd.no_kartu_debit.present? ? cd.no_kartu_debit : '-'  %></td>
-        <td><%= cd.atas_nama.present? ? cd.atas_nama : '-' %></td>
-        <td><%= cd.nama_kartu.present? ? cd.nama_kartu : '-' %></td>
+          <td><%= currency(cd.jumlah) %></td>
+          <td><%= cd.no_kartu_debit.present? ? cd.no_kartu_debit : '-'  %></td>
+          <td><%= cd.atas_nama.present? ? cd.atas_nama : '-' %></td>
+          <td><%= cd.nama_kartu.present? ? cd.nama_kartu : '-' %></td>
         <% end %>
         <% sale_item.sale.payment_with_credit_cards.each do |cc| %>
           <td><%= currency(cc.jumlah) %></td>
