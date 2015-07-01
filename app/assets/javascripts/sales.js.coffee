@@ -131,17 +131,12 @@ jQuery ->
       document.getElementById('span_bayar').innerHTML = addCommas(pembayaran)
 
       debit = document.getElementById('sale_payment_with_debit_cards_attributes_0_jumlah').value
-      debit1 = document.getElementById('sale_payment_with_debit_cards_attributes_1_jumlah').value
-      debit2 = document.getElementById('sale_payment_with_debit_cards_attributes_2_jumlah').value
-      debit3 = document.getElementById('sale_payment_with_debit_cards_attributes_3_jumlah').value
-      total_debit = Math.floor(debit) + Math.floor(debit1) + Math.floor(debit2) + Math.floor(debit3)
+      total_debit = Math.floor(debit)
       document.getElementById('span_debit').innerHTML = addCommas(total_debit)
 
       credit = document.getElementById('sale_payment_with_credit_cards_attributes_0_jumlah').value
       credit1 = document.getElementById('sale_payment_with_credit_cards_attributes_1_jumlah').value
-      credit2 = document.getElementById('sale_payment_with_credit_cards_attributes_2_jumlah').value
-      credit3 = document.getElementById('sale_payment_with_credit_cards_attributes_3_jumlah').value
-      total_credit = Math.floor(credit) + Math.floor(credit1) + Math.floor(credit2) + Math.floor(credit3)
+      total_credit = Math.floor(credit) + Math.floor(credit1) 
       document.getElementById('span_credit').innerHTML = addCommas(total_credit)
 
       transfer = document.getElementById('sale_jumlah_transfer').value
