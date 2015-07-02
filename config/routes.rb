@@ -66,6 +66,8 @@ Rails.application.routes.draw do
   get 'reports/selisih_intransit'
   get 'reports/selisih_retur'
   get 'reports/available_stock'
+  get 'reports/index_akun'
+  get 'reports/index_export'
 
   devise_for :users, controllers: { sessions: "users/sessions" }
 

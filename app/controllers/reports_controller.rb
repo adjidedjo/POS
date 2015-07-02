@@ -1,4 +1,21 @@
 class ReportsController < ApplicationController
+  before_action :set_controller, only: [:show, :sales_counter, :index_export, :index_akun]
+
+  def index_akun
+    @channel_customer = ChannelCustomer.all
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def index_export
+    @channel_customer = ChannelCustomer.all
+
+    respond_to do |format|
+      format.html
+    end
+  end
 
   def available_stock
     @stock = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).where.not(jumlah: 0).group(:kode_barang)
@@ -61,7 +78,9 @@ class ReportsController < ApplicationController
   def sales_counter
     @sales = []
     brand_id = params[:brand_id]
-    current_user.channel_customer.sales.where(cancel_order: false).each do |sale|
+    cc = ChannelCustomer.find(params[:cc_id])
+    user = current_user.role == 'controller' ? cc : current_user.channel_customer
+    user.sales.where(cancel_order: false).each do |sale|
       SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id).each do |sale_items|
         @sales << sale_items
       end
@@ -96,5 +115,10 @@ class ReportsController < ApplicationController
     else
       redirect_to reports_sales_counter_path(brand_id: params[:brand_id]), alert: "Silahkan centang penjualan yang akan dikirim"
     end
+  end
+
+  private
+  def set_controller
+    @controller = current_user.role == 'controller'
   end
 end

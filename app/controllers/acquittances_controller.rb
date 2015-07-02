@@ -15,7 +15,8 @@ class AcquittancesController < ApplicationController
   end
 
   def rekap_pelunasan
-    @sales = Acquittance.where(channel_customer_id: current_user.channel_customer.id, exported: false)
+    cc = params[:cc_id].present? ? params[:cc_id] : current_user.channel_customer.id
+    @sales = Acquittance.where(channel_customer_id: cc, exported: false)
 
 
     respond_to do |format|
