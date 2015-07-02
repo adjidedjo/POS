@@ -1,5 +1,6 @@
 class ChannelCustomersController < ApplicationController
   before_action :set_channel_customer, only: [:show, :edit, :update, :destroy]
+  before_action :set_controller, only: [:show, :index]
 
   def proses_import_intransit
     tempfile = File.read(params[:stock_items].tempfile)
@@ -61,7 +62,7 @@ class ChannelCustomersController < ApplicationController
   # GET /channel_customers/1
   # GET /channel_customers/1.json
   def show
-    user = current_user.admin? ? @channel_customer : current_user.channel_customer
+    user = (current_user.admin? || current_user.role == 'controller') ? @channel_customer : current_user.channel_customer
     @supervisors = user.supervisor_exhibitions
     @merchants = user.merchants
     @sales_promotions = user.sales_promotions
@@ -118,6 +119,10 @@ class ChannelCustomersController < ApplicationController
   end
 
   private
+    def set_controller
+      @controller = current_user.role == 'controller'
+    end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_channel_customer
     @channel_customer = ChannelCustomer.find(params[:id])

@@ -1,6 +1,7 @@
 class SalesCountersController < ApplicationController
   before_action :set_sales_counter, only: [:show, :edit, :update, :destroy]
   before_action :branches, only: [:new, :edit]
+  before_action :set_controller, only: [:show, :index]
 
   # GET /sales_counters
   # GET /sales_counters.json
@@ -63,6 +64,10 @@ class SalesCountersController < ApplicationController
   end
 
   private
+    def set_controller
+      @controller = current_user.role == 'controller'
+    end
+    
     def branches
       @branches = Branch.all
     end

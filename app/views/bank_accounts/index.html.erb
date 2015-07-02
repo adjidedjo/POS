@@ -16,12 +16,17 @@
         <td><%= bank_account.name %></td>
         <td><%= bank_account.account_number %></td>
         <td><%= link_to 'Show', bank_account, class: "btn btn-info btn-xs" %></td>
-        <td><%= link_to 'Edit', edit_bank_account_path(bank_account), class: "btn btn-info btn-xs" %></td>
+        <% unless @controller %>
+          <td><%= link_to 'Edit', edit_bank_account_path(bank_account), class: "btn btn-info btn-xs" %></td>
+        <% else %>
+          <td></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Bank account', new_bank_account_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% unless @controller %>
+  <%= link_to 'New Bank account', new_bank_account_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% end %>

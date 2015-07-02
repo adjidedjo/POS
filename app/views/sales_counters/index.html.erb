@@ -21,7 +21,9 @@
         <td><%= sales_counter.email %></td>
         <td><%= sales_counter.branch.cabang.titleize %></td>
         <td><%= link_to 'Show', sales_counter, class: "btn btn-info btn-xs" %></td>
-        <td><%= link_to 'Edit', edit_sales_counter_path(sales_counter), class: "btn btn-info btn-xs" %></td>
+        <% unless @controller %>
+          <td><%= link_to 'Edit', edit_sales_counter_path(sales_counter), class: "btn btn-info btn-xs" %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -29,4 +31,6 @@
 
 <br>
 
-<%= link_to 'New Sales counter', new_sales_counter_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% unless @controller %>
+  <%= link_to 'New Sales counter', new_sales_counter_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% end %>

@@ -15,5 +15,7 @@
   <%= @sales_counter.email %>
 </p>
 
-<%= link_to 'Edit', edit_sales_counter_path(@sales_counter) %> |
+<% unless @controller %>
+  <%= link_to 'Edit', edit_sales_counter_path(@sales_counter) %> |
+<% end %>
 <%= link_to 'Back', sales_counters_path %>

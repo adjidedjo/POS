@@ -1,5 +1,6 @@
 class BankAccountsController < ApplicationController
   before_action :set_bank_account, only: [:show, :edit, :update, :destroy]
+  before_action :set_controller, only: [:show, :index]
 
   # GET /bank_accounts
   # GET /bank_accounts.json
@@ -62,6 +63,10 @@ class BankAccountsController < ApplicationController
   end
 
   private
+    def set_controller
+      @controller = current_user.role == 'controller'
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_bank_account
       @bank_account = BankAccount.find(params[:id])

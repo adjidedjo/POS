@@ -1,5 +1,6 @@
 class PosUltimateCustomersController < ApplicationController
   before_action :set_pos_ultimate_customer, only: [:show, :edit, :update, :destroy]
+  before_action :set_controller, only: [:show, :index]
 
   def get_customer_info
     @cust_info = PosUltimateCustomer.find_by_no_telepon(params[:no_telepon])
@@ -75,6 +76,10 @@ class PosUltimateCustomersController < ApplicationController
   end
 
   private
+    def set_controller
+      @controller = current_user.role == 'controller'
+    end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_pos_ultimate_customer
     @pos_ultimate_customer = PosUltimateCustomer.find(params[:id])

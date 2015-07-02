@@ -10,5 +10,7 @@
   <%= @bank_account.account_number %>
 </p>
 
-<%= link_to 'Edit', edit_bank_account_path(@bank_account) %> |
+<% unless @controller %>
+  <%= link_to 'Edit', edit_bank_account_path(@bank_account) %> |
+<% end %>
 <%= link_to 'Back', bank_accounts_path %>

@@ -24,12 +24,13 @@
         <td><%= pos_ultimate_customer.no_telepon %></td>
         <td><%= pos_ultimate_customer.handphone %></td>
         <td><%= pos_ultimate_customer.handphone1 %></td>
-        <td><%= link_to 'Edit', edit_pos_ultimate_customer_path(pos_ultimate_customer), class: "btn btn-info btn-xs" %></td>
+        <td><%= link_to 'Edit', edit_pos_ultimate_customer_path(pos_ultimate_customer), class: "btn btn-info btn-xs" unless @controller %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Pos ultimate customer', new_pos_ultimate_customer_path, class: "btn btn-primary" %>
+<% unless @controller %>
+  <%= link_to 'New Pos ultimate customer', new_pos_ultimate_customer_path, class: "btn btn-primary" %>
+<% end %>
