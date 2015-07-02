@@ -1,15 +1,20 @@
 class Accounting::VerifyingPaymentsController < ApplicationController
   before_action :index, only: [:verify]
   before_action :get_channel_customer_id, only:[:show_channel_payment]
+  before_action :set_controller, only: [:show, :index]
 
   def index
     @channel_customer = []
-    channel = current_user.branch.sales_counters
+    channel = current_user.branch.present? ? current_user.branch.sales_counters : []
     if channel.present?
       current_user.branch.sales_counters.group(:branch_id).each do |sc|
         sc.recipients.group(:channel_customer_id, :sales_counter_id).each do |scr|
           @channel_customer << scr.channel_customer
         end
+      end
+    else
+      ChannelCustomer.all.each do |cc|
+        @channel_customer << cc
       end
     end
   end
@@ -47,6 +52,9 @@ class Accounting::VerifyingPaymentsController < ApplicationController
   end
 
   private
+  def set_controller
+    @controller = current_user.role == 'controller'
+  end
 
   def get_channel_customer_id
     @channel = ChannelCustomer.find(params[:cc_id])

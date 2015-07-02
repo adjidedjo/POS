@@ -1,4 +1,6 @@
 class Accounting::StocksController < ApplicationController
+  before_action :set_controller, only: [:show, :mutasi_stock]
+
   def available_stock
     @stock = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).where.not(jumlah: 0).group(:kode_barang)
     @channel = ChannelCustomer.find(params[:cc_id])
@@ -56,13 +58,22 @@ class Accounting::StocksController < ApplicationController
 
   def mutasi_stock
     @channel_customer = []
-    channel = current_user.branch.sales_counters
+    channel = current_user.branch.present? ? current_user.branch.sales_counters : []
     if channel.present?
       current_user.branch.sales_counters.group(:branch_id).each do |sc|
         sc.recipients.group(:channel_customer_id, :sales_counter_id).each do |scr|
           @channel_customer << scr.channel_customer
         end
       end
+    else
+      ChannelCustomer.all.each do |cc|
+        @channel_customer << cc
+      end
     end
+  end
+
+  private
+  def set_controller
+    @controller = current_user.role == 'controller'
   end
 end
