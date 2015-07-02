@@ -129,7 +129,7 @@ class PosPdf < Prawn::Document
               text_box "#{number_to_currency(@order.voucher, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
                 :at => [420, cursor - 9], :width => 60, :height => 50, :align => :right
             end
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            debit =  @order.payment_with_debit_cards.sum(:jumlah)
             transfer = @order.jumlah_transfer.nil? ? 0 : @order.jumlah_transfer
             total_bayar = @order.pembayaran + debit + @order.payment_with_credit_cards.sum(:jumlah)+transfer
             text_box "#{number_to_currency(total_bayar, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 8,
@@ -189,21 +189,21 @@ class PosPdf < Prawn::Document
         indent 5 do
           move_down 2
           bounding_box([0, cursor], :width => 100.4) do
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            debit =  @order.payment_with_debit_cards.sum(:jumlah)
             text "Cash", :size => 6
             text "Transfer", :size => 6
             text "Debit Card", :size => 6
             text "Credit Card", :size => 6
           end
           bounding_box([50, cursor + 27.5], :width => 50.4) do
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            debit =  @order.payment_with_debit_cards.sum(:jumlah)
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
           end
           bounding_box([0, cursor + 28], :width => 100.4) do
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
+            debit =  @order.payment_with_debit_cards.sum(:jumlah)
             text "#{number_to_currency(@order.pembayaran, precision:0, unit: "", separator: ".", delimiter: ".")}", :size => 6,
               :align => :right
             text "#{number_to_currency(@order.jumlah_transfer.nil? ? 0 : @order.jumlah_transfer, precision:0, unit: "",
