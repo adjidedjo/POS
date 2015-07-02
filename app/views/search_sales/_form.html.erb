@@ -1,15 +1,17 @@
-<%= form_for @search do |f| %>
+<%= simple_form_for @search do |f| %>
   <div class="field">
-    <%= f.label :no_so %><br />
-    <%= f.text_field :keywords %>
+    <%= f.input :channel_id, collection: Channel.order(:channel), label_method: :channel, value_method: :id,
+        input_html: {style: 'width: 250px'} %>
   </div>
   <div class="field">
-    <%= f.label :channel_id %><br />
-    <%= f.collection_select :channel_id, Channel.order(:channel), :id, :channel, include_blank: true %>
+    <%= f.input :channel_customer_id, collection: ChannelCustomer.order(:nama), label_method: :nama, value_method: :id,
+        input_html: {style: 'width: 250px'} %>
   </div>
   <div class="field">
-    <%= f.label :channel_customer_id %><br />
-    <%= f.collection_select :channel_customer_id, ChannelCustomer.order(:nama), :id, :nama, include_blank: true %>
+    <%= f.input :dari_tanggal, as: :tanggal, readonly: true, input_html: {style: 'width: 250px'} %>
+  </div>
+  <div class="field">
+    <%= f.input :sampai_tanggal, as: :tanggal, readonly: true, input_html: {style: 'width: 250px'} %>
   </div>
   <div class="actions"><%= f.submit "Search" %></div>
 <% end %>
