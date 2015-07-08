@@ -1,25 +1,25 @@
-<h1>Laporan Stok <%= @channel.nama.upcase %></h1>
-<br />
-<table id="rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
-  <thead>
-    <tr>
-      <th>Serial</th>
-      <th>Kode Barang</th>
-      <th>Nama Barang</th>
-      <th>Jumlah</th>
-    </tr>
-  </thead>
-
-  <tbody>
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Serial</Data></Cell>
+        <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Jumlah</Data></Cell>
+      </Row>
     <% @stock.each do |s| %>
-      <tr>
-        <td><%= s.serial.present? ? s.serial : '-' %></td>
-        <td><%= s.kode_barang %></td>
-        <td><%= s.nama  %></td>
-        <td><%= s.jumlah %></td>
-      </tr>
+      <Row>
+        <Cell><Data ss:Type="String"><%= s.serial.present? ? s.serial : '-' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.nama  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.jumlah %></Data></Cell>
+      </Row>
     <% end %>
-  </tbody>
-</table>
-<br />
-<%= link_to "Export to Excel", reports_available_stock_path(format: "xls"), :class => "btn btn-info" %>
+    </Table>
+  </Worksheet>
+</Workbook>

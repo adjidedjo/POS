@@ -22,4 +22,4 @@
   </tbody>
 </table>
 <br />
-<%= link_to "Export to Excel", reports_available_stock_path(format: "xls"), :class => "btn btn-info" %>
+<%= link_to "Export to Excel", accounting_stocks_available_stock_path(cc_id: params[:cc_id], format: "xls"), :class => "btn btn-info" %>
