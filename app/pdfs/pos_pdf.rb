@@ -245,7 +245,7 @@ class PosPdf < Prawn::Document
       indent 5 do
         text "Terms & Conditions  : ", :size => 5, :style => :italic
         move_down 3
-        text "1. Minimum down payment is 20% of the Total Invoice.", :size => 4, :style => :italic
+        text "1. Minimum down payment is 30% of the Total Invoice.", :size => 4, :style => :italic
         move_down 3
         text "2. Order time limit is 90 days from the invoice date.", :size => 4, :style => :italic
         move_down 3
