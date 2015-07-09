@@ -27,21 +27,66 @@ class Sale < ActiveRecord::Base
 
   validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
-  validates :sale_items, presence: true, on: :create
+  validates :sale_items, presence: {message: "BELUM ADA BARANG YANG DITAMBAHKAN"}, on: :create
   validates :so_manual, length: { maximum: 200 }, on: :create
+  validates :netto, numericality: { greater_than: 0, message: "HARUS LEBIH DARI 0" }
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 
-  validate :uniqueness_of_items
+  validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer, :cek_pembayaran_debit, :cek_pembayaran_kredit,
+    :cek_barang_lady, :cek_barang_elite, :cek_down_payment
 
   def uniqueness_of_items
     hash = {}
     sale_items.each do |si|
       if hash[si.kode_barang]
-        errors.add(:"si.kode_barang", "duplicate error")
+        errors.add(:"si.kode_barang", "TIDAK BOLEH ADA BARANG YANG SAMA DALAM 1 SO")
         si.errors.add(:kode_barang, "has already been taken")
       end
       hash[si.kode_barang] = true
+    end
+  end
+
+  def cek_down_payment
+    min_dp = (30 * netto)/100
+    if sisa > (netto-min_dp)
+      errors.add(:down_payment, "DP BELUM SESUAI DENGAN SYARAT & KETENTUAN")
+    end
+  end
+
+  def cek_barang_lady
+    if sale_items.any? { |b| b[:kode_barang][2] == "L" } && netto_lady == 0
+      errors.add(:netto_lady, "ISI NETTO LADY JIKA ADA BARANG LAI")
+    end
+  end
+
+  def cek_barang_elite
+    if sale_items.any? { |b| b[:kode_barang][2] == "E" } && netto_elite == 0
+      errors.add(:netto_elite, "ISI NETTO ELITE JIKA ADA BARANG ELITE")
+    end
+  end
+
+  def cek_pembayaran_tunai
+    if tipe_pembayaran.split(";").include?("Tunai") && pembayaran == 0
+      errors.add(:pembayaran, "ISI JUMLAH PEMBAYARAN TUNAI SESUAI DENGAN NOMINAL TUNAI")
+    end
+  end
+
+  def cek_pembayaran_transfer
+    if tipe_pembayaran.split(";").include?("Transfer") && jumlah_transfer == 0
+      errors.add(:jumlah_transfer, "ISI JUMLAH PEMBAYARAN TRANSFER SESUAI DENGAN NOMINAL")
+    end
+  end
+
+  def cek_pembayaran_debit
+    if tipe_pembayaran.split(";").include?("Debit Card") && payment_with_debit_cards.first.jumlah == 0
+      errors.add(:"pembayaran_kartu_debit", "ISI JUMLAH PEMBAYARAN KARTU DEBIT SESUAI DENGAN NOMINAL")
+    end
+  end
+
+  def cek_pembayaran_kredit
+    if tipe_pembayaran.split(";").include?("Credit Card") && payment_with_credit_cards.first.jumlah == 0
+      errors.add(:"pembayaran_kartu_kredit", "ISI JUMLAH PEMBAYARAN KARTU KREDIT SESUAI DENGAN NOMINAL")
     end
   end
 

@@ -1,5 +1,14 @@
 <%= simple_form_for @sale, :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.error_notification %>
+  <% if @sale.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+        <% @sale.errors.full_messages.each do |msg| %>
+          <li style="color: red; height: 12px; font-weight: bold"><%= msg %></li><br />
+        <% end %>
+     </ul>
+    </div>
+  <% end %>
   <div class="row">
     <%= f.hidden_field :channel_customer_id, value: current_user.channel_customer.id if f.object.new_record? %>
     <div class="col-md-6">
