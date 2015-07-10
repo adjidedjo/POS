@@ -25,7 +25,7 @@ class Sale < ActiveRecord::Base
 
   attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1
 
-  validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, :pembayaran, presence: true
+  validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, :pembayaran, :sales_promotion_id, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
   validates :sale_items, presence: {message: "BELUM ADA BARANG YANG DITAMBAHKAN"}, on: :create
   validates :so_manual, length: { maximum: 200 }, on: :create
