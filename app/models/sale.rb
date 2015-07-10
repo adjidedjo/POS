@@ -25,7 +25,7 @@ class Sale < ActiveRecord::Base
 
   attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1
 
-  validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, presence: true
+  validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, :pembayaran, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
   validates :sale_items, presence: {message: "BELUM ADA BARANG YANG DITAMBAHKAN"}, on: :create
   validates :so_manual, length: { maximum: 200 }, on: :create
@@ -180,7 +180,7 @@ class Sale < ActiveRecord::Base
   after_create do
     debit = self.payment_with_debit_cards.nil? ? 0 : self.payment_with_debit_cards.sum(:jumlah)
     credit = self.payment_with_credit_cards.nil? ? 0 : self.payment_with_credit_cards.sum(:jumlah)
-    tunai = self.pembayaran
+    tunai = self.pembayaran.nil? ? 0 : self.pembayaran
     transfer = self.jumlah_transfer.nil? ? 0 : self.jumlah_transfer
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
