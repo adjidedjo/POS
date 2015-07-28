@@ -2,6 +2,7 @@
   <td><%= sale.channel_customer.channel.channel %></td>
   <td><%= sale.channel_customer.nama.upcase %></td>
   <td><%= sale.no_so.upcase %></td>
+  <td><%= sale.created_at.strftime('%d %B %Y') %></td>
   <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
   <td><%= sale.tipe_pembayaran %></td>
   <% card =  sale.payment_with_debit_cards.sum(:jumlah) + sale.payment_with_credit_cards.sum(:jumlah)  %>
