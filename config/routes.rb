@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   get 'reports/available_stock'
   get 'reports/index_akun'
   get 'reports/index_export'
+  get 'reports/exported'
 
   devise_for :users, controllers: { sessions: "users/sessions" }
 

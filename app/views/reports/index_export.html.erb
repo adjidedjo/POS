@@ -10,6 +10,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +19,7 @@
         <td><%= cc.nama.upcase %></td>
         <td><%= cc.dari_tanggal.nil? ? '-' : cc.dari_tanggal.strftime("%d %B %Y") %></td>
         <td><%= cc.sampai_tanggal.nil? ? '-' : cc.sampai_tanggal.strftime("%d %B %Y") %></td>
+        <td><%= link_to "Exported", reports_exported_path(cc_id: cc.id, brand_id: 4) %></td>
         <td><%= link_to "LAI", reports_sales_counter_path(cc_id: cc.id, brand_id: 4) %></td>
         <td><%= link_to "Elite", reports_sales_counter_path(cc_id: cc.id, brand_id: 2) %></td>
         <td><%= link_to "Pelunasan", rekap_pelunasan_acquittances_path(cc_id: cc.id) %></td>

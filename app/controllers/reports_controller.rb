@@ -1,6 +1,22 @@
 class ReportsController < ApplicationController
   before_action :set_controller, only: [:show, :sales_counter, :index_export, :index_akun]
 
+  def exported
+    @sales = []
+    brand_id = params[:brand_id]
+    cc = ChannelCustomer.find(params[:cc_id]) if params[:cc_id].present?
+    user = current_user.role == 'controller' ? cc : current_user.channel_customer
+    user.sales.where(cancel_order: false).each do |sale|
+      SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, true, brand_id).each do |sale_items|
+        @sales << sale_items
+      end
+    end
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   def index_akun
     @channel_customer = ChannelCustomer.all
 
