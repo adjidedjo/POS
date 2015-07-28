@@ -15,14 +15,47 @@ class SearchSalesController < ApplicationController
 
   def new
     @search = SearchSale.new
+    if current_user.role.nil?
+      @channel_customer = current_user.channel_customer
+    elsif current_user.role == "controller" || current_user.role == "admin"
+      @channel_customer = ChannelCustomer.all
+    else
+      @channel_customer = []
+      current_user.branch.sales_counters.group(:branch_id).each do |sc|
+        sc.recipients.group(:channel_customer_id, :sales_counter_id).each do |scr|
+          @channel_customer << scr.channel_customer
+        end
+      end
+    end
   end
 
   def create
-    @search = SearchSale.create!(search_sale_params)
-    redirect_to @search
+    @search = SearchSale.new(search_sale_params)
+
+    respond_to do |format|
+      if @search.save
+        format.html {redirect_to @search}
+        format.json { render :show, status: :created, location: @search }
+      else
+        format.html { render :new }
+        format.json { render json: @search.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def show
+    unless current_user.admin?
+      @brand = Brand.all
+      @cc = current_user.channel_customer
+      @top_10_items = SaleItem.select('kode_barang, sum(jumlah) as sum_jumlah')
+      .where("date(created_at) >= ? and date(created_at) <= ? and
+         kode_barang not like ? and kode_barang not like ? and cancel = ? and channel_customer_id = ?",
+        @search.dari_tanggal, @search.sampai_tanggal, "#{'E'}%", "#{'L'}%", 0, @cc.id)
+      .group(:kode_barang).order('sum_jumlah DESC').limit(10)
+      @top_pc = @cc.sales.select('*, sales_promotion_id, sum(netto_elite) as elite, sum(netto_lady) as lady')
+      .where("date(created_at) >= ? and date(created_at) <= ? and cancel_order = ?",
+        @search.dari_tanggal, @search.sampai_tanggal,0).group(:sales_promotion_id).order('elite DESC, lady DESC').limit(10)
+    end
   end
 
   def update
@@ -37,6 +70,6 @@ class SearchSalesController < ApplicationController
   end
 
   def search_sale_params
-    params.require(:search_sale).permit(:keywords, :channel_id, :channel_customer_id, :dari_tanggal, :sampai_tanggal)
+    params.require(:search_sale).permit(:keywords, :channel_id, :channel_customer_id, :dari_tanggal, :sampai_tanggal, :tampilkan_berdasarkan)
   end
 end

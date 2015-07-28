@@ -25,3 +25,13 @@ jQuery ->
       bSort: false,
       bDestroy: true
     })
+
+    $('#search_sale_dari_tanggal').datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: '0'
+    })
+
+    $('#search_sale_sampai_tanggal').datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: '0'
+    })
