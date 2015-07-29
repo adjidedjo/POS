@@ -30,7 +30,9 @@ class Accounting::VerifyingPaymentsController < ApplicationController
       end
       @sales = @channel.sales.where(id: sip, cancel_order: 0)
       @sales.each do |sale|
-        debit << sale.payment_with_debit_card.id
+        sale.payment_with_debit_cards.each do |pwc|
+          debit << pwc.id
+        end
         sale.payment_with_credit_cards.each do |pwc|
           credit << pwc.id
         end
