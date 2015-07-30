@@ -23,12 +23,31 @@ class Accounting::VerifyingPaymentsController < ApplicationController
     debit = []
     credit = []
     sip = []
-    get_sales_counter = current_user.branch.sales_counters
-    if get_sales_counter.present?
-      SaleItem.where(brand_id: get_sales_counter.first.recipients.first.brand_id).group(:sale_id).each do |si|
-        sip << si.sale_id
+    if current_user.branch.present?
+      get_sales_counter = current_user.branch.sales_counters
+      if get_sales_counter.present?
+        SaleItem.where(brand_id: get_sales_counter.first.recipients.first.brand_id).group(:sale_id).each do |si|
+          sip << si.sale_id
+        end
+        @sales = @channel.sales.where(id: sip, cancel_order: 0)
+        @sales.each do |sale|
+          sale.payment_with_debit_cards.each do |pwc|
+            debit << pwc.id
+          end
+          sale.payment_with_credit_cards.each do |pwc|
+            credit << pwc.id
+          end
+        end
+        @cd = PaymentWithDebitCard.where(id: debit).where.not(jumlah: 0)
+        @cc = PaymentWithCreditCard.where(id: credit)
+        @bank = BankAccount.all
+        @merchants = current_user.branch.sales_counters.first.recipients.first.channel_customer.merchants
+      else
+        redirect_to root_path, alert: "Belum ada penjualan di #{current_user.branch.cabang.capitalize}"
       end
-      @sales = @channel.sales.where(id: sip, cancel_order: 0)
+    else
+      cc = ChannelCustomer.find(params[:cc_id])
+      @sales = cc.sales.where(cancel_order: 0)
       @sales.each do |sale|
         sale.payment_with_debit_cards.each do |pwc|
           debit << pwc.id
@@ -40,9 +59,7 @@ class Accounting::VerifyingPaymentsController < ApplicationController
       @cd = PaymentWithDebitCard.where(id: debit).where.not(jumlah: 0)
       @cc = PaymentWithCreditCard.where(id: credit)
       @bank = BankAccount.all
-      @merchants = current_user.branch.sales_counters.first.recipients.first.channel_customer.merchants
-    else
-      redirect_to root_path, alert: "Belum ada penjualan di #{current_user.branch.cabang.capitalize}"
+      @merchants = cc.merchants
     end
   end
 
