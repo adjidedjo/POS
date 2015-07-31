@@ -19,6 +19,7 @@
           <th class="all">Jumlah</th>
           <th class="min-tablet-l">Bonus</th>
           <th class="min-tablet-l">Tanggal Kirim</th>
+          <th class="min-tablet-l">Taken</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +31,7 @@
             <td><%= sale_items.jumlah %></td>
             <td><%= sale_items.bonus? ? "Bonus" : "-" %></td>
             <td><%= sale_items.tanggal_kirim.strftime('%d %B %Y') %></td>
+            <td><%= sale_items.taken? ? "Yes" : "No" %></td>
           </tr>
         <% end %>
       </tbody>

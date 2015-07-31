@@ -34,13 +34,20 @@ class Sale < ActiveRecord::Base
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 
   validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer, :cek_pembayaran_debit, :cek_pembayaran_kredit,
-    :cek_barang_lady, :cek_barang_elite, :cek_down_payment
+    :cek_barang_lady, :cek_barang_elite, :cek_down_payment, :cek_netto_brand
+
+  def cek_netto_brand
+    total_netto_brand = netto_elite + netto_lady
+    if total_netto_brand != netto
+      errors.add(:netto, "JUMLAH NETTO LAI DAN NETTO ELITE TIDAK SAMA DENGAN NETTO")
+    end
+  end
 
   def uniqueness_of_items
     hash = {}
     sale_items.each do |si|
       if hash[si.kode_barang]
-        errors.add(:"si.kode_barang", "TIDAK BOLEH ADA BARANG YANG SAMA DALAM 1 SO")
+        errors.add(:kode_barang, "TIDAK BOLEH ADA BARANG YANG SAMA DALAM 1 SO")
         si.errors.add(:kode_barang, "has already been taken")
       end
       hash[si.kode_barang] = true

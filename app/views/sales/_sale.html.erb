@@ -7,6 +7,8 @@
   <td><%= sale.tipe_pembayaran %></td>
   <% card =  sale.payment_with_debit_cards.sum(:jumlah) + sale.payment_with_credit_cards.sum(:jumlah)  %>
   <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
+  <td><%= currency(sale.netto_elite) %></td>
+  <td><%= currency(sale.netto_lady) %></td>
   <td class="money"><%= currency(sale.netto) %></td>
   <td class="money"><%= currency(sale.pembayaran + sale.jumlah_transfer + card) %></td>
 </tr>
