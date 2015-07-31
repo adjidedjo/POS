@@ -9,6 +9,7 @@
       <th>Channel Customer</th>
       <th>PC</th>
       <th>No SO</th>
+      <th>SO Manual</th>
       <th>Customer</th>
       <th>Ket Pembayaran</th>
       <th>Cara Pembayaran</th>
@@ -27,6 +28,7 @@
         <td><%= sale.channel_customer.nama.upcase %></td>
         <td><%= sale.sales_promotion.nil? ? '' : sale.sales_promotion.nama.upcase %></td>
         <td><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
+        <td><%= sale.so_manual %></td>
         <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
         <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
         <td><%= sale.tipe_pembayaran %></td>
