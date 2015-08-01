@@ -54,17 +54,17 @@ class SaleItem < ActiveRecord::Base
         self.sale.channel_customer_id, kode_barang, 0).first
       self.ex_no_sj = get_ex_no_sj.no_sj
      end
-     add_sale_item_to_history
   end
 
   def remove_sale_item
     sale.sale_items.each do |ssi|
-      if ssi.serial.present? && ssi._destroy == true
-        esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(self.kode_barang,
-          self.serial, false, self.sale.channel_customer_id)
-        ssah = StoreSalesAndStockHistory.where(kode_barang: self.kode_barang, no_sj: self.ex_no_sj).first
-        esi.update_attributes(jumlah: (self.jumlah + esi.jumlah))
-        if self.serial.present?
+      if ssi._destroy == true
+        si = SaleItem.find(ssi.id)
+        if si.serial.present? || si.taken?
+          esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(self.kode_barang,
+            self.serial, false, self.sale.channel_customer_id)
+          ssah = StoreSalesAndStockHistory.where(kode_barang: self.kode_barang, no_sj: self.ex_no_sj).first
+          esi.update_attributes(jumlah: (self.jumlah + esi.jumlah))
           ssah.destroy
         end
       end
