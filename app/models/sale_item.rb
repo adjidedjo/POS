@@ -41,6 +41,37 @@ class SaleItem < ActiveRecord::Base
   end
 
   after_create do
+    add_sale_item_to_history
+  end
+
+  before_destroy do
+    remove_sale_item
+  end
+
+  before_update do
+     if serial.present?
+      get_ex_no_sj = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ? and jumlah > ?",
+        self.sale.channel_customer_id, kode_barang, 0).first
+      self.ex_no_sj = get_ex_no_sj.no_sj
+     end
+     add_sale_item_to_history
+  end
+
+  def remove_sale_item
+    sale.sale_items.each do |ssi|
+      if ssi.serial.present? && ssi._destroy == true
+        esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(self.kode_barang,
+          self.serial, false, self.sale.channel_customer_id)
+        ssah = StoreSalesAndStockHistory.where(kode_barang: self.kode_barang, no_sj: self.ex_no_sj).first
+        esi.update_attributes(jumlah: (self.jumlah + esi.jumlah))
+        if self.serial.present?
+          ssah.destroy
+        end
+      end
+    end
+  end
+
+  def add_sale_item_to_history
     if self.taken? && self.serial.blank?
       stock = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang = ? and jumlah > 0
 and checked_in = true and checked_out = false", self.sale.channel_customer_id, self.kode_barang)
@@ -98,16 +129,6 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
       StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
         nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
         serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)
-    end
-  end
-
-  before_destroy do
-    esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(self.kode_barang,
-      self.serial, false, self.sale.channel_customer_id)
-    ssah = StoreSalesAndStockHistory.where(kode_barang: self.kode_barang, no_sj: self.ex_no_sj).first
-    if self.serial.present?
-      esi.update_attributes(jumlah: (self.jumlah + esi.jumlah))
-      ssah.destroy
     end
   end
 end
