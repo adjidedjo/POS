@@ -64,19 +64,19 @@
         <Cell><Data ss:Type="String"><%= sale_item.nama_barang %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.jumlah %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.tanggal_kirim %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= currency(sale_item.sale.netto) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= currency(sale_item.sale.pembayaran) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.netto %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.pembayaran %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= currency(sale_item.sale.jumlah_transfer) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.jumlah_transfer %></Data></Cell>
         <% sale_item.sale.payment_with_debit_cards.each do |cd| %>
-          <Cell><Data ss:Type="String"><%= currency(cd.jumlah) %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= cd.jumlah %></Data></Cell>
           <Cell><Data ss:Type="String"><%= cd.no_kartu_debit.present? ? cd.no_kartu_debit : '-'  %></Data></Cell>
           <Cell><Data ss:Type="String"><%= cd.atas_nama.present? ? cd.atas_nama : '-' %></Data></Cell>
           <Cell><Data ss:Type="String"><%= cd.nama_kartu.present? ? cd.nama_kartu : '-' %></Data></Cell>
         <% end %>
         <% sale_item.sale.payment_with_credit_cards.each do |cc| %>
-          <Cell><Data ss:Type="String"><%= currency(cc.jumlah) %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= cc.jumlah %></Data></Cell>
           <Cell><Data ss:Type="String"><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </Data></Cell>
           <Cell><Data ss:Type="String"><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </Data></Cell>
           <Cell><Data ss:Type="String"><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </Data></Cell>
@@ -90,9 +90,9 @@
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.kota %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.email %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= currency(sale_item.sale.voucher) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= currency(sale_item.sale.tipe_pembayaran) %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= currency(sale_item.sale.sisa) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.voucher %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.tipe_pembayaran %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.sisa %></Data></Cell>
         <Cell><Data ss:Type="String"><%= Brand.find(sale_item.brand_id).brand %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.bonus? ? "BONUS" : "-" %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.taken? ? "Yes" : "No" %></Data></Cell>
