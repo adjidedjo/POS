@@ -5,18 +5,19 @@
 <table id="index_of_sales" class="display table table-striped table-bordered responsive nowrap mini_size" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th>Channel</th>
-      <th>Channel Customer</th>
-      <th>PC</th>
-      <th>No SO</th>
-      <th>Customer</th>
-      <th>Ket Pembayaran</th>
-      <th>Cara Pembayaran</th>
-      <th>Netto Elite</th>
-      <th>Netto Lady</th>
-      <th>Total Pembayaran</th>
-      <th>Total Keseluruhan</th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th style="font-size: 10px">Channel</th>
+      <th style="font-size: 10px">Channel Customer</th>
+      <th style="font-size: 10px">PC</th>
+      <th style="font-size: 10px">No SO</th>
+      <th style="font-size: 10px">SO Manual</th>
+      <th style="font-size: 10px">Customer</th>
+      <th style="font-size: 10px">Ket Pembayaran</th>
+      <th style="font-size: 10px">Cara Pembayaran</th>
+      <th style="font-size: 10px">Netto Elite</th>
+      <th style="font-size: 10px">Netto Lady</th>
+      <th style="font-size: 10px">Total Pembayaran</th>
+      <th style="font-size: 10px">Total Keseluruhan</th>
+      <th style="font-size: 10px"><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
 
@@ -27,6 +28,7 @@
         <td><%= sale.channel_customer.nama.upcase %></td>
         <td><%= sale.sales_promotion.nil? ? '' : sale.sales_promotion.nama.upcase %></td>
         <td><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
+        <td><%= sale.so_manual.present? ? sale.so_manual : "-" %></td>
         <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
         <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
         <td><%= sale.tipe_pembayaran %></td>
