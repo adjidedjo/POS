@@ -7,7 +7,8 @@ class ReportsController < ApplicationController
     cc = ChannelCustomer.find(params[:cc_id]) if params[:cc_id].present?
     user = current_user.role == 'controller' ? cc : current_user.channel_customer
     user.sales.where(cancel_order: false).each do |sale|
-      SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, true, brand_id).each do |sale_items|
+      SaleItem.where("sale_id = ? and date(created_at) >= ?and created_at < ? and exported = ? and brand_id = ?", sale.id,
+        2.month.ago, Date.tomorrow, true, brand_id).order("created_at DESC").each do |sale_items|
         @sales << sale_items
       end
     end
@@ -75,7 +76,7 @@ class ReportsController < ApplicationController
   def rekap_so
     @sales = []
     Sale.where(channel_customer_id: current_user.channel_customer.id, cancel_order: false).each do |sale|
-      SaleItem.where(sale_id: sale.id).each do |sale_item|
+      SaleItem.where(sale_id: sale.id).where("date(created_at) >= ?", 2.month.ago).each do |sale_item|
         @sales << sale_item
       end
     end
@@ -97,7 +98,8 @@ class ReportsController < ApplicationController
     cc = ChannelCustomer.find(params[:cc_id]) if params[:cc_id].present?
     user = current_user.role == 'controller' ? cc : current_user.channel_customer
     user.sales.where(cancel_order: false).each do |sale|
-      SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id).each do |sale_items|
+      SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id)
+      .where("date(created_at) >= ?", 2.month.ago).each do |sale_items|
         @sales << sale_items
       end
     end

@@ -37,6 +37,14 @@ class Sale < ActiveRecord::Base
     :cek_pembayaran_debit, :cek_pembayaran_kredit, :cek_barang_lady, :cek_barang_elite,
     :cek_down_payment, :cek_netto_brand
 
+  def self.search_for_acc(dari_tanggal, sampai_tanggal, cc)
+    sales = where(channel_customer_id: cc) if cc.present?
+    sales = sales.where("date(created_at) >=  ?", dari_tanggal) if dari_tanggal.present?
+    sales = sales.where("date(created_at) <=  ?", sampai_tanggal) if sampai_tanggal.present?
+    sales = sales.where(cancel_order: false)
+    sales
+  end
+
   def cek_netto_brand
     total_netto_brand = netto_elite + netto_lady
     if total_netto_brand != netto

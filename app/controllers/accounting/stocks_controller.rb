@@ -12,12 +12,25 @@ class Accounting::StocksController < ApplicationController
   end
 
   def view_penjualan
-    @sale_items = []
     @channel_customer = ChannelCustomer.find(params[:cc_id])
-    @sales = Sale.all.where(cancel_order: false, channel_customer_id: @channel_customer.id)
-    @sales.where(channel_customer_id: params[:cc_id], cancel_order: false).each do |sale|
-      SaleItem.where(sale_id: sale.id).each do |sale_item|
-        @sale_items << sale_item
+    @sale_items = []
+    if params[:search].present?
+      dari_tanggal =  params[:search][:dari_tanggal]
+      sampai_tangggal =  params[:search][:sampai_tanggal]
+      cc_id =  params[:cc_id]
+      @sales = Sale.search_for_acc(dari_tanggal.to_date, sampai_tangggal.to_date, cc_id.to_i).order("created_at DESC")
+      @sales.where(channel_customer_id: params[:cc_id], cancel_order: false).each do |sale|
+        SaleItem.where(sale_id: sale.id).each do |sale_item|
+          @sale_items << sale_item
+        end
+      end
+    else
+      @sale_items = []
+      @sales = Sale.all.where(cancel_order: false, channel_customer_id: @channel_customer.id).where("date(created_at) >=", 2.month.ago).order("created_at DESC")
+      @sales.where(channel_customer_id: params[:cc_id], cancel_order: false).each do |sale|
+        SaleItem.where(sale_id: sale.id).each do |sale_item|
+          @sale_items << sale_item
+        end
       end
     end
 

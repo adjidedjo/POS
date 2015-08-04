@@ -63,7 +63,7 @@ class SalesController < ApplicationController
   # GET /sales GET /sales.json
   def index
     @channel_customer = current_user.channel_customer
-    @sales = Sale.all.where(cancel_order: false, channel_customer_id: @channel_customer.id)
+    @sales = Sale.all.where(cancel_order: false, channel_customer_id: @channel_customer.id).where("created_at >= ?", 2.month.ago).order("created_at DESC")
     @items = Item.all
   end
 

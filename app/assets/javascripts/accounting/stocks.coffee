@@ -15,3 +15,13 @@ jQuery ->
     })
 
     $('#v_penjualan').DataTable()
+
+    $('#search_dari_tanggal').datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: '0'
+    })
+
+    $('#search_sampai_tanggal').datepicker({
+      dateFormat: 'yy-mm-dd',
+      maxDate: '0'
+    })

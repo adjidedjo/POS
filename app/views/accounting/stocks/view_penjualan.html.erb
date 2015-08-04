@@ -2,6 +2,21 @@
 <div class="page-header">
   <h1>Penjualan <%= @channel_customer.nama.titleize  %></h1>
 </div>
+<div>
+  <h3>Cari Penjualan</h3>
+  <%= simple_form_for :search, { url: accounting_stocks_view_penjualan_path, method: "get" } do |f| %>
+    <div class="field">
+      <%= f.input :dari_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+    </div>
+    <div class="field">
+      <%= f.input :sampai_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+    </div>
+    <%= hidden_field_tag :cc_id, params[:cc_id] %>
+    <%= submit_tag "Search" %>
+  <% end %>
+</div>
+<h5>Jika ingin mengeksport ke excel sesuai tanggal, cari berdasarkan tanggal lalu export</h5>
+<hr>
 <table id="v_penjualan" class="display table table-striped table-bordered responsive nowrap mini_size" cellspacing="0" width="100%">
   <thead>
     <tr>
@@ -52,4 +67,11 @@
   </tbody>
 </table>
 <br />
-<%= link_to "Export to Excel", accounting_stocks_view_penjualan_path(cc_id: params[:cc_id], format: "xls"), :class => "btn btn-info" %>
+<% if params[:search].present? %>
+  <%= link_to "Export to Excel", accounting_stocks_view_penjualan_path(cc_id: params[:cc_id],
+    search: {sampai_tanggal: params[:search][:sampai_tanggal], dari_tanggal: params[:search][:dari_tanggal]}, format: "xls"),
+    :class => "btn btn-info" %>
+<% else %>
+  <%= link_to "Export to Excel", accounting_stocks_view_penjualan_path(cc_id: params[:cc_id], format: "xls"),
+    :class => "btn btn-info" %>
+<% end %>
