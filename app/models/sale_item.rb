@@ -10,6 +10,30 @@ class SaleItem < ActiveRecord::Base
     only_integer: true,
     greater_than_or_equal_to: 1
   }
+  validate :cek_stock_without_serial, on: :create
+  validate :cek_stock_with_serial, on: :create
+
+  def cek_stock_with_serial
+    if taken == true && serial.present?
+      esi =  ExhibitionStockItem.find_by_channel_customer_id_and_kode_barang_and_serial(self.sale.channel_customer_id, kode_barang, serial)
+      if esi.nil?
+        errors.add(:serial, "SERIAL YANG ANDA PILIH TIDAK TERSEDIA, SILAHKAN CEK STOK")
+      end
+    end
+  end
+
+  def cek_stock_without_serial
+    if taken == true && serial.blank?
+      esi =  ExhibitionStockItem.find_by_channel_customer_id_and_kode_barang(self.sale.channel_customer_id, kode_barang)
+      if esi.serial.present?
+        errors.add(:serial, "BARANG #{kode_barang} MEMPUNYAI SERIAL, SILAHKAN INPUT BERDASARKAN SERIAL")
+      else
+        if self.jumlah.to_i > esi.jumlah.to_i
+          errors.add(:kode_barang, "JUMLAH STOK #{kode_barang} KURANG DARI JUMLAH ORDER")
+        end
+      end
+    end
+  end
 
   before_create do
     if kode_barang.include?("T")
@@ -49,18 +73,35 @@ class SaleItem < ActiveRecord::Base
   end
 
   before_update do
-     if serial.present?
-      get_ex_no_sj = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ? and jumlah > ?",
-        self.sale.channel_customer_id, kode_barang, 0).first
-      self.ex_no_sj = get_ex_no_sj.no_sj
-     end
+    if jumlah_changed?
+      sale_item_jumlah = SaleItem.find(self.id).jumlah.to_i
+      if jumlah > sale_item_jumlah
+        jumlah_now = jumlah - sale_item_jumlah
+        esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(kode_barang,
+            serial, false, self.sale.channel_customer_id)
+        ssa = StoreSalesAndStockHistory.find_by_sale_id_and_kode_barang_and_keterangan(self.sale.id, kode_barang, "S")
+        ssa.update_attributes!(qty_out: (ssa.qty_out + jumlah_now))
+        esi.update_attributes!(jumlah: (esi.jumlah - jumlah_now))
+      else
+        jumlah_now = sale_item_jumlah - jumlah
+        esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(kode_barang,
+            serial, false, self.sale.channel_customer_id)
+        ssa = StoreSalesAndStockHistory.find_by_sale_id_and_kode_barang_and_keterangan(self.sale.id, kode_barang, "S")
+        ssa.update_attributes!(qty_out: (ssa.qty_out - jumlah_now))
+        esi.update_attributes!(jumlah: (esi.jumlah + jumlah_now))
+      end
+    end
+    if serial.present? && _destroy == false
+      get_ex_no_sj = ExhibitionStockItem.where("serial = ? and channel_customer_id = ? and kode_barang like ? and jumlah > ?",
+        serial, self.sale.channel_customer_id, kode_barang, 0).first
+      self.ex_no_sj = get_ex_no_sj.no_sj.present? ? get_ex_no_sj.no_sj : '-'
+    end
   end
 
   def remove_sale_item
     sale.sale_items.each do |ssi|
       if ssi._destroy == true
-        si = SaleItem.find(ssi.id)
-        if si.serial.present? || si.taken?
+        if ssi.serial.present? || ssi.taken?
           esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out_and_channel_customer_id(self.kode_barang,
             self.serial, false, self.sale.channel_customer_id)
           ssah = StoreSalesAndStockHistory.where(kode_barang: self.kode_barang, no_sj: self.ex_no_sj).first

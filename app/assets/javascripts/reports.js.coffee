@@ -2,12 +2,6 @@ jQuery ->
 
   $(document).on 'ready page:load', ->
 
-
-    $('input:checkbox').prop('checked', false)
-
-    $(':checkbox').each ->
-      this.checked = false
-
     $('#rekap_stock').DataTable({
       "iDisplayLength": 100,
       bDestroy: true

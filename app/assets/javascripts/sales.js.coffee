@@ -136,7 +136,7 @@ jQuery ->
 
       credit = document.getElementById('sale_payment_with_credit_cards_attributes_0_jumlah').value
       credit1 = document.getElementById('sale_payment_with_credit_cards_attributes_1_jumlah').value
-      total_credit = Math.floor(credit) + Math.floor(credit1) 
+      total_credit = Math.floor(credit) + Math.floor(credit1)
       document.getElementById('span_credit').innerHTML = addCommas(total_credit)
 
       transfer = document.getElementById('sale_jumlah_transfer').value

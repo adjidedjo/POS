@@ -33,8 +33,9 @@ class Sale < ActiveRecord::Base
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 
-  validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer, :cek_pembayaran_debit, :cek_pembayaran_kredit,
-    :cek_barang_lady, :cek_barang_elite, :cek_down_payment, :cek_netto_brand
+  validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer,
+    :cek_pembayaran_debit, :cek_pembayaran_kredit, :cek_barang_lady, :cek_barang_elite,
+    :cek_down_payment, :cek_netto_brand
 
   def cek_netto_brand
     total_netto_brand = netto_elite + netto_lady

@@ -55,8 +55,12 @@
     </div>
   </div>
   <hr>
+  <% unless @sale.new_record? %>
+  <h5>Jika ada perubahan <b>Kode Barang</b>, "remove" barang yang akan diganti dan "add item" baru untuk pengganti barang yang di"remove"</h5>
+  <hr>
+  <% end %>
   <div id="barnag" class="row form-inline">
-    <%= f.simple_fields_for :sale_items, as: 'user_inline', wrapper: :inline_form do |builder| %>
+    <%= f.fields_for :sale_items, @sale.sale_items, as: 'user_inline', wrapper: :inline_form do |builder| %>
       <%= render "sale_item_fields", :f => builder %>
     <% end %>
     <%= link_to_add_fields "Add Item", f, :sale_items %>
@@ -94,7 +98,7 @@
       </span>
       </div>
       <%= f.label :cara_pembayaran, 'Cara Pembayaran (WAJIB DICEKLIS)' %><br />
-      <%= check_box_tag 'tipe_pembayaran[]', "Tunai" %>Tunai (Ceklis ini jika pembayaran secara TUNAI)
+      <%= check_box_tag 'tipe_pembayaran[]', "Tunai", @sale.new_record? ? (@sale.tipe_pembayaran.nil? ? false : (@sale.tipe_pembayaran.include?("Tunai") ? true : false)) : (f.object.tipe_pembayaran.include?("Tunai") ? true : false) %>Tunai (Ceklis ini jika pembayaran secara TUNAI)
       <div class="row-fluid" style="padding: 10px 10px 10px 50px">
         <span class="cara_bayar" style="display: inline-block">
           <%= f.input :pembayaran, label: false, :input_html => {class: "nested_inline_form input_value"} %>
@@ -102,7 +106,7 @@
        <span id="span_bayar"style="display: inline-block; padding: 5px 0 0 50px; text-indent: -50px; vertical-align: top;">
        </span>
       </div>
-      <%= check_box_tag 'tipe_pembayaran[]', "Transfer" %>Transfer (Ceklis ini jika pembayaran secara TRANSFER)<br />
+      <%= check_box_tag 'tipe_pembayaran[]', "Transfer",  @sale.new_record? ? (@sale.tipe_pembayaran.nil? ? false : (@sale.tipe_pembayaran.include?("Transfer") ? true : false)) : (f.object.tipe_pembayaran.include?("Transfer") ? true : false) %>Transfer (Ceklis ini jika pembayaran secara TRANSFER)<br />
       <div class="row" style="padding: 10px 10px 10px 63px">
        <%= f.input :bank_account_id, as: :radio_buttons ,collection: BankAccount.all, label_method: :name, value_method: :id,
               label: false %>
@@ -112,7 +116,7 @@
         <span id="span_transfer" style="display: inline-block; padding: 35px 0 0 65px; text-indent: -50px; vertical-align: top;">
         </span>
       </div>
-      <%= check_box_tag 'tipe_pembayaran[]', "Debit Card" %>Kartu Debit (Ceklis ini jika pembayaran menggunakan KARTU DEBIT)<br />
+      <%= check_box_tag 'tipe_pembayaran[]', "Debit Card",  @sale.new_record? ? (@sale.tipe_pembayaran.nil? ? false : (@sale.tipe_pembayaran.include?("Debit Card") ? true : false)) : (f.object.tipe_pembayaran.include?("Debit Card") ? true : false) %>Kartu Debit (Ceklis ini jika pembayaran menggunakan KARTU DEBIT)<br />
       <div class="row form-inline" style="padding: 10px 10px 10px 63px">
         <%= f.simple_fields_for :payment_with_debit_cards, wrapper: :inline_form do |builder| %>
           <%= builder.input :nama_kartu, :placeholder => 'Nama Kartu', :input_html => {class: "nested_inline_form"}  %>
@@ -126,7 +130,7 @@
           <br />
         <% end %>
       </div>
-      <%= check_box_tag 'tipe_pembayaran[]', "Credit Card" %>Kartu Kredit (Ceklis ini jika pembayaran menggunakan KARTU KREDIT)<br />
+      <%= check_box_tag 'tipe_pembayaran[]', "Credit Card",  @sale.new_record? ? (@sale.tipe_pembayaran.nil? ? false : (@sale.tipe_pembayaran.include?("Credit Card") ? true : false)) : (f.object.tipe_pembayaran.include?("Credit Card") ? true : false) %>Kartu Kredit (Ceklis ini jika pembayaran menggunakan KARTU KREDIT)<br />
       <div class="row form-inline" style="padding: 10px 10px 10px 63px">
         <%= f.simple_fields_for :payment_with_credit_cards, as: 'user_inline', wrapper: :inline_form,
           html: { class: 'form-inline' } do |builder| %>
