@@ -5,6 +5,7 @@
 
 <div class="row">
   <div class="col-md-6">
+    <dt><strong>So Manual:</strong> <%= @sale.so_manual.present? ? @sale.so_manual : "-" %></dt><br />
     <dt><strong>Channel Customer:</strong> <%= @sale.channel_customer.nama.titleize %></dt><br />
     <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d %B %Y') %></dt><br />
     <dt><strong>Produk Konsultan:</strong> <%= @sale.sales_promotion.nama.upcase %></dt><br />
