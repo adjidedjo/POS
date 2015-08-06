@@ -92,8 +92,8 @@ class SaleItem < ActiveRecord::Base
       end
     end
     if serial.present? && _destroy == false
-      get_ex_no_sj = ExhibitionStockItem.where("serial = ? and channel_customer_id = ? and kode_barang like ? and jumlah > ?",
-        serial, self.sale.channel_customer_id, kode_barang, 0).first
+      get_ex_no_sj = ExhibitionStockItem.where("serial = ? and channel_customer_id = ? and kode_barang like ?",
+        serial, self.sale.channel_customer_id, kode_barang).first
       self.ex_no_sj = get_ex_no_sj.no_sj.present? ? get_ex_no_sj.no_sj : '-'
     end
   end
