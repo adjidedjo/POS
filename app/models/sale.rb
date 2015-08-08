@@ -188,7 +188,11 @@ class Sale < ActiveRecord::Base
     self.voucher = voucher.nil? ? 0 : voucher
     last_order = Sale.where(channel_customer_id: channel_customer_id).last
     self.no_order = if last_order.present? && last_order.no_order.present?
-      last_order.no_order.succ
+      if last_order.no_order[0..1] == Date.today.strftime('%m')
+        last_order.no_order.succ
+      else
+        (Date.today.strftime('%m') + Date.today.strftime('%y') + '0001')
+      end
     else
       (Date.today.strftime('%m') + Date.today.strftime('%y') + '0001')
     end
