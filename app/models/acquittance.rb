@@ -23,12 +23,12 @@ class Acquittance < ActiveRecord::Base
   before_create do
     self.exported_at = Time.now
     last_acq = Acquittance.where(channel_customer_id: channel_customer_id).last
-    self.no_pelunasan = if last_acq.present? && last_acq.no_order.present?
-      last_acq.no_reference.succ
+    self.no_order = if last_acq.present? && last_acq.no_order.present?
+      last_acq.no_order.succ
     else
       (Date.today.strftime('%m') + Date.today.strftime('%y') + '0001')
     end
-    self.no_reference = "AQX" + (sprintf '%03d', channel_customer_id) + self.no_pelunasan
+    self.no_reference = "AQX" + (sprintf '%03d', channel_customer_id) + self.no_order
     self.sale_id = Sale.where(no_so: no_so).first.id
   end
 
