@@ -55,7 +55,7 @@ class Sale < ActiveRecord::Base
   def uniqueness_of_items
     hash = {}
     sale_items.each do |si|
-      unless si.serial.present?
+      unless si.serial.present? || si.bonus.present?
         if hash[si.kode_barang]
           errors.add(:kode_barang, "TIDAK BOLEH ADA BARANG YANG SAMA DALAM 1 SO")
           si.errors.add(:kode_barang, "has already been taken")
