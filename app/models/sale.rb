@@ -28,7 +28,7 @@ class Sale < ActiveRecord::Base
   validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, :pembayaran, :sales_promotion_id, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
   validates :sale_items, presence: {message: "BELUM ADA BARANG YANG DITAMBAHKAN"}, on: :create
-  validates :so_manual, length: { maximum: 200 }, on: :create
+  validates :so_manual, length: { maximum: 6 }, on: :create
   validates :netto, numericality: { greater_than: 0, message: "HARUS LEBIH DARI 0" }
   #  validates :no_kartu_debit, presence: true, if: :paid_with_debit?
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
@@ -123,7 +123,7 @@ class Sale < ActiveRecord::Base
       if ultimate_customer.empty?
         puc[:nama] = nama.titleize
         PosUltimateCustomer.create(puc)
-      else
+      elsif ultimate_customer.first.no_telepon != "0"
         ultimate_customer.first.update_attributes!(puc)
       end
       self.pos_ultimate_customer_id = ultimate_customer.first.id
@@ -175,7 +175,7 @@ class Sale < ActiveRecord::Base
     if ultimate_customer.empty?
       puc[:nama] = nama.titleize
       PosUltimateCustomer.create(puc)
-    else
+    elsif ultimate_customer.first.no_telepon != "0"
       ultimate_customer.first.update_attributes!(puc)
     end
     self.pos_ultimate_customer_id = ultimate_customer.first.id

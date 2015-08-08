@@ -180,7 +180,7 @@ class SalesController < ApplicationController
         co_si.update_attributes!(cancel: true)
       end
       respond_to do |format|
-        format.html { redirect_to root_path, notice: 'Sale was successfully deleted.' }
+        format.html { redirect_to root_path, notice: 'SO Berhasil Di Cancel Order.' }
         format.json { head :no_content }
       end
     else
