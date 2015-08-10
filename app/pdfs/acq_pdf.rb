@@ -178,14 +178,12 @@ class AcqPdf < Prawn::Document
         indent 5 do
           move_down 2
           bounding_box([0, cursor], :width => 100.4) do
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
             text "Cash", :size => 6
             text "Transfer", :size => 6
             text "Debit Card", :size => 6
             text "Credit Card", :size => 6
           end
           bounding_box([50, cursor + 27.5], :width => 50.4) do
-            debit =  @order.payment_with_debit_card.jumlah.nil? ? 0 : @order.payment_with_debit_card.jumlah
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
             text ": Rp. ", :size => 6
