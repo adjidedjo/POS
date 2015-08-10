@@ -24,15 +24,9 @@ class SaleItem < ActiveRecord::Base
 
   def cek_stock_without_serial
     if taken == true && serial.blank?
-      esi =  ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ? and jumlah > ?", self.sale.channel_customer_id, kode_barang, 0)
-      raise esi.inspect
-      if esi.serial.present?
-        errors.add(:serial, "BARANG #{kode_barang} MEMPUNYAI SERIAL, SILAHKAN INPUT BERDASARKAN SERIAL")
-      else
-        raise esi.jumlah.inspect
-        if self.jumlah.to_i > esi.jumlah.to_i
-          errors.add(:kode_barang, "JUMLAH STOK #{kode_barang} KURANG DARI JUMLAH ORDER")
-        end
+      esi =  ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ?", self.sale.channel_customer_id, kode_barang)
+      if self.jumlah.to_i > esi.sum("jumlah").to_i
+        errors.add(:kode_barang, "JUMLAH STOK #{kode_barang} KURANG DARI JUMLAH ORDER")
       end
     end
   end

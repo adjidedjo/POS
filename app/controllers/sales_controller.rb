@@ -165,7 +165,9 @@ class SalesController < ApplicationController
       @sale.sale_items.each do |co_si|
         if co_si.serial.present?
           esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out(co_si.kode_barang, co_si.serial, false)
-          StoreSalesAndStockHistory.create!(kode_barang: co_si.kode_barang, nama: esi.nama, serial: co_si.serial).first
+          ssah = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "S",
+            sale_id: @sale.id, serial: co_si.serial).first
+          ssah.destroy
           esi.update_attributes(jumlah: (co_si.jumlah + esi.jumlah))
         else
           ssah = StoreSalesAndStockHistory.where(kode_barang: co_si.kode_barang,
