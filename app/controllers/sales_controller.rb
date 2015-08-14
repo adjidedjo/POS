@@ -161,7 +161,7 @@ class SalesController < ApplicationController
   # DELETE /sales/1 DELETE /sales/1.json
   def destroy
     if User.find(current_user.id).valid_password?(params[:password])
-      @sale.update_attributes(cancel_order: true)
+      @sale.update_attributes(cancel_order: true, alasan_cancel: params[:alasan_cancel])
       @sale.sale_items.each do |co_si|
         if co_si.serial.present?
           esi = ExhibitionStockItem.find_by_kode_barang_and_serial_and_checked_out(co_si.kode_barang, co_si.serial, false)
@@ -216,7 +216,7 @@ class SalesController < ApplicationController
       :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :voucher, :sales_promotion_id, :sisa,
       :netto_elite, :netto_lady, :tanggal_kirim, :showroom_id, :channel_customer_id, :nama, :email, :alamat, :no_telepon,
       :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed, :netto_serenity, :netto_royal,
-      :netto_tech,
+      :netto_tech, :alasan_cancel,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
         :nama_barang, :user_id, :_destroy, :keterangan],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
