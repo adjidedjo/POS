@@ -58,7 +58,18 @@ xml.data do
       xml.AtasNama1 si.sale.payment_with_credit_cards.last.atas_nama.blank? ? '-' : si.sale.payment_with_credit_cards.last.atas_nama
       xml.JumlahKredit1 si.sale.payment_with_credit_cards.last.jumlah
       xml.Email si.sale.email
-      netto_brand = si.brand_id == 2 ? si.sale.netto_elite : si.sale.netto_lady
+      netto_brand =
+        if si.brand_id == 2
+          si.bonus? ? 0 : si.sale.netto_elite
+        elsif si.brand_id == 4
+            si.bonus? ? 0 : si.sale.netto_lady
+        elsif si.brand_id == 5
+          si.bonus? ? 0 : si.sale.netto_royal
+        elsif si.brand_id == 6
+          si.bonus? ? 0 : si.sale.netto_serenity
+        elsif si.brand_id == 7
+          si.bonus? ? 0 : si.sale.netto_tech
+        end
       xml.NettoBrand netto_brand
       xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
       xml.NoRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.account_number

@@ -76,6 +76,9 @@
                 <%= drop_down "Export" do %>
                   <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
                   <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
+                  <%= menu_item "Rekap SO Serenity", reports_sales_counter_path(brand_id: 6)  %>
+                  <%= menu_item "Rekap SO Royal", reports_sales_counter_path(brand_id: 5)  %>
+                  <%= menu_item "Rekap SO Technogel", reports_sales_counter_path(brand_id: 7)  %>
                   <%= menu_item "Pelunasan", rekap_pelunasan_acquittances_path(cc_id: current_user.channel_customer.id) %>
                 <% end %>
                 <%= drop_down "Report" do %>

@@ -90,6 +90,27 @@
         </span>
       </div>
       <div class="row-fluid">
+        <span class="netto_serenity" style="display: inline-block">
+          <%= f.input :netto_serenity, label: 'Netto Serenity (WAJIB DIISI)', as: :string, :input_html => {:class => 'input_value', :style => 'width: 250px;' } %>
+        </span>
+        <span id="span_netto_serenity" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;">
+        </span>
+      </div>
+      <div class="row-fluid">
+        <span class="netto_royal" style="display: inline-block">
+          <%= f.input :netto_royal, label: 'Netto Royal (WAJIB DIISI)', as: :string, :input_html => {:class => 'input_value', :style => 'width: 250px;' } %>
+        </span>
+        <span id="span_netto_royal" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;">
+        </span>
+      </div>
+      <div class="row-fluid">
+        <span class="netto_tech" style="display: inline-block">
+          <%= f.input :netto_tech, label: 'Netto Technogel (WAJIB DIISI)', as: :string, :input_html => {:class => 'input_value', :style => 'width: 250px;' } %>
+        </span>
+        <span id="span_netto_tech" style="display: inline-block; padding: 36px 0 0 65px; text-indent: -50px; vertical-align: top;">
+        </span>
+      </div>
+      <div class="row-fluid">
         <span class="cara_bayar" style="display: inline-block">
           <%= f.input :voucher, :input_html => {value: number_with_precision(f.object.voucher, precision: 2),
             :style => 'width: 250px' , :class => 'input_value'} %>

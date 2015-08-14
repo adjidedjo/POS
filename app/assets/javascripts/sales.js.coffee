@@ -152,6 +152,12 @@ jQuery ->
       document.getElementById('span_netto_elite').innerHTML = addCommas(elite)
       lady = document.getElementById('sale_netto_lady').value
       document.getElementById('span_netto_lady').innerHTML = addCommas(lady)
+      serenity = document.getElementById('sale_netto_serenity').value
+      document.getElementById('span_netto_serenity').innerHTML = addCommas(serenity)
+      royal = document.getElementById('sale_netto_royal').value
+      document.getElementById('span_netto_royal').innerHTML = addCommas(royal)
+      tech = document.getElementById('sale_netto_tech').value
+      document.getElementById('span_netto_tech').innerHTML = addCommas(tech)
 
     open_modal = (id) ->
       $('#MyModal').on 'shown.bs.modal', (e) ->

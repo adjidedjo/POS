@@ -25,7 +25,8 @@ class Sale < ActiveRecord::Base
 
   attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1
 
-  validates :netto, :tanggal_kirim, :netto_elite, :netto_lady, :voucher, :jumlah_transfer, :pembayaran, :sales_promotion_id, presence: true
+  validates :netto, :tanggal_kirim, :netto_elite, :netto_lady,
+    :netto_royal, :netto_serenity, :netto_tech, :voucher, :jumlah_transfer, :pembayaran, :sales_promotion_id, presence: true
   validates :nama, :email, :alamat, :kota, :no_telepon, presence: true, on: :create
   validates :sale_items, presence: {message: "BELUM ADA BARANG YANG DITAMBAHKAN"}, on: :create
   validates :so_manual, length: { maximum: 6 }, on: :create
@@ -35,6 +36,7 @@ class Sale < ActiveRecord::Base
 
   validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer,
     :cek_pembayaran_debit, :cek_pembayaran_kredit, :cek_barang_lady, :cek_barang_elite,
+    :cek_barang_royal, :cek_barang_tech, :cek_barang_serenity,
     :cek_down_payment, :cek_netto_brand
 
   def self.search_for_acc(dari_tanggal, sampai_tanggal, cc)
@@ -46,9 +48,9 @@ class Sale < ActiveRecord::Base
   end
 
   def cek_netto_brand
-    total_netto_brand = netto_elite + netto_lady
+    total_netto_brand = netto_elite + netto_lady + netto_serenity + netto_royal + netto_tech
     if total_netto_brand != netto
-      errors.add(:netto, "JUMLAH NETTO LAI DAN NETTO ELITE TIDAK SAMA DENGAN NETTO")
+      errors.add(:netto, "JUMLAH NETTO BRANDS DAN NETTO TIDAK SAMA DENGAN NETTO")
     end
   end
 
@@ -73,14 +75,32 @@ class Sale < ActiveRecord::Base
   end
 
   def cek_barang_lady
-    if sale_items.any? { |b| b[:kode_barang][2] == "L" } && netto_lady == 0
+    if sale_items.any? { |b| b[:kode_barang][2] == "L"  && b[:bonus] == false } && netto_lady == 0
       errors.add(:netto_lady, "ISI NETTO LADY JIKA ADA BARANG LAI")
     end
   end
 
   def cek_barang_elite
-    if sale_items.any? { |b| b[:kode_barang][2] == "E" } && netto_elite == 0
+    if sale_items.any? { |b| b[:kode_barang][2] == "E" && b[:bonus] == false} && netto_elite == 0
       errors.add(:netto_elite, "ISI NETTO ELITE JIKA ADA BARANG ELITE")
+    end
+  end
+
+  def cek_barang_serenity
+    if sale_items.any? { |b| b[:kode_barang][2] == "S"&& b[:bonus] == false } && netto_serenity == 0
+      errors.add(:netto_serenity, "ISI NETTO SERENITY JIKA ADA BARANG SERENITY")
+    end
+  end
+
+  def cek_barang_royal
+    if sale_items.any? { |b| b[:kode_barang][2] == "R"&& b[:bonus] == false } && netto_royal == 0
+      errors.add(:netto_royal, "ISI NETTO ROYAL JIKA ADA BARANG ROYAL")
+    end
+  end
+
+  def cek_barang_tech
+    if sale_items.any? { |b| b[:kode_barang][2] == "B" && b[:bonus] == false } && netto_tech == 0
+      errors.add(:netto_tech, "ISI NETTO TECHNOGEL JIKA ADA BARANG TECHNOGEL")
     end
   end
 

@@ -35,7 +35,7 @@ class ReportsController < ApplicationController
   end
 
   def available_stock
-    @stock = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).where.not(jumlah: 0).group(:kode_barang)
+    @stock = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id).where.not(jumlah: 0).group([:kode_barang, :serial])
     @channel = ChannelCustomer.find(current_user.channel_customer.id)
 
     respond_to do |format|
