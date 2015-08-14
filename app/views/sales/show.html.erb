@@ -140,7 +140,10 @@ sales_path, :class => 'btn btn-default' %>
       </div>
       <div class="modal-body">
         <%= form_tag sale_path(@sale), :method => :delete do %>
-          <%= label_tag(:password, "Masukkan supervisor password") %>
+          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
+          <%= text_field_tag :alasan_cancel, '' %>
+        <br />
+        <%= label_tag(:password, "Masukkan supervisor password") %>
           <%= password_field_tag :password %>
           <%= hidden_field_tag :sale, @sale.id %>
           <%= submit_tag "Hapus Order", :class => "btn btn-xs btn-danger" %>
