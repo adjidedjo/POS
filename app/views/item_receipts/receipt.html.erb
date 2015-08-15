@@ -20,8 +20,12 @@
               <%= f.hidden_field "kode_barang" %>
               <%= f.hidden_field "no_sj" %>
               <%= f.hidden_field "channel_customer_id" %>
-              <td><%= f.object.nama %></td>
-              <td><%= f.text_field "jumlah", value: '' %></td>
+            <td><%= f.object.nama %></td>
+              <% if f.object.serial.present? %>
+                <td>Terima Berdasarkan Serial</td>
+              <% else %>
+               <td><%= f.text_field "jumlah", value: '' %></td>
+              <% end %>
           <% end %>
         <% end %>
     </tbody>
