@@ -179,7 +179,7 @@ class SalesController < ApplicationController
             ssah_loop.destroy
           end
         end
-        co_si.update_attributes!(cancel: true)
+        co_si.update_attributes!(cancel: true, serial: "")
       end
       respond_to do |format|
         format.html { redirect_to root_path, notice: 'SO Berhasil Di Cancel Order.' }
