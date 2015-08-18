@@ -37,7 +37,13 @@ class Sale < ActiveRecord::Base
   validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer,
     :cek_pembayaran_debit, :cek_pembayaran_kredit, :cek_barang_lady, :cek_barang_elite,
     :cek_barang_royal, :cek_barang_tech, :cek_barang_serenity,
-    :cek_down_payment, :cek_netto_brand
+    :cek_down_payment, :cek_netto_brand, :cek_transfer_bank
+
+  def cek_transfer_bank
+    if tipe_pembayaran.split(";").include?("Transfer") && bank_account_id.nil?
+      errors.add(:"tipe_pembayaran", "SILAHKAN PILIH BANK TUJUAN TRANSFER")
+    end
+  end
 
   def self.search_for_acc(dari_tanggal, sampai_tanggal, cc)
     sales = where(channel_customer_id: cc) if cc.present?
