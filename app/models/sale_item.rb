@@ -58,11 +58,11 @@ class SaleItem < ActiveRecord::Base
     else
       self.brand_id = get_brand_id.brand_id
     end
+    update_price_list
   end
 
   after_create do
     add_sale_item_to_history
-    update_price_list
   end
 
   before_destroy do
