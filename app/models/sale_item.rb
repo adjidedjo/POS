@@ -62,6 +62,7 @@ class SaleItem < ActiveRecord::Base
 
   after_create do
     add_sale_item_to_history
+    update_price_list
   end
 
   before_destroy do
@@ -167,5 +168,14 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
         nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
         serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)
     end
+  end
+
+  def update_price_list
+    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(self.brand_id)
+    branch_id = recipient_brand_id.sales_counter.branch.id
+    regional_branch = RegionalBranch.find_by_cabang_id(branch_id)
+    regional = Regional.find(regional_branch.regional_id)
+    price_list = PriceList.find_by_regional_id_and_kode_barang(regional.id, self.kode_barang)
+    self.price_list = price_list.nil? ? 0 : price_list.harga
   end
 end
