@@ -56,8 +56,13 @@
         <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
         <Cell><Data ss:Type="String">-</Data></Cell>
         <Cell><Data ss:Type="String">-</Data></Cell>
-        <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: params[:cc_id]).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: params[:cc_id]).sum(:qty_out) %>
-        <Cell><Data ss:Type="String"><%= a %></Data></Cell>
+        <% if rs.serial.present? %>
+          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_out) %>
+          <Cell><Data ss:Type="String"><%= a %></Data></Cell>
+        <% else %>
+          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
+          <Cell><Data ss:Type="String"><%= a %></Data></Cell>
+        <% end %>
         <Cell><Data ss:Type="String">Saldo Akhir</Data></Cell>
       </Row>
     <% end %>
