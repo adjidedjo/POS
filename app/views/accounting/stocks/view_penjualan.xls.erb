@@ -20,6 +20,11 @@
         <Cell><Data ss:Type="String">Tanggal Kirim</Data></Cell>
         <Cell><Data ss:Type="String">Netto Penjualan</Data></Cell>
         <Cell><Data ss:Type="String">Pembayaran Tunai</Data></Cell>
+        <Cell><Data ss:Type="String">Netto Elite</Data></Cell>
+        <Cell><Data ss:Type="String">Netto LAI</Data></Cell>
+        <Cell><Data ss:Type="String">Netto Royal</Data></Cell>
+        <Cell><Data ss:Type="String">Netto Serenity</Data></Cell>
+        <Cell><Data ss:Type="String">Netto Technogel</Data></Cell>
         <Cell><Data ss:Type="String">Nama Bank</Data></Cell>
         <Cell><Data ss:Type="String">No Rekening</Data></Cell>
         <Cell><Data ss:Type="String">Jumlah Transfer</Data></Cell>
@@ -70,6 +75,11 @@
         <Cell><Data ss:Type="String"><%= sale_item.tanggal_kirim %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= sale_item.sale.netto %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= sale_item.sale.pembayaran %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= sale_item.sale.netto_elite %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= sale_item.sale.netto_lady %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= sale_item.sale.netto_royal %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= sale_item.sale.netto_serenity %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= sale_item.sale.netto_tech %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= sale_item.sale.jumlah_transfer %></Data></Cell>
