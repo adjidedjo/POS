@@ -33,7 +33,7 @@ class SaleItem < ActiveRecord::Base
 
   before_create do
     if kode_barang.include?("T")
-      p = kode_barang[11..14]
+      p = kode_barang[12..14]
       l = kode_barang[15..18]
       self.nama_barang = nama_barang.gsub(/\b#{nama_barang[-9..-7]}\b/, p).gsub(/\b#{nama_barang[-3..-1]}\b/, l)
     end
