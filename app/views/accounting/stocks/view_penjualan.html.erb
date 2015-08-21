@@ -42,7 +42,7 @@
       <tr>
         <td style="font-size: 11px;"><%= sale.sales_promotion.nil? ? '' : sale.sales_promotion.nama.upcase %></td>
         <td style="font-size: 11px;"><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
-        <td style="font-size: 11px;"><%= link_to sale.so_manual %></td>
+        <td style="font-size: 11px;"><%= sale.so_manual %></td>
         <td style="font-size: 11px;"><%= sale.pos_ultimate_customer.nama.capitalize %></td>
         <td style="font-size: 11px;"><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
         <td style="font-size: 11px;"><%= sale.tipe_pembayaran %></td>
