@@ -1,7 +1,7 @@
 <tr>
   <td><%= sale.channel_customer.channel.channel %></td>
   <td><%= sale.channel_customer.nama.upcase %></td>
-  <td><%= sale.no_so.upcase %></td>
+  <td><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
   <td><%= sale.so_manual.present? ? sale.so_manual : "-" %></td>
   <td><%= sale.created_at.strftime('%d %B %Y') %></td>
   <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
