@@ -2,7 +2,7 @@ class Accounting::StocksController < ApplicationController
   before_action :set_controller, only: [:show, :mutasi_stock]
 
   def available_stock
-    @stock = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).where.not(jumlah: 0).group(:kode_barang)
+    @stock = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).where.not(jumlah: 0).group([:kode_barang, :serial])
     @channel = ChannelCustomer.find(params[:cc_id])
 
     respond_to do |format|
@@ -59,9 +59,9 @@ class Accounting::StocksController < ApplicationController
   end
 
   def view_stock
-    @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id]).where("qty_in > ?", 0).group([:kode_barang, :no_sj])
-    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "S")
-    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "B")
+    @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "R")
+    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "S").where("qty_out > ?", 0)
+    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "B").where("qty_out > ?", 0)
 
     respond_to do |format|
       format.html
