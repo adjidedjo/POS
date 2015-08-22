@@ -90,6 +90,6 @@ Rails.application.configure do
   :email => {
     :email_prefix => "[Error POS] ",
     :sender_address => %{"notifier" <error_pos@ras.co.id>},
-    :exception_recipients => %w{adji.el.djo@gmail.com}
+    :exception_recipients => %w{aji.y@ras.co.id}
   }
 end
