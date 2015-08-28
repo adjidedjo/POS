@@ -25,7 +25,7 @@ class ChannelCustomer < ActiveRecord::Base
   end
 
   after_create do
-    get_email = (self.nama.downcase.partition(' ').first) + "@ras.co.id"
+    get_email = (self.nama.downcase.partition(' ').first+self.nama.downcase.partition(' ').last) + "@ras.co.id"
     new_password = (self.nama.downcase.partition(' ').first) + "*54321"
     new_username = (self.nama.downcase.partition(' ').first+self.nama.downcase.partition(' ').last)
     user_hash = {
