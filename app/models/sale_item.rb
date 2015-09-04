@@ -11,7 +11,14 @@ class SaleItem < ActiveRecord::Base
     greater_than_or_equal_to: 1
   }
   validate :cek_stock_without_serial, on: :create
-  validate :cek_stock_with_serial, on: :create
+  validate :cek_stock_with_serial, :cek_sales_counter, on: :create
+
+  def cek_sales_counter
+    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(self.brand_id)
+    if recipient_brand_id.nil?
+      errors.add(:sales_promotion_id, "SALES COUNTER UNTUK BARANG YANG DI ORDER BELUM ADA")
+    end
+  end
 
   def cek_stock_with_serial
     if taken == true && serial.present?
