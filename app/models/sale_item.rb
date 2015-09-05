@@ -11,10 +11,12 @@ class SaleItem < ActiveRecord::Base
     greater_than_or_equal_to: 1
   }
   validate :cek_stock_without_serial, on: :create
-  validate :cek_stock_with_serial, :cek_sales_counter, on: :create
+  validate :cek_stock_with_serial, on: :create
+  validate :cek_sales_counter
 
   def cek_sales_counter
-    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(self.brand_id)
+    brand_id = Item.find_by_kode_barang(self.kode_barang).brand_id
+    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(brand_id)
     if recipient_brand_id.nil?
       errors.add(:sales_promotion_id, "SALES COUNTER UNTUK BARANG YANG DI ORDER BELUM ADA")
     end
@@ -178,7 +180,8 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
   end
 
   def update_price_list
-    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(self.brand_id)
+    brand_id = Item.find_by_kode_barang(self.kode_barang).brand_id
+    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(brand_id)
     branch_id = recipient_brand_id.sales_counter.branch.id
     regional_branch = RegionalBranch.find_by_cabang_id(branch_id)
     regional = Regional.find(regional_branch.regional_id)
