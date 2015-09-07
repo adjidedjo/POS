@@ -17,7 +17,7 @@ class SaleItem < ActiveRecord::Base
   def cek_sales_counter
     item = Item.find_by_kode_barang(self.kode_barang)
     if item.present?
-      recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(item.rand_id)
+      recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(item.brand_id)
       if recipient_brand_id.nil?
         errors.add(:sales_promotion_id, "SALES COUNTER UNTUK BARANG YANG DI ORDER BELUM ADA")
       end
