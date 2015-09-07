@@ -15,10 +15,12 @@ class SaleItem < ActiveRecord::Base
   validate :cek_sales_counter
 
   def cek_sales_counter
-    brand_id = Item.find_by_kode_barang(self.kode_barang).brand_id
-    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(brand_id)
-    if recipient_brand_id.nil?
-      errors.add(:sales_promotion_id, "SALES COUNTER UNTUK BARANG YANG DI ORDER BELUM ADA")
+    item = Item.find_by_kode_barang(self.kode_barang)
+    if item.present?
+      recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(item.rand_id)
+      if recipient_brand_id.nil?
+        errors.add(:sales_promotion_id, "SALES COUNTER UNTUK BARANG YANG DI ORDER BELUM ADA")
+      end
     end
   end
 
