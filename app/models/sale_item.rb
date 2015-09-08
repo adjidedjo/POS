@@ -182,12 +182,14 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
   end
 
   def update_price_list
-    brand_id = Item.find_by_kode_barang(self.kode_barang).brand_id
-    recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(brand_id)
-    branch_id = recipient_brand_id.sales_counter.branch.id
-    regional_branch = RegionalBranch.find_by_cabang_id(branch_id)
-    regional = Regional.find(regional_branch.regional_id)
-    price_list = PriceList.find_by_regional_id_and_kode_barang(regional.id, self.kode_barang)
-    self.price_list = price_list.nil? ? 0 : price_list.harga
+    item = Item.find_by_kode_barang(self.kode_barang)
+    if item.present?
+      recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(item.brand_id)
+      branch_id = recipient_brand_id.sales_counter.branch.id
+      regional_branch = RegionalBranch.find_by_cabang_id(branch_id)
+      regional = Regional.find(regional_branch.regional_id)
+      price_list = PriceList.find_by_regional_id_and_kode_barang(regional.id, self.kode_barang)
+      self.price_list = price_list.nil? ? 0 : price_list.harga
+    end
   end
 end
