@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nik:</strong>
+  <%= @warehouse_admin.nik %>
+</p>
+
+<p>
+  <strong>Nama:</strong>
+  <%= @warehouse_admin.nama %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @warehouse_admin.email %>
+</p>
+
+<p>
+  <strong>Branch:</strong>
+  <%= @warehouse_admin.branch_id %>
+</p>
+
+<%= link_to 'Edit', edit_warehouse_admin_path(@warehouse_admin) %> |
+<%= link_to 'Back', warehouse_admins_path %>

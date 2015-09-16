@@ -11,6 +11,8 @@ class ChannelCustomer < ActiveRecord::Base
   accepts_nested_attributes_for :supervisor_exhibitions, allow_destroy: true, reject_if: proc { |a| a['nama'].blank?}
   has_many :recipients, dependent: :destroy
   accepts_nested_attributes_for :recipients, allow_destroy: true, reject_if: proc { |a| a['sales_counter_id'].blank?}
+  has_many :warehouse_recipients, dependent: :destroy
+  accepts_nested_attributes_for :warehouse_recipients, allow_destroy: true, reject_if: proc { |a| a['warehouse_admin_id'].blank?}
   belongs_to :channel
   belongs_to :user
 

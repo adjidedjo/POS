@@ -72,6 +72,25 @@
     </table>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Admin Gudang <%= @channel_customer.nama.upcase %></strong></dt><br />
+    <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama Admin Gudang</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @channel_customer.warehouse_recipients.each do |rc| %>
+          <tr>
+            <td><%= rc.warehouse_admin.nama.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div>
   <dt><strong>Merchant-merchant <%= @channel_customer.nama.upcase %></strong></dt><br />
   <table id="merchant_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
@@ -97,7 +116,7 @@
 </div>
 <% unless @controller %>
   <%= link_to 'Channel customer Baru', new_channel_customer_path, class: "btn btn-default" if current_user.admin? %>
-  <%= link_to 'Edit', edit_channel_customer_path(current_user.channel_customer), class: "btn btn-default" unless current_user.admin?%>
-  <%= link_to 'Edit', edit_channel_customer_path(@channel_customer), class: "btn btn-default" if current_user.admin?%>
-<% end %>
-<%= link_to 'Back', channel_customers_path, class: "btn btn-default" if current_user.admin? %>
+    <%= link_to 'Edit', edit_channel_customer_path(current_user.channel_customer), class: "btn btn-default" unless current_user.admin?%>
+      <%= link_to 'Edit', edit_channel_customer_path(@channel_customer), class: "btn btn-default" if current_user.admin?%>
+      <% end %>
+      <%= link_to 'Back', channel_customers_path, class: "btn btn-default" if current_user.admin? %>

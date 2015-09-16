@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :warehouse_admins
+
   namespace :accounting do
    get 'stocks/mutasi_stock'
    get 'stocks/view_stock'
@@ -51,6 +53,9 @@ Rails.application.routes.draw do
   get 'return_items/return_by_serial'
   put 'return_items/process_return_by_serial'
   get 'return_items/print_return'
+  get 'return_items/show'
+  get 'return_items/send_returned_items'
+  get 'return_items/cancel_returned_items'
 
   get 'item_receipts/receipt'
   put 'item_receipts/process_receipt'

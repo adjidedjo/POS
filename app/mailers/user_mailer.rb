@@ -1,5 +1,11 @@
 class UserMailer < ApplicationMailer
 
+  def return_stock(recipient, nama, user)
+    @user = user
+    attachments["#{nama}.xml"] = File.read("#{Rails.root}/public/#{nama}.xml")
+    mail(to: recipient, subject: "Return Stock from POS Application")
+  end
+
   def order_pameran(recipient, nama, user)
     @user = user
     attachments["#{nama}.xml"] = File.read("#{Rails.root}/public/#{nama}.xml")

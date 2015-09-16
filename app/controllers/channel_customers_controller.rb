@@ -132,6 +132,7 @@ class ChannelCustomersController < ApplicationController
   def channel_customer_params
     params.require(:channel_customer).permit(:kode_channel_customer, :channel_id, :nama,
       :alamat, :dari_tanggal, :sampai_tanggal, :kota, :group,
+      warehouse_recipients_attributes: [:id, :warehouse_admin_id, :_destroy],
       recipients_attributes: [:id, :sales_counter_id, :brand_id, :_destroy],
       merchants_attributes: [:id, :nama, :no_merchant, :tenor, :mid, :_destroy],
       supervisor_exhibition_attributes: [:id, :nama, :email, :nik, :handphone, :handphone1, :_destroy],

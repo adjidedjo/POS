@@ -1,8 +1,10 @@
 xml = Builder::XmlMarkup.new
 xml.instruct!
 si_by_brand = SaleItem.find(@chosen_sale_item)
+@nobukti = Time.now.strftime("%d%m%Y%H%M%S")
 xml.data do
   si_by_brand.each do |si|
+    si.update_attributes!(no_bukti_exported: @nobukti)
     xml.pbjshow do
       xml.ExSJ si.ex_no_sj.blank? ? '-' : si.ex_no_sj
       xml.kodebrg si.kode_barang
@@ -78,7 +80,7 @@ xml.data do
   end
 end
 xml_data = xml.target!
-set_file_name = Time.now.strftime("%d%m%Y%H%M%S")
+set_file_name = @nobukti
 file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
 file.write(xml_data)
 file.close

@@ -42,6 +42,15 @@
   </div>
   <br />
 
+  <label>Admin Gudang</label>
+  <div class="row form-inline">
+    <%= f.simple_fields_for :warehouse_recipients do |builder| %>
+      <%= render "warehouse_recipient_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Admin Gudang", f, :warehouse_recipients %>
+  </div>
+  <br />
+
   <label>Merchants</label>
   <div class="row">
     <%= f.simple_fields_for :merchants do |builder| %>

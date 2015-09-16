@@ -1,5 +1,38 @@
 class ReturnItemsController < ApplicationController
   before_action :get_store_id
+  before_action :returned
+
+  def cancel_returned_items
+    if @returned.first.no_bukti_return.nil?
+      @returned.each do |rt|
+        if rt.serial.present?
+          ExhibitionStockItem.find_by_serial(rt.serial).update_attributes!(checked_out: false)
+        else
+          esi = ExhibitionStockItem.find_by_kode_barang_and_channel_customer_id_and_no_sj(rt.kode_barang, rt.channel_customer_id, rt.no_sj)
+          esi.update_attributes!(jumlah: (esi.jumlah + rt.qty_out))
+        end
+        rt.destroy!
+      end
+      redirect_to return_items_return_path, notice: 'Barang barang yang dinyatakan return sudah dibatalkan'
+    else
+      redirect_to return_items_return_path, alert: 'Barang barang yang akan dibatalkan sudah dikirim'
+    end
+  end
+
+  def send_returned_items
+    get_branch = Time.now.strftime("%d%m%Y%H%M%S")
+
+    respond_to do |format|
+      format.xml do
+        stream = render_to_string(:template=>"return_items/show.xml.builder" )
+        send_data(stream, :type=>"text/xml",:filename => "#{get_branch}.xml")
+      end
+    end
+  end
+
+  def show
+    @recipient = ChannelCustomer.find(@returned.first.channel_customer_id).warehouse_recipients
+  end
 
   def print_return
     @unprint_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B", printed: false)
@@ -61,6 +94,10 @@ and kode_barang = ? and jumlah > ?", current_user.channel_customer, true, false,
       @item_selected = a.kode_barang
     end
     redirect_to  return_items_return_by_serial_path(kode_barang: @item_selected)
+  end
+
+  def returned
+    @returned = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B", printed: false)
   end
 
   private
