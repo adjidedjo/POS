@@ -5,7 +5,7 @@ xml.data do
   @returned.each do |si|
     si.update_attributes!(no_bukti_return: @nobukti)
     xml.sj do
-      xml.Kodebrg si.kode_barang
+      xml.KodeBrg si.kode_barang
       xml.Serial si.serial.present? ? si.serial : si.qty_out
       xml.Noso si.sale_id.nil? ? '-' : si.sale_id
       xml.NoPBJ si.no_sj.present? ? si.no_sj : "-"
