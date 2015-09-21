@@ -12,6 +12,12 @@ class SearchSale < ActiveRecord::Base
     elsif brand.present? && brand == 2
       Sale.where(channel_customer_id: user, cancel_order: false).where("date(created_at) >= ? and date(created_at) <= ?",
         dari, sampai).sum(:netto_elite) if brand.present? && brand == 2
+    elsif brand.present? && brand == 6
+      Sale.where(channel_customer_id: user, cancel_order: false).where("date(created_at) >= ? and date(created_at) <= ?",
+        dari, sampai).sum(:netto_serenity) if brand.present? && brand == 6
+    elsif brand.present? && brand == 7
+      Sale.where(channel_customer_id: user, cancel_order: false).where("date(created_at) >= ? and date(created_at) <= ?",
+        dari, sampai).sum(:netto_tech) if brand.present? && brand == 7
     else
       return 0
     end
