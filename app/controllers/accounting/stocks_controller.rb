@@ -27,7 +27,7 @@ class Accounting::StocksController < ApplicationController
     else
       @sale_items = []
       @sales = Sale.all.where("cancel_order = ? and channel_customer_id = ? and date(created_at) >= ?",false,@channel_customer.id, 2.month.ago).order("created_at DESC")
-      @sales.where(channel_customer_id: params[:cc_id], cancel_order: false).each do |sale|
+      @sales.where(channel_customer_id: params[:cc_id]).each do |sale|
         SaleItem.where(sale_id: sale.id).each do |sale_item|
           @sale_items << sale_item
         end
