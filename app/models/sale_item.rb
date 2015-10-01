@@ -13,7 +13,7 @@ class SaleItem < ActiveRecord::Base
   validate :cek_stock_without_serial, on: :create
   validate :cek_stock_with_serial, on: :create
   validate :cek_sales_counter
-  validate :cek_price_list
+  validate :cek_price_list, on: :create
 
   def cek_price_list
     unless self.bonus?
