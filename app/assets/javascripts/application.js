@@ -21,6 +21,7 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require twitter/bootstrap
+//= require autonumeric
 //= require turbolinks
 //= require nprogress
 //= require nprogress-turbolinks

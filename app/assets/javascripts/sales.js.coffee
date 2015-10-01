@@ -4,6 +4,15 @@ jQuery ->
 
   $(document).on "ready page:load", ->
 
+    $('#span_netto').autoNumeric('init', mDec: 0)
+    $('#span_sisa').autoNumeric('init', mDec: 0)
+    $('.input_value').on 'change', () ->
+      $('#span_sisa').autoNumeric('set', $('#sale_sisa').val())
+
+    $('#new_sale').submit ->
+      $('.price_list').each ->
+        document.getElementById(this.id).value = Number(document.getElementById(this.id).value.replace(/[^0-9\.]+/g,""))
+
     setCharAt = (str, index, chr) ->
       if index > str.length - 1
         return str
@@ -124,40 +133,22 @@ jQuery ->
       output
 
     $('.input_value').on 'keyup', () ->
-      netto = document.getElementById('sale_netto').value
-      document.getElementById('span_netto').innerHTML = addCommas(netto)
+      netto = Number(document.getElementById('sale_netto').value.replace(/[^0-9\.]+/g,""))
+      pembayaran = Number(document.getElementById('sale_pembayaran').value.replace(/[^0-9\.]+/g,""))
+      voucher = Number(document.getElementById('sale_voucher').value.replace(/[^0-9\.]+/g,""))
 
-      pembayaran = document.getElementById('sale_pembayaran').value
-      document.getElementById('span_bayar').innerHTML = addCommas(pembayaran)
-
-      debit = document.getElementById('sale_payment_with_debit_cards_attributes_0_jumlah').value
+      debit = Number(document.getElementById('sale_payment_with_debit_cards_attributes_0_jumlah').value.replace(/[^0-9\.]+/g,""))
       total_debit = Math.floor(debit)
-      document.getElementById('span_debit').innerHTML = addCommas(total_debit)
 
-      credit = document.getElementById('sale_payment_with_credit_cards_attributes_0_jumlah').value
-      credit1 = document.getElementById('sale_payment_with_credit_cards_attributes_1_jumlah').value
+
+      credit = Number(document.getElementById('sale_payment_with_credit_cards_attributes_0_jumlah').value.replace(/[^0-9\.]+/g,""))
+      credit1 = Number(document.getElementById('sale_payment_with_credit_cards_attributes_1_jumlah').value.replace(/[^0-9\.]+/g,""))
       total_credit = Math.floor(credit) + Math.floor(credit1)
-      document.getElementById('span_credit').innerHTML = addCommas(total_credit)
 
-      transfer = document.getElementById('sale_jumlah_transfer').value
-      document.getElementById('span_transfer').innerHTML = addCommas(transfer)
+      transfer = Number(document.getElementById('sale_jumlah_transfer').value.replace(/[^0-9\.]+/g,""))
 
       total_payment = Math.floor(total_credit)+Math.floor(total_debit)+Math.floor(pembayaran)+Math.floor(transfer)
-      voucher = document.getElementById('sale_voucher').value
-      document.getElementById('span_voucher').innerHTML = addCommas(voucher)
-      c = document.getElementById('sale_sisa').value = netto - voucher - total_payment
-      document.getElementById('span_sisa').innerHTML = addCommas(c)
-
-      elite = document.getElementById('sale_netto_elite').value
-      document.getElementById('span_netto_elite').innerHTML = addCommas(elite)
-      lady = document.getElementById('sale_netto_lady').value
-      document.getElementById('span_netto_lady').innerHTML = addCommas(lady)
-      serenity = document.getElementById('sale_netto_serenity').value
-      document.getElementById('span_netto_serenity').innerHTML = addCommas(serenity)
-      royal = document.getElementById('sale_netto_royal').value
-      document.getElementById('span_netto_royal').innerHTML = addCommas(royal)
-      tech = document.getElementById('sale_netto_tech').value
-      document.getElementById('span_netto_tech').innerHTML = addCommas(tech)
+      document.getElementById('sale_sisa').value = netto - voucher - total_payment
 
     open_modal = (id) ->
       $('#MyModal').on 'shown.bs.modal', (e) ->
@@ -197,6 +188,14 @@ jQuery ->
       bDestroy: true
     })
 
+    netto_pl = (id) ->
+      document.getElementById(id).addEventListener "keyup", () ->
+        a = document.getElementById('sale_netto').value
+        c = 0
+        $('.price_list').each ->
+          c += Number($(this).val().replace(/[^0-9\.]+/g,""))
+        document.getElementById('sale_netto').value = c
+
     $('form').on 'click', '.add_fields', (event) ->
       time = new Date().getTime()
       regexp = new RegExp($(this).data('id'), 'g')
@@ -205,10 +204,17 @@ jQuery ->
       jumlah = get_id.replace("serial", "jumlah")
       kode_barang = get_id.replace("serial", "kode_barang")
       nama_barang = get_id.replace("serial", "nama_barang")
+      price_list = get_id.replace("serial", "price_list")
+      $('#'+price_list).autoNumeric("init",{
+        mDec:0
+      })
+      $('#'+price_list).on 'change', () ->
+        $('#span_netto').autoNumeric('set', $('#sale_netto').val())
       taken = get_id.replace("serial", "taken")
       resize_items()
       event.preventDefault()
       open_modal(get_id)
+      netto_pl(price_list)
       date_picker()
       serial_doc = document.getElementById(get_id)
       $('#'+jumlah).focus ->
@@ -248,6 +254,16 @@ jQuery ->
               document.getElementById(nama_barang).value = ""
               document.getElementById(kode_barang).value = ""
               document.getElementById(jumlah).value = ""
+      $("#sale_sale_items_attributes_"+time+"_nama_barang").autocomplete
+        source: $("#sale_sale_items_attributes_"+time+"_nama_barang").data('autocomplete-source'),
+        select: (event, ui) ->
+          $.ajax
+            url: '/sales/get_kode_barang_from_nama',
+            data: {'nama': ui.item.value, 'element_id': $(this).attr("id")},
+            datatype: 'script',
+            success: () ->
+              document.getElementById(kode_barang).readOnly = true
+              document.getElementById(price_list).focus()
 
     $('form').on 'click', '.remove_fields', (event) ->
       $(this).prev('input[type=hidden]').val('1')
