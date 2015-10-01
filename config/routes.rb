@@ -92,10 +92,11 @@ Rails.application.routes.draw do
       get "get_mid_from_merchant"
       get "get_second_mid_from_merchant"
       get "get_kode_barang_from_serial"
-      get "get_kode_barang_from_nama_barang"
+      get "get_kode_barang_from_nama"
       get "edit_by_confirmation"
       get "destroy_by_confirmation"
       get "exhibition_stock"
+      get "items"
       get "item_master"
       get "stock_availability"
     end

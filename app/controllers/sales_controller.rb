@@ -16,6 +16,26 @@ class SalesController < ApplicationController
     end
   end
 
+  def items
+    @sales = Item.order(:nama).where("nama like ?", "%#{params[:term]}%")
+
+    respond_to do |format|
+      format.html
+      format.json {render json: @sales.map(&:nama)}
+    end
+  end
+
+  def get_kode_barang_from_nama
+    kode_serial = Item.find_by_nama(params[:nama]).kode_barang
+    @kode = Item.find_by_kode_barang(kode_serial).kode_barang
+    @nama = Item.find_by_kode_barang(kode_serial).nama
+    @element_id = params[:element_id]
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def exhibition_stock
     @stock = ExhibitionStockItem.order(:serial).where("serial like ? and channel_customer_id = ? and checked_in = true and jumlah > 0",
       "%#{params[:term]}%", current_user.channel_customer.id)
@@ -218,7 +238,7 @@ class SalesController < ApplicationController
       :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed, :netto_serenity, :netto_royal,
       :netto_tech, :alasan_cancel,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
-        :nama_barang, :user_id, :_destroy, :keterangan],
+        :nama_barang, :user_id, :_destroy, :keterangan, :price_list],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
       payment_with_debit_cards_attributes: [:id, :nama_kartu, :no_kartu_debit, :atas_nama, :jumlah])
   end

@@ -1,0 +1,6 @@
+a = "<%= @element_id %>"
+kode_barang = a.replace("nama_barang", "kode_barang")
+jumlah_barang = a.replace("nama_barang", "jumlah")
+document.getElementById(kode_barang).value = "<%= @kode %>"
+document.getElementById(a).value = "<%= @nama %>"
+document.getElementById(jumlah_barang).value = "1"

@@ -35,9 +35,10 @@ class Sale < ActiveRecord::Base
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 
   validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer,
-    :cek_pembayaran_debit, :cek_pembayaran_kredit, :cek_barang_lady, :cek_barang_elite,
-    :cek_barang_royal, :cek_barang_tech, :cek_barang_serenity,
-    :cek_down_payment, :cek_netto_brand, :cek_transfer_bank
+    :cek_pembayaran_debit, :cek_pembayaran_kredit,
+    :cek_down_payment, :cek_transfer_bank
+
+  before_create :netto_brand
 
   def cek_transfer_bank
     if tipe_pembayaran.split(";").include?("Transfer") && bank_account_id.nil?
@@ -49,7 +50,6 @@ class Sale < ActiveRecord::Base
     sales = where(channel_customer_id: cc) if cc.present?
     sales = sales.where("date(created_at) >=  ?", dari_tanggal) if dari_tanggal.present?
     sales = sales.where("date(created_at) <=  ?", sampai_tanggal) if sampai_tanggal.present?
-    sales = sales.where(cancel_order: false)
     sales
   end
 
@@ -80,34 +80,13 @@ class Sale < ActiveRecord::Base
     end
   end
 
-  def cek_barang_lady
-    if sale_items.any? { |b| b[:kode_barang][2] == "L"  && b[:bonus] == false } && netto_lady == 0
-      errors.add(:netto_lady, "ISI NETTO LADY JIKA ADA BARANG LAI")
-    end
-  end
-
-  def cek_barang_elite
-    if sale_items.any? { |b| b[:kode_barang][2] == "E" && b[:bonus] == false} && netto_elite == 0
-      errors.add(:netto_elite, "ISI NETTO ELITE JIKA ADA BARANG ELITE")
-    end
-  end
-
-  def cek_barang_serenity
-    if sale_items.any? { |b| b[:kode_barang][2] == "S"&& b[:bonus] == false } && netto_serenity == 0
-      errors.add(:netto_serenity, "ISI NETTO SERENITY JIKA ADA BARANG SERENITY")
-    end
-  end
-
-  def cek_barang_royal
-    if sale_items.any? { |b| b[:kode_barang][2] == "R"&& b[:bonus] == false } && netto_royal == 0
-      errors.add(:netto_royal, "ISI NETTO ROYAL JIKA ADA BARANG ROYAL")
-    end
-  end
-
-  def cek_barang_tech
-    if sale_items.any? { |b| b[:kode_barang][2] == "B" && b[:bonus] == false } && netto_tech == 0
-      errors.add(:netto_tech, "ISI NETTO TECHNOGEL JIKA ADA BARANG TECHNOGEL")
-    end
+  def netto_brand
+    self.netto_lady = sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "L"}
+    self.netto_elite = sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "E"}
+    self.netto_serenity = sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "S"}
+    self.netto_royal = sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "R"}
+    self.netto_tech = sale_items.select { |b| b[:kode_barang][2] == "B"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "B"}
+    self.netto_pure = sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "P"}
   end
 
   def cek_pembayaran_tunai

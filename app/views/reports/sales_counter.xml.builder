@@ -33,8 +33,7 @@ xml.data do
         si.sale.channel_customer.sales_promotions.find(si.sale.sales_promotion_id).nama.titleize
       xml.Taken (si.taken? ? 'Y' : 'T')
       xml.Serial si.serial.blank? ? '-' : si.serial
-      item = Item.find_by_kode_barang(si.kode_barang)
-      xml.PriceList item.nil? ? '0' : item.harga
+      xml.PriceList si.price_list
       xml.Voucher si.sale.voucher
       xml.Phone si.sale.pos_ultimate_customer.no_telepon
       xml.Hp1 si.sale.pos_ultimate_customer.handphone.blank? ? '-' : si.sale.pos_ultimate_customer.handphone

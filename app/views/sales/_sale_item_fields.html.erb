@@ -1,38 +1,55 @@
 <fieldset>
+  <div class="col-md-1">
+    <%= f.label :serial %>
+  </div>
+  <div class="col-md-2">
+    <%= f.label :kode_barang, "Kode Barang" %>
+  </div>
+  <div class="col-md-2 nama">
+    <%= f.label :nama_barang, "Nama Barang" %>
+  </div>
+  <div class="col-md-2 jumlah">
+    <%= f.label :jumlah %>
+  </div>
+  <div class="col-md-2">
+    <%= f.label :price_list, "Harga" %>
+  </div>
+</fieldset>
+<fieldset>
   <%= f.text_field :serial, :class => "serial nested_sale_item", placeholder: "Serial",
     data: {autocomplete_source: exhibition_stock_sales_path} %>
   <%= f.text_field :kode_barang, :class => "kode_barang", placeholder: "Kode Barang", readonly: true %>
-  <%= link_to '', items_path, :class => "btn btn-xs link_fields fa fa-search", :remote => true,
-    data: {toggle: "modal", target: "#MyModal"} %>
-  <%= f.text_field :nama_barang, :readonly => true, :class => "nama_barang", placeholder: "Nama Barang" %>
+  <%= f.text_field :nama_barang, :class => "nama_barang", placeholder: "Nama Barang",
+    data: {autocomplete_source: items_sales_path} %>
   <%= f.text_field :jumlah, :class => "jumlah nested_sale_item", placeholder: "Jumlah" %>
+  <%= f.text_field :price_list, :class => "price_list nested_sale_item" %>
   <%= f.check_box :taken %>
   <%= label_tag "Taken?" %>
-  <%#= f.select :taken, options_for_select([["No", false], ["Yes", true]], f.object.taken) %>
+<%#= f.select :taken, options_for_select([["No", false], ["Yes", true]], f.object.taken) %>
   <%= f.check_box :bonus %>
   <%= label_tag "Bonus?" %>
-  <%#= f.select :bonus, options_for_select([["No", false], ["Yes", true]], f.object.bonus) %>
+<%#= f.select :bonus, options_for_select([["No", false], ["Yes", true]], f.object.bonus) %>
   <%= f.input_field :keterangan, placeholder: "Keterangan per Barang" %>
   <%= f.hidden_field :_destroy %>
   <%= link_to "remove", '#', class: "remove_fields btn-xs btn-danger" %>
-  <%= link_to "resize", '#', class: "resize_fields btn-xs btn-info" %><br />
-  <h5 style="font-size: 12px;"><b>*Harap TAKEN di ceklis jika TAKE AWAY</b></h5>
-</fieldset>
-<hr>
+    <%= link_to "resize", '#', class: "resize_fields btn-xs btn-info" %><br />
+      <h5 style="font-size: 12px;"><b>*Harap TAKEN di ceklis jika TAKE AWAY</b></h5>
+    </fieldset>
+    <hr>
 
-<div id="MyModal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h1>Barang</h1>
+    <div id="MyModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h1>Barang</h1>
+          </div>
+          <%= hidden_field_tag 'id_form', '', class: "id_form" %>
+            <div class="modal-body a-unique-class">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
       </div>
-      <%= hidden_field_tag 'id_form', '', class: "id_form" %>
-      <div class="modal-body a-unique-class">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>

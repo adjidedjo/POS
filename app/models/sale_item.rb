@@ -13,6 +13,15 @@ class SaleItem < ActiveRecord::Base
   validate :cek_stock_without_serial, on: :create
   validate :cek_stock_with_serial, on: :create
   validate :cek_sales_counter
+  validate :cek_price_list
+
+  def cek_price_list
+    unless self.bonus?
+      if self.price_list == 0 || self.price_list.blank?
+        errors.add(:price_list, "MASUKKAN HARGA BARANG SETELAH DISKON")
+      end
+    end
+  end
 
   def cek_sales_counter
     item = Item.find_by_kode_barang(self.kode_barang)
@@ -69,7 +78,6 @@ class SaleItem < ActiveRecord::Base
     else
       self.brand_id = get_brand_id.brand_id
     end
-    update_price_list
   end
 
   after_create do
@@ -178,18 +186,6 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
       StoreSalesAndStockHistory.create(channel_customer_id: self.sale.channel_customer_id, kode_barang: self.kode_barang,
         nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
         serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)
-    end
-  end
-
-  def update_price_list
-    item = Item.find_by_kode_barang(self.kode_barang)
-    if item.present?
-      recipient_brand_id = self.sale.channel_customer.recipients.find_by_brand_id(item.brand_id)
-      branch_id = recipient_brand_id.sales_counter.branch.id
-      regional_branch = RegionalBranch.find_by_cabang_id(branch_id)
-      regional = Regional.find(regional_branch.regional_id)
-      price_list = PriceList.find_by_regional_id_and_kode_barang(regional.id, self.kode_barang)
-      self.price_list = price_list.nil? ? 0 : price_list.harga
     end
   end
 end
