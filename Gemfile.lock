@@ -48,6 +48,8 @@ GEM
       tzinfo (~> 1.1)
     afm (0.2.2)
     arel (6.0.0)
+    autonumeric-rails (1.9.39)
+      jquery-rails (>= 2.0.2)
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -255,6 +257,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-sqlserver-adapter
+  autonumeric-rails
   browser
   capistrano
   capistrano-bundler (~> 1.1)
