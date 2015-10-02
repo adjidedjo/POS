@@ -17,7 +17,7 @@ class SalesController < ApplicationController
   end
 
   def items
-    @sales = Item.order(:nama).where("nama like ?", "%#{params[:term]}%")
+    @sales = Item.order(:nama).search(params[:term])
 
     respond_to do |format|
       format.html

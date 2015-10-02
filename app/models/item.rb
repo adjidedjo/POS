@@ -5,4 +5,11 @@ class Item < ActiveRecord::Base
   before_create do
     self.brand_id = Brand.find_by_id_brand(kode_barang[2]).id
   end
+
+  def self.search(search)
+    if search
+      search_length = search.split.length
+      where([(['nama LIKE ?'] * search_length).join(' AND ')] + search.split.map { |name| "%#{name}%" })
+    end
+  end
 end
