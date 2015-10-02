@@ -16,20 +16,20 @@
   </div>
 </fieldset>
 <fieldset>
-  <%= f.text_field :serial, :class => "serial nested_sale_item", placeholder: "Serial",
+  <%= f.text_field :serial, :class => "serial nested_sale_item", placeholder: "Serial", readonly: f.object.persisted?,
     data: {autocomplete_source: exhibition_stock_sales_path} %>
   <%= f.text_field :kode_barang, :class => "kode_barang", placeholder: "Kode Barang", readonly: true %>
-  <%= f.text_field :nama_barang, :class => "nama_barang", placeholder: "Nama Barang",
+  <%= f.text_field :nama_barang, :class => "nama_barang", placeholder: "Nama Barang",  readonly: f.object.persisted?,
     data: {autocomplete_source: items_sales_path} %>
-  <%= f.text_field :jumlah, :class => "jumlah nested_sale_item", placeholder: "Jumlah" %>
-  <%= f.text_field :price_list, :class => "price_list nested_sale_item" %>
-  <%= f.check_box :taken %>
+  <%= f.text_field :jumlah, :class => "jumlah nested_sale_item", placeholder: "Jumlah",  readonly: f.object.persisted? %>
+  <%= f.text_field :price_list, :class => "price_list nested_sale_item", readonly: f.object.persisted? %>
+  <%= f.check_box :taken, readonly: f.object.persisted?%>
   <%= label_tag "Taken?" %>
 <%#= f.select :taken, options_for_select([["No", false], ["Yes", true]], f.object.taken) %>
-  <%= f.check_box :bonus %>
+  <%= f.check_box :bonus,  readonly: f.object.persisted? %>
   <%= label_tag "Bonus?" %>
 <%#= f.select :bonus, options_for_select([["No", false], ["Yes", true]], f.object.bonus) %>
-  <%= f.input_field :keterangan, placeholder: "Keterangan per Barang" %>
+  <%= f.input_field :keterangan, placeholder: "Keterangan per Barang", readonly: f.object.persisted? %>
   <%= f.hidden_field :_destroy %>
   <%= link_to "remove", '#', class: "remove_fields btn-xs btn-danger" %>
     <%= link_to "resize", '#', class: "resize_fields btn-xs btn-info" %><br />

@@ -132,7 +132,7 @@ jQuery ->
         output += '.' + parts[1]
       output
 
-    $('.input_value').on 'keyup', () ->
+    money = () ->
       netto = Number(document.getElementById('sale_netto').value.replace(/[^0-9\.]+/g,""))
       pembayaran = Number(document.getElementById('sale_pembayaran').value.replace(/[^0-9\.]+/g,""))
       voucher = Number(document.getElementById('sale_voucher').value.replace(/[^0-9\.]+/g,""))
@@ -149,6 +149,9 @@ jQuery ->
 
       total_payment = Math.floor(total_credit)+Math.floor(total_debit)+Math.floor(pembayaran)+Math.floor(transfer)
       document.getElementById('sale_sisa').value = netto - voucher - total_payment
+
+    $('.input_value').on 'keyup', () ->
+      money()
 
     open_modal = (id) ->
       $('#MyModal').on 'shown.bs.modal', (e) ->
@@ -210,6 +213,7 @@ jQuery ->
       })
       $('#'+price_list).on 'change', () ->
         $('#span_netto').autoNumeric('set', $('#sale_netto').val())
+        money()
       taken = get_id.replace("serial", "taken")
       bonus = get_id.replace("serial", "bonus")
       resize_items()
@@ -273,6 +277,11 @@ jQuery ->
               document.getElementById(price_list).focus()
 
     $('form').on 'click', '.remove_fields', (event) ->
+      price_list = document.getElementById($(this).prev().attr('id').replace("_destroy", "price_list"))
+      price_list.className = "price_list1"
       $(this).prev('input[type=hidden]').val('1')
+      price_list.readOnly = false
       $(this).closest('fieldset').hide()
+      netto = document.getElementById('sale_netto').value
+      document.getElementById('sale_netto').value -= Number(price_list.value)
       event.preventDefault()
