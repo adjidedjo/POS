@@ -220,12 +220,12 @@ jQuery ->
       serial_doc = document.getElementById(get_id)
       $('#'+jumlah).focus ->
         $('#'+taken).prop("checked", false);
-      $('#'+bonus).click ->
-        if $(this).is(':checked')
+      $('#'+bonus).on "change", () ->
+        if (this.checked)
           document.getElementById(price_list).readOnly = true
-        if !$(this).is(':checked')
-          console.log "a"
+        else
           document.getElementById(price_list).readOnly = false
+          document.getElementById(bonus).checked = false
       $('#'+taken).click ->
         if $(this).is(':checked')
           $.ajax
