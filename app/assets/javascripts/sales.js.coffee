@@ -211,6 +211,7 @@ jQuery ->
       $('#'+price_list).on 'change', () ->
         $('#span_netto').autoNumeric('set', $('#sale_netto').val())
       taken = get_id.replace("serial", "taken")
+      bonus = get_id.replace("serial", "bonus")
       resize_items()
       event.preventDefault()
       open_modal(get_id)
@@ -219,6 +220,12 @@ jQuery ->
       serial_doc = document.getElementById(get_id)
       $('#'+jumlah).focus ->
         $('#'+taken).prop("checked", false);
+      $('#'+bonus).click ->
+        if $(this).is(':checked')
+          document.getElementById(price_list).readOnly = true
+        if !$(this).is(':checked')
+          console.log "a"
+          document.getElementById(price_list).readOnly = false
       $('#'+taken).click ->
         if $(this).is(':checked')
           $.ajax
