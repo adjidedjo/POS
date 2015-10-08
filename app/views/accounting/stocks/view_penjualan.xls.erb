@@ -9,6 +9,7 @@
       <Row>
         <Cell><Data ss:Type="String">Channel Customer</Data></Cell>
         <Cell><Data ss:Type="String">Nama SPG/SPB</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
         <Cell><Data ss:Type="String">No SO</Data></Cell>
         <Cell><Data ss:Type="String">SO Manual</Data></Cell>
         <Cell><Data ss:Type="String">Tanggal SO</Data></Cell>
@@ -66,6 +67,7 @@
         <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.sales_promotion.nil? ? '' :
   sale_item.sale.sales_promotion.nama.titleize %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.cancel_order? ? 'Batal' : '-' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.no_so %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.so_manual.present? ? sale_item.sale.so_manual : "-" %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.created_at.strftime("%Y-%m-%d") %></Data></Cell>
