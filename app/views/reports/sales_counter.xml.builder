@@ -39,7 +39,7 @@ xml.data do
       xml.Hp1 si.sale.pos_ultimate_customer.handphone.blank? ? '-' : si.sale.pos_ultimate_customer.handphone
       xml.Hp2 si.sale.pos_ultimate_customer.handphone1.blank? ? '-' : si.sale.pos_ultimate_customer.handphone1
       xml.HargaNetto si.sale.netto
-      dp = (si.sale.pembayaran+si.sale.payment_with_debit_cards.sum(:jumlah)+si.sale.payment_with_credit_cards.sum(:jumlah)+si.sale.jumlah_transfer)
+      dp = (si.sale.pembayaran+si.sale.payment_with_debit_cards.sum(:jumlah)+si.sale.payment_with_credit_cards.sum(:jumlah)+si.sale.jumlah_transfer + si.sale.voucher)
       xml.DP dp
       xml.Sisa si.sale.sisa
       xml.TipePembayaran si.sale.tipe_pembayaran
@@ -61,15 +61,15 @@ xml.data do
       xml.Email si.sale.email
       netto_brand =
         if si.brand_id == 2
-          si.sale.netto_elite
+          (si.sale.netto_elite + si.sale.voucher)
         elsif si.brand_id == 4
-          si.sale.netto_lady
+          (si.sale.netto_lady + si.sale.voucher)
         elsif si.brand_id == 5
-          si.sale.netto_royal
+          (si.sale.netto_royal + si.sale.voucher)
         elsif si.brand_id == 6
-          si.sale.netto_serenity
+          (si.sale.netto_serenity + si.sale.voucher)
         elsif si.brand_id == 7
-          si.sale.netto_tech
+          (si.sale.netto_tech + si.sale.voucher)
         end
       xml.NettoBrand netto_brand
       xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
