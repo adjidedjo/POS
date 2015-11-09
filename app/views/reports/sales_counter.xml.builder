@@ -61,15 +61,15 @@ xml.data do
       xml.Email si.sale.email
       netto_brand =
         if si.brand_id == 2
-          (si.sale.netto_elite + si.sale.voucher)
+          si.sale.netto_elite
         elsif si.brand_id == 4
-          (si.sale.netto_lady + si.sale.voucher)
+          si.sale.netto_lady
         elsif si.brand_id == 5
-          (si.sale.netto_royal + si.sale.voucher)
+          si.sale.netto_royal
         elsif si.brand_id == 6
-          (si.sale.netto_serenity + si.sale.voucher)
+          si.sale.netto_serenity
         elsif si.brand_id == 7
-          (si.sale.netto_tech + si.sale.voucher)
+          si.sale.netto_tech
         end
       xml.NettoBrand netto_brand
       xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
