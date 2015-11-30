@@ -6,11 +6,11 @@
       <%= f.input :channel_id, collection: @channel, label_method: :channel, value_method: :id, prompt: "--Pilih Channel--" %>
       <%= f.input :nama %>
       <%= f.input :group, input_html: {data: {autocomplete_channel: channel_customers_path}} %>
-      <%= f.input :dari_tanggal, as: :tanggal, readonly: true %>
-      <%= error_span(@channel_customer[:dari_tanggal]) %>
-      <%= f.input :sampai_tanggal, as: :tanggal, readonly: true %>
-      <%= error_span(@channel_customer[:sampai_tanggal]) %>
     <% end  %>
+    <%= f.input :dari_tanggal, as: :tanggal, readonly: true %>
+    <%= error_span(@channel_customer[:dari_tanggal]) %>
+    <%= f.input :sampai_tanggal, as: :tanggal, readonly: true %>
+    <%= error_span(@channel_customer[:sampai_tanggal]) %>
     <%= f.input :alamat %>
     <%= f.input :kota %>
   </div>
