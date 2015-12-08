@@ -285,3 +285,8 @@ jQuery ->
       netto = document.getElementById('sale_netto').value
       document.getElementById('sale_netto').value -= Number(price_list.value)
       event.preventDefault()
+
+    $('form').on 'click', '.remove_akun_fields', (event) ->
+      $(this).prev('input[type=hidden]').val('1')
+      $(this).closest('fieldset').hide()
+      event.preventDefault()
