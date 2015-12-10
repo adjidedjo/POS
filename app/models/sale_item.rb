@@ -89,7 +89,8 @@ class SaleItem < ActiveRecord::Base
   end
 
   before_update do
-    if jumlah_changed?
+    self.price_list = price_list.gsub(/,/, '') if price_list.to_s.include? ","
+    if jumlah_changed? && taken == true
       sale_item_jumlah = SaleItem.find(self.id).jumlah.to_i
       if jumlah > sale_item_jumlah
         jumlah_now = jumlah - sale_item_jumlah
@@ -135,7 +136,7 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
       @exsj = []
       jumlah_beli = self.jumlah
 
-      if stock.first.serial.present?
+      if self.serial.present?
         (1..jumlah_beli).each do |sp|
           s_serial = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang = ? and jumlah > 0
 and checked_in = true and checked_out = false", self.sale.channel_customer_id, self.kode_barang).first
