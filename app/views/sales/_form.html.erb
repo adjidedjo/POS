@@ -136,7 +136,7 @@
       <div class="col-md-6">
       </div>
     </div>
-    <%= f.button :submit, "Buat SO", data: { disable_with: "Harap Tunggu...", confirm: "Apakah anda yakin?" }, :class => 'btn-primary' %>
+    <%= f.button :submit, @sale.new_record? ? " Buat SO" : "Rubah SO", data: { disable_with: "Harap Tunggu...", confirm: "Apakah anda yakin?" }, :class => 'btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")), sales_path, :class => 'btn btn-default' %>
   </div>
 <% end %>

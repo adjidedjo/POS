@@ -5,7 +5,6 @@
 
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>So Manual:</strong> <%= @sale.so_manual.present? ? @sale.so_manual : "-" %></dt><br />
     <dt><strong>Channel Customer:</strong> <%= @sale.channel_customer.nama.titleize %></dt><br />
     <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d %B %Y') %></dt><br />
     <dt><strong>Produk Konsultan:</strong> <%= @sale.sales_promotion.nama.upcase %></dt><br />
@@ -123,18 +122,9 @@
   </div>
 </div>
 
-<%#= link_to t('.back', :default => t("helpers.links.back")),
-sales_path, :class => 'btn btn-default' %>
-<%= link_to "SO Baru", new_sale_path, :class => 'btn btn-primary' %>
-<%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
-<% unless @sale.printed? %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_sale_path(@sale), :class => 'btn btn-default' %>
-<% end %>
-<%# check_exported =  @sale.sale_items.where(exported: true) %>
-<% if @sale.all_items_exported? %>
-  <%= link_to t('Pembatalan Order'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
-<% else %>
-  <%= link_to t('Hapus Order'), '#hapus_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<% unless @sale.cancel_order? || @sale.rejected? %>
+  <%= link_to "Approve", sale_path(@sale), :method => :delete, :class => 'btn btn-default' %>
+  <%= link_to t('Reject'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
 <% end %>
 
 <div class="modal fade" id="destroy_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -145,38 +135,12 @@ sales_path, :class => 'btn btn-default' %>
         <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag request_cancel_order_sales_path, :method => :get do %>
-          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
-          <%= text_field_tag :alasan_cancel, '' %>
+        <%= form_tag rejected_cancel_order_sales_path, :method => :get do %>
+          <%= label_tag(:alasan_reject, "Alasan Reject Pembatalan Order") %>
+          <%= text_field_tag :alasan_reject, '' %>
+          <%= hidden_field_tag :id, @sale.id %>
           <br />
-          <%= label_tag(:password, "Masukkan supervisor password") %>
-          <%= password_field_tag :password %>
-          <%= hidden_field_tag :sale, @sale.id %><br />
-          <%= submit_tag "Kirim Permintaan", :class => "btn btn-xs btn-danger" %>
-        <% end %>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="hapus_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
-      </div>
-      <div class="modal-body">
-        <%= form_tag sale_path(@sale), :method => :delete do %>
-          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
-          <%= text_field_tag :alasan_cancel, '' %>
-          <%= hidden_field_tag :hapus, 1 %>
-          <br />
-          <%= label_tag(:password, "Masukkan supervisor password") %>
-          <%= password_field_tag :password %><br />
-          <%= submit_tag "Kirim Permintaan", :class => "btn btn-xs btn-danger" %>
+          <%= submit_tag "Send", :class => "btn btn-xs btn-danger" %>
         <% end %>
       </div>
       <div class="modal-footer">

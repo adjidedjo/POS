@@ -1,7 +1,9 @@
 class SalesController < ApplicationController
+  before_filter :authenticate_user!, :except => [:show_sale, :destroy]
   before_action :set_sale, only: [:edit, :update]
   before_action :sale_after_printed, only: [:show, :destroy]
-  before_action :get_current_user, only: [:new, :show, :edit, :update, :destroy, :create]
+  before_action :get_current_user, only: [:new, :show, :edit, :update, :create]
+  before_action :current_user_destroy, only: [:destroy]
 
   def stock_availability
     stock = ExhibitionStockItem.where(kode_barang: params[:kode_barang],
@@ -104,11 +106,34 @@ class SalesController < ApplicationController
     end
   end
 
+  def show_sale
+    @sale = Sale.find(params[:id])
+    if @sale.requested_cancel_order == true
+      order_no = @sale.no_sale.to_s.rjust(4, '0')
+      @get_spg = SalesPromotion.find(@sale.sales_promotion_id)
+      @tipe_pembayaran = @sale.tipe_pembayaran.split(";")
+      respond_to do |format|
+        format.html
+        format.pdf do
+          pdf = PosPdf.new(@sale, order_no)
+          send_data pdf.render, filename: "#{@sale.no_so}",
+            type: "application/pdf",
+            disposition: "inline"
+          @sale.update_attributes(printed: true)
+        end
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
+
+
   # GET /sales/new
   def new
     @sale = Sale.new
     #    @sale.sale_items.build
-#    @sale.build_payment_with_debit_card
+    #    @sale.build_payment_with_debit_card
     1.times {@sale.payment_with_debit_cards.build}
     2.times {@sale.payment_with_credit_cards.build}
     @channels = Channel.all
@@ -180,7 +205,12 @@ class SalesController < ApplicationController
 
   # DELETE /sales/1 DELETE /sales/1.json
   def destroy
-    if User.find(current_user.id).valid_password?(params[:password])
+    unless @sale.cancel_order?
+      unless params[:hapus].present?
+        @sale.channel_customer.supervisor_exhibitions.each do |se|
+          UserMailer.approved_cancel_order(@sale.no_so, se.email).deliver_now
+        end
+      end
       @sale.update_attributes(cancel_order: true, alasan_cancel: params[:alasan_cancel])
       @sale.sale_items.each do |co_si|
         if co_si.serial.present?
@@ -206,7 +236,36 @@ class SalesController < ApplicationController
         format.json { head :no_content }
       end
     else
-      redirect_to sale_path(params[:sale]), alert: 'Password supervisor yang anda masukkan salah.'
+      redirect_to root_path, notice: 'SO yang akan dibatalkan sudah dinyatakan BATAL'
+    end
+  end
+
+  def request_cancel_order
+    @no_so = Sale.find(params[:sale])
+    if User.find(current_user.id).valid_password?(params[:password])
+      @alasan_cancel = params[:alasan_cancel]
+      @channel = ChannelCustomer.find(Sale.find(params[:sale]).channel_customer_id)
+      @no_so.sale_items.group_by(&:brand_id).keys.each do |group|
+        UserMailer.pembatalan_order(@alasan_cancel, @no_so, @channel.nama, @channel.recipients.find_by_brand_id(group).sales_counter.email).deliver_now
+      end
+      @no_so.update_attributes!(requested_cancel_order: true, rejected: false)
+      redirect_to @no_so
+    else
+      redirect_to sale_path(@no_so), alert: 'Password supervisor yang anda masukkan salah.'
+    end
+  end
+
+  def rejected_cancel_order
+    @sale = Sale.find(params[:id])
+    @alasan = params[:alasan_reject]
+    unless @sale.cancel_order? || @sale.rejected?
+      @sale.channel_customer.supervisor_exhibitions.each do |se|
+        UserMailer.rejected_cancel_order(@alasan, @sale.no_so, se.email).deliver_now
+      end
+      @sale.update_attributes!(rejected: true)
+      redirect_to root_path, notice: 'SO yang akan di request sudah di REJECT'
+    else
+      redirect_to root_path, notice: 'SO yang akan dibatalkan sudah dinyatakan BATAL atau sudah di REJECT'
     end
   end
 
@@ -214,6 +273,11 @@ class SalesController < ApplicationController
 
   def get_current_user
     @user = current_user.store.nil? ? current_user.showroom : current_user.store
+  end
+
+  def current_user_destroy
+    sale = Sale.find(params[:id])
+    @user = current_user.nil? ? sale.channel_customer : current_user
   end
 
   # Use callbacks to share common setup or constraints between actions.

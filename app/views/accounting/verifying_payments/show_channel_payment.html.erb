@@ -1,90 +1,44 @@
 <div class="container">
-<h1>Verifikasi Pembayaran</h1>
-<hr>
-<%= form_tag verify_accounting_verifying_payments_path(@sales), method: :put do  %>
-  <p><b>Total Cash</b>: <%= currency(@sales.sum(:pembayaran)) %></p>
-  <table id="total_cash_acc" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+  <%- model_class = Sale -%>
+  <div class="page-header">
+    <h1>Penjualan <%= @channel_customer.nama.titleize  %></h1>
+  </div>
+  <table id="index_of_sales" class="display table table-striped table-bordered responsive nowrap mini_size" cellspacing="0" width="100%">
     <thead>
       <tr>
-        <th class="all">No SO</th>
-        <th class="all">Jumlah</th>
+        <th style="font-size: 10px">No SO</th>
+        <th style="font-size: 10px">PC</th>
+        <th style="font-size: 10px">SO Manual</th>
+        <th style="font-size: 10px">Customer</th>
+        <th style="font-size: 10px">Ket Pembayaran</th>
+        <th style="font-size: 10px">Cara Pembayaran</th>
+        <th style="font-size: 10px">Netto Elite</th>
+        <th style="font-size: 10px">Netto Lady</th>
+        <th style="font-size: 10px">Total Pembayaran</th>
+        <th style="font-size: 10px">Total Keseluruhan</th>
+        <th style="font-size: 10px">Verifikasi</th>
+        <th style="font-size: 10px"><%=t '.actions', :default => t("helpers.actions") %></th>
       </tr>
     </thead>
-    <tbody>
-      <%  @sales.each do |so|  %>
-        <% if so.pembayaran > 0 %>
-          <tr>
-            <td><%= so.no_so.upcase %></td>
-            <td><%= currency(so.pembayaran) %></td>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-  <p><b>Total Transfer</b>: <%= currency(@sales.sum(:jumlah_transfer)) %></p>
-  <table id="total_transfer_acc" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th class="all">Nama Bank</th>
-        <th class="all">Jumlah</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%  @bank.each do |bank|  %>
-        <tr>
-          <td><%= bank.name %></td>
-          <td><%= currency(@sales.where(bank_account_id: bank.id).sum(:jumlah_transfer)) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <p><b>Total Kartu Debit</b>: <%= currency(@cd.sum(:jumlah)) %></p>
-  <table id="total_debit_acc" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th class="all">Nama Kartu Customer</th>
-        <th class="all">No Kartu Customer</th>
-        <th class="all">Jumlah</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @cd.each do |cd| %>
-        <tr>
-          <td><%= cd.nama_kartu.upcase %></td>
-          <td><%= cd.no_kartu_debit.upcase %></td>
-          <td><%= currency(cd.jumlah) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 
-  <p><b>Total Kartu Kredit</b>: <%= currency(@cc.sum(:jumlah)) %></p>
-  <table id="total_credit_acc" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-    <thead>
-      <tr>
-        <th class="all">Nama Merchant</th>
-        <th class="all">No Mesin</th>
-        <th class="all">Tenor</th>
-        <th class="all">No Merchant</th>
-        <th class="all">Jumlah</th>
-      </tr>
-    </thead>
     <tbody>
-      <% @merchants.each do |pdc| %>
-        <% if @cc.where(mid: pdc.mid).sum(:jumlah) > 0 %>
-          <tr>
-            <td><%= pdc.nama.upcase %></td>
-            <td><%= pdc.no_merchant.upcase %></td>
-            <td><%= pdc.tenor.titleize %></td>
-            <td><%= pdc.mid.upcase %></td>
-            <td><%= currency(@cc.where(mid: pdc.mid).sum(:jumlah)) %></td>
-          </tr>
-        <% end %>
+      <% @sales.each do |sale| %>
+        <tr>
+          <td><%= link_to sale.no_so.upcase, show_order_accounting_verifying_payments_path(sale_id: sale.id, cc_id: params[:cc_id]) %></td>
+          <td><%= sale.sales_promotion.nil? ? '' : sale.sales_promotion.nama.upcase %></td>
+          <td><%= sale.so_manual.present? ? sale.so_manual : "-" %></td>
+          <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
+          <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
+          <td><%= sale.tipe_pembayaran %></td>
+          <td><%= currency(sale.netto_elite) %></td>
+          <td><%= currency(sale.netto_lady) %></td>
+          <% total = (sale.pembayaran+sale.payment_with_debit_cards.sum(:jumlah)+sale.payment_with_credit_cards.sum(:jumlah)+sale.jumlah_transfer) %>
+          <td class="money"><%= currency(total) %></td>
+          <td class="money"><%= currency(sale.netto) %></td>
+          <td><%= sale.validated? ? "Sudah" : "Belum" %></td>
+          <td><%= link_to "Verify", verify_order_accounting_verifying_payments_path(cc_id: params[:cc_id], order_id: sale.id), :class => "btn btn-info" %></td>
+        </tr>
       <% end %>
     </tbody>
   </table>
-  <% if @sales.present? %>
-    <%= submit_tag "Verifiy", :class => 'btn btn-primary export' %>
-  <% end %>
-<% end %>
 </div>

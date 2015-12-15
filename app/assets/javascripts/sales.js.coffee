@@ -4,10 +4,29 @@ jQuery ->
 
   $(document).on "ready page:load", ->
 
+    $('.price_list').on 'keyup', () ->
+      $(this).autoNumeric("init",{
+        mDec:0
+      })
+      a = document.getElementById('sale_netto').value
+      c = 0
+      $('.price_list').each ->
+        c += Number($(this).val().replace(/[^0-9\.]+/g,""))
+        document.getElementById('sale_netto').value = c
+        money()
+        $('#span_netto').autoNumeric('set', c)
+        $('#span_sisa').autoNumeric('set', $('#sale_sisa').val())
+
     $('#span_netto').autoNumeric('init', mDec: 0)
     $('#span_sisa').autoNumeric('init', mDec: 0)
     $('.input_value').on 'change', () ->
       $('#span_sisa').autoNumeric('set', $('#sale_sisa').val())
+
+    edit_form = document.forms.item(0).id
+    if !edit_form?
+      $('#'+edit_form).submit ->
+        $('.price_list').each ->
+          document.getElementById(this.id).value = Number(document.getElementById(this.id).value.replace(/[^0-9\.]+/g,""))
 
     $('#new_sale').submit ->
       $('.price_list').each ->

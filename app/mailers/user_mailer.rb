@@ -1,5 +1,23 @@
 class UserMailer < ApplicationMailer
 
+  def rejected_cancel_order(alasan, no_so, user)
+    @alasan = alasan
+    @no_so = no_so
+    mail(to: user, subject: "Rejected Request Cancel Order")
+  end
+
+  def approved_cancel_order(no_so, user)
+    @no_so = no_so
+    mail(to: user, subject: "Approved Request Cancel Order")
+  end
+
+  def pembatalan_order(alasan, no_so, channel, user)
+    @alasan = alasan
+    @no_so = no_so
+    @channel = channel
+    mail(to: user, subject: "Request Cancel Order")
+  end
+
   def return_stock(recipient, nama, user)
     @user = user
     attachments["#{nama}.xml"] = File.read("#{Rails.root}/public/#{nama}.xml")

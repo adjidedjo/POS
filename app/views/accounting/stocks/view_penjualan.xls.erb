@@ -59,6 +59,7 @@
         <Cell><Data ss:Type="String">Bonus</Data></Cell>
         <Cell><Data ss:Type="String">Taken</Data></Cell>
         <Cell><Data ss:Type="String">Serial</Data></Cell>
+        <Cell><Data ss:Type="String">Verifikasi</Data></Cell>
       </Row>
       <% @b = ""  %>
     <% @sale_items.each do |sale_item| %>
@@ -150,6 +151,7 @@
         <Cell><Data ss:Type="String"><%= sale_item.bonus? ? "BONUS" : "-" %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.taken? ? "Yes" : "No" %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.serial %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.validated? ? "Sudah" : "Belum"%></Data></Cell>
       </Row>
       <% @b = a %>
     <% end %>

@@ -85,7 +85,8 @@
           <dt><strong>Kartu Debit</strong></dt>
           <% @sale.payment_with_debit_cards.each do |cc| %>
             <% unless cc.nama_kartu.blank? %>
-              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>:</strong></dt>
+              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>
+                <%=  cc.no_kartu_debit %>:</strong></dt>
               <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(cc.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
             <% end %>
           <% end %>
@@ -97,7 +98,8 @@
           <dt><strong>Kartu Kredit</strong></dt>
           <% @sale.payment_with_credit_cards.each do |cc| %>
             <% unless cc.nama_kartu.blank? %>
-              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>:</strong></dt>
+              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>;
+                "no kartu"<%= cc.no_kartu_kredit %>;"mid"<%= cc.mid %> :</strong></dt>
               <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(cc.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
             <% end %>
           <% end %>
@@ -122,65 +124,4 @@
     <% end %>
   </div>
 </div>
-
-<%#= link_to t('.back', :default => t("helpers.links.back")),
-sales_path, :class => 'btn btn-default' %>
-<%= link_to "SO Baru", new_sale_path, :class => 'btn btn-primary' %>
-<%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
-<% unless @sale.printed? %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_sale_path(@sale), :class => 'btn btn-default' %>
-<% end %>
-<%# check_exported =  @sale.sale_items.where(exported: true) %>
-<% if @sale.all_items_exported? %>
-  <%= link_to t('Pembatalan Order'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
-<% else %>
-  <%= link_to t('Hapus Order'), '#hapus_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
-<% end %>
-
-<div class="modal fade" id="destroy_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
-      </div>
-      <div class="modal-body">
-        <%= form_tag request_cancel_order_sales_path, :method => :get do %>
-          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
-          <%= text_field_tag :alasan_cancel, '' %>
-          <br />
-          <%= label_tag(:password, "Masukkan supervisor password") %>
-          <%= password_field_tag :password %>
-          <%= hidden_field_tag :sale, @sale.id %><br />
-          <%= submit_tag "Kirim Permintaan", :class => "btn btn-xs btn-danger" %>
-        <% end %>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="hapus_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
-      </div>
-      <div class="modal-body">
-        <%= form_tag sale_path(@sale), :method => :delete do %>
-          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
-          <%= text_field_tag :alasan_cancel, '' %>
-          <%= hidden_field_tag :hapus, 1 %>
-          <br />
-          <%= label_tag(:password, "Masukkan supervisor password") %>
-          <%= password_field_tag :password %><br />
-          <%= submit_tag "Kirim Permintaan", :class => "btn btn-xs btn-danger" %>
-        <% end %>
-      </div>
-      <div class="modal-footer">
-      </div>
-    </div>
-  </div>
-</div>
+<%= link_to "Verify", verify_order_accounting_verifying_payments_path(order_id: @sale.id, cc_id: params[:cc_id]), :class => 'btn btn-primary' %>

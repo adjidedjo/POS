@@ -34,6 +34,7 @@
       <th style="font-size: 10px;">Netto Tech</th>
       <th style="font-size: 10px;">Total Pembayaran</th>
       <th style="font-size: 10px;">Total Keseluruhan</th>
+      <th style="font-size: 10px;">Verifikasi</th>
       <th style="font-size: 10px;"><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -56,6 +57,7 @@
         <td style="font-size: 10px;"><%= currency(sale.netto_tech) %></td>
         <td class="money" style="font-size: 10px;"><%= currency(total) %></td>
         <td class="money" style="font-size: 10px;"><%= currency(sale.netto) %></td>
+        <td class="money" style="font-size: 10px;"><%= sale.validated? ? "Sudah" : "Belum" %></td>
         <td style="font-size: 10px;">
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
             edit_sale_path(sale), :class => 'btn btn-default btn-xs' if current_user.role == 'supervisor' %>

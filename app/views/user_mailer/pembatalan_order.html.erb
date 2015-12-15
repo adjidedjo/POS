@@ -1,0 +1,10 @@
+<p>Dear Sales Counter</p>
+
+<p>Berikut ini kami sampaikan bahwa Showroom/Pameran <%= @channel %> meminta pembatalan untuk order dengan no <%= @no_so.no_so %> dengan Alasan</p>
+
+<h5><%= @alasan %></h5>
+
+<p>Silahkan Klik link dibawah ini untuk mengetahui detail order. Jika anda berada di Cabang Jakarta & Bandung</p>
+<%= link_to "Lihat Data Order", show_sale_sales_url(id: @no_so)%>
+
+<p>Thanks<p>

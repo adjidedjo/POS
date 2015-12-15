@@ -3,6 +3,21 @@ class Accounting::VerifyingPaymentsController < ApplicationController
   before_action :get_channel_customer_id, only:[:show_channel_payment]
   before_action :set_controller, only: [:show, :index]
 
+  def show_order
+    @sale = Sale.find(params[:sale_id])
+    @get_spg = SalesPromotion.find(@sale.sales_promotion_id)
+    @tipe_pembayaran = @sale.tipe_pembayaran.split(";")
+  end
+
+  def verify_order
+    order = Sale.find(params[:order_id])
+    if order.update_attributes!(validated: true)
+      redirect_to show_channel_payment_accounting_verifying_payments_path(cc_id: params[:cc_id]), notice: 'Order sukses terverifikasi.'
+    else
+      redirect_to show_channel_payment_accounting_verifying_payments_path(cc_id: params[:cc_id]), alert: 'Order belum terverifikasi.'
+    end
+  end
+
   def index
     @channel_customer = []
     channel = current_user.branch.present? ? current_user.branch.sales_counters : []
@@ -20,47 +35,8 @@ class Accounting::VerifyingPaymentsController < ApplicationController
   end
 
   def show_channel_payment
-    debit = []
-    credit = []
-    sip = []
-    if current_user.branch.present?
-      get_sales_counter = current_user.branch.sales_counters
-      if get_sales_counter.present?
-        SaleItem.where(brand_id: get_sales_counter.first.recipients.first.brand_id).group(:sale_id).each do |si|
-          sip << si.sale_id
-        end
-        @sales = @channel.sales.where(id: sip, cancel_order: 0)
-        @sales.each do |sale|
-          sale.payment_with_debit_cards.each do |pwc|
-            debit << pwc.id
-          end
-          sale.payment_with_credit_cards.each do |pwc|
-            credit << pwc.id
-          end
-        end
-        @cd = PaymentWithDebitCard.where(id: debit).where.not(jumlah: 0)
-        @cc = PaymentWithCreditCard.where(id: credit)
-        @bank = BankAccount.all
-        @merchants = current_user.branch.sales_counters.first.recipients.first.channel_customer.merchants
-      else
-        redirect_to root_path, alert: "Belum ada penjualan di #{current_user.branch.cabang.capitalize}"
-      end
-    else
-      cc = ChannelCustomer.find(params[:cc_id])
-      @sales = cc.sales.where(cancel_order: 0)
-      @sales.each do |sale|
-        sale.payment_with_debit_cards.each do |pwc|
-          debit << pwc.id
-        end
-        sale.payment_with_credit_cards.each do |pwc|
-          credit << pwc.id
-        end
-      end
-      @cd = PaymentWithDebitCard.where(id: debit).where.not(jumlah: 0)
-      @cc = PaymentWithCreditCard.where(id: credit)
-      @bank = BankAccount.all
-      @merchants = cc.merchants
-    end
+    @channel_customer = ChannelCustomer.find(params[:cc_id])
+    @sales = Sale.where(channel_customer_id: params[:cc_id], validated: false)
   end
 
   def verify
