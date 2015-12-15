@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :verifying_payments do
       collection do
         put 'verify'
+        get 'show_order'
+        get 'verify_order'
         get 'show_channel_payment'
       end
     end
@@ -99,6 +101,10 @@ Rails.application.routes.draw do
       get "items"
       get "item_master"
       get "stock_availability"
+      get "request_cancel_order"
+      get "show_sale"
+      put "approve_cancel_order"
+      get "rejected_cancel_order"
     end
   end
 
