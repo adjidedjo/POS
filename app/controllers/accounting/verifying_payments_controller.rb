@@ -36,7 +36,7 @@ class Accounting::VerifyingPaymentsController < ApplicationController
 
   def show_channel_payment
     @channel_customer = ChannelCustomer.find(params[:cc_id])
-    @sales = Sale.where(channel_customer_id: params[:cc_id], validated: false)
+    @sales = Sale.where(channel_customer_id: params[:cc_id], validated: false, cancel_order: false)
   end
 
   def verify
