@@ -11,7 +11,8 @@ class Accounting::VerifyingPaymentsController < ApplicationController
 
   def verify_order
     order = Sale.find(params[:order_id])
-    if order.update_attributes!(validated: true)
+    order.validated = true
+    if order.save(validate: false)
       redirect_to show_channel_payment_accounting_verifying_payments_path(cc_id: params[:cc_id]), notice: 'Order sukses terverifikasi.'
     else
       redirect_to show_channel_payment_accounting_verifying_payments_path(cc_id: params[:cc_id]), alert: 'Order belum terverifikasi.'
