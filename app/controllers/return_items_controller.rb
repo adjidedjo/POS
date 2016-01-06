@@ -66,11 +66,14 @@ class ReturnItemsController < ApplicationController
 and checked_out = ? and jumlah > 0", value["kode_barang"], current_user.channel_customer, true, false)
       items.each do |item|
         unless value["jumlah"].blank?
-          item.update_attributes!(jumlah: (item.jumlah - value["jumlah"].to_i))
+          jumlah_ret = (value["jumlah"].to_i > item.jumlah.to_i) ? (item.jumlah.to_i) : value["jumlah"].to_i
+          item.update_attributes!(jumlah: (item.jumlah - jumlah_ret.to_i))
           StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
-            kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_out: value["jumlah"].to_i, keterangan: "B",
+            kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_out: jumlah_ret.to_i, keterangan: "B",
             no_sj: item.no_sj, serial: item.serial)
+          value["jumlah"] = value["jumlah"].to_i - jumlah_ret
         end
+        break if value["jumlah"] == 0
       end
     end
     redirect_to return_items_return_path, notice: 'Jika barang sudah di cek, tetapi masih tampil. Silahkan scan sesuai serial dengan mengklik kode barang'
