@@ -104,13 +104,6 @@ class ReportsController < ApplicationController
           @sales << sale_items
         end
       end
-    else
-      user.sales.where(cancel_order: false).each do |sale|
-        SaleItem.where("sale_id = ? and created_at < ? and exported = ?", sale.id, Date.tomorrow, true)
-        .where("date(created_at) >= ?", 3.days.ago).each do |sale_items|
-          @sales << sale_items
-        end
-      end
     end
 
     respond_to do |format|
