@@ -31,7 +31,9 @@ class ReturnItemsController < ApplicationController
   end
 
   def show
-    @recipient = ChannelCustomer.find(@returned.first.channel_customer_id).warehouse_recipients
+    if @returned.present?
+      @recipient = ChannelCustomer.find(@returned.first.channel_customer_id).warehouse_recipients
+    end
   end
 
   def print_return
