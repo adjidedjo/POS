@@ -97,10 +97,19 @@ class ReportsController < ApplicationController
     brand_id = params[:brand_id]
     cc = ChannelCustomer.find(params[:cc_id]) if params[:cc_id].present?
     user = current_user.role == 'controller' ? cc : current_user.channel_customer
-    user.sales.where(cancel_order: false).each do |sale|
-      SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id)
-      .where("date(created_at) >= ?", 2.month.ago).each do |sale_items|
-        @sales << sale_items
+    if brand_id.present?
+      user.sales.where(cancel_order: false).each do |sale|
+        SaleItem.where("sale_id = ? and created_at < ? and exported = ? and brand_id = ?", sale.id, Date.tomorrow, false, brand_id)
+        .where("date(created_at) >= ?", 2.month.ago).each do |sale_items|
+          @sales << sale_items
+        end
+      end
+    else
+      user.sales.where(cancel_order: false).each do |sale|
+        SaleItem.where("sale_id = ? and created_at < ? and exported = ?", sale.id, Date.tomorrow, true)
+        .where("date(created_at) >= ?", 3.days.ago).each do |sale_items|
+          @sales << sale_items
+        end
       end
     end
 
