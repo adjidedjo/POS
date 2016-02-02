@@ -23,10 +23,11 @@ jQuery ->
       $('#span_sisa').autoNumeric('set', $('#sale_sisa').val())
 
     edit_form = document.forms.item(0).id
-    if !edit_form?
+    if edit_form?
       $('#'+edit_form).submit ->
         $('.price_list').each ->
-          document.getElementById(this.id).value = Number(document.getElementById(this.id).value.replace(/[^0-9\.]+/g,""))
+          if !document.getElementById(this.id).value.indexOf(",") > -1
+            document.getElementById(this.id).value = Number(document.getElementById(this.id).value.replace(/[^0-9\.]+/g,""))
 
     $('#new_sale').submit ->
       $('.price_list').each ->
