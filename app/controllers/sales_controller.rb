@@ -1,6 +1,6 @@
 class SalesController < ApplicationController
   before_filter :authenticate_user!, :except => [:show_sale, :destroy]
-#  before_action :set_sale, only: [:edit, :update]
+  before_action :set_sale, only: [:edit, :update]
   before_action :sale_after_printed, only: [:show, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :create]
   before_action :current_user_destroy, only: [:destroy]
@@ -284,9 +284,9 @@ class SalesController < ApplicationController
   def set_sale
     @sale = Sale.find(params[:id])
     @channels = Channel.all
-    if @sale.printed == true
-      redirect_to root_path, alert: "SO yang anda akan rubah sudah di print."
-    end
+#    if @sale.printed == true
+#      redirect_to root_path, alert: "SO yang anda akan rubah sudah di print."
+#    end
   end
 
   def sale_after_printed
