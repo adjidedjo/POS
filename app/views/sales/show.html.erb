@@ -132,7 +132,7 @@ sales_path, :class => 'btn btn-default' %>
 <% end %>
 <%# check_exported =  @sale.sale_items.where(exported: true) %>
 <% if @sale.all_items_exported? %>
-  <%= link_to t('Pembatalan Order'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+  <%= link_to t('Pembatalan Order'), '#hapus_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
 <% else %>
   <%= link_to t('Hapus Order'), '#hapus_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
 <% end %>
