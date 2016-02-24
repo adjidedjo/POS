@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     collection do
       get "import_intransit"
       post "proses_import_intransit"
+      post "proses_import_intransit_jde"
     end
   end
 

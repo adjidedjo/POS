@@ -1,6 +1,37 @@
 class ChannelCustomersController < ApplicationController
+  require 'csv'
   before_action :set_channel_customer, only: [:show, :edit, :update, :destroy]
   before_action :set_controller, only: [:show, :index]
+
+  def proses_import_intransit_jde
+    tempfile = params[:stock_items]
+    channel_customer = current_user.channel_customer.id
+    CSV.foreach(tempfile.path, headers: true, encoding: "UTF-16") do |row|
+      a_hash = row.to_hash
+      available_item = Item.find_by_kode_barang(a_hash["KodeBrg"])
+      @si_hash = {
+        kode_barang: a_hash["KodeBrg"],
+        nama: available_item.nil? ? "" : available_item.nama,
+        serial: ((a_hash["Serial"].length > 5) ? a_hash["Serial"] : ''),
+        no_so: a_hash["NoSO"],
+        no_pbj: a_hash["NoBPJ"],
+        no_sj: a_hash["NoSJ"],
+        tanggal_sj: a_hash["TglSJ"].to_date,
+        channel_customer_id: channel_customer,
+        store_id: 0,
+        jumlah: ((a_hash["Serial"].length <= 5) ? a_hash['Serial'] : 1),
+        stok_awal: ((a_hash["Serial"].length <= 5) ? a_hash["Serial"] : 1)
+      }
+      ExhibitionStockItem.where(kode_barang: a_hash[:KodeBrg], serial: a_hash[:Serial], no_sj: a_hash[:NoSj],
+        channel_customer_id: current_user.channel_customer.id).first_or_create(@si_hash)
+    end
+    current_user.channel_customer.update_attributes!(kode_channel_customer: @kode_channel_customer_hash[:kode_channel_customer]) if current_user.channel_customer.kode_channel_customer.blank?
+
+    respond_to do |format|
+      format.html { redirect_to item_receipts_receipt_path, notice: 'Intransit sudah berhasil di upload dan lakukan penerimaan barang.' }
+      format.json { render :show, status: :created, location: @showroom }
+    end
+  end
 
   def proses_import_intransit
     tempfile = File.read(params[:stock_items].tempfile)
@@ -47,8 +78,7 @@ class ChannelCustomersController < ApplicationController
   def import_intransit
   end
 
-  # GET /channel_customers
-  # GET /channel_customers.json
+  # GET /channel_customers GET /channel_customers.json
   def index
     @channel_customers = ChannelCustomer.all
     @cc = ChannelCustomer.order(:nama).where("nama like ?", "%#{params[:term]}%")
@@ -59,8 +89,7 @@ class ChannelCustomersController < ApplicationController
     end
   end
 
-  # GET /channel_customers/1
-  # GET /channel_customers/1.json
+  # GET /channel_customers/1 GET /channel_customers/1.json
   def show
     user = (current_user.admin? || current_user.role == 'controller') ? @channel_customer : current_user.channel_customer
     @supervisors = user.supervisor_exhibitions
@@ -78,8 +107,7 @@ class ChannelCustomersController < ApplicationController
   def edit
   end
 
-  # POST /channel_customers
-  # POST /channel_customers.json
+  # POST /channel_customers POST /channel_customers.json
   def create
     @channel_customer = ChannelCustomer.new(channel_customer_params)
 
@@ -94,8 +122,7 @@ class ChannelCustomersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /channel_customers/1
-  # PATCH/PUT /channel_customers/1.json
+  # PATCH/PUT /channel_customers/1 PATCH/PUT /channel_customers/1.json
   def update
     respond_to do |format|
       if @channel_customer.update(channel_customer_params)
@@ -108,8 +135,7 @@ class ChannelCustomersController < ApplicationController
     end
   end
 
-  # DELETE /channel_customers/1
-  # DELETE /channel_customers/1.json
+  # DELETE /channel_customers/1 DELETE /channel_customers/1.json
   def destroy
     @channel_customer.destroy
     respond_to do |format|
@@ -119,9 +145,9 @@ class ChannelCustomersController < ApplicationController
   end
 
   private
-    def set_controller
-      @controller = current_user.role == 'controller'
-    end
+  def set_controller
+    @controller = current_user.role == 'controller'
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_channel_customer
