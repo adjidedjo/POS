@@ -289,7 +289,7 @@ DEPENDENCIES
   prawn (~> 0.12.0)
   rails (= 4.2.0)
   roadie
-  ruby-oci8
+  ruby-oci8 (~> 2.2.1)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simple_form
