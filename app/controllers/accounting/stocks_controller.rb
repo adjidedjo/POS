@@ -2,7 +2,8 @@ class Accounting::StocksController < ApplicationController
   before_action :set_controller, only: [:show, :mutasi_stock]
 
   def available_stock
-    @stock = ExhibitionStockItem.select('*, sum(jumlah) as total').where(checked_out: false, channel_customer_id: params[:cc_id]).where.not(jumlah: 0).group([:kode_barang, :serial])
+    @stock = ExhibitionStockItem.select('*, sum(jumlah) as total').where(checked_in: true, checked_out: false,
+      channel_customer_id: params[:cc_id]).where.not(jumlah: 0).group([:kode_barang, :serial])
     @channel = ChannelCustomer.find(params[:cc_id])
 
     respond_to do |format|
