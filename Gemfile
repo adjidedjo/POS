@@ -47,6 +47,12 @@ gem 'paper_trail', '~> 4.0.0.beta'
 gem "browser"
 gem 'autonumeric-rails'
 
+gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
+# Use oracle as the database for Active Record
+gem 'ruby-oci8'
+
+gem 'roadie'
+
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server gem 'unicorn'

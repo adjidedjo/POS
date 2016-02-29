@@ -1,5 +1,77 @@
-<p>Dear Sales Counter</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Laporan Upload Data Penjualan Harian</title>
+    <style type="text/css">
+      table.tableizer-table {
+        border: 1px solid #CCC;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        width: "100%";
+      }
+      .tableizer-table td {
+        padding: 4px;
+        margin: 3px;
+        border: 1px solid #ccc;
+      }
+      .tableizer-table th {
+        background-color: #104E8B;
+        color: #FFF;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
 
-<p>Berikut kami sertakan file Order dari <%= @user.nama.upcase %></p>
+    <p>Dear Sales Counter</p>
 
-<p>Thanks<p>
+    <p>Berikut kami sertakan file Order dari <%= @user.nama.upcase %></p>
+
+    <p>Order Header</p>
+    <p>Ship To: <%= @user.address_number %></p>
+    <p>Sold To: <%= @user.address_number %></p>
+    <p>Address Line : <%= @order.first.sale.pos_ultimate_customer.alamat %></p>
+    <p>City: <%=  @order.first.sale.pos_ultimate_customer.kota.capitalize %></p>
+    <p>Phone: <%=  @order.first.sale.pos_ultimate_customer.no_telepon+"/"+@order.first.sale.pos_ultimate_customer.handphone %></p>
+
+    <p>Order Detail</p>
+    <br />
+    <p>Bagi SC yang telah menggunakan JDE, silahkan atur kolom kolom Sales Order Detail seperti table dibawah ini. Jangan lupa di Save</p>
+    <p>Lalu, Copy semua Order Detail dan Paste di kolom Item Number JDE</p>
+    <table class="tableizer-table">
+      <head>
+      <tr>
+        <th>Item Number</th>
+        <th>Description</th>
+        <th>Description 2</th>
+        <th>Quantity Ordered</th>
+        <th>Unit Price</th>
+        <th>Requested Date</th>
+        <th>*Item Refference*</th>
+      </tr>
+
+      <% @order.each do |order| %>
+        <% @item_resize = [] %>
+        <% unless order.kode_barang.include?("T") || order.taken == true %>
+          <tr>
+            <td><%= JdeItemMaster.find_item_number(order.kode_barang) %></td>
+            <td><%= JdeItemMaster.find_item_desc1(order.kode_barang) %></td>
+            <td><%= JdeItemMaster.find_item_desc2(order.kode_barang) %></td>
+            <td><%= order.jumlah  %></td>
+            <td><%= order.price_list %></td>
+            <td><%= order.tanggal_kirim.strftime("%d/%m/%Y") %></td>
+            <td><%= order.keterangan.blank? ? ""  : order.keterangan %></td>
+          </tr>
+        <% end %>
+        <% if order.kode_barang.include?("T") %>
+          <% @item_resize << order %>
+        <% end %>
+      <% end %>
+    </table>
+  </body>
+  <% if @item_resize.present? %>
+    <p>NOTE: TERDAPAT BARANG KHUSUS UNTUK ORDER INI</p>
+  <% end %>
+</body>
+</html>

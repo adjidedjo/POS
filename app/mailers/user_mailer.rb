@@ -24,7 +24,9 @@ class UserMailer < ApplicationMailer
     mail(to: recipient, subject: "Return Stock from POS Application")
   end
 
-  def order_pameran(recipient, nama, user)
+  def order_pameran(recipient, nama, user, order)
+    @order_head = Sale.find(order.first.sale_id)
+    @order = order
     @user = user
     attachments["#{nama}.xml"] = File.read("#{Rails.root}/public/#{nama}.xml")
     mail(to: recipient, subject: "Sales Order from POS Application")
