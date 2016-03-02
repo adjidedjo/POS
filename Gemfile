@@ -15,7 +15,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer', platforms: :ruby
 
 # #error notifier
-gem 'exception_notification',  "~> 4.0.0"
+gem 'exception_notification', '~> 4.0.1'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -32,8 +32,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 # #bootstrap
 gem "less-rails"
-gem 'twitter-bootstrap-rails'
-gem 'simple_form'
+gem 'twitter-bootstrap-rails', '3.2.0'
+gem 'simple_form', '3.1.0'
 gem 'jquery-datatables-rails', '~> 3.1.1'
 # #pdf
 gem 'prawn', '~> 0.12.0'
@@ -49,7 +49,7 @@ gem 'autonumeric-rails'
 
 gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
-gem 'ruby-oci8'
+gem 'ruby-oci8', '~> 2.1.8'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
