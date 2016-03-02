@@ -47,7 +47,7 @@ gem 'paper_trail', '~> 4.0.0.beta'
 gem "browser", "~> 0.8.0"
 gem 'autonumeric-rails'
 
-gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
+#gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
 #gem 'ruby-oci8', "~> 2.1.8"
 
