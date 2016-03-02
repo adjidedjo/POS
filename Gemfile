@@ -49,7 +49,7 @@ gem 'autonumeric-rails'
 
 gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
-gem 'ruby-oci8', "~> 2.2.1"
+gem 'ruby-oci8', "~> 2.1.8"
 
 gem 'roadie'
 

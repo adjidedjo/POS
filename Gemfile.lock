@@ -198,7 +198,7 @@ GEM
     roadie (3.1.1)
       css_parser (~> 1.3.4)
       nokogiri (>= 1.5.0, < 1.7.0)
-    ruby-oci8 (2.2.1)
+    ruby-oci8 (2.1.8)
     ruby-rc4 (0.1.5)
     sass (3.4.13)
     sass-rails (5.0.1)
@@ -289,7 +289,7 @@ DEPENDENCIES
   prawn (~> 0.12.0)
   rails (= 4.2.0)
   roadie
-  ruby-oci8 (~> 2.2.1)
+  ruby-oci8 (~> 2.1.8)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simple_form
