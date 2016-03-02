@@ -15,7 +15,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'therubyracer', platforms: :ruby
 
 # #error notifier
-gem 'exception_notification'
+gem 'exception_notification',  "~> 4.0.0"
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -44,14 +44,12 @@ gem 'paper_trail', '~> 4.0.0.beta'
 #
 # #gem 'activeadmin', github: 'activeadmin'
 
-gem "browser"
+gem "browser", "~> 0.8.0"
 gem 'autonumeric-rails'
 
 gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
 gem 'ruby-oci8', "~> 2.1.8"
-
-gem 'roadie'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
@@ -62,6 +60,7 @@ gem 'roadie'
 # thin
 gem 'thin'
 
+gem 'net-ssh', '~> 2.9.2'
 gem 'capistrano-rvm'
 gem 'capistrano'
 gem 'capistrano-rails', '~> 1.1', require: false
