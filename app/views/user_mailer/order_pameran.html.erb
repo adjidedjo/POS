@@ -33,7 +33,7 @@
     <p>Sold To: <%= @user.address_number %></p>
     <p>Address Line : <%= @order.first.sale.pos_ultimate_customer.alamat %></p>
     <p>City: <%=  @order.first.sale.pos_ultimate_customer.kota.capitalize %></p>
-    <p>Phone: <%=  @order.first.sale.pos_ultimate_customer.no_telepon+"/"+@order.first.sale.pos_ultimate_customer.handphone %></p>
+    <p>Phone: <%= @order.first.sale.pos_ultimate_customer.handphone %></p>
 
     <p>Order Detail</p>
     <br />
