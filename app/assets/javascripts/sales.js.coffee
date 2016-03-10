@@ -253,6 +253,7 @@ jQuery ->
           document.getElementById(bonus).checked = false
       $('#'+taken).click ->
         if $(this).is(':checked')
+          $('#divLoading').addClass("show")
           $.ajax
             url: '/sales/stock_availability',
             data: {
@@ -260,7 +261,13 @@ jQuery ->
               'element_id': $(this).attr("id"),
               'jumlah': $('#'+jumlah).val()}
             datatype: 'script'
+            success: () ->
+              $('#divLoading').removeClass("show")
+              document.getElementById(nama_barang).readOnly = true
+              document.getElementById(kode_barang).readOnly = true
+              document.getElementById(get_id).readOnly = true
             error: () ->
+              $('#divLoading').removeClass("show")
               alert "Silahkan Cari barang terlebih dahulu"
               document.getElementById(taken).checked = false
         if !$(this).is(':checked')
