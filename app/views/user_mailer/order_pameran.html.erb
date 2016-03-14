@@ -29,11 +29,14 @@
     <p>Berikut kami sertakan file Order dari <%= @user.nama.upcase %></p>
 
     <p>Order Header</p>
+    <p>No SO: <%= @order.first.sale.no_so %></p>
     <p>Ship To: <%= @user.address_number %></p>
     <p>Sold To: <%= @user.address_number %></p>
+    <p>Customer Name : <%= @order.first.sale.pos_ultimate_customer.nama %></p>
     <p>Address Line : <%= @order.first.sale.pos_ultimate_customer.alamat %></p>
     <p>City: <%=  @order.first.sale.pos_ultimate_customer.kota.capitalize %></p>
-    <p>Phone: <%= @order.first.sale.pos_ultimate_customer.handphone %></p>
+    <p>Phone: <%= @order.first.sale.pos_ultimate_customer.no_telepon %></p>
+    <p>Information : <%= @order.first.sale.cara_bayar == "um" ? "Uang Muka" : "Lunas" %></p>
 
     <p>Order Detail</p>
     <br />
