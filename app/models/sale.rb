@@ -131,6 +131,7 @@ class Sale < ActiveRecord::Base
       elsif ultimate_customer.first.no_telepon != "0"
         ultimate_customer.first.update_attributes!(puc)
       end
+      netto_brand
       self.pos_ultimate_customer_id = ultimate_customer.first.id
     end
   end
