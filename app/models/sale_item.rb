@@ -90,7 +90,6 @@ class SaleItem < ActiveRecord::Base
   end
 
   before_update do
-    update_stocking_type
     self.price_list = price_list.gsub(/,/, '') if price_list.to_s.include? ","
     if jumlah_changed? && taken == true && serial.present?
       sale_item_jumlah = SaleItem.find(self.id).jumlah.to_i
