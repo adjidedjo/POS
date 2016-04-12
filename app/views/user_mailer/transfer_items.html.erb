@@ -1,0 +1,22 @@
+<p>Dear Admin Gudang</p>
+
+<p>Diinformasikan bahwa telah terjadi Transfer Barang dari  <%= ChannelCustomer.find(@transfer_item.ash).nama %> dan <%= ChannelCustomer.find(@transfer_item.tsh).nama %></p>
+
+<p>Berikut barang yang telah terkirim</p>
+
+<table class="tableizer-table">
+  <head>
+  <tr>
+    <th>Serial</th>
+    <th>Kode Barang</th>
+    <th>Jumlah</th>
+  </tr>
+
+  <tr>
+    <td><%= @transfer_item.sn %></td>
+    <td><%= @transfer_item.brg %></td>
+    <td><%= @transfer_item.jml %></td>
+  </tr>
+</table>
+
+<p>Thanks<p>

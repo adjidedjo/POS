@@ -84,5 +84,5 @@ file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
 file.write(xml_data)
 file.close
 @sales.group_by(&:brand_id).keys.each do |group|
-  UserMailer.order_pameran(@user.recipients.find_by_brand_id(group).sales_counter.email, "#{set_file_name}", @user, @sales).deliver_now
+  UserMailer.order_pameran(@user.recipients.find_by_brand_id(group).sales_counter.email, "#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
 end

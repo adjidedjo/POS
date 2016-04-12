@@ -1,0 +1,15 @@
+<%= simple_form_for(@adjusment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :nama_channel, label: "Showroom", input_html: {data: {autocomplete_source: find_showroom_adjusments_path}} %>
+    <%= f.input :serial %>
+    <%= f.input :kode_barang %>
+    <%= f.input :jumlah %>
+    <%= f.input :alasan %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+  </div>
+<% end %>

@@ -2,7 +2,7 @@ class ItemReceiptsController < ApplicationController
   before_action :get_store_id
 
   def check_item_value
-    check_stok = ExhibitionStockItem.where(kode_barang: params[:kodebrg], no_sj: params[:nosj], channel_customer_id: params[:cc]).sum(:jumlah)
+    check_stok = ExhibitionStockItem.where(kode_barang: params[:kodebrg], no_sj: params[:nosj], channel_customer_id: params[:cc], checked_in: false).sum(:jumlah)
     @element_id = params[:element_id]
     if check_stok != params[:val].to_i
       raise params[:val]

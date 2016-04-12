@@ -66,6 +66,7 @@ class SaleItem < ActiveRecord::Base
     end
 
     if serial.present?
+      update_stocking_type
       get_ex_no_sj = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ? and jumlah > ?",
         self.sale.channel_customer_id, kode_barang, 0).first
       self.ex_no_sj = get_ex_no_sj.no_sj
@@ -89,6 +90,7 @@ class SaleItem < ActiveRecord::Base
   end
 
   before_update do
+    update_stocking_type
     self.price_list = price_list.gsub(/,/, '') if price_list.to_s.include? ","
     if jumlah_changed? && taken == true && serial.present?
       sale_item_jumlah = SaleItem.find(self.id).jumlah.to_i
@@ -151,6 +153,8 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
         end
         self.update_attributes!(ex_no_sj: @exsj.join(', '))
       else
+        #update stocking type sales order detail
+
         count_stock = stock.count
         (1..count_stock).each do |stok_no_serial|
           s_noserial = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang = ? and jumlah > 0
@@ -188,5 +192,10 @@ and checked_in = true and checked_out = false", self.sale.channel_customer_id, s
         nama: self.nama_barang, tanggal: Time.now, qty_out: self.jumlah, keterangan: "S", no_sj: get_no_sj_from_serial.no_sj,
         serial: get_no_sj_from_serial.serial, sale_id: self.sale.id)
     end
+  end
+
+  def update_stocking_type
+    stock = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang = ? and checked_in = true and checked_out = false", self.sale.channel_customer_id, self.kode_barang).first
+    self.stocking_type = stock.stocking_type
   end
 end

@@ -26,7 +26,7 @@ jQuery ->
       bDestroy: true
     })
 
-    $('#search_sale_dari_tanggal').datepicker({
+    $('#date').datepicker({
       dateFormat: 'yy-mm-dd',
       maxDate: '0'
     })

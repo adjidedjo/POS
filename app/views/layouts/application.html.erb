@@ -63,11 +63,13 @@
                   <%= render 'layouts/controller' %>
                 <% elsif current_user.role == 'accounting' %>
                   <%= menu_item "Verify Payment", accounting_verifying_payments_path %>
+                  <%= menu_item "Adjusment In/Out", adjusments_path   %>
                   <%= menu_item "Stock & Penjualan", accounting_stocks_mutasi_stock_path   %>
                 <% else %>
                 </li>
                 <%= drop_down "Stok" do %>
                   <%= menu_item "Upload Intransit", import_intransit_channel_customers_path %>
+                  <%= menu_item "Transfer Barang", new_transfer_item_path  %>
                   <%= menu_item "Penerimaan Barang", item_receipts_receipt_path  %>
                   <%= menu_item "Nota Retur Display", return_items_return_path %>
                 <% end %>
@@ -75,16 +77,21 @@
                 <%= menu_item "Pelunasan", new_acquittance_path %>
     <%#= menu_item "Revisi Order", rekap_pelunasan_acquittances_path %>
                 <%= drop_down "Export" do %>
-                  <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
-                  <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
-                  <%= menu_item "Rekap SO Serenity", reports_sales_counter_path(brand_id: 6)  %>
-                  <%= menu_item "Rekap SO Royal", reports_sales_counter_path(brand_id: 5)  %>
-                  <%= menu_item "Rekap SO Technogel", reports_sales_counter_path(brand_id: 7)  %>
+                  <%= menu_item "Reguler Elite", reports_sales_counter_path(brand_id: 2, st: "RE")  %>
+                  <%= menu_item "Reguler Lady", reports_sales_counter_path(brand_id: 4, st: "RE")  %>
+                  <%= menu_item "Reguler Serenity", reports_sales_counter_path(brand_id: 6, st: "RE")  %>
+                  <%= menu_item "Reguler Royal", reports_sales_counter_path(brand_id: 5, st: "RE")  %>
+                  <%= menu_item "Reguler Technogel", reports_sales_counter_path(brand_id: 7, st: "RE")  %>
                   <%= menu_item "Pelunasan", rekap_pelunasan_acquittances_path(cc_id: current_user.channel_customer.id) %>
+                  <%= drop_down_divider %>
+                  <%= menu_item "CS Elite", reports_sales_counter_path(brand_id: 2, st: "CS")  %>
+                  <%= menu_item "CS Lady", reports_sales_counter_path(brand_id: 4, st: "CS")  %>
+                  <%= menu_item "CS Serenity", reports_sales_counter_path(brand_id: 6, st: "CS")  %>
                 <% end %>
                 <%= drop_down "Report" do %>
                   <%= menu_item "Rekap SO", sales_path %>
                   <%= menu_item "Rekap Stock", reports_available_stock_path %>
+                  <%= menu_item "Rekap Transfer Barang", transfer_items_path %>
                   <%= menu_item "Laporan Mutasi Stock", reports_mutasi_stock_path %>
                   <%= menu_item "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path %>
                   <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path %>

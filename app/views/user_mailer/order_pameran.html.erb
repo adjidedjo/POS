@@ -56,7 +56,7 @@
 
       <% @order.each do |order| %>
         <% @item_resize = [] %>
-        <% unless order.kode_barang.include?("T") || order.taken == true %>
+        <% unless order.kode_barang[11] == "T" || order.taken == true %>
           <tr>
             <td><%= JdeItemMaster.find_item_number(order.kode_barang) %></td>
             <td><%= JdeItemMaster.find_item_desc1(order.kode_barang) %></td>

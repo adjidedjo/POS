@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Adjusments</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Channel customer</th>
+      <th>Serial</th>
+      <th>Kode barang</th>
+      <th>Nama barang</th>
+      <th>Jumlah</th>
+      <th>Alasan</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @adjusments.each do |adjusment| %>
+      <tr>
+        <td><%= ChannelCustomer.find(adjusment.channel_customer_id).nama %></td>
+        <td><%= adjusment.serial %></td>
+        <td><%= adjusment.kode_barang %></td>
+        <%  nama = Item.find_by_kode_barang(adjusment.kode_barang) %>
+        <td><%= nama.present? ? nama.nama : "" %></td>
+        <td><%= adjusment.jumlah %></td>
+        <td><%= adjusment.alasan %></td>
+        <td><%= link_to 'Show', adjusment %></td>
+        <td><%= link_to 'Edit', edit_adjusment_path(adjusment) %></td>
+        <td><%= link_to 'Destroy', adjusment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Adjusment', new_adjusment_path, class: 'btn-primary' %>
