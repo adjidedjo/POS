@@ -1,14 +1,30 @@
 Rails.application.routes.draw do
 
+  resources :adjusments do
+    collection do
+      get 'find_showroom'
+    end
+  end
+
+  resources :transfer_items do
+    collection do
+      get 'find_serial_on_stock'
+      get 'find_item_on_stock'
+      get 'get_nama_from_serial'
+      get 'get_kode_from_nama'
+      get 'get_showrooms'
+    end
+  end
+
   resources :warehouse_admins
 
   namespace :accounting do
-   get 'stocks/mutasi_stock'
-   get 'stocks/view_stock'
-   get 'stocks/view_selisih_intransit'
-   get 'stocks/view_selisih_stock'
-   get 'stocks/view_penjualan'
-   get 'stocks/available_stock'
+    get 'stocks/mutasi_stock'
+    get 'stocks/view_stock'
+    get 'stocks/view_selisih_intransit'
+    get 'stocks/view_selisih_stock'
+    get 'stocks/view_penjualan'
+    get 'stocks/available_stock'
     resources :verifying_payments do
       collection do
         put 'verify'
@@ -65,6 +81,8 @@ Rails.application.routes.draw do
   get 'item_receipts/receipt_by_serial'
   get 'item_receipts/check_item_value'
   put 'item_receipts/process_receipt_by_serial'
+  get 'item_receipts/receipt_jde'
+  put 'item_receipts/process_receipt_jde'
 
   get 'reports/index'
   get 'reports/sales_counter'
@@ -79,6 +97,16 @@ Rails.application.routes.draw do
   get 'reports/exported'
 
   devise_for :users, controllers: { sessions: "users/sessions" }
+
+  devise_scope :user do
+    authenticated :user do
+      root controller: :page, :action => 'home'
+    end
+
+    unauthenticated do
+      root 'devise/sessions#new', as: :unauthenticated_root
+    end
+  end
 
   get 'page/home'
   get 'page/download_manual_book'
@@ -118,11 +146,10 @@ Rails.application.routes.draw do
 
   resources :venues
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  # The priority is based upon order of creation: first created -> highest priority. See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root controller: :page, :action => 'home'
+#  root controller: :page, :action => 'home'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
