@@ -35,7 +35,7 @@ class UserMailer < ApplicationMailer
     @order = order
     @user = user
     attachments["#{nama}.xml"] = File.read("#{Rails.root}/public/#{nama}.xml")
-    mail(to: recipient, subject: "Sales Order #{type} from POS Application")
+    mail(to: recipient, subject: "Sales Order #{type} from POS Application", cc: "aji.y@ras.co.id")
   end
 
   def pelunasan(recipient, nama, user)
