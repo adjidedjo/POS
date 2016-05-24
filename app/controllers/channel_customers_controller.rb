@@ -20,8 +20,7 @@ class ChannelCustomersController < ApplicationController
         channel_customer_id: channel_customer,
         store_id: 0,
         jumlah: ((a_hash["Serial"].length <= 5) ? a_hash['Serial'] : 1),
-        stok_awal: ((a_hash["Serial"].length <= 5) ? a_hash["Serial"] : 1),
-        stocking_type: ((a_hash["StatusSO"] == 'N') ? 'RE' : 'CS')
+        stok_awal: ((a_hash["Serial"].length <= 5) ? a_hash["Serial"] : 1)
       }
       ExhibitionStockItem.where(kode_barang: a_hash[:KodeBrg], serial: a_hash[:Serial], no_sj: a_hash[:NoSj],
         channel_customer_id: current_user.channel_customer.id).first_or_create(@si_hash)
@@ -54,7 +53,8 @@ class ChannelCustomersController < ApplicationController
         channel_customer_id: channel_customer,
         store_id: 0,
         jumlah: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1),
-        stok_awal: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1)
+        stok_awal: ((si.at_xpath("Serial").text.length <= 5) ? si.at_xpath("Serial").text : 1),
+        stocking_type: ((si.at_xpath("StatusSO").text == 'N') ? 'RE' : 'CS')
       }
       item_hash = {
         kode_barang: si.at_xpath("KodeBrg").text,
