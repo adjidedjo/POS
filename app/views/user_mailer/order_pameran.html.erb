@@ -52,6 +52,7 @@
         <th>Extended Price</th>
         <th>Requested Date</th>
         <th>*Item Refference*</th>
+        <th>Stocking Type</th>
       </tr>
 
       <% @order.each do |order| %>
@@ -65,6 +66,7 @@
             <td><%= order.price_list %></td>
             <td><%= order.tanggal_kirim.strftime("%d/%m/%Y") %></td>
             <td><%= order.keterangan.blank? ? ""  : order.keterangan %></td>
+            <td><%= order.stocking_type.blank? ? ""  : order.stocking_type %></td>
           </tr>
         <% end %>
         <% if order.kode_barang.include?("T") %>
