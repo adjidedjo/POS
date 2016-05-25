@@ -53,11 +53,12 @@
         <th>Requested Date</th>
         <th>*Item Refference*</th>
         <th>Stocking Type</th>
+        <th>Take Away</th>
       </tr>
 
       <% @order.each do |order| %>
         <% @item_resize = [] %>
-        <% unless order.kode_barang[11] == "T" || order.taken == true %>
+        <% unless order.kode_barang[11] == "T" %>
           <tr>
             <td><%= JdeItemMaster.find_item_number(order.kode_barang) %></td>
             <td><%= JdeItemMaster.find_item_desc1(order.kode_barang) %></td>
@@ -67,6 +68,7 @@
             <td><%= order.tanggal_kirim.strftime("%d/%m/%Y") %></td>
             <td><%= order.keterangan.blank? ? ""  : order.keterangan %></td>
             <td><%= order.stocking_type.nil? ? ""  : order.stocking_type %></td>
+            <td><%= order.taken? ? 'YES' : 'NO' %></td>
           </tr>
         <% end %>
         <% if order.kode_barang.include?("T") %>
