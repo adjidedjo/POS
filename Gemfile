@@ -64,6 +64,9 @@ gem 'capistrano-rvm'
 gem 'capistrano'
 gem 'capistrano-rails', '~> 1.1', require: false
 gem 'capistrano-bundler', '~> 1.1', require: false
+gem "activerecord-oracle_enhanced-adapter", "~> 1.4.0"
+# Use oracle as the database for Active Record
+gem 'ruby-oci8'
 
 group :development, :test do
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
