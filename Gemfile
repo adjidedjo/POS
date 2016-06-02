@@ -46,9 +46,9 @@ gem 'paper_trail', '~> 4.0.0.beta'
 gem "browser", "~> 0.8.0"
 gem 'autonumeric-rails'
 
-#gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
+gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
-#gem 'ruby-oci8', '~> 2.1.8'
+gem 'ruby-oci8', '~> 2.1.8'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
@@ -64,9 +64,6 @@ gem 'capistrano-rvm'
 gem 'capistrano'
 gem 'capistrano-rails', '~> 1.1', require: false
 gem 'capistrano-bundler', '~> 1.1', require: false
-gem "activerecord-oracle_enhanced-adapter", "~> 1.4.0"
-# Use oracle as the database for Active Record
-gem 'ruby-oci8', '~> 2.1.8'
 
 group :development, :test do
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console

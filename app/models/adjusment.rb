@@ -1,12 +1,18 @@
 class Adjusment < ActiveRecord::Base
 
   validates :jumlah,  :alasan, :nama_channel, presence: true
+  validate :check_item
+
+  def check_item
+    errors.add(:kode_barang, "Barang Tidak Terdaftar, hubungi Admin!") if Item.where(kode_barang: self.kode_barang).empty?
+  end
 
   before_create do
     showroom = ChannelCustomer.where(nama: self.nama_channel).first
     self.channel_customer_id = showroom.id
     self.kode_barang = self.kode_barang.upcase
     self.alasan = self.alasan.upcase
+    self.no_sj = self.no_sj.upcase
   end
 
   after_create do
@@ -14,14 +20,19 @@ class Adjusment < ActiveRecord::Base
     if showroom.present?
       serial = ExhibitionStockItem.where(channel_customer_id: showroom.id, serial: self.serial)
       kode = ExhibitionStockItem.where(channel_customer_id: showroom.id, kode_barang: self.kode_barang)
-      nama = serial.present? ? serial.first.nama : kode.first.nama
-      self.kode_barang = serial.first.kode_barang if self.kode_barang.blank?
-      serial.first.update_attributes!(jumlah: (serial.first.jumlah.to_i + self.jumlah.to_i)) if (self.serial.present? && self.kode_barang.blank?) || (self.serial.present? && self.kode_barang.present?)
-      kode.first.update_attributes!(jumlah: (kode.first.jumlah + self.jumlah.to_i)) if self.serial.blank? && self.kode_barang.present?
-      if self.serial.present?
-        creating_item_mutation(showroom, nama, self.jumlah)
+      kode_item = Item.where(kode_barang: self.kode_barang)
+      if serial.present?
+        serial.first.update_attributes!(jumlah: (serial.first.jumlah.to_i + self.jumlah.to_i)) if (self.serial.present? && self.kode_barang.blank?) || (self.serial.present? && self.kode_barang.present?)
+      elsif kode.present? && serial.nil?
+        kode.first.update_attributes!(jumlah: (kode.first.jumlah + self.jumlah.to_i)) if self.serial.blank? && self.kode_barang.present?
       else
-        creating_item_mutation(showroom, nama, self.jumlah)
+        ExhibitionStockItem.where(kode_barang: self.kode_barang, serial: self.serial, channel_customer_id: showroom.id,
+          jumlah: self.jumlah.to_i, no_sj: self.no_sj)
+      end
+      if self.serial.present?
+        creating_item_mutation(showroom, kode_item.first.nama, self.jumlah)
+      else
+        creating_item_mutation(showroom, kode_item.first.nama, self.jumlah)
       end
     end
   end

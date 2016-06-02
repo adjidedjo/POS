@@ -73,6 +73,6 @@ class AdjusmentsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def adjusment_params
-    params.require(:adjusment).permit(:channel_customer_id, :kode_barang, :jumlah, :alasan, :serial, :nama_channel)
+    params.require(:adjusment).permit(:channel_customer_id, :kode_barang, :jumlah, :alasan, :serial, :nama_channel, :no_sj)
   end
 end
