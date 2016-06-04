@@ -60,12 +60,12 @@ gem 'ruby-oci8', '~> 2.1.8'
 gem 'thin'
 
 gem 'net-ssh', '~> 2.9.2'
-gem 'capistrano-rvm'
-gem 'capistrano'
-gem 'capistrano-rails', '~> 1.1', require: false
-gem 'capistrano-bundler', '~> 1.1', require: false
 
 group :development, :test do
+  gem 'capistrano'
+  gem 'capistrano-rvm'
+  gem 'capistrano-rails', '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'debugger'
 
