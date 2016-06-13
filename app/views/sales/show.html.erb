@@ -5,11 +5,13 @@
 
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>Channel Customer:</strong> <%= current_user.channel_customer.nama.titleize %></dt><br />
+    <dt><strong>So Manual:</strong> <%= @sale.so_manual.present? ? @sale.so_manual : "-" %></dt><br />
+    <dt><strong>Channel Customer:</strong> <%= @sale.channel_customer.nama.titleize %></dt><br />
     <dt><strong>Tanggal:</strong> <%= @sale.created_at.to_date.strftime('%d %B %Y') %></dt><br />
+    <dt><strong>Produk Konsultan:</strong> <%= @sale.sales_promotion.nama.upcase %></dt><br />
   </div><br />
   <div>
-    <table id="sale_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+    <table id="sale_item" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
           <th class="all">Kode Barang</th>
@@ -17,7 +19,9 @@
           <th class="min-tablet-l">Satuan</th>
           <th class="all">Jumlah</th>
           <th class="min-tablet-l">Bonus</th>
+          <th class="min-tablet-l">Harga</th>
           <th class="min-tablet-l">Tanggal Kirim</th>
+          <th class="min-tablet-l">Taken</th>
         </tr>
       </thead>
       <tbody>
@@ -28,17 +32,19 @@
             <td>PCS</td>
             <td><%= sale_items.jumlah %></td>
             <td><%= sale_items.bonus? ? "Bonus" : "-" %></td>
+            <td><%= currency(sale_items.price_list) %></td>
             <td><%= sale_items.tanggal_kirim.strftime('%d %B %Y') %></td>
+            <td><%= sale_items.taken? ? "Yes" : "No" %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
   </div>
   <div class="col-md-4">
-    <dt><strong>Nama Customer :</strong> <%= @sale.customer.capitalize %></dt><br />
-    <dt><strong>No Telp/Hp          :</strong> <%= @sale.phone_number %>, <%= @sale.hp1 %>, <%= @sale.hp2 %></dt><br />
-    <dt><strong>Alamat Kirim       :</strong> <%= @sale.alamat_kirim %></dt><br />
-    <dt><strong>Kota       :</strong> <%= @sale.kota %></dt>
+    <dt><strong>Nama Customer :</strong> <%= @sale.pos_ultimate_customer.nama.capitalize %></dt><br />
+    <dt><strong>No Telp/Hp          :</strong> <%= @sale.pos_ultimate_customer.no_telepon %>, <%= @sale.pos_ultimate_customer.handphone %>, <%= @sale.pos_ultimate_customer.handphone1 %></dt><br />
+    <dt><strong>Alamat Kirim       :</strong> <%= @sale.pos_ultimate_customer.alamat %></dt><br />
+    <dt><strong>Kota       :</strong> <%= @sale.pos_ultimate_customer.kota %></dt>
   </div>
   <br />
   <div class="col-md-7">
@@ -67,18 +73,33 @@
       </div>
 
       <div class="row-fluid form-inline" style="width: 500px; padding-bottom: 5px;">
-        <% if @tipe_pembayaran.include? ("Kartu Debit") %>
-          <dt style="display: inline-block; width: 90px;"><strong>Kartu Debit:</strong></dt>
-          <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(@sale.payment_with_debit_card.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+        <% if @tipe_pembayaran.include? ("Transfer") %>
+          <dt><strong>Transfer To</strong></dt>
+          <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= @sale.bank_account.name %>:</strong></dt>
+          <dt style="text-align: right; display: inline-block; width: 200px;"><%= currency(@sale.jumlah_transfer) %></dt><br />
         <% end %>
       </div>
 
       <div class="row-fluid form-inline" style="width: 500px; padding-bottom: 5px;">
-        <% if @tipe_pembayaran.include? ("Kartu Kredit") %>
+        <% if @tipe_pembayaran.include? ("Debit Card") %>
+          <dt><strong>Kartu Debit</strong></dt>
+          <% @sale.payment_with_debit_cards.each do |cc| %>
+            <% unless cc.nama_kartu.blank? %>
+              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>:</strong></dt>
+              <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(cc.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="row-fluid form-inline" style="width: 500px; padding-bottom: 5px;">
+        <% if @tipe_pembayaran.include? ("Credit Card") %>
           <dt><strong>Kartu Kredit</strong></dt>
           <% @sale.payment_with_credit_cards.each do |cc| %>
-            <dt style="display: inline-block; width: 90px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu %>:</strong></dt>
-            <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(cc.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+            <% unless cc.nama_kartu.blank? %>
+              <dt style="display: inline-block; width: 200px; padding-left: 15px;"><strong><%= cc.nama_kartu.nil? ? '' : cc.nama_kartu.upcase %>:</strong></dt>
+              <dt style="text-align: right; display: inline-block; width: 200px;"><%= number_to_currency(cc.jumlah, precision:0, unit: "Rp. ", separator: ".", delimiter: ".") %></dt><br />
+            <% end %>
           <% end %>
         <% end %>
       </div>
@@ -96,16 +117,25 @@
   <div class="col-md-12">
     <dt><strong>Jenis Pembayaran :</strong> <%= @sale.tipe_pembayaran.capitalize %></dt><br />
     <dt><strong>Keterangan Pembayaran :</strong> <%= (@sale.cara_bayar == 'um') ? 'Uang Muka' : @sale.cara_bayar.capitalize %></dt><br />
+    <% if @sale.acquittances.present? %>
+      <dt><strong>Pelunasan :</strong> <%= (@sale.cara_bayar == 'um') ? 'Uang Muka' : @sale.cara_bayar.capitalize %></dt><br />
+    <% end %>
   </div>
 </div>
 
 <%#= link_to t('.back', :default => t("helpers.links.back")),
 sales_path, :class => 'btn btn-default' %>
-<%= link_to "new", new_sale_path, :class => 'btn btn-primary' %>
+<%= link_to "SO Baru", new_sale_path, :class => 'btn btn-primary' %>
 <%= link_to "Print (PDF)", sale_path(@sale, :format => 'pdf'), :class => 'btn btn-default' %>
-<%#= link_to t('.edit', :default => t("helpers.links.edit")), '#edit_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<% if @sale.created_at.to_date > 1.month.ago.to_date %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_sale_path(@sale), :class => 'btn btn-default' %>
+<% end %>
 <%# check_exported =  @sale.sale_items.where(exported: true) %>
-<%= link_to t('Batal Order'), '#destroy_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<% if @sale.all_items_exported? %>
+  <%= link_to t('Pembatalan Order'), '#hapus_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<% else %>
+  <%= link_to t('Hapus Order'), '#hapus_order', :class => 'btn btn-default', 'data-toggle' => 'modal' %>
+<% end %>
 
 <div class="modal fade" id="destroy_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -115,11 +145,38 @@ sales_path, :class => 'btn btn-default' %>
         <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
       </div>
       <div class="modal-body">
-        <%= form_tag sale_path(@sale), :method => :delete do %>
+        <%= form_tag request_cancel_order_sales_path, :method => :get do %>
+          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
+          <%= text_field_tag :alasan_cancel, '' %>
+          <br />
           <%= label_tag(:password, "Masukkan supervisor password") %>
           <%= password_field_tag :password %>
-          <%= hidden_field_tag :sale, @sale.id %>
-          <%= submit_tag "Hapus Order", :class => "btn btn-xs btn-danger" %>
+          <%= hidden_field_tag :sale, @sale.id %><br />
+          <%= submit_tag "Kirim Permintaan", :class => "btn btn-xs btn-danger" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="hapus_order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Supervisor</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag sale_path(@sale), :method => :delete do %>
+          <%= label_tag(:alasan_cancel, "Alasan Batal Order") %>
+          <%= text_field_tag :alasan_cancel, '' %>
+          <%= hidden_field_tag :hapus, 1 %>
+          <br />
+          <%= label_tag(:password, "Masukkan supervisor password") %>
+          <%= password_field_tag :password %><br />
+          <%= submit_tag "Kirim Permintaan", :class => "btn btn-xs btn-danger" %>
         <% end %>
       </div>
       <div class="modal-footer">

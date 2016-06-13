@@ -1,6 +1,18 @@
 class ItemReceiptsController < ApplicationController
   before_action :get_store_id
 
+  def check_item_value
+    check_stok = ExhibitionStockItem.where(kode_barang: params[:kodebrg], no_sj: params[:nosj], channel_customer_id: params[:cc], checked_in: false).sum(:jumlah)
+    @element_id = params[:element_id]
+    if check_stok != params[:val].to_i
+      raise params[:val]
+    end
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def receipt
       @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer,
         checked_in: false).group(:kode_barang)
@@ -43,8 +55,8 @@ Silahkan scan sesuai serial dengan mengklik kode barang'
     rc = ExhibitionStockItem.find(params[:receipt_ids])
     rc.each do |a|
       a.update_attributes!(checked_in: true, checked_in_by: current_user.id)
-      cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan_and_channel_customer_id(
-        a.kode_barang, a.no_sj,'R', current_user.channel_customer)
+      cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan_and_channel_customer_id_and_serial(
+        a.kode_barang, a.no_sj,'R', current_user.channel_customer, a.serial)
       if cek_kode.nil?
         StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
           kode_barang: a.kode_barang, nama: a.nama, tanggal: Time.now, qty_in: a.jumlah, qty_out: 0,

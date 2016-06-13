@@ -25,7 +25,9 @@
         <td><%= channel_customer.dari_tanggal %></td>
         <td><%= channel_customer.sampai_tanggal %></td>
         <td><%= link_to 'Show', channel_customer, class: "btn btn-info btn-xs" %></td>
-        <td><%= link_to 'Edit', edit_channel_customer_path(channel_customer), class: "btn btn-info btn-xs"%></td>
+        <% unless @controller %>
+          <td><%= link_to 'Edit', edit_channel_customer_path(channel_customer), class: "btn btn-info btn-xs"%></td>
+        <% end %>
         <%#*<td><%= link_to 'Destroy', channel_customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -33,5 +35,6 @@
 </table>
 
 <br>
-
-<%= link_to 'Channel customer Baru', new_channel_customer_path, class: "btn btn-primary" %>
+<% unless @controller %>
+  <%= link_to 'Channel customer Baru', new_channel_customer_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% end %>

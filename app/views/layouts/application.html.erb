@@ -52,32 +52,43 @@
               <li>
                 <% if current_user.admin? %>
                   <%= drop_down "Masters" do %>
+                    <%= menu_item "Bank Accounts", bank_accounts_path %>
+                    <%= menu_item "Sales Counters", sales_counters_path %>
+                    <%= menu_item "Admin Gudang", warehouse_admins_path %>
                     <%= menu_item "Channel Customers", channel_customers_path %>
+                    <%= menu_item "Ultimate Customers", pos_ultimate_customers_path %>
                   <% end %>
+                  <%= menu_item "Laporan Penjualan", new_search_sale_path %>
+                <% elsif current_user.role == 'controller' %>
+                  <%= render 'layouts/controller' %>
+                <% elsif current_user.role == 'accounting' %>
+                  <%= menu_item "Verify Payment", accounting_verifying_payments_path %>
+                  <%= menu_item "Adjusment In/Out", adjusments_path   %>
+                  <%= menu_item "Stock & Penjualan", accounting_stocks_mutasi_stock_path   %>
                 <% else %>
                 </li>
-                <%= drop_down "Transaksi" do %>
-                  <%= menu_item "Penerimaan Barang", item_receipts_receipt_path  %>
-                  <%= menu_item "Sales Order", new_sale_path  %>
+                <%= drop_down "Stok" do %>
+                  <%= menu_item "Input Stock", new_adjusment_path %>
                   <%= menu_item "Nota Retur Display", return_items_return_path %>
                 <% end %>
-                <%= drop_down "Export Rekap SO" do %>
-                  <%= menu_item "Rekap SO Elite", reports_sales_counter_path(brand_id: 2)  %>
-                  <%= menu_item "Rekap SO Lady", reports_sales_counter_path(brand_id: 4)  %>
-                <% end %>
+                <%= menu_item "Sales Order", new_sale_path, 'data-no-turbolink' => true %>
                 <%= drop_down "Report" do %>
-                  <%= menu_item "Rekap SO", reports_rekap_so_path %>
-                  <%= menu_item "Laporan Mutasi Stock", reports_mutasi_stock_path   %>
-                  <%= menu_item "Selisih Intransit vs Penerimaan", reports_selisih_intransit_path   %>
-                  <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path  %>
+                  <%= menu_item "Rekap SO", sales_path %>
+                  <%= menu_item "Rekap Stock", reports_available_stock_path %>
+                  <%= menu_item "Laporan Mutasi Stock", reports_mutasi_stock_path %>
+                  <%= menu_item "Selisih Stock vs Retur Display", reports_selisih_retur_path %>
+                  <% if current_user.admin? %>
+                    <%= menu_item "Laporan Penjualan", new_search_sale_path  %>
+                  <% else %>
+                    <%= menu_item "Laporan Penjualan", new_search_sale_path  %>
+                  <% end %>
                 <% end %>
               <% end %>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <% unless current_user.admin? %>
+              <% unless current_user.admin? || current_user.role == 'accounting' || current_user.role == 'controller' %>
                 <%= drop_down current_user.channel_customer.nama.upcase do %>
-                  <%= menu_item "Upload Intransit", import_intransit_channel_customers_path %>
-                  <%= menu_item "Pengaturan Akun", edit_channel_customer_path(current_user.channel_customer)   %>
+                  <%= menu_item "Pengaturan Akun", edit_channel_customer_path(current_user.channel_customer), 'data-no-turbolink' => true  %>
                 <% end %>
               <% end %>
               <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
@@ -94,13 +105,9 @@
     <div class="container">
       <%= bootstrap_flash %>
       <%= yield %>
+      <%= render 'layouts/footer' %>
+
     </div><!--/row-->
 
-<%#*<footer>%>
-<%#*<p>&copy; Company 2015</p>%>
-<%#*</footer>%>
-
-  </div> <!-- /container -->
-
-</body>
+  </body>
 </html>

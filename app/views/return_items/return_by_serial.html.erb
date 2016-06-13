@@ -29,6 +29,6 @@
         <% end %>
     </tbody>
   </table>
-  <%= submit_tag "Check", :class => 'btn btn-primary' %>
+  <%= submit_tag "Check", :class => 'btn btn-primary' if @return_by_serial.present?  %>
   <%= link_to "Back", return_items_return_path,:class => 'btn btn-primary' %>
 <% end %>

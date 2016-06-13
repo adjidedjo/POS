@@ -1,64 +1,71 @@
-<h1>Laporan Mutasi Stok Pameran <%= current_user.store.nama.titleize %></h1>
-
-<table id="sales_rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
-  <thead>
-    <tr>
-      <th>Kode Barang</th>
-      <th>Nama Barang</th>
-      <th>Tanggal</th>
-      <th>Penerimaan</th>
-      <th>Pengeluaran</th>
-      <th>Saldo</th>
-      <th>Keterangan</th>
-    </tr>
-  </thead>
-
-  <tbody>
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Tanggal</Data></Cell>
+        <Cell><Data ss:Type="String">Penerimaan</Data></Cell>
+        <Cell><Data ss:Type="String">Pengeluaran</Data></Cell>
+        <Cell><Data ss:Type="String">Saldo</Data></Cell>
+        <Cell><Data ss:Type="String">Keterangan</Data></Cell>
+      </Row>
     <% @report_stock_in.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal   %></td>
-        <td><%= rs.qty_in %></td>
-        <td>-</td>
-        <td>0</td>
-        <td>Stok Awal</td>
-      </tr>
+      <Row>
+        <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.qty_in %></Data></Cell>
+        <Cell><Data ss:Type="String">0</Data></Cell>
+        <Cell><Data ss:Type="String">-</Data></Cell>
+        <Cell><Data ss:Type="String">Stok Awal</Data></Cell>
+      </Row>
     <% end %>
     <% @report_stock_out.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal   %></td>
-        <td>0</td>
-        <td><%= rs.qty_out %></td>
-        <td>-</td>
-        <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
-      </tr>
+      <Row>
+        <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
+        <Cell><Data ss:Type="String">0</Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.qty_out %></Data></Cell>
+        <Cell><Data ss:Type="String">-</Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></Data></Cell>
+      </Row>
     <% end %>
     <% @report_stock_return.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal   %></td>
-        <td>0</td>
-        <td><%= rs.qty_out %></td>
-        <% a = StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "R").sum(:qty_in) - StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "S").sum(:qty_out) %>
-        <td>-</td>
-        <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
-      </tr>
+      <Row>
+        <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
+        <Cell><Data ss:Type="String">0</Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.qty_out %></Data></Cell>
+        <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: params[:cc_id]).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "S", channel_customer_id: params[:cc_id]).sum(:qty_out) %>
+        <Cell><Data ss:Type="String">-</Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></Data></Cell>
+      </Row>
     <% end %>
     <% @report_stock_in.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal   %></td>
-        <td>-</td>
-        <td>-</td>
-        <% a = StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: "R").sum(:qty_in) - StoreSalesAndStockHistory.where(kode_barang: rs.kode_barang, keterangan: ["S","B"]).sum(:qty_out) %>
-        <td><%= a %></td>
-        <td>Saldo Akhir</td>
-      </tr>
+      <Row>
+        <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
+        <Cell><Data ss:Type="String">-</Data></Cell>
+        <Cell><Data ss:Type="String">-</Data></Cell>
+        <% if rs.serial.present? %>
+          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_out) %>
+          <Cell><Data ss:Type="String"><%= a %></Data></Cell>
+        <% else %>
+          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
+          <Cell><Data ss:Type="String"><%= a %></Data></Cell>
+        <% end %>
+        <Cell><Data ss:Type="String">Saldo Akhir</Data></Cell>
+      </Row>
     <% end %>
-  </tbody>
-</table>
+    </Table>
+  </Worksheet>
+</Workbook>
