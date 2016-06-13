@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Acquittances</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sale</th>
+      <th>No reference</th>
+      <th>Method of payment</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @acquittances.each do |acquittance| %>
+      <tr>
+        <td><%= acquittance.sale_id %></td>
+        <td><%= acquittance.no_reference %></td>
+        <td><%= acquittance.method_of_payment %></td>
+        <td><%= link_to 'Show', acquittance %></td>
+        <td><%= link_to 'Edit', edit_acquittance_path(acquittance) %></td>
+        <td><%= link_to 'Destroy', acquittance, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Acquittance', new_acquittance_path %>

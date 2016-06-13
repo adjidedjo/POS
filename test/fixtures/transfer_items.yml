@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tfnmr: MyString
+  brg: MyString
+  nbrg: MyString
+  jml: 1
+  ash: 1
+  tsh: 1
+
+two:
+  tfnmr: MyString
+  brg: MyString
+  nbrg: MyString
+  jml: 1
+  ash: 1
+  tsh: 1

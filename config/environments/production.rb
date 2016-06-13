@@ -62,7 +62,7 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+#  config.action_mailer.raise_delivery_errors = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -85,4 +85,11 @@ Rails.application.configure do
     :port                 => 25,
     :domain               => 'ras.co.id',
     :enable_starttls_auto => true  }
+#
+#  config.middleware.use ExceptionNotification::Rack,
+#  :email => {
+#    :email_prefix => "[Error POS] ",
+#    :sender_address => %{"notifier" <error_pos@ras.co.id>},
+#    :exception_recipients => %w{aji.y@ras.co.id}
+#  }
 end

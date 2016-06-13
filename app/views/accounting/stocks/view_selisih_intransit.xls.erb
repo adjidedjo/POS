@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+      <Cell><Data ss:Type="String">No SJ</Data></Cell>
+      <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
+      <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+      <Cell><Data ss:Type="String">Intransit</Data></Cell>
+      <Cell><Data ss:Type="String">Penerimaan</Data></Cell>
+      <Cell><Data ss:Type="String">Selisih</Data></Cell>
+      </Row>
+    <% @intransit.each do |ins| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= ins.no_sj %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ins.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= ExhibitionStockItem.find_by_kode_barang(ins.kode_barang).nama %></Data></Cell>
+        <% inst = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj).sum(:jumlah)  %>
+        <Cell><Data ss:Type="String"><%= inst %></Data></Cell>
+        <% receipt = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true, checked_out: false).sum(:jumlah)  %>
+        <Cell><Data ss:Type="String"><%= receipt %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= inst - receipt %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -1,0 +1,26 @@
+<%= simple_form_for @search do |f| %>
+  <% unless current_user && current_user.role.nil? %>
+    <div class="field">
+      <%= f.input :channel_id, collection: Channel.order(:channel), label_method: :channel, value_method: :id,
+          input_html: {style: 'width: 250px'} %>
+    </div>
+  <% end %>
+  <% if current_user && current_user.role.nil? %>
+    <%= f.input :channel_customer_id, as: :hidden, :input_html => { :value => current_user.channel_customer.id } %>
+  <% else %>
+  <div class="field">
+    <%= f.input :channel_customer_id, collection: @channel_customer, label_method: :nama, value_method: :id,
+        input_html: {style: 'width: 250px'} %>
+  </div>
+  <% end %>
+  <div class="field">
+    <%= f.input :tampilkan_berdasarkan, collection: ["Rincian", "Rekapitulasi"], input_html: {style: 'width: 250px'} %>
+  </div>
+  <div class="field">
+    <%= f.input :dari_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+  </div>
+  <div class="field">
+    <%= f.input :sampai_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+  </div>
+  <div class="actions"><%= f.submit "Search" %></div>
+<% end %>

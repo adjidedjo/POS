@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Transfer Items</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>No Bukti</th>
+      <th>Serial</th>
+      <th>Kode Barang</th>
+      <th>Nama Barang</th>
+      <th>Jumlah</th>
+      <th>Tujuan</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transfer_items.each do |transfer_item| %>
+      <tr>
+        <td><%= transfer_item.tfnmr %><%= transfer_item.id %></td>
+        <td><%= transfer_item.sn %></td>
+        <td><%= transfer_item.brg %></td>
+        <td><%= transfer_item.nbrg %></td>
+        <td><%= transfer_item.jml %></td>
+        <td><%= ChannelCustomer.find(transfer_item.tsh).nama %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<p>NB: LIST INI HANYA MENAMPILKAN TRANSFER YANG TERJADI 6 BULAN LALU</p>

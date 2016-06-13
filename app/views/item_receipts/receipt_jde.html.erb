@@ -1,0 +1,53 @@
+<div class="form-div">
+  <%= form_tag item_receipts_receipt_jde_path, :method => 'get', :html => {:class => "form-inline"} do %>
+    <fieldset>
+      <legend>Penerimaan Barang dari program JDE</legend>
+      <div class="control-group">
+        <div class="controls form-inline">
+          <%= text_field_tag 'date', nil, :placeholder => "Tanggal Surat Jalan"  %>
+          <button type="submit" class="btn btn-primary">
+            <%= params[:from].blank? ? 'Search' : 'Refine Search' %>
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+</div>
+
+<div class="form-div">
+  <% if params[:date].present? %>
+    <%= form_tag item_receipts_process_receipt_jde_path, :method => :put, :id => 'receipt_form' do %>
+      <table id="table_receipt" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="all">No SJ</th>
+            <th class="all">Tanggal SJ</th>
+            <th class="all">Serial</th>
+            <th class="all">Kode Barang</th>
+            <th class="all">Nama Barang</th>
+            <th class="all">QTY</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @receipt.each do |resep| %>
+            <%= fields_for "receipt[]", resep do |f| %>
+              <tr>
+                <td><%= check_box_tag "receipt_ids[]", "#{f.object.sddeln.to_i} #{f.object.sdlnid.to_i}" %></td>
+                <td><%= f.object.sddeln.to_i %></td>
+                <td><%= f.object.sdaddj %></td>
+                <td><%= f.object.sdlotn %></td>
+                <td><%= f.object.sdlitm %></td>
+                <td><%= f.object.sddsc1 %> <%= f.object.sddsc2 %></td>
+                <td><%= f.object.sdsoqs.to_i.to_s[0..-5] %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+      <%= submit_tag "Check",  :class => 'btn btn-primary' if @receipt.present? %>
+    <% end %>
+  <% end %>
+</div>
+

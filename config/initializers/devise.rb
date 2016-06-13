@@ -4,7 +4,7 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # config.secret_key = '19c4a502f4f3e384f0818e2bd7ae21d0fe949e763c04ab4ac7f5820e6f8b94b7c3c9220df36bdead8da4f48b4f76f5b1e68cdcbeecf781722ce5a8f57e860d36'
+  config.secret_key = '26ecd459bda037f545d6cf5068964bd8d82e6517074bac947fbffdd474f7d55690574cc277a67ccd9a317ad7e98065a8ed2d88e22f9196a23f015ec3e138fd36' if Rails.env.staging? or Rails.env.production?
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -224,7 +224,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html]
+  config.navigational_formats = [:"/", "/", :html, :mobile]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete

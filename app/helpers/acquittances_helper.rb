@@ -1,0 +1,2 @@
+module AcquittancesHelper
+end
