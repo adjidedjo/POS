@@ -20,9 +20,9 @@ class ApplicationController < ActionController::Base
     else
       unless resources.channel_customer.nil?
         if resources.channel_customer.exhibition_stock_items.blank?
-          new_sale_path
+          root_path
         elsif resources.channel_customer.exhibition_stock_items.where(checked_in: true).blank?
-          new_sale_path
+          root_path
         else
           root_path
         end
