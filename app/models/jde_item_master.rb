@@ -1,5 +1,5 @@
 class JdeItemMaster < ActiveRecord::Base
-  establish_connection "jdeoracle"
+#  establish_connection "jdeoracle"
   self.table_name = "proddta.f4101" #im
 
   def self.find_item_number(item)
