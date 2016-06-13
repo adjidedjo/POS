@@ -1,6 +1,6 @@
 class SalesOrderJde < ActiveRecord::Base
-  establish_connection "jdeoracle"
-  self.table_name = "proddta.f42119" #sd
+#  establish_connection "jdeoracle"
+#  self.table_name = "proddta.f42119" #sd
 
   scope :delivered, -> { where("sdnxtr like ? and sdlttr like ? and sddcto like ?", "999", "580", "ST") }
 
