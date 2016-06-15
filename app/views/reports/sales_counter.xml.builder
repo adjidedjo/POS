@@ -75,6 +75,7 @@ xml.data do
       xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
       xml.NoRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.account_number
       xml.JumlahTransfer si.sale.jumlah_transfer
+      xml.StatusSO si.stocking_type
     end
   end
 end
