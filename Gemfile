@@ -68,6 +68,7 @@ group :development, :test do
   gem 'capistrano-rvm'
   gem 'capistrano-rails', '~> 1.1', require: false
   gem 'capistrano-bundler', '~> 1.1', require: false
+  gem 'capistrano-passenger'
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'debugger'
 
