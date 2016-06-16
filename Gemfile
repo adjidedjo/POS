@@ -64,7 +64,7 @@ gem 'thin'
 gem 'net-ssh', '~> 2.9.2'
 
 group :development, :test do
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-rvm'
   gem 'capistrano-rails', '~> 1.1', require: false
   gem 'capistrano-bundler', '~> 1.1', require: false
