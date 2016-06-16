@@ -37,7 +37,7 @@ gem 'jquery-datatables-rails', '~> 3.1.1'
 # #pdf
 gem 'prawn', '~> 0.12.0'
 # #devise
-gem 'devise'
+gem 'devise', '~> 3.5.6'
 #
 gem 'paper_trail', '~> 4.0.0.beta'
 #
@@ -48,8 +48,9 @@ gem 'autonumeric-rails'
 
 gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
-#gem 'ruby-oci8', '~> 2.1.8'
+gem 'ruby-oci8', '~> 2.1.8'
 gem 'turnout'
+gem 'mime-types', '~> 2.6.2'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
@@ -77,6 +78,6 @@ group :development, :test do
   gem 'spring'
   # #capistrano
   gem 'activerecord-sqlserver-adapter'
-  gem 'tiny_tds'
+  gem 'tiny_tds', '~> 0.7.0'
 end
 
