@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :retail_customers do
+    collection do
+      get "get_kode_barang_from_nama"
+      get "exhibition_stock"
+      get "items"
+      get "item_master"
+    end
+  end
+
   resources :adjusments do
     collection do
       get 'find_showroom'
@@ -92,6 +101,7 @@ Rails.application.routes.draw do
   get 'reports/selisih_intransit'
   get 'reports/selisih_retur'
   get 'reports/available_stock'
+  put 'reports/update'
   get 'reports/index_akun'
   get 'reports/index_export'
   get 'reports/exported'

@@ -212,14 +212,6 @@ jQuery ->
       bDestroy: true
     })
 
-    netto_pl = (id) ->
-      document.getElementById(id).addEventListener "keyup", () ->
-        a = document.getElementById('sale_netto').value
-        c = 0
-        $('.price_list').each ->
-          c += Number($(this).val().replace(/[^0-9\.]+/g,""))
-        document.getElementById('sale_netto').value = c
-
     $('form').on 'click', '.add_fields', (event) ->
       time = new Date().getTime()
       regexp = new RegExp($(this).data('id'), 'g')
@@ -240,7 +232,6 @@ jQuery ->
       resize_items()
       event.preventDefault()
       open_modal(get_id)
-      netto_pl(price_list)
       date_picker()
       serial_doc = document.getElementById(get_id)
       $('#'+jumlah).focus ->

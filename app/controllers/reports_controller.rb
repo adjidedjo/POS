@@ -1,4 +1,5 @@
 class ReportsController < ApplicationController
+  respond_to :html, :json
   before_action :set_controller, only: [:show, :sales_counter, :index_export, :index_akun]
 
   def exported
@@ -43,6 +44,12 @@ class ReportsController < ApplicationController
       format.html
       format.xls
     end
+  end
+
+  def update
+    @stock = ExhibitionStockItem.find(params[:id])
+    @stock.update_attributes(price_list: params[:exhibition_stock_item][:price_list].to_i)
+    respond_with @stock
   end
 
   def selisih_retur
@@ -140,6 +147,12 @@ class ReportsController < ApplicationController
   end
 
   private
+  def report_params
+    params.require(:exhibition_stock_item).permit(:channel_customer_id, :serial, :kode_barang, :nama, :jumlah, :stok_awal,
+      :no_so, :no_pbj, :no_sj, :tanggal_sj, :sj_pusat, :store_id, :showroom_id, :checked, :checked_in, :checked_in_by,
+      :checked_out, :checked_out_by, :checked_out_at, :created_at, :updated_at, :stocking_type, :price_list)
+  end
+
   def set_controller
     @controller = current_user.role == 'controller'
   end

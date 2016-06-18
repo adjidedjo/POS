@@ -1,12 +1,13 @@
 <h1>Laporan Stok <%= @channel.nama.upcase %></h1>
 <br />
-<table id="rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
+<table id="stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
   <thead>
     <tr>
       <th>Serial</th>
       <th>Kode Barang</th>
       <th>Nama Barang</th>
       <th>Jumlah</th>
+      <th>Harga</th>
     </tr>
   </thead>
 
@@ -17,6 +18,7 @@
         <td><%= s.kode_barang %></td>
         <td><%= s.nama  %></td>
         <td><%= s.total %></td>
+        <td><%= best_in_place s, :price_list, :url => reports_update_path(id: s.id), :place_holder => "KLIK DIISINI" %></td>
       </tr>
     <% end %>
   </tbody>

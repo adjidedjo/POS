@@ -1,6 +1,6 @@
 class Adjusment < ActiveRecord::Base
 
-  validates :jumlah, :nama_channel, presence: true
+  validates :jumlah,  :alasan, :nama_channel, presence: true
   validate :check_item
 
   def check_item

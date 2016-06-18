@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
+//= require best_in_place
 //= require dataTables/jquery.dataTables
 //= require dataTables/extras/dataTables.responsive
 //= require jquery-ui
@@ -27,10 +28,10 @@
 //= require nprogress-turbolinks
 //= require_tree .
 
-$(document).ready(function(){
-  $("form").on("keypress", function (e) {
-    if (e.keyCode == 13) {
-      return false;
-    }
-  });
-})
+//$(document).ready(function(){
+//  $("form").on("keypress", function (e) {
+//    if (e.keyCode == 13) {
+//      return false;
+//    }
+//  });
+//})

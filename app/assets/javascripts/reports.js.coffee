@@ -1,47 +1,50 @@
 jQuery ->
 
-  $(document).on 'ready page:load', ->
+  $('#stock').DataTable({
+    "iDisplayLength": 100,
+    bDestroy: true
+  })
 
-    $('#rekap_stock').DataTable({
-      "iDisplayLength": 100,
-      bDestroy: true
-    })
+  $('#sales_rekap').DataTable({
+    "bAutoWidth": true,
+    "bProcessing": false,
+    "sScrollXInner": "7000px",
+    "bFilter": true,
+    "sScrollX": "100%",
+    "bScrollCollapse": true,
+    "bPaginate": false,
+    "bInfo": false,
+    "bDestroy": true
+  })
 
-    $('#sales_rekap').DataTable({
-      "bAutoWidth": true,
-      "bProcessing": false,
-      "sScrollXInner": "7000px",
-      "bFilter": true,
-      "sScrollX": "100%",
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bInfo": false,
-      "bDestroy": true
-    })
+  $('#sales_rekap_so').DataTable({
+    "bAutoWidth": true,
+    "bProcessing": false,
+    "sScrollXInner": "7000px",
+    "bFilter": true,
+    "sScrollX": "110%",
+    "bScrollCollapse": true,
+    "bPaginate": false,
+    "bInfo": false,
+    "bDestroy": true
+  })
 
-    $('#sales_rekap_so').DataTable({
-      "bAutoWidth": true,
-      "bProcessing": false,
-      "sScrollXInner": "7000px",
-      "bFilter": true,
-      "sScrollX": "110%",
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bInfo": false,
-      "bDestroy": true
-    })
+  $('#sales_rekap_stock').DataTable({
+    "bAutoWidth": true,
+    "bProcessing": false,
+    "sScrollXInner": "1500px",
+    "bFilter": true,
+    "sScrollX": "110%",
+    "bScrollCollapse": true,
+    "bPaginate": false,
+    "bInfo": false,
+    "bDestroy": true
+  })
 
-    $('#sales_rekap_stock').DataTable({
-      "bAutoWidth": true,
-      "bProcessing": false,
-      "sScrollXInner": "1500px",
-      "bFilter": true,
-      "sScrollX": "110%",
-      "bScrollCollapse": true,
-      "bPaginate": false,
-      "bInfo": false,
-      "bDestroy": true
-    })
+  $(document).on "ready page:load", ->
+
+    $('.best_in_place').best_in_place()
+
 
     $('#rekapsales').validate
       rules:

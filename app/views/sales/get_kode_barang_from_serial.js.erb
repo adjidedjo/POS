@@ -2,8 +2,10 @@ a = "<%= @element_id %>"
 kode_barang = a.replace("serial", "kode_barang")
 nama_barang = a.replace("serial", "nama_barang")
 jumlah_barang = a.replace("serial", "jumlah")
+price_list = a.replace("serial", "price_list")
 document.getElementById(kode_barang).value = "<%= @kode %>"
 document.getElementById(nama_barang).value = "<%= @nama %>"
+document.getElementById(price_list).value = "<%= @harga %>"
 document.getElementById(jumlah_barang).value = "1"
 document.getElementById(jumlah_barang).readOnly = true
 document.getElementById(a).readOnly = true

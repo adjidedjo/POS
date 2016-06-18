@@ -75,6 +75,7 @@ class SalesController < ApplicationController
       params[:kode_barang], 1, true, false, current_user.channel_customer.id).kode_barang
     @kode = ExhibitionStockItem.find_by_kode_barang(kode_serial).kode_barang
     @nama = ExhibitionStockItem.find_by_kode_barang(kode_serial).nama
+    @harga = ExhibitionStockItem.find_by_kode_barang(kode_serial).price_list.to_i
     @element_id = params[:element_id]
 
     respond_to do |format|

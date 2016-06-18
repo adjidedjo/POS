@@ -9,11 +9,9 @@ class ChannelCustomersController < ApplicationController
     CSV.foreach(tempfile.path, headers: true, encoding: "UTF-16") do |row|
       a_hash = row.to_hash
       available_item = Item.find_by_kode_barang(a_hash["KodeBrg"])
-      jde_name1 = JdeItemMaster.find_item_desc1(a_hash["KodeBrg"])
-      jde_name2 = JdeItemMaster.find_item_desc2(a_hash["KodeBrg"])
       @si_hash = {
         kode_barang: a_hash["KodeBrg"],
-        nama: available_item.nil? ? (jde_name1+" "+jde_name2) : available_item.nama,
+        nama: available_item.nil? ? "" : available_item.nama,
         serial: ((a_hash["Serial"].length > 5) ? a_hash["Serial"] : ''),
         no_so: a_hash["NoSO"],
         no_pbj: a_hash["NoBPJ"],

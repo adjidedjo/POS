@@ -37,7 +37,7 @@ gem 'jquery-datatables-rails', '~> 3.1.1'
 # #pdf
 gem 'prawn', '~> 0.12.0'
 # #devise
-gem 'devise', '~> 3.5.6'
+gem 'devise'
 #
 gem 'paper_trail', '~> 4.0.0.beta'
 #
@@ -50,7 +50,6 @@ gem "activerecord-oracle_enhanced-adapter", "~> 1.6.6"
 # Use oracle as the database for Active Record
 gem 'ruby-oci8', '~> 2.1.8'
 gem 'turnout'
-gem 'mime-types', '~> 2.6.2'
 
 # Use ActiveModel has_secure_password gem 'bcrypt', '~> 3.1.7'
 
@@ -60,15 +59,15 @@ gem 'mime-types', '~> 2.6.2'
 
 # thin
 gem 'thin'
+gem 'best_in_place'
 
 gem 'net-ssh', '~> 2.9.2'
 
 group :development, :test do
-  gem 'capistrano', '~> 3.4.0'
+  gem 'capistrano'
   gem 'capistrano-rvm'
   gem 'capistrano-rails', '~> 1.1', require: false
   gem 'capistrano-bundler', '~> 1.1', require: false
-  gem 'capistrano-passenger'
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'debugger'
 
@@ -79,6 +78,6 @@ group :development, :test do
   gem 'spring'
   # #capistrano
   gem 'activerecord-sqlserver-adapter'
-  gem 'tiny_tds', '~> 0.7.0'
+  gem 'tiny_tds'
 end
 
