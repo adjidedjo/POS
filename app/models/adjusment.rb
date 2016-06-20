@@ -4,7 +4,7 @@ class Adjusment < ActiveRecord::Base
   validate :check_item
 
   def check_item
-    errors.add(:kode_barang, "Barang Tidak Terdaftar, hubungi Admin!") if Item.where(kode_barang: self.kode_barang).empty?
+    errors.add(:kode_barang, "Barang Tidak Terdaftar, hubungi Admin!") if SqlItemMaster.where(kodebrg: self.kode_barang).empty?
   end
 
   before_create do
@@ -20,6 +20,15 @@ class Adjusment < ActiveRecord::Base
     if showroom.present?
       serial = ExhibitionStockItem.where(channel_customer_id: showroom.id, serial: self.serial)
       kode = ExhibitionStockItem.where(channel_customer_id: showroom.id, kode_barang: self.kode_barang)
+      item = Item.where(kode_barang: self.kode_barang)
+      if item.empty?
+        item_riches = SqlItemMaster.where("kodebrg like '#{self.kode_barang}'")
+        item_riches.each do |a|
+          @kode =  a.KodeBrg
+          @nama =  a.Nama
+        end
+        Item.create(kode_barang: @kode, nama: @nama, jenis: @kode[0..1], harga: 0)
+      end
       kode_item = Item.where(kode_barang: self.kode_barang)
       if serial.present?
         serial.first.update_attributes!(jumlah: (serial.first.jumlah.to_i + self.jumlah.to_i)) if (self.serial.present? && self.kode_barang.blank?) || (self.serial.present? && self.kode_barang.present?)
@@ -30,9 +39,9 @@ class Adjusment < ActiveRecord::Base
           jumlah: self.jumlah.to_i, no_sj: self.no_sj)
       end
       if self.serial.present?
-        creating_item_mutation(showroom, kode_item.first.nama, self.jumlah)
+        creating_item_mutation(showroom, (kode_item.empty? ? @ra : kode_item.first.nama), self.jumlah)
       else
-        creating_item_mutation(showroom, kode_item.first.nama, self.jumlah)
+        creating_item_mutation(showroom, (kode_item.empty? ? @ra : kode_item.first.nama), self.jumlah)
       end
     end
   end
