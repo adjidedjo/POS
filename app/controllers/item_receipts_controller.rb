@@ -20,19 +20,23 @@ class ItemReceiptsController < ApplicationController
 
   def process_receipt
     get_code = JdeItemAvailability.find_serial(params[:serial])
-    get_item = JdeItemAvailability.find_item_master(get_code.first.liitm.to_i)
-    get_desc1 = JdeItemMaster.find_item_desc1(get_item)
-    get_desc2 = JdeItemMaster.find_item_desc2(get_item)
-    if ExhibitionStockItem.where(serial: params[:serial]).empty?
-      ExhibitionStockItem.create(kode_barang: get_item.strip,
-        channel_customer_id: current_user.channel_customer.id, checked_in: true, serial: params[:serial], nama: (get_desc1.strip+" "+get_desc2.strip),
-        jumlah: 1, stok_awal: 1, no_sj: 0, stocking_type: "CS")
-      StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
-        kode_barang: get_item.strip, nama: (get_desc1.strip+" "+get_desc2.strip), tanggal: Time.now, qty_in: 1, qty_out: 0,
-        keterangan: "R", serial: params[:serial])
-      redirect_to  item_receipts_receipt_path, notice: "Barang yang di SCAN telah Masuk Menjadi STOK"
+    if get_code.present?
+      get_item = JdeItemAvailability.find_item_master(get_code.first.liitm.to_i)
+      get_desc1 = JdeItemMaster.find_item_desc1(get_item)
+      get_desc2 = JdeItemMaster.find_item_desc2(get_item)
+      if ExhibitionStockItem.where(serial: params[:serial]).empty?
+        ExhibitionStockItem.create(kode_barang: get_item.strip,
+          channel_customer_id: current_user.channel_customer.id, checked_in: true, serial: params[:serial], nama: (get_desc1.strip+" "+get_desc2.strip),
+          jumlah: 1, stok_awal: 1, no_sj: 0, stocking_type: "CS")
+        StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
+          kode_barang: get_item.strip, nama: (get_desc1.strip+" "+get_desc2.strip), tanggal: Time.now, qty_in: 1, qty_out: 0,
+          keterangan: "R", serial: params[:serial])
+        redirect_to  item_receipts_receipt_path, notice: "Barang yang di SCAN telah Masuk Menjadi STOK"
+      else
+        redirect_to  item_receipts_receipt_path, :flash => { :error => "BARANG SUDAH ADA" }
+      end
     else
-      redirect_to  item_receipts_receipt_path, :flash => { :error => "BARANG SUDAH ADA" }
+      redirect_to  item_receipts_receipt_path, :flash => { :error => "SERIAL TIDAK DIKENAL" }
     end
   end
 
