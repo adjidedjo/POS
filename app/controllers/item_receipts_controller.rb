@@ -14,31 +14,26 @@ class ItemReceiptsController < ApplicationController
   end
 
   def receipt
-      @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer,
-        checked_in: false).group(:kode_barang)
+    @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id,
+      checked_in: true).where("created_at >= ?", Date.today)
   end
 
   def process_receipt
-    params[:receipt].each do |key, value|
-      items = ExhibitionStockItem.where(kode_barang: value["kode_barang"],
-        channel_customer_id: current_user.channel_customer, checked_in: false)
-      if items.sum(:jumlah) == value["jumlah"].to_i
-        items.each do |item|
-          item.update_attributes!(checked_in: true, checked_in_by: current_user.id)
-          cek_kode = StoreSalesAndStockHistory.find_by_kode_barang_and_no_sj_and_keterangan_and_channel_customer_id(
-            item.kode_barang, item.no_sj,'R', current_user.channel_customer)
-          if cek_kode.nil?
-            StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
-              kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_in: item.jumlah, qty_out: 0,
-              keterangan: "R", no_sj: item.no_sj, serial: item.serial)
-          else
-            cek_kode.update_attributes(qty_in: (item.jumlah + cek_kode.qty_in))
-          end
-        end
-      end
+    get_code = JdeItemAvailability.find_serial(params[:serial])
+    get_item = JdeItemAvailability.find_item_master(get_code.first.liitm.to_i)
+    get_desc1 = JdeItemMaster.find_item_desc1(get_item)
+    get_desc2 = JdeItemMaster.find_item_desc2(get_item)
+    if ExhibitionStockItem.where(serial: params[:serial]).empty?
+      ExhibitionStockItem.create(kode_barang: get_item.strip,
+        channel_customer_id: current_user.channel_customer.id, checked_in: true, serial: params[:serial], nama: (get_desc1.strip+" "+get_desc2.strip),
+        jumlah: 1, stok_awal: 1, no_sj: 0, stocking_type: "CS")
+      StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
+        kode_barang: get_item.strip, nama: (get_desc1.strip+" "+get_desc2.strip), tanggal: Time.now, qty_in: 1, qty_out: 0,
+        keterangan: "R", serial: params[:serial])
+      redirect_to  item_receipts_receipt_path, notice: "Barang yang di SCAN telah Masuk Menjadi STOK"
+    else
+      redirect_to  item_receipts_receipt_path, :flash => { :error => "BARANG SUDAH ADA" }
     end
-    redirect_to  item_receipts_receipt_path, notice: 'Jika barang sudah di cek, tetapi masih tampil.
-Silahkan scan sesuai serial dengan mengklik kode barang'
   end
 
   def receipt_by_serial

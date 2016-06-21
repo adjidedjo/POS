@@ -1,10 +1,10 @@
 class JdeItemMaster < ActiveRecord::Base
-  establish_connection "jdeoracle"
+  establish_connection :jdeoracle
   self.table_name = "proddta.f4101" #im
 
   def self.find_item_number(item)
-    item_number = where("imaitm like ?", "#{item}%")
-    item_number.empty? ? 0 : item_number.first.imlitm
+    item_number = where("imitm like ?", "#{item}%")
+    item_number.empty? ? 0 : item_number.first.imaitm
   end
 
   def self.find_item_desc1(item)

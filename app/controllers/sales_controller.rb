@@ -72,10 +72,10 @@ class SalesController < ApplicationController
 
   def get_kode_barang_from_serial
     kode_serial = ExhibitionStockItem.find_by_serial_and_jumlah_and_checked_in_and_checked_out_and_channel_customer_id(
-      params[:kode_barang], 1, true, false, current_user.channel_customer.id).kode_barang
-    @kode = ExhibitionStockItem.find_by_kode_barang(kode_serial).kode_barang
-    @nama = ExhibitionStockItem.find_by_kode_barang(kode_serial).nama
-    @harga = ExhibitionStockItem.find_by_kode_barang(kode_serial).price_list.to_i
+      params[:kode_barang], 1, true, false, current_user.channel_customer.id).serial
+    @kode = ExhibitionStockItem.find_by_serial(kode_serial).kode_barang
+    @nama = ExhibitionStockItem.find_by_serial(kode_serial).nama
+    @harga = ExhibitionStockItem.find_by_serial(kode_serial).price_list.to_i
     @element_id = params[:element_id]
 
     respond_to do |format|
