@@ -42,31 +42,44 @@ class Accounting::StocksController < ApplicationController
   end
 
   def view_selisih_stock
-    @retur = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).group(:kode_barang, :no_sj)
+    if params[:search].present?
+      dari_tanggal =  params[:search][:dari_tanggal]
+      sampai_tanggal =  params[:search][:sampai_tanggal]
+      @retur = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).where("updated_at between ? and ?", dari_tanggal, sampai_tanggal).group(:kode_barang, :no_sj)
 
-    respond_to do |format|
-      format.html
-      format.xls
+      respond_to do |format|
+        format.html
+        format.xls
+      end
     end
   end
 
   def view_selisih_intransit
-    @intransit = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).group(:kode_barang, :no_sj)
+    if params[:search].present?
+      dari_tanggal =  params[:search][:dari_tanggal]
+      sampai_tanggal =  params[:search][:sampai_tanggal]
+      @intransit = ExhibitionStockItem.where(channel_customer_id: params[:cc_id]).where("updated_at between ? and ?", dari_tanggal, sampai_tanggal).group(:kode_barang, :no_sj)
 
-    respond_to do |format|
-      format.html
-      format.xls
+      respond_to do |format|
+        format.html
+        format.xls
+      end
     end
   end
 
   def view_stock
-    @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "R")
-    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "S").where("qty_out > ?", 0)
-    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: params[:cc_id], keterangan: "B").where("qty_out > ?", 0)
+    if params[:search].present?
+      dari_tanggal =  params[:search][:dari_tanggal]
+      sampai_tanggal =  params[:search][:sampai_tanggal]
+      cc_id =  params[:cc_id]
+      @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: cc_id, keterangan: "R").where("updated_at between ? and ?", dari_tanggal, sampai_tanggal)
+      @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: cc_id, keterangan: "S").where("qty_out > ? and updated_at between ? and ?", 0, dari_tanggal, sampai_tanggal)
+      @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: cc_id, keterangan: "B").where("qty_out > ? and updated_at between ? and ?", 0, dari_tanggal, sampai_tanggal)
 
-    respond_to do |format|
-      format.html
-      format.xls
+      respond_to do |format|
+        format.html
+        format.xls
+      end
     end
   end
 
@@ -74,8 +87,8 @@ class Accounting::StocksController < ApplicationController
     @channel_customer = []
     channel = current_user.branch.present? ? current_user.branch.sales_counters : []
     if channel.present?
-      current_user.branch.sales_counters.each do |sc|
-        sc.recipients.group(:channel_customer_id, :sales_counter_id).each do |scr|
+      current_user.branch.sales_counters.group(:branch_id).each do |sc|
+        sc.recipients.group(:channel_customer_id).each do |scr|
           @channel_customer << scr.channel_customer
         end
       end
