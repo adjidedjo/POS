@@ -1,6 +1,6 @@
 class Adjusment < ActiveRecord::Base
 
-  validates :jumlah,  :alasan, :nama_channel, presence: true
+  validates :no_sj, :jumlah, :alasan, :nama_channel, presence: true
   validate :check_item
 
   def check_item
@@ -31,11 +31,11 @@ class Adjusment < ActiveRecord::Base
       end
       kode_item = Item.where(kode_barang: self.kode_barang)
       if serial.present?
-        serial.first.update_attributes!(jumlah: (serial.first.jumlah.to_i + self.jumlah.to_i)) if (self.serial.present? && self.kode_barang.blank?) || (self.serial.present? && self.kode_barang.present?)
+        serial.first.update_attributes!(jumlah: 1) if (self.serial.present? && self.kode_barang.blank?) || (self.serial.present? && self.kode_barang.present?)
       elsif kode.present? && serial.nil?
         kode.first.update_attributes!(jumlah: (kode.first.jumlah + self.jumlah.to_i)) if self.serial.blank? && self.kode_barang.present?
       else
-        ExhibitionStockItem.where(kode_barang: self.kode_barang, serial: self.serial, channel_customer_id: showroom.id,
+        ExhibitionStockItem.create!(kode_barang: self.kode_barang, serial: self.serial, channel_customer_id: showroom.id,
           jumlah: self.jumlah.to_i, no_sj: self.no_sj)
       end
       if self.serial.present?

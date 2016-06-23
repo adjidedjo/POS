@@ -6,3 +6,12 @@ jQuery ->
 
   $('#adjusment_nama_channel').autocomplete
     source: $('#adjusment_nama_channel').data('autocomplete-source')
+
+  $(document).on "ready page:load", ->
+
+    $('#adjustment_index').dataTable({
+      bInfo: false,
+      responsive: true,
+      bPaginate: true,
+      bDestroy: true
+    })

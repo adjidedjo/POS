@@ -12,7 +12,20 @@ class AdjusmentsController < ApplicationController
 
   # GET /adjusments GET /adjusments.json
   def index
-    @adjusments = Adjusment.where("created_at >= ?", 6.month.ago)
+    @channel_customer = []
+    channel = current_user.branch.present? ? current_user.branch.sales_counters : []
+    if channel.present?
+      current_user.branch.sales_counters.each do |sc|
+        sc.recipients.group(:channel_customer_id, :sales_counter_id).each do |scr|
+          @channel_customer << scr.channel_customer.id
+        end
+      end
+    else
+      ChannelCustomer.all.each do |cc|
+        @channel_customer << cc.id
+      end
+    end
+    @adjusments = Adjusment.where("created_at >= ? and channel_customer_id in (?)", 2.month.ago, @channel_customer)
   end
 
   # GET /adjusments/1 GET /adjusments/1.json
