@@ -1,7 +1,7 @@
 class PosPdf < Prawn::Document
   include ActionView::Helpers::NumberHelper
   def initialize(order, order_no)
-    super({:page_size => 'A4', :margin => [100, 40, 30, 40]})
+    super({:page_size => 'A4', :margin => [20, 40, 30, 40]})
     @order = order
     order_number
     header
@@ -220,11 +220,6 @@ class PosPdf < Prawn::Document
         line(bounds.bottom_left, bounds.top_left)
       end
     end
-
-    move_down 10
-    indent 5 do
-      text "Note : #{@order.keterangan_customer.upcase}", :size => 7
-    end
     move_down 10
     bounding_box([80, cursor - 5], :width => 200) do
       indent 25 do
@@ -239,46 +234,6 @@ class PosPdf < Prawn::Document
         move_down 40
       end
       text "(___________________)", :size => 9
-    end
-    move_down 10
-    bounding_box([0, cursor - 10], :width => 500) do
-      indent 5 do
-        text "Terms & Conditions  : ", :size => 5, :style => :italic
-        move_down 3
-        text "1. Minimum down payment is 30% of the Total Invoice.", :size => 4, :style => :italic
-        move_down 3
-        text "2. Order time limit is 90 days from the invoice date.", :size => 4, :style => :italic
-        move_down 3
-        text "3. If the products purchased are not delivered or there is no confirmation within 6 months after the invoice date, the order will be automatically cancelled and there is no refund of the down payment.", :size => 4, :style => :italic
-        move_down 3
-        text "4. There will be no price adjustment if the customers have paid a minimum of 50% of the invoice and do not exceed the order limit of 90 days.", :size => 4, :style => :italic
-        move_down 3
-        text "5. If there is no stock of the fabric colour ordered, the company has the right to change the fabric with the same quality material.", :size => 4, :style => :italic
-        move_down 3
-        text "6. The amount due when the goods are delivered must be paid in cash. The payment by cheque/transfer claimed as fully paid if the money has been received on the company's bank account before the time of delivery", :size => 4, :style => :italic
-        move_down 3
-        text "7. There will be no refund of the down payment..", :size => 4, :style => :italic
-        move_down 3
-        text "7. By signing this invoice, the customers is deemed to have agreed to the terms & conditions as mentioned above.", :size => 4, :style => :italic
-        move_down 3
-      end
-    end
-    indent 10 do
-      bounding_box([0, cursor - 10], :width => 100) do
-        text "R1: Customer", :size => 3
-      end
-      bounding_box([60, cursor + 4], :width => 100) do
-        text "R2: Sales Counter", :size => 3
-      end
-      bounding_box([140, cursor + 4], :width => 100) do
-        text "R3: Head Accounting", :size => 3
-      end
-      bounding_box([230, cursor + 4], :width => 100) do
-        text "R4: Branch Accounting", :size => 3
-      end
-      bounding_box([330, cursor + 4], :width => 100) do
-        text "R5: Archive", :size => 3
-      end
     end
   end
 end
