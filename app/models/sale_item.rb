@@ -52,7 +52,6 @@ class SaleItem < ActiveRecord::Base
     end
 
     before_create do
-      update_stocking_type
       if kode_barang.include?("T")
         p = kode_barang[12..14]
         l = kode_barang[15..18]
@@ -67,6 +66,7 @@ class SaleItem < ActiveRecord::Base
       end
 
       if serial.present?
+        update_stocking_type
         get_ex_no_sj = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ? and jumlah > ?",
           self.sale.channel_customer_id, kode_barang, 0).first
         self.ex_no_sj = get_ex_no_sj.no_sj
@@ -90,9 +90,9 @@ class SaleItem < ActiveRecord::Base
     end
 
     before_update do
-      update_stocking_type
       self.price_list = price_list.gsub(/,/, '') if price_list.to_s.include? ","
       if jumlah_changed? && taken == true && serial.present?
+        update_stocking_type
         sale_item_jumlah = SaleItem.find(self.id).jumlah.to_i
         if jumlah > sale_item_jumlah
           jumlah_now = jumlah - sale_item_jumlah
