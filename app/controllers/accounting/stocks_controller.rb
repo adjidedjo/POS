@@ -87,7 +87,7 @@ class Accounting::StocksController < ApplicationController
     @channel_customer = []
     channel = current_user.branch.present? ? current_user.branch.sales_counters : []
     if channel.present?
-      current_user.branch.sales_counters.group(:branch_id).each do |sc|
+      current_user.branch.sales_counters.each do |sc|
         sc.recipients.group(:channel_customer_id).each do |scr|
           @channel_customer << scr.channel_customer
         end
