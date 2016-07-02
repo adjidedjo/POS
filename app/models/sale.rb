@@ -35,8 +35,7 @@ class Sale < ActiveRecord::Base
   #  validates :jumlah_transfer, numericality: true, if: :paid_with_transfer?
 
   validate :uniqueness_of_items, :cek_pembayaran_tunai, :cek_pembayaran_transfer,
-    :cek_pembayaran_debit, :cek_pembayaran_kredit,
-    :cek_down_payment, :cek_transfer_bank
+    :cek_pembayaran_debit, :cek_pembayaran_kredit,  :cek_transfer_bank
 
   before_create :netto_brand
 
