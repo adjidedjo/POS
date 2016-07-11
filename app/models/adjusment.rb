@@ -36,7 +36,7 @@ class Adjusment < ActiveRecord::Base
         kode.first.update_attributes!(jumlah: (kode.first.jumlah + self.jumlah.to_i)) if self.serial.blank? && self.kode_barang.present?
       else
         ExhibitionStockItem.create!(kode_barang: self.kode_barang, serial: self.serial, channel_customer_id: showroom.id,
-          jumlah: self.jumlah.to_i, no_sj: self.no_sj)
+          jumlah: self.jumlah.to_i, no_sj: self.no_sj, checked_in: true)
       end
       if self.serial.present?
         creating_item_mutation(showroom, (kode_item.empty? ? @ra : kode_item.first.nama), self.jumlah)
