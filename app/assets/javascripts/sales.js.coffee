@@ -238,7 +238,7 @@ jQuery ->
         $('#'+taken).prop("checked", false);
       $('#'+bonus).on "change", () ->
         if (this.checked)
-          document.getElementById(price_list).readOnly = true
+          document.getElementById(price_list).readOnly = false
         else
           document.getElementById(price_list).readOnly = false
           document.getElementById(bonus).checked = false
