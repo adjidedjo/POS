@@ -75,9 +75,11 @@ class TransferItemsController < ApplicationController
 
     respond_to do |format|
       if @transfer_item.save
-        format.html { redirect_to @transfer_item, notice: 'Barang Berhasil Terkirim.' }
+        format.html { redirect_to transfer_items_url, notice: 'Barang Berhasil Terkirim.' }
         format.json { render :show, status: :created, location: @transfer_item }
-        UserMailer.transfer_item(@transfer_item, user)
+        ChannelCustomer.find_by_user_id(current_user.id).warehouse_recipients.each do |receiper|
+          UserMailer.transfer_items(@transfer_item, receiper.warehouse_admin.email)
+        end
       else
         format.html { render :new }
         format.json { render json: @transfer_item.errors, status: :unprocessable_entity }
