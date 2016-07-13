@@ -7,16 +7,20 @@
   <Worksheet ss:Name="Sheet1">
     <Table>
       <Row>
+        <Cell><Data ss:Type="String">SJ</Data></Cell>
         <Cell><Data ss:Type="String">Serial</Data></Cell>
         <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
         <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Statis</Data></Cell>
         <Cell><Data ss:Type="String">Jumlah</Data></Cell>
       </Row>
     <% @stock.each do |s| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= s.no_sj %></Data></Cell>
         <Cell><Data ss:Type="String"><%= s.serial.present? ? s.serial : '-' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= s.kode_barang %></Data></Cell>
         <Cell><Data ss:Type="String"><%= s.nama  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.stocking_type == "RE" ? "REGULAR" : 'CS' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= s.total %></Data></Cell>
       </Row>
     <% end %>

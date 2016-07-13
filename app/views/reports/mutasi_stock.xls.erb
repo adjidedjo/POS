@@ -7,6 +7,7 @@
   <Worksheet ss:Name="Sheet1">
     <Table>
       <Row>
+        <Cell><Data ss:Type="String">No SJ</Data></Cell>
         <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
         <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
         <Cell><Data ss:Type="String">Tanggal</Data></Cell>
@@ -17,6 +18,7 @@
       </Row>
     <% @report_stock_in.each do |rs| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= rs.no_sj %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
@@ -28,6 +30,7 @@
     <% end %>
     <% @report_stock_out.each do |rs| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= rs.no_sj %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
@@ -39,6 +42,7 @@
     <% end %>
     <% @report_stock_return.each do |rs| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= rs.no_sj %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
@@ -51,6 +55,7 @@
     <% end %>
     <% @report_stock_in.each do |rs| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= rs.no_sj %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.kode_barang %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></Data></Cell>
