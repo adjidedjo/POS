@@ -98,7 +98,7 @@
           <% @top_pc.each do |sale| %>
             <tr>
               <td><%= sale.sales_promotion.nama.capitalize %></td>
-              <td style="text-align: right"><%= currency((sale.elite + sale.lady)) %></td>
+              <td style="text-align: right"><%= currency((sale.elite + sale.lady + sale.serenity + sale.tech)) %></td>
             </tr>
           <% end %>
         </tbody>
