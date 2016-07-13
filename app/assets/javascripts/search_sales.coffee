@@ -9,12 +9,64 @@ jQuery ->
       iDisplayLength: 100
     })
 
-    $('#total_acv').DataTable({
+    $('#total_re').DataTable({
       bInfo: false,
       responsive: true,
       bPaginate: false,
       bFilter: false,
-      bDestroy: true
+      bDestroy: true,
+      'fnFooterCallback': (nRow, aaData) ->
+        iTotalTarget = 0
+        iTotalSales = 0
+        i = 0
+        while i < aaData.length
+          iTotalTarget += parseCurrency(aaData[i][1]) * 1
+          i++
+
+        nCells = nRow.getElementsByTagName('td')
+        nCells[1].innerHTML += addCommas(parseInt(iTotalTarget))
+        return
+
+    })
+
+    $('#total_cs').DataTable({
+      bInfo: false,
+      responsive: true,
+      bPaginate: false,
+      bFilter: false,
+      bDestroy: true,
+      'fnFooterCallback': (nRow, aaData) ->
+        iTotalTarget = 0
+        iTotalSales = 0
+        i = 0
+        while i < aaData.length
+          iTotalTarget += parseCurrency(aaData[i][1]) * 1
+          i++
+
+        nCells = nRow.getElementsByTagName('td')
+        nCells[1].innerHTML += addCommas(parseInt(iTotalTarget))
+        return
+
+    })
+
+    $('#total_pc').DataTable({
+      bInfo: false,
+      responsive: true,
+      bPaginate: false,
+      bFilter: false,
+      bDestroy: true,
+      'fnFooterCallback': (nRow, aaData) ->
+        iTotalTarget = 0
+        iTotalSales = 0
+        i = 0
+        while i < aaData.length
+          iTotalTarget += parseCurrency(aaData[i][1]) * 1
+          i++
+
+        nCells = nRow.getElementsByTagName('td')
+        nCells[1].innerHTML += addCommas(parseInt(iTotalTarget))
+        return
+
     })
 
     $('#top_10_items').DataTable({
@@ -40,3 +92,17 @@ jQuery ->
       dateFormat: 'yy-mm-dd',
       maxDate: '0'
     })
+
+  parseCurrency = (num) ->
+    a = num.replace /\Rp./g, ''
+    parseFloat a.replace(/\./g, '')
+
+  addCommas = (nStr) ->
+    nStr += ''
+    x = nStr.split('.')
+    x1 = x[0]
+    x2 = if x.length > 1 then '.' + x[1] else ''
+    rgx = /(\d+)(\d{3})/
+    while rgx.test(x1)
+      x1 = x1.replace(rgx, '$1' + '.' + '$2')
+    x1 + x2
