@@ -4,10 +4,11 @@ xml.instruct!
 xml.data do
   @returned.each do |si|
     si.update_attributes!(no_bukti_return: @nobukti)
-    xml.sj do
+    takeaway_cs = StoreSalesAndStockHistory.where(serial: si.serial, channel_customer_id: current_user.channel_customer.id, keterangan: "S")
+    xml.retur do
       xml.KodeBrg si.kode_barang
       xml.Serial si.serial.present? ? si.serial : si.qty_out
-      xml.Noso si.sale_id.nil? ? '-' : si.sale_id
+      xml.Noso takeaway_cs.nil? ? '-' : takeaway_cs.first
       xml.NoPBJ si.no_sj.present? ? si.no_sj : "-"
       xml.Status ""
       xml.NoSJ si.no_bukti_return.present? ? si.no_bukti_return : "-"
