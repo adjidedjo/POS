@@ -1,71 +1,97 @@
 <h1>Laporan Mutasi Stok <%= current_user.channel_customer.nama.titleize %></h1>
 
-<table id="sales_rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
-  <thead>
-    <tr>
-      <th>Kode Barang</th>
-      <th>Nama Barang</th>
-      <th>Tanggal</th>
-      <th>Penerimaan</th>
-      <th>Pengeluaran</th>
-      <th>Saldo</th>
-      <th>Keterangan</th>
-    </tr>
-  </thead>
+<hr>
+<div>
+  <h3>Cari Mutasi STOK</h3>
+  <%= simple_form_for :search, { url: reports_mutasi_stock_path, method: "get" } do |f| %>
+    <div class="field">
+      <%= f.input :dari_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+    </div>
+    <div class="field">
+      <%= f.input :sampai_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+    </div>
+    <%= hidden_field_tag :cc_id, params[:cc_id] %>
+    <%= submit_tag "Search", :class => 'btn-primary'%>
+  <% end %>
+</div>
+<h5>Pencarian Tanggal berdasarkan TANGGAL TERIMA</h5>
+<h5>Jika ingin mengeksport ke excel sesuai tanggal, cari berdasarkan tanggal lalu export</h5>
+<hr>
 
-  <tbody>
-    <% @report_stock_in.each do |rs| %>
+<% if params[:search].present? %>
+
+  <table id="sales_rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
       <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
-        <td><%= rs.qty_in %></td>
-        <td>0</td>
-        <td>-</td>
-        <td>Stok Awal</td>
+        <th>No SJ</th>
+        <th>Kode Barang</th>
+        <th>Nama Barang</th>
+        <th>Tanggal Terima</th>
+        <th>Penerimaan</th>
+        <th>Pengeluaran</th>
+        <th>Saldo</th>
+        <th>Keterangan</th>
       </tr>
-    <% end %>
-    <% @report_stock_out.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
-        <td>0</td>
-        <td><%= rs.qty_out %></td>
-        <td>-</td>
-        <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
-      </tr>
-    <% end %>
-    <% @report_stock_return.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
-        <td>0</td>
-        <td><%= rs.qty_out %></td>
-        <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "S", channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
-        <td>-</td>
-        <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
-      </tr>
-    <% end %>
-    <% @report_stock_in.each do |rs| %>
-      <tr>
-        <td><%= rs.kode_barang %></td>
-        <td><%= rs.nama %></td>
-        <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
-        <td>-</td>
-        <td>-</td>
-        <% if rs.serial.present? %>
-          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_out) %>
-          <td><%= a %></td>
-        <% else %>
-          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
-          <td><%= a %></td>
-        <% end %>
-        <td>Saldo Akhir</td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<br />
-<%= link_to "Export to Excel", reports_mutasi_stock_path(format: "xls"), :class => "btn btn-info" %>
+    </thead>
+
+    <tbody>
+      <% @report_stock_in.each do |rs| %>
+        <tr>
+          <td><%= rs.no_sj %></td>
+          <td><%= rs.kode_barang %></td>
+          <td><%= rs.nama %></td>
+          <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
+          <td><%= rs.qty_in %></td>
+          <td>0</td>
+          <td>-</td>
+          <td>Stok Awal</td>
+        </tr>
+      <% end %>
+      <% @report_stock_out.each do |rs| %>
+        <tr>
+          <td><%= rs.no_sj %></td>
+          <td><%= rs.kode_barang %></td>
+          <td><%= rs.nama %></td>
+          <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
+          <td>0</td>
+          <td><%= rs.qty_out %></td>
+          <td>-</td>
+          <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
+        </tr>
+      <% end %>
+      <% @report_stock_return.each do |rs| %>
+        <tr>
+          <td><%= rs.no_sj %></td>
+          <td><%= rs.kode_barang %></td>
+          <td><%= rs.nama %></td>
+          <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
+          <td>0</td>
+          <td><%= rs.qty_out %></td>
+          <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "S", channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
+          <td>-</td>
+          <td><%= rs.keterangan == 'B' ? 'Retur Display' : 'Penjualan' %></td>
+        </tr>
+      <% end %>
+      <% @report_stock_in.each do |rs| %>
+        <tr>
+          <td><%= rs.no_sj %></td>
+          <td><%= rs.kode_barang %></td>
+          <td><%= rs.nama %></td>
+          <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
+          <td>-</td>
+          <td>-</td>
+          <% if rs.serial.present? %>
+            <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id, serial: rs.serial).sum(:qty_out) %>
+            <td><%= a %></td>
+          <% else %>
+            <% a = StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: "R", channel_customer_id: current_user.channel_customer.id).sum(:qty_in) - StoreSalesAndStockHistory.where(no_sj: rs.no_sj, kode_barang: rs.kode_barang, keterangan: ["S","B"], channel_customer_id: current_user.channel_customer.id).sum(:qty_out) %>
+            <td><%= a %></td>
+          <% end %>
+          <td>Saldo Akhir</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+  <%= link_to "Export to Excel", reports_mutasi_stock_path(format: "xls"), :class => "btn btn-info" %>
+<% end %>

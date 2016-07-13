@@ -64,9 +64,13 @@ class ReportsController < ApplicationController
   end
 
   def mutasi_stock
-    @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "R")
-    @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "S").where("qty_out > ?", 0)
-    @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B").where("qty_out > ?", 0)
+    if params[:search].present?
+      dari_tanggal =  params[:search][:dari_tanggal]
+      sampai_tanggal =  params[:search][:sampai_tanggal]
+      @report_stock_in = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "R").where("updated_at between ? and ?", dari_tanggal, sampai_tanggal)
+      @report_stock_out = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "S").where("qty_out > ? and updated_at between ? and ?", 0, dari_tanggal, sampai_tanggal)
+      @report_stock_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B").where("qty_out > ? and updated_at between ? and ?", 0, dari_tanggal, sampai_tanggal)
+    end
 
     respond_to do |format|
       format.html

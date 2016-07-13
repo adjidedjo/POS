@@ -14,6 +14,7 @@
     <%= submit_tag "Search" %>
   <% end %>
 </div>
+<h5>Pencarian Tanggal berdasarkan TANGGAL TERIMA</h5>
 <h5>Jika ingin mengeksport ke excel sesuai tanggal, cari berdasarkan tanggal lalu export</h5>
 <hr>
 
@@ -22,9 +23,10 @@
   <table id="sales_rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
       <tr>
+        <th>No SJ</th>
         <th>Kode Barang</th>
         <th>Nama Barang</th>
-        <th>Tanggal</th>
+        <th>Tanggal Terima</th>
         <th>Penerimaan</th>
         <th>Pengeluaran</th>
         <th>Saldo</th>
@@ -35,6 +37,7 @@
     <tbody>
       <% @report_stock_in.each do |rs| %>
         <tr>
+          <td><%= rs.no_sj %></td>
           <td><%= rs.kode_barang %></td>
           <td><%= rs.nama %></td>
           <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
@@ -46,6 +49,7 @@
       <% end %>
       <% @report_stock_out.each do |rs| %>
         <tr>
+          <td><%= rs.no_sj %></td>
           <td><%= rs.kode_barang %></td>
           <td><%= rs.nama %></td>
           <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
@@ -57,6 +61,7 @@
       <% end %>
       <% @report_stock_return.each do |rs| %>
         <tr>
+          <td><%= rs.no_sj %></td>
           <td><%= rs.kode_barang %></td>
           <td><%= rs.nama %></td>
           <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
@@ -69,6 +74,7 @@
       <% end %>
       <% @report_stock_in.each do |rs| %>
         <tr>
+          <td><%= rs.no_sj %></td>
           <td><%= rs.kode_barang %></td>
           <td><%= rs.nama %></td>
           <td><%= rs.tanggal.present? ? rs.tanggal.strftime('%d-%m-%Y') : "-" %></td>
