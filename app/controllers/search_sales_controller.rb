@@ -60,7 +60,7 @@ class SearchSalesController < ApplicationController
         .group(:kode_barang).order('sum_jumlah DESC').limit(10)
         @top_pc = @cc.sales.select('*, sales_promotion_id, sum(netto_elite) as elite, sum(netto_lady) as lady')
         .where("date(created_at) >= ? and date(created_at) <= ? and cancel_order = ?",
-          @search.dari_tanggal, @search.sampai_tanggal,0).group(:sales_promotion_id).order('elite DESC, lady DESC').limit(10)
+          @search.dari_tanggal, @search.sampai_tanggal,0).group(:sales_promotion_id).order('elite DESC, lady DESC')
       else
         show_without_user
       end

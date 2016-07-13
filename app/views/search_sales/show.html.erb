@@ -2,100 +2,122 @@
   <%= render "form" %>
 </div>
 <div class="page-header">
-  <h1>Search Results</h1>
+  <h1>Hasil Pencarian</h1>
 </div>
 <% if @search.tampilkan_berdasarkan == "Rincian" %>
-<table id="index_of_sales_reports" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-  <thead>
-    <tr>
-      <th style="font-size: 10px">Channel</th>
-      <th style="font-size: 10px">Channel Customer</th>
-      <th style="font-size: 10px">No SO</th>
-      <th style="font-size: 10px">SO Manual</th>
-      <th style="font-size: 10px">Tanggal SO</th>
-      <th style="font-size: 10px">Customer</th>
-      <th style="font-size: 10px">Ket Pembayaran</th>
-      <th style="font-size: 10px">Cara Pembayaran</th>
-      <th style="font-size: 10px">Netto Elite</th>
-      <th style="font-size: 10px">Netto Lady</th>
-      <th style="font-size: 10px">Total Pembayaran</th>
-      <th style="font-size: 10px">Bayar</th>
-    </tr>
-  </thead>
+  <table id="index_of_sales_reports" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th style="font-size: 10px">Channel</th>
+        <th style="font-size: 10px">Channel Customer</th>
+        <th style="font-size: 10px">No SO</th>
+        <th style="font-size: 10px">SO Manual</th>
+        <th style="font-size: 10px">Tanggal SO</th>
+        <th style="font-size: 10px">Customer</th>
+        <th style="font-size: 10px">Ket Pembayaran</th>
+        <th style="font-size: 10px">Cara Pembayaran</th>
+        <th style="font-size: 10px">Netto Elite</th>
+        <th style="font-size: 10px">Netto Lady</th>
+        <th style="font-size: 10px">Total Pembayaran</th>
+        <th style="font-size: 10px">Bayar</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <%= render @search.sales %>
-  </tbody>
-</table>
+    <tbody>
+      <%= render @search.sales %>
+    </tbody>
+  </table>
 
 <% else %>
 
-<div class="row">
-  <div class="col-xs-4">
-    <h5 style="text-align: center; font-weight: bold;">Laporan Penjualan per Brand</h5>
-    <h5 style="text-align: center; font-size: 12px;">(tidak termasuk Aksesoris)</h5>
-    <table id="total_acv" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th>Brand</th>
-          <th>Penjualan</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @brand.each do |brand| %>
+  <div class="row">
+    <div class="col-xs-4">
+      <h5 style="text-align: center; font-weight: bold;">Laporan Penjualan Barang Regular per Brand</h5>
+      <table id="total_acv" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
           <tr>
-            <td><%= brand.brand %></td>
-            <td style="text-align: right"><%= currency(SearchSale.report_by_brand(@search.dari_tanggal, @search.sampai_tanggal, @search.channel_customer_id, brand.id)) %></td>
+            <th>Brand</th>
+            <th>Penjualan</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+          <% @brand.each do |brand| %>
+            <tr>
+              <td><%= brand.brand %></td>
+              <td style="text-align: right"><%= currency(SearchSale.report_by_brand(@search.dari_tanggal, @search.sampai_tanggal, @search.channel_customer_id, brand.id, "RE")) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-xs-4">
+      <h5 style="text-align: center; font-weight: bold;">Laporan Penjualan Barang CS per Brand</h5>
+      <table id="total_acv" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Penjualan</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @brand.each do |brand| %>
+            <tr>
+              <td><%= brand.brand %></td>
+              <td style="text-align: right"><%= currency(SearchSale.report_by_brand(@search.dari_tanggal, @search.sampai_tanggal, @search.channel_customer_id, brand.id, "CS")) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-xs-4">
+      <h5 style="text-align: center; font-weight: bold;">Pencapian Produk Konsultan <%= @cc.nama.titleize %></h5>
+      <table id="top_10_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Jumlah</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @top_pc.each do |sale| %>
+            <tr>
+              <td><%= sale.sales_promotion.nama.capitalize %></td>
+              <td style="text-align: right"><%= currency((sale.elite + sale.lady)) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="col-xs-4">
-    <h5 style="text-align: center; font-weight: bold;">10 Barang Terjual Populer <%= @cc.nama.titleize %></h5>
-    <h5 style="text-align: center; font-size: 12px;">(tidak termasuk Aksesoris)</h5>
-    <table id="top_10_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Jumlah</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @top_10_items.each do |top_item| %>
+  <hr>
+  <div class="row">
+    <div class="col-xs-4">
+      <h5 style="text-align: center; font-weight: bold;">10 Barang Populer <%= @cc.nama.titleize %></h5>
+      <h5 style="text-align: center; font-size: 12px;">(tidak termasuk Aksesoris)</h5>
+      <table id="top_10_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+        <thead>
           <tr>
-            <td style="font-size: 10px;"><%= top_item.item.blank? ? top_item.kode_barang : top_item.item.nama %></td>
-            <td style="text-align: right"><%= top_item.sum_jumlah %></td>
+            <th>Nama</th>
+            <th>Jumlah</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+        </thead>
 
-  <div class="col-xs-4">
-    <h5 style="text-align: center; font-weight: bold;">10 Produk Konsultan Populer <%= @cc.nama.titleize %></h5>
-    <h5 style="text-align: center; font-size: 12px;">(termasuk Aksesoris)</h5>
-    <table id="top_10_items" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Jumlah</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @top_pc.each do |sale| %>
-          <tr>
-            <td><%= sale.sales_promotion.nama.capitalize %></td>
-            <td style="text-align: right"><%= currency((sale.elite + sale.lady)) %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+        <tbody>
+          <% @top_10_items.each do |top_item| %>
+            <tr>
+              <td style="font-size: 10px;"><%= top_item.item.blank? ? top_item.kode_barang : top_item.item.nama %></td>
+              <td style="text-align: right"><%= top_item.sum_jumlah %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
 <% end %>
