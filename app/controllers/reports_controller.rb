@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
 
   def available_stock
     @stock = ExhibitionStockItem.select('*, sum(jumlah) as total').where(checked_in: true, checked_out: false,
-      channel_customer_id: current_user.channel_customer.id).where.not(jumlah: 0).group([:kode_barang, :serial])
+      channel_customer_id: current_user.channel_customer.id).where.not(jumlah: 0).group([:kode_barang, :serial, :no_sj])
     @channel = ChannelCustomer.find(current_user.channel_customer.id)
 
     respond_to do |format|
