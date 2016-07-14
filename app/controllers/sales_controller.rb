@@ -127,8 +127,6 @@ class SalesController < ApplicationController
     end
   end
 
-
-
   # GET /sales/new
   def new
     @sale = Sale.new

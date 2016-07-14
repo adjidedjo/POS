@@ -38,7 +38,7 @@ class Sale < ActiveRecord::Base
     :cek_pembayaran_debit, :cek_pembayaran_kredit,
     :cek_down_payment, :cek_transfer_bank
 
-  before_create :netto_brand
+  after_create :netto_brand
 
   def cek_transfer_bank
     if tipe_pembayaran.split(";").include?("Transfer") && bank_account_id.nil?
@@ -81,12 +81,12 @@ class Sale < ActiveRecord::Base
   end
 
   def netto_brand
-    self.netto_lady = sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "L"}
-    self.netto_elite = sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "E"}
-    self.netto_serenity = sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "S"}
-    self.netto_royal = sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "R"}
-    self.netto_tech = sale_items.select { |b| b[:kode_barang][2] == "B"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "B"}
-    self.netto_pure = sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list) if sale_items.any? { |b| b[:kode_barang][2] == "P"}
+    self.netto_lady = sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)
+    self.netto_elite = sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)
+    self.netto_serenity = sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list)
+    self.netto_royal = sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)
+    self.netto_tech = sale_items.select { |b| b[:kode_barang][2] == "B"}.sum(&:price_list)
+    self.netto_pure = sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)
   end
 
   def cek_pembayaran_tunai
@@ -113,7 +113,7 @@ class Sale < ActiveRecord::Base
     end
   end
 
-  before_update do
+  after_update do
     puc = {
       email: email,
       nama: nama,
