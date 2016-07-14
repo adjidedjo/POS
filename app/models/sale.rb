@@ -112,7 +112,7 @@ class Sale < ActiveRecord::Base
     end
   end
 
-  before_update do
+  after_update do
     puc = {
       email: email,
       nama: nama,
