@@ -126,10 +126,14 @@
 
         <tbody>
           <% @top_10_items.each do |top_item| %>
-            <tr>
-              <td style="font-size: 10px;"><%= top_item.item.blank? ? top_item.kode_barang : top_item.item.nama %></td>
-              <td style="text-align: right"><%= top_item.sum_jumlah %></td>
-            </tr>
+            <% unless top_item.blank? %>
+              <% top_item.each do |ti| %>
+                <tr>
+                  <td style="font-size: 10px;"><%= ti.item.nil? ? ti.kode_barang : ti.item.nama %></td>
+                  <td style="text-align: right"><%= ti.sum_jumlah %></td>
+                </tr>
+              <% end %>
+            <% end %>
           <% end %>
         </tbody>
       </table>
