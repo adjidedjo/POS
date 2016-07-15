@@ -23,7 +23,11 @@ xml.data do
       xml.AlamatKirim si.sale.pos_ultimate_customer.alamat+" "+ si.sale.pos_ultimate_customer.kota.capitalize
       xml.Customer si.sale.pos_ultimate_customer.nama
       xml.Alamat1 si.sale.pos_ultimate_customer.alamat
-      xml.KodePameran si.sale.channel_customer.kode_channel_customer
+      if si.brand_id == 2 || si.brand_id == 6
+        xml.KodePameran si.sale.channel_customer.kode_showroom
+      else
+        xml.KodePameran si.sale.channel_customer.kode_channel_customer
+      end
       xml.NamaPameran si.sale.channel_customer.nama
       siscc = si.sale.channel_customer
       xml.DariTanggal siscc.dari_tanggal.nil? ? '' : siscc.dari_tanggal.strftime("%m/%d/%Y")
@@ -61,16 +65,16 @@ xml.data do
       xml.Email si.sale.email
       netto_brand =
         if si.brand_id == 2
-          si.sale.netto_elite
-        elsif si.brand_id == 4
-          si.sale.netto_lady
-        elsif si.brand_id == 5
-          si.sale.netto_royal
-        elsif si.brand_id == 6
-          si.sale.netto_serenity
-        elsif si.brand_id == 7
-          si.sale.netto_tech
-        end
+        si.sale.netto_elite
+      elsif si.brand_id == 4
+        si.sale.netto_lady
+      elsif si.brand_id == 5
+        si.sale.netto_royal
+      elsif si.brand_id == 6
+        si.sale.netto_serenity
+      elsif si.brand_id == 7
+        si.sale.netto_tech
+      end
       xml.NettoBrand netto_brand
       xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
       xml.NoRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.account_number
