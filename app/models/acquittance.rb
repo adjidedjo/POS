@@ -29,7 +29,7 @@ class Acquittance < ActiveRecord::Base
       (Date.today.strftime('%m') + Date.today.strftime('%y') + '0001')
     end
     self.no_reference = "AQX" + (sprintf '%03d', channel_customer_id) + self.no_order
-    self.sale_id = Sale.where(no_so: no_so).first.id
+    self.sale_id = Sale.where(no_so: self.no_so).first.id
   end
 
   after_create do
