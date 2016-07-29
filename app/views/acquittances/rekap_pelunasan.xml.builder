@@ -22,7 +22,8 @@ xml.data do
       xml.Hp1 acq.sale.pos_ultimate_customer.handphone.blank? ? '-' : acq.sale.pos_ultimate_customer.handphone
       xml.Hp2 acq.sale.pos_ultimate_customer.handphone1.blank? ? '-' : acq.sale.pos_ultimate_customer.handphone1
       xml.HargaNetto acq.sale.netto
-      dp_before = (acq.sale.pembayaran+acq.sale.payment_with_debit_card.jumlah+acq.sale.payment_with_credit_cards.sum(:jumlah)+acq.sale.jumlah_transfer)
+      debit = PaymentWithDebitCard.find_by_sale_id(acq.sale)
+      dp_before = acq.sale.pembayaran+debit.jumlah+acq.sale.payment_with_credit_cards.sum(:jumlah)+acq.sale.jumlah_transfer
       dp_now = (acq.cash_amount+acq.acquittance_with_debit_card.jumlah+acq.acquittance_with_credit_cards.sum(:jumlah)+acq.transfer_amount)
       xml.DP (dp_before + dp_now)
       xml.Sisa acq.sale.sisa
