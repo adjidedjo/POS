@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :retail_customers do
+    collection do
+      get "get_kode_barang_from_nama"
+      get "exhibition_stock"
+      get "items"
+      get "item_master"
+    end
+  end
+
   resources :adjusments do
     collection do
       get 'find_showroom'
@@ -25,6 +34,8 @@ Rails.application.routes.draw do
     get 'stocks/view_selisih_stock'
     get 'stocks/view_penjualan'
     get 'stocks/available_stock'
+    get 'stocks/check_saldo_stock'
+    put 'stocks/process_receipt'
     resources :verifying_payments do
       collection do
         put 'verify'
