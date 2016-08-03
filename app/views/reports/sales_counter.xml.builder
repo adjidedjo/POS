@@ -90,7 +90,7 @@ file.write(xml_data)
 file.close
 @sales.group_by(&:brand_id).keys.each do |group|
   emails = []
-  @user.recipients.where(brand_id: 2).each do |rc|
+  @user.recipients.where(brand_id: group).each do |rc|
     emails << rc.sales_counter.email
   end
   UserMailer.order_pameran(emails, "#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
