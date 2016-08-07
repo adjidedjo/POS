@@ -93,5 +93,5 @@ file.close
   @user.recipients.where(brand_id: group).each do |rc|
     emails << rc.sales_counter.email
   end
-  UserMailer.order_pameran(emails, "#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
+  UserMailer.order_pameran(emails, "/xml/#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
 end
