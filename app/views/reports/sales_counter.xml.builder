@@ -85,7 +85,7 @@ xml.data do
 end
 xml_data = xml.target!
 set_file_name = @nobukti
-file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
+file = File.new("#{Rails.root}/public/xml/#{set_file_name}.xml", "wb")
 file.write(xml_data)
 file.close
 @sales.group_by(&:brand_id).keys.each do |group|
