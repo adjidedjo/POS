@@ -76,7 +76,7 @@ xml.data do
         si.sale.netto_tech
       end
       xml.NettoBrand netto_brand
-      xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
+      xml.NamaRekening s	i.sale.bank_account.nil? ? '' : si.sale.bank_account.name
       xml.NoRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.account_number
       xml.JumlahTransfer si.sale.jumlah_transfer
       xml.StatusSO si.stocking_type
@@ -93,5 +93,5 @@ file.close
   @user.recipients.where(brand_id: group).each do |rc|
     emails << rc.sales_counter.email
   end
-  UserMailer.order_pameran(emails, "/xml/#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
+  UserMailer.order_pameran(emails, "#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
 end
