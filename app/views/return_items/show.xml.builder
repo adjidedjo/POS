@@ -3,7 +3,6 @@ xml.instruct!
 @nobukti = Time.now.strftime("%d%m%Y%H%M%S")
 xml.data do
   @returned.each do |si|
-    si.update_attributes!(no_bukti_return: @nobukti)
     takeaway_cs = StoreSalesAndStockHistory.where(serial: si.serial, channel_customer_id: current_user.channel_customer.id, keterangan: "S")
     xml.retur do
       xml.KodeBrg si.kode_barang

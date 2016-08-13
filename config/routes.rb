@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       get 'get_nama_from_serial'
       get 'get_kode_from_nama'
       get 'get_showrooms'
+      get 'print_transfer'
     end
   end
 
@@ -106,6 +107,8 @@ Rails.application.routes.draw do
   get 'reports/index_akun'
   get 'reports/index_export'
   get 'reports/exported'
+  get 'reports/return'
+  get 'reports/reprint_return'
 
   devise_for :users, controllers: { sessions: "users/sessions" }
 

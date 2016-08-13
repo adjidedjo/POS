@@ -1,6 +1,34 @@
 class ReportsController < ApplicationController
   before_action :set_controller, only: [:show, :sales_counter, :index_export, :index_akun]
 
+  def return
+    @return = StoreSalesAndStockHistory.where("channel_customer_id  = ? and keterangan = ? and date(created_at) > ?", 
+    current_user.channel_customer.id, "B", Date.today.last_year)
+    @channel = ChannelCustomer.find(current_user.channel_customer.id)
+    
+    respond_to do |format|
+      format.html
+      format.xls
+    end
+  end
+
+  def reprint_return
+    @doc_code = StoreSalesAndStockHistory.find(params[:id])
+    @current_channel = current_user.channel_customer
+    @unprint_return = StoreSalesAndStockHistory.where(no_bukti_return: @doc_code.no_bukti_return)
+    
+    
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ReturnPdf.new(@unprint_return, @doc_code.no_bukti_return, @current_channel)
+        send_data pdf.render, filename: "#{@doc_code.no_bukti_return}",
+          type: "application/pdf",
+          disposition: "inline"
+      end
+    end
+  end
+  
   def exported
     @sales = []
     brand_id = params[:brand_id]

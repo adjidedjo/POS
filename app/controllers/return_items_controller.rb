@@ -38,7 +38,18 @@ class ReturnItemsController < ApplicationController
 
   def print_return
     @unprint_return = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B", printed: false)
-    @doc_code = "RT" + Digest::SHA1.hexdigest([Time.now, rand].join)[0..8]
+    last_order = StoreSalesAndStockHistory.where(channel_customer_id: current_user.channel_customer.id, keterangan: "B", printed: true).last
+    no_ret = if last_order.present? && last_order.no_bukti_return.present?
+      if last_order.no_bukti_return[3..4] == Date.today.strftime('%m')
+        no = last_order.no_bukti_return[-4,4]
+        no.succ
+      else
+       '0001'
+      end
+    else
+        '0001'
+    end
+    @doc_code = (sprintf '%03d', current_user.channel_customer.id) + (Date.today.strftime('%m') + Date.today.strftime('%y')) + no_ret
     @current_channel = current_user.channel_customer
 
     respond_to do |format|
@@ -48,9 +59,9 @@ class ReturnItemsController < ApplicationController
         send_data pdf.render, filename: "#{@doc_code}",
           type: "application/pdf",
           disposition: "inline"
-        @unprint_return.each do |rt|
-          rt.update_attributes(printed: true)
-        end
+          @unprint_return.each do |rt|
+            rt.update_attributes(printed: true, no_bukti_return: @doc_code)
+          end
       end
     end
   end
@@ -61,6 +72,7 @@ class ReturnItemsController < ApplicationController
   end
 
   def process_return
+    
     params[:return].each do |key, value|
       items = ExhibitionStockItem.where("kode_barang = ? and channel_customer_id = ? and checked_in = ?
 and checked_out = ? and jumlah > 0", value["kode_barang"], current_user.channel_customer, true, false)
@@ -70,7 +82,7 @@ and checked_out = ? and jumlah > 0", value["kode_barang"], current_user.channel_
           item.update_attributes!(jumlah: (item.jumlah - jumlah_ret.to_i))
           StoreSalesAndStockHistory.create(channel_customer_id: current_user.channel_customer.id,
             kode_barang: item.kode_barang, nama: item.nama, tanggal: Time.now, qty_out: jumlah_ret.to_i, keterangan: "B",
-            no_sj: item.no_sj, serial: item.serial)
+            no_sj: item.no_sj, serial: item.serial, no_bukti_return: @doc_code)
           value["jumlah"] = value["jumlah"].to_i - jumlah_ret
         end
         break if value["jumlah"] == 0

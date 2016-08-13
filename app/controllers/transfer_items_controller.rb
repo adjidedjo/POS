@@ -1,5 +1,23 @@
 class TransferItemsController < ApplicationController
   before_action :set_transfer_item, only: [:show, :edit, :update, :destroy]
+  
+  def print_transfer
+    @doc_code = TransferItem.find_by_id(params[:id]).tfnmr
+    @unprint_return = TransferItem.where(tfnmr: @doc_code)
+    @current_channel = current_user.channel_customer
+    @tujuan = ChannelCustomer.find_by_id(@unprint_return.first.tsh).nama
+    
+    
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = TransferPdf.new(@unprint_return, @doc_code, @current_channel, @tujuan)
+        send_data pdf.render, filename: "#{@doc_code}",
+          type: "application/pdf",
+          disposition: "inline"
+      end
+    end
+  end
 
   def get_showrooms
     @channel = ChannelCustomer.order(:nama).where("nama like ? and id != ?", "%#{params[:term]}%", current_user.channel_customer.id)

@@ -1,11 +1,12 @@
-class ReturnPdf < Prawn::Document
+class TransferPdf < Prawn::Document
   include ActionView::Helpers::NumberHelper
-  def initialize(items, no_doc, current_channel)
+  def initialize(items, no_doc, current_channel, tujuan)
     super({:page_size => 'A4', :margin => [100, 40, 30, 40]})
     @items = items
     @no_doc = no_doc
     @current_channel = current_channel
     return_number
+    @tujuan = tujuan
     header
     line_items
     line_item_rows
@@ -15,7 +16,7 @@ class ReturnPdf < Prawn::Document
   def return_number
     indent 5 do
       bounding_box([0, cursor - 50], :width => 500) do
-        text "NOTA RETUR DISPLAY", size: 15, style: :bold, align: :center
+        text "Transfer Barang", size: 15, style: :bold, align: :center
       end
     end
     stroke do
@@ -31,14 +32,14 @@ class ReturnPdf < Prawn::Document
         draw_text("Tanggal", :size => 8, :style => :bold, :at => [([bounds.left, bounds.top - 18]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 6.5]), 0])
         draw_text(":", :size => 8, :at => [([bounds.left + 80, bounds.top - 17.5]), 0])
-        draw_text("RT#{@no_doc.upcase}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7]), 0])
+        draw_text("TR#{@no_doc.upcase}", :size => 8, :at => [([bounds.left + 85, bounds.top - 7]), 0])
         draw_text("#{Date.today.strftime('%d-%m-%Y')}", :size => 8, :at => [([bounds.left + 85, bounds.top - 18]), 0])
-        draw_text("Nama Pameran/Showroom", :size => 8, :style => :bold, :at => [([bounds.left + 280, bounds.top - 7]), 0])
-        draw_text("Alamat", :size => 8, :style => :bold, :at => [([bounds.left  + 280, bounds.top - 18]), 0])
+        draw_text("Asal Pameran/Showroom", :size => 8, :style => :bold, :at => [([bounds.left + 280, bounds.top - 7]), 0])
+        draw_text("Tujuan Pameran/Showroom", :size => 8, :style => :bold, :at => [([bounds.left  + 280, bounds.top - 18]), 0])
         draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left + 392, bounds.top - 7]), 0])
         draw_text(":", :size => 8, :style => :bold, :at => [([bounds.left  + 392, bounds.top - 18]), 0])
         draw_text("#{@current_channel.nama.upcase}", :size => 8, :at => [([bounds.left + 400, bounds.top - 7]), 0])
-        draw_text("#{@current_channel.alamat}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
+        draw_text("#{@tujuan.upcase}", :size => 8, :at => [([bounds.left  + 400, bounds.top - 18]), 0])
       end
     end
     move_down 20
@@ -59,7 +60,7 @@ class ReturnPdf < Prawn::Document
   def line_item_rows
     [["No Barcode", "Nama Barang", "P", "L", "T", "Sat", "Qty", "Ex. SJ", "Alasan Diretur", "Kondisi Barang", "Tindak Lanjut"]] +
       @items.map do |item|
-      [item.serial, item.nama, item.kode_barang[12..14], item.kode_barang[15..17], "", "PCS", item.qty_out, item.no_sj, "", "", ""]
+      [item.sn, item.nbrg, item.brg[12..14], item.brg[15..17], "", "PCS", item.jml, "", "", "", ""]
     end
   end
 

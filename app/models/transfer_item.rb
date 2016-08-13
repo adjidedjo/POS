@@ -2,8 +2,21 @@ class TransferItem < ActiveRecord::Base
   validates :nbrg, :jml, :tsh, presence: true
 
   before_create do
+    channel = ChannelCustomer.find_by_id(self.ash).id
     self.tsh = ChannelCustomer.find_by_nama(self.tsh).id
-    self.tfnmr = "TR"
+    self.ash = channel
+    last_order = TransferItem.where(ash: self.ash).last
+    no_ret = if last_order.present? && last_order.tfnmr.present?
+      if last_order.tfnmr[5..6] == Date.today.strftime('%m')
+        no = last_order.tfnmr[-4,4]
+        no.succ    
+      else
+        '0001'
+      end
+    else
+      '0001'
+    end
+    self.tfnmr = (sprintf '%03d', channel) + (Date.today.strftime('%m') + Date.today.strftime('%y')) + no_ret
   end
 
   after_create do
