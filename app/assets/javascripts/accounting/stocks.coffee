@@ -14,6 +14,8 @@ jQuery ->
       "bDestroy": true
     })
 
+    $('#serial').focus()
+
     $('#v_penjualan').DataTable()
 
     $('#search_dari_tanggal').datepicker({

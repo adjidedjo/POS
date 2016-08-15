@@ -1,19 +1,19 @@
 class Accounting::StocksController < ApplicationController
   before_action :set_controller, only: [:show, :mutasi_stock]
-  
+
   def check_saldo_stock
-    @receipt = ExhibitionStockItem.where(channel_customer_id: 22,
-      checked_in: true).where("created_at >= ?", Date.today)
+    @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id,
+      checked_in: true).order_by("updated_at DESC")
   end
-  
+
   def process_receipt
-    esi = ExhibitionStockItem.where(channel_customer_id: 22,
+    esi = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id,
       checked_in: false, serial: params[:serial]).first
     if esi.present?
       esi.update_attributes!(checked_in: true)
       redirect_to accounting_stocks_check_saldo_stock_path, notice: "Barang yang di SCAN telah Masuk Menjadi STOK"
     else
-      UnidentifiedSerial.create(serial: params[:serial])
+      UnidentifiedSerial.create(serial: params[:serial], channel_customer_id: current_user.channel_customer.id)
       redirect_to accounting_stocks_check_saldo_stock_path, :flash => { :error => "SERIAL TIDAK DIKENAL/TIDAK ADA" }
     end
   end
