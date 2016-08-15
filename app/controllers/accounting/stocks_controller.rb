@@ -12,9 +12,14 @@ class Accounting::StocksController < ApplicationController
     if esi.present?
       esi.update_attributes!(checked_in: true)
       redirect_to accounting_stocks_check_saldo_stock_path, notice: "Barang yang di SCAN telah Masuk Menjadi STOK"
-    else
-      UnidentifiedSerial.create(serial: params[:serial], channel_customer_id: current_user.channel_customer.id)
-      redirect_to accounting_stocks_check_saldo_stock_path, :flash => { :error => "SERIAL TIDAK DIKENAL/TIDAK ADA" }
+    else 
+      ser = UnidentifiedSerial.find_by_serial(params[:serial])
+		  if ser.nil?  
+		    UnidentifiedSerial.create(serial: params[:serial], channel_customer_id: current_user.channel_customer.id)
+		    redirect_to accounting_stocks_check_saldo_stock_path, :flash => { :error => "SERIAL TIDAK DIKENAL/TIDAK ADA" }
+      else
+        redirect_to accounting_stocks_check_saldo_stock_path, :flash => { :error => "SERIAL SUDAH TERDAFTAR" }
+      end
     end
   end
 
