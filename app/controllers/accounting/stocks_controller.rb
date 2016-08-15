@@ -3,7 +3,7 @@ class Accounting::StocksController < ApplicationController
 
   def check_saldo_stock
     @receipt = ExhibitionStockItem.where(channel_customer_id: current_user.channel_customer.id,
-      checked_in: true).order_by("updated_at DESC")
+      checked_in: true).order("updated_at DESC")
   end
 
   def process_receipt

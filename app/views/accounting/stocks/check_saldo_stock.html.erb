@@ -14,7 +14,6 @@
       <th class="all">Kode Barang</th>
       <th class="all">Nama Barang</th>
       <th class="all">QTY</th>
-      <th class="all">Harga</th>
     </tr>
   </thead>
 
@@ -25,7 +24,6 @@
         <td><%= resep.kode_barang %></td>
         <td><%= resep.nama %></td>
         <td><%= resep.jumlah %></td>
-        <td><%= best_in_place resep, :price_list, :url => reports_update_path(id: resep.id), :place_holder => "KLIK DIISINI" %></td>
       </tr>
     <% end %>
   </tbody>
