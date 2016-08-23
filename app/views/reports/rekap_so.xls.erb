@@ -54,7 +54,7 @@
         <Cell><Data ss:Type="String">Taken</Data></Cell>
         <Cell><Data ss:Type="String">Serial</Data></Cell>
       </Row>
-    <% @sale_items.each do |sale_item| %>
+    <% @sales.each do |sale_item| %>
       <Row>
         <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
