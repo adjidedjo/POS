@@ -81,11 +81,11 @@
         <% if @b.blank? || @b != a %>
           <Cell><Data ss:Type="Number"><%= sale_item.sale.netto %></Data></Cell>
           <Cell><Data ss:Type="Number"><%= sale_item.sale.pembayaran %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list) %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= sale_item.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= sale_item.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= sale_item.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= sale_item.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list) %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= sale_item.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '-' : sale_item.sale.bank_account.name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '-' : sale_item.sale.bank_account.account_number %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= sale_item.sale.jumlah_transfer %></Data></Cell>
