@@ -8,11 +8,11 @@ class SearchSale < ActiveRecord::Base
   def self.report_by_brand(dari, sampai, user, brand, stock)
     total = []
     if brand.present?
-      Sale.where(channel_customer_id: user, cancel_order: false).where("date(created_at) >= ? and date(created_at) <= ?",
-        dari, sampai).each do |sa|
-          total << sa.sale_items.where(brand_id: brand, stocking_type: stock).sum(:price_list)
-        end
-        return total.inject(:+)
+        Sale.where(channel_customer_id: user, cancel_order: false).where("date(created_at) >= ? and date(created_at) <= ?",
+          dari, sampai).each do |sa|
+            total << sa.sale_items.where(brand_id: brand, stocking_type: stock).sum(:price_list)
+          end 
+          return total.inject(:+)
     else
       return 0
     end

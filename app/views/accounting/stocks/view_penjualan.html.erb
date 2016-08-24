@@ -50,11 +50,11 @@
         <td style="font-size: 11px;"><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
         <td style="font-size: 11px;"><%= sale.tipe_pembayaran %></td>
         <% total = (sale.pembayaran+sale.payment_with_debit_cards.sum(:jumlah)+sale.payment_with_credit_cards.sum(:jumlah)+sale.jumlah_transfer) %>
-        <td style="font-size: 10px;"><%= currency(sale.netto_elite) %></td>
-        <td style="font-size: 10px;"><%= currency(sale.netto_lady) %></td>
-        <td style="font-size: 10px;"><%= currency(sale.netto_royal) %></td>
-        <td style="font-size: 10px;"><%= currency(sale.netto_serenity) %></td>
-        <td style="font-size: 10px;"><%= currency(sale.netto_tech) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)) %></td>
         <td class="money" style="font-size: 10px;"><%= currency(total) %></td>
         <td class="money" style="font-size: 10px;"><%= currency(sale.netto) %></td>
         <td class="money" style="font-size: 10px;"><%= sale.validated? ? "Sudah" : "Belum" %></td>
