@@ -52,7 +52,7 @@ class SearchSalesController < ApplicationController
     if current_user
       unless current_user.admin?
         @brand = Brand.all
-        @cc = current_user.channel_customer
+        @cc = current_user.present? ? current_user.channel_customer : ChannelCustomer.find(self.channel_customer_id)
         @top_10_items = []
         @cc.sales.where('date(created_at) between ? and ?', @search.dari_tanggal, @search.sampai_tanggal).each do |sa|
           @top_10_items << sa.sale_items.select('kode_barang, sum(jumlah) as sum_jumlah').where("kode_barang not like ? and kode_barang not like ? and cancel = ? and channel_customer_id = ?", "#{'E'}%", "#{'L'}%", 0, @cc.id)
@@ -88,13 +88,13 @@ class SearchSalesController < ApplicationController
     @brand = Brand.all
     @channel_customer = ChannelCustomer.order(:nama)
     @cc = ChannelCustomer.find(SearchSale.find(params[:id]).channel_customer_id)
-    @top_10_items = SaleItem.select('kode_barang, sum(jumlah) as sum_jumlah')
-    .where("date(created_at) >= ? and date(created_at) <= ? and
-         kode_barang not like ? and kode_barang not like ? and cancel = ? and channel_customer_id = ?",
-      @search.dari_tanggal, @search.sampai_tanggal, "#{'E'}%", "#{'L'}%", 0, @cc.id)
-    .group(:kode_barang).order('sum_jumlah DESC').limit(10)
-    @top_pc = @cc.sales.select('*, sales_promotion_id, sum(netto_elite) as elite, sum(netto_lady) as lady')
-    .where("date(created_at) >= ? and date(created_at) <= ? and cancel_order = ?",
-      @search.dari_tanggal, @search.sampai_tanggal,0).group(:sales_promotion_id).order('elite DESC, lady DESC').limit(10)
+    @top_10_items = []
+    @cc.sales.where('date(created_at) between ? and ?', @search.dari_tanggal, @search.sampai_tanggal).each do |sa|
+      @top_10_items << sa.sale_items.select('kode_barang, sum(jumlah) as sum_jumlah').where("kode_barang not like ? and kode_barang not like ? and cancel = ? and channel_customer_id = ?", "#{'E'}%", "#{'L'}%", 0, @cc.id)
+        .group(:kode_barang).order('sum_jumlah DESC').limit(10)
+    end
+    @top_pc = @cc.sales.select('*, sales_promotion_id, sum(netto) netto')
+     .where("date(created_at) >= ? and date(created_at) <= ? and cancel_order = ?",
+     @search.dari_tanggal, @search.sampai_tanggal,0).group(:sales_promotion_id)
   end
 end
