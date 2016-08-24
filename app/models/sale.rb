@@ -38,8 +38,6 @@ class Sale < ActiveRecord::Base
     :cek_pembayaran_debit, :cek_pembayaran_kredit,
     :cek_down_payment, :cek_transfer_bank
 
-  after_create :netto_brand
-
   def cek_transfer_bank
     if tipe_pembayaran.split(";").include?("Transfer") && bank_account_id.nil?
       errors.add(:"tipe_pembayaran", "SILAHKAN PILIH BANK TUJUAN TRANSFER")
@@ -87,6 +85,7 @@ class Sale < ActiveRecord::Base
     self.netto_royal = sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)
     self.netto_tech = sale_items.select { |b| b[:kode_barang][2] == "B"}.sum(&:price_list)
     self.netto_pure = sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)
+    # raise self.netto_elite.inspect    # raise self.netto_elite.inspect  # raise self.netto_elite.inspect
   end
 
   def cek_pembayaran_tunai
@@ -131,7 +130,6 @@ class Sale < ActiveRecord::Base
       elsif ultimate_customer.first.no_telepon != "0"
         ultimate_customer.first.update_attributes!(puc)
       end
-      netto_brand
       self.pos_ultimate_customer_id = ultimate_customer.first.id
     end
   end

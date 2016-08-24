@@ -5,23 +5,23 @@ class SaleItem < ActiveRecord::Base
   belongs_to :item, foreign_key: :kode_barang, primary_key: :kode_barang
 
   validates :serial, uniqueness: true, if: "serial.present?"
-    validates :kode_barang, :jumlah, presence: true
-    validates :jumlah, numericality: {
-      only_integer: true,
-      greater_than_or_equal_to: 1
-    }
-    validate :cek_stock_without_serial, on: :create
-    validate :cek_stock_with_serial, on: :create
-    validate :cek_sales_counter
-    validate :cek_price_list, on: :create
+  validates :kode_barang, :jumlah, presence: true
+  validates :jumlah, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 1
+  }
+  validate :cek_stock_without_serial, on: :create
+  validate :cek_stock_with_serial, on: :create
+  validate :cek_sales_counter
+  validate :cek_price_list, on: :create
 
-    def cek_price_list
-      unless self.bonus?
-        if self.price_list == 0 || self.price_list.blank?
-          errors.add(:price_list, "MASUKKAN HARGA BARANG SETELAH DISKON")
-        end
+  def cek_price_list
+    unless self.bonus?
+      if self.price_list == 0 || self.price_list.blank?
+        errors.add(:price_list, "MASUKKAN HARGA BARANG SETELAH DISKON")
       end
     end
+  end
 
     def cek_sales_counter
       item = Item.find_by_kode_barang(self.kode_barang)
