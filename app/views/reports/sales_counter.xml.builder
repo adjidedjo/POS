@@ -65,15 +65,15 @@ xml.data do
       xml.Email si.sale.email
       netto_brand =
         if si.brand_id == 2
-        si.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)
       elsif si.brand_id == 4
-        si.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)
       elsif si.brand_id == 5
-        si.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)
       elsif si.brand_id == 6
-        si.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list)
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list)
       elsif si.brand_id == 7
-        si.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)
       end
       xml.NettoBrand netto_brand
       xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
