@@ -1,6 +1,15 @@
 class SearchSalesController < ApplicationController
   before_filter :authenticate_user!, :except => [:new, :show, :index, :create, :update]
   before_action :get_id, only: [:show, :edit, :update, :destroy]
+  
+  def penjualan
+    raise params[:id].inspect
+    
+    
+    respond_to do |format|
+      format.xls
+    end
+  end
 
   def index
     unless current_user.admin?
@@ -49,14 +58,19 @@ class SearchSalesController < ApplicationController
   end
 
   def show
+    @user = current_user.channel_customer.id
     if current_user
       unless current_user.admin?
         @brand = Brand.all
         @cc = current_user.present? ? current_user.channel_customer : ChannelCustomer.find(self.channel_customer_id)
         @top_10_items = []
+        @sale_items = []
         @cc.sales.where('date(created_at) between ? and ?', @search.dari_tanggal, @search.sampai_tanggal).each do |sa|
           @top_10_items << sa.sale_items.select('kode_barang, sum(jumlah) as sum_jumlah').where("kode_barang not like ? and kode_barang not like ? and cancel = ? and channel_customer_id = ?", "#{'E'}%", "#{'L'}%", 0, @cc.id)
           .group(:kode_barang).order('sum_jumlah DESC').limit(10)
+        end
+        @cc.sales.where('date(created_at) between ? and ?', @search.dari_tanggal, @search.sampai_tanggal).each do |sa|
+          @sale_items << sa.sale_items
         end
         @top_pc = @cc.sales.select('*, sales_promotion_id, sum(netto) netto')
         .where("date(created_at) >= ? and date(created_at) <= ? and cancel_order = ?",
@@ -66,6 +80,11 @@ class SearchSalesController < ApplicationController
       end
     else
       show_without_user
+    end
+    
+    respond_to do |format|
+      format.html
+      format.xls {headers["Content-Disposition"] = "attachment; filename=\"Penjualan-#{@search.dari_tanggal} to #{@search.sampai_tanggal}\"" }
     end
   end
 
