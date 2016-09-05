@@ -14,6 +14,7 @@
     <table id="sale_item" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
+          <th class="all">Barcode/Serial</th>
           <th class="all">Kode Barang</th>
           <th class="all">Nama Barang</th>
           <th class="min-tablet-l">Satuan</th>
@@ -27,6 +28,7 @@
       <tbody>
         <% @sale.sale_items.each do |sale_items| %>
           <tr>
+            <td><%= sale_items.serial.present? ? sale_items.serial : '-' %></td>
             <td><%= sale_items.kode_barang %></td>
             <td><%= sale_items.nama_barang %></td>
             <td>PCS</td>
