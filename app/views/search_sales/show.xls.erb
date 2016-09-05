@@ -70,7 +70,7 @@
   sale_item.first.sale.sales_promotion.nama.titleize %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.first.sale.cancel_order? ? 'Batal' : '-' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.first.sale.no_so %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.first.sale.so_manual.present? ? sale_item.first.first.sale.so_manual : "-" %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.first.sale.so_manual.present? ? sale_item.first.sale.so_manual : "-" %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.first.sale.created_at.strftime("%Y-%m-%d") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.first.sale.pos_ultimate_customer.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.first.kode_barang %></Data></Cell>
