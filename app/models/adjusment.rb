@@ -31,13 +31,13 @@ class Adjusment < ActiveRecord::Base
         Item.create(kode_barang: @kode, nama: @nama, jenis: @kode[0..1], harga: 0)
       end
       kode_item = Item.where(kode_barang: self.kode_barang)
-      if serial.present?
+      if serial.present? && self.serial.present?
        serial.first.update_attributes!(jumlah: 1) if (self.serial.present? && self.kode_barang.blank?) || (self.serial.present? && self.kode_barang.present?)
       elsif kode.present? && serial.nil?
         kode.first.update_attributes!(jumlah: (kode.first.jumlah + self.jumlah.to_i)) if self.serial.blank? && self.kode_barang.present?
       else
         ExhibitionStockItem.create!(kode_barang: self.kode_barang, serial: self.serial, channel_customer_id: showroom.id,
-          jumlah: self.jumlah.to_i, no_sj: self.no_sj, checked_in: true, nama: @nama)
+          jumlah: self.jumlah.to_i, no_sj: self.no_sj, checked_in: true, nama: self.nama, stock_awal: self.jumlah, stocking_type: "RE")
       end
       if self.serial.present?
         creating_item_mutation(showroom, (kode_item.empty? ? @ra : kode_item.first.nama), self.jumlah)
