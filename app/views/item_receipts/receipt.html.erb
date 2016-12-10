@@ -31,5 +31,6 @@
         <% end %>
     </tbody>
   </table>
-  <%= submit_tag "Check", :class => 'btn btn-primary' if @receipt.present? %>
+  <%= submit_tag "CHECK IN", :class => 'btn btn-primary' if @receipt.present? %>
+  <%= submit_tag "REJECT", name: 'reject', :class => 'btn btn-warning' if @receipt.present? %>
 <% end %>
