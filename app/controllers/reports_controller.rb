@@ -2,9 +2,10 @@ class ReportsController < ApplicationController
   before_action :set_controller, only: [:show, :sales_counter, :index_export, :index_akun]
 
   def return
+    @customer = (params[:cc_id].nil? || params[:cc_id].blank?) ? current_user.channel_customer.id : params[:cc_id] 
     @return = StoreSalesAndStockHistory.where("channel_customer_id  = ? and keterangan = ? and date(created_at) > ?", 
-    current_user.channel_customer.id, "B", Date.today.last_year)
-    @channel = ChannelCustomer.find(current_user.channel_customer.id)
+    @customer, "B", Date.today.last_year)
+    @channel = ChannelCustomer.find(@customer)
     
     respond_to do |format|
       format.html

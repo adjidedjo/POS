@@ -13,6 +13,7 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -27,6 +28,7 @@
         <td><%= link_to "Mutasi Stock", accounting_stocks_view_stock_path(cc_id: cc.id) %></td>
         <td><%= link_to "Selisih Intransit vs Penerimaan", accounting_stocks_view_selisih_intransit_path(cc_id: cc.id) %></td>
         <td><%= link_to "Selisih Stock vs Retur", accounting_stocks_view_selisih_stock_path(cc_id: cc.id) %></td>
+        <td><%= link_to "Retur", reports_return_path(cc_id: cc.id) %></td>
       </tr>
     <% end %>
   </tbody>
