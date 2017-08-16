@@ -75,14 +75,14 @@ class PosPdf < Prawn::Document
       columns(1..3).align = :left
       self.cell_style = { :borders => [:top, :bottom, :left, :right] }
       self.header = true
-      self.column_widths = {0 => 275, 1 => 50, 2 => 30, 3 => 50, 4 => 68, 5 => 50}
+      self.column_widths = {0 => 50, 1 => 225, 2 => 50, 3 => 30, 4 => 50, 5 => 68, 6 => 50}
     end
   end
 
   def line_item_rows
-    [["Product Name", "Unit", "Qty", "Bonus", "Delivery Date", "Taken"]] +
+    [["Serial", "Product Name", "Unit", "Qty", "Bonus", "Delivery Date", "Taken"]] +
       @order.sale_items.map do |item|
-      [item.nama_barang, 'PCS', item.jumlah, (item.bonus? ? "Bonus" : "-"), item.tanggal_kirim.strftime("%d %B %Y"), item.taken? ? "Yes" : "No"]
+      [item.serial, item.nama_barang, 'PCS', item.jumlah, (item.bonus? ? "Bonus" : "-"), item.tanggal_kirim.strftime("%d %B %Y"), item.taken? ? "Yes" : "No"]
     end
   end
 
