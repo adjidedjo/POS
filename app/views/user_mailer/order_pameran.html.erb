@@ -1,84 +1,270 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Laporan Upload Data Penjualan Harian</title>
-    <style type="text/css">
-      table.tableizer-table {
-        border: 1px solid #CCC;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px;
-        width: "100%";
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=320, initial-scale=1" />
+  <title>Order Confirm</title>
+  <style type="text/css">
+
+    /* ----- Client Fixes ----- */
+
+    /* Force Outlook to provide a "view in browser" message */
+    #outlook a {
+      padding: 0;
+    }
+
+    /* Force Hotmail to display emails at full width */
+    .ReadMsgBody {
+      width: 100%;
+    }
+
+    .ExternalClass {
+      width: 100%;
+    }
+
+    /* Force Hotmail to display normal line spacing */
+    .ExternalClass,
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td,
+    .ExternalClass div {
+      line-height: 100%;
+    }
+
+
+     /* Prevent WebKit and Windows mobile changing default text sizes */
+    body, table, td, p, a, li, blockquote {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    /* Remove spacing between tables in Outlook 2007 and up */
+    table, td {
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    /* Allow smoother rendering of resized image in Internet Explorer */
+    img {
+      -ms-interpolation-mode: bicubic;
+    }
+
+     /* ----- Reset ----- */
+
+    html,
+    body,
+    .body-wrap,
+    .body-wrap-cell {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      color: #464646;
+      text-align: left;
+    }
+
+    img {
+      border: 0;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+    }
+
+    table {
+      border-collapse: collapse !important;
+    }
+
+    td, th {
+      text-align: left;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      color: #464646;
+      line-height:1.5em;
+    }
+
+    b a,
+    .footer a {
+      text-decoration: none;
+      color: #464646;
+    }
+
+    a.blue-link {
+      color: blue;
+      text-decoration: underline;
+    }
+
+    /* ----- General ----- */
+
+    td.center {
+      text-align: center;
+    }
+
+    .left {
+      text-align: left;
+    }
+
+    .body-padding {
+      padding: 24px 40px 40px;
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid #D8D8D8;
+    }
+
+    table.full-width-gmail-android {
+      width: 100% !important;
+    }
+
+
+    /* ----- Header ----- */
+    .header {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 16px;
+      height: 16px;
+      padding-top: 19px;
+      padding-bottom: 7px;
+    }
+
+    .header a {
+      color: #464646;
+      text-decoration: none;
+    }
+
+    /* ----- Footer ----- */
+
+    .footer a {
+      font-size: 12px;
+    }
+  </style>
+
+  <style type="text/css" media="only screen and (max-width: 650px)">
+    @media only screen and (max-width: 650px) {
+      * {
+        font-size: 16px !important;
       }
-      .tableizer-table td {
-        padding: 4px;
-        margin: 3px;
-        border: 1px solid #ccc;
+
+      table[class*="w320"] {
+        width: 320px !important;
       }
-      .tableizer-table th {
-        background-color: #104E8B;
-        color: #FFF;
-        font-weight: bold;
+
+      td[class="mobile-center"],
+      div[class="mobile-center"] {
+        text-align: center !important;
       }
-    </style>
-  </head>
-  <body>
 
-    <p>Dear Sales Counter</p>
+      td[class*="body-padding"] {
+        padding: 20px !important;
+      }
 
-    <p>Berikut kami sertakan file Order dari <%= @user.nama.upcase %></p>
+      td[class="mobile"] {
+        text-align: right;
+        vertical-align: top;
+      }
+    }
+  </style>
 
-    <p>Order Header</p>
-    <p>No SO: <%= @order.first.sale.no_so %></p>
-    <p>Ship To: <%= @user.address_number %></p>
-    <p>Sold To: <%= @user.address_number %></p>
-    <p>Customer Name : <%= @order.first.sale.pos_ultimate_customer.nama %></p>
-    <p>Address Line : <%= @order.first.sale.pos_ultimate_customer.alamat %></p>
-    <p>City: <%=  @order.first.sale.pos_ultimate_customer.kota.capitalize %></p>
-    <p>Phone: <%= @order.first.sale.pos_ultimate_customer.no_telepon %></p>
-    <p>Information : <%= @order.first.sale.cara_bayar == "um" ? "Uang Muka" : "Lunas" %></p>
+</head>
+<body style="padding:0; margin:0; display:block; background:#ffffff; -webkit-text-size-adjust:none">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+ <td valign="top" align="left" width="100%" style="background:repeat-x url(https://www.filepicker.io/api/file/al80sTOMSEi5bKdmCgp2) #f9f8f8;">
+ <center>
 
-    <p>Order Detail</p>
-    <br />
-    <p>Bagi SC yang telah menggunakan JDE, silahkan atur kolom kolom Sales Order Detail seperti table dibawah ini. Jangan lupa di Save</p>
-    <p>Lalu, Copy semua Order Detail dan Paste di kolom Item Number JDE</p>
-    <table class="tableizer-table">
-      <head>
+   <table class="w320 full-width-gmail-android" bgcolor="#f9f8f8" background="https://www.filepicker.io/api/file/al80sTOMSEi5bKdmCgp2" style="background-color:transparent" cellpadding="0" cellspacing="0" border="0" width="100%">
       <tr>
-        <th>Item Number</th>
-        <th>Description</th>
-        <th>Description 2</th>
-        <th>Quantity Ordered</th>
-        <th>Extended Price</th>
-        <th>Requested Date</th>
-        <th>*Item Refference*</th>
-        <th>Stocking Type</th>
-        <th>Take Away</th>
+        <td width="100%" height="48" valign="top">
+            <!--[if gte mso 9]>
+            <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="mso-width-percent:1000;height:49px;">
+              <v:fill type="tile" src="https://www.filepicker.io/api/file/al80sTOMSEi5bKdmCgp2" color="#ffffff" />
+              <v:textbox inset="0,0,0,0">
+            <![endif]-->
+            <!--[if gte mso 9]>
+              </v:textbox>
+            </v:rect>
+            <![endif]-->
+        </td>
       </tr>
-
-      <% @order.each do |order| %>
-        <% @item_resize = [] %>
-        <% unless order.kode_barang[11] == "T" %>
-          <tr>
-            <td><%= JdeItemMaster.find_item_number(order.kode_barang) %></td>
-            <td><%= JdeItemMaster.find_item_desc1(order.kode_barang) %></td>
-            <td><%= JdeItemMaster.find_item_desc2(order.kode_barang) %></td>
-            <td><%= order.jumlah  %></td>
-            <td><%= order.price_list %></td>
-            <td><%= order.tanggal_kirim.strftime("%d/%m/%Y") %></td>
-            <td><%= order.keterangan.blank? ? ""  : order.keterangan %></td>
-            <td><%= order.stocking_type.nil? ? ""  : order.stocking_type %></td>
-            <td><%= order.taken? ? 'YES' : 'NO' %></td>
-          </tr>
-        <% end %>
-        <% if order.kode_barang.include?("T") %>
-          <% @item_resize << order %>
-        <% end %>
-      <% end %>
     </table>
-  </body>
-  <% if @item_resize.present? %>
-    <p>NOTE: TERDAPAT BARANG KHUSUS UNTUK ORDER INI</p>
-  <% end %>
+    <br>
+
+    <table cellspacing="0" cellpadding="0" width="100%" bgcolor="#ffffff">
+      <tr>
+        <td align="center">
+          <center>
+            <table class="w320" cellspacing="0" cellpadding="0" width="500">
+              <tr>
+                <td class="body-padding mobile-padding">
+
+                <table cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="text-align:center; font-size:30px; padding-bottom:20px;">
+                      Terima kasih atas order anda tanggal <%= Date.today.strftime('%d %B %Y') %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom:20px;">
+                      Rincian Pesanan:
+                    </td>
+                  </tr>
+                </table>
+                
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tr>
+                    <td>
+                      <b>Produk</b>
+                    </td>
+                    <td>
+                      <b>Jumlah</b>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border-bottom" height="5"></td>
+                    <td class="border-bottom" height="5"></td>
+                    <td class="border-bottom" height="5"></td>
+                  </tr>
+                
+                  <% @sales_items.each do |dt| %>
+                     
+                    <tr>
+                      <td style="padding-top:5px; vertical-align:top;">
+                        <%= dt.nama_barang %>
+                      </td>
+                      <td style="padding-top:5px;" class="mobile">
+                        <%= dt.jumlah %>
+                      </td>
+                    </tr>
+              
+                  <% end %>
+                </table>
+                  <p>Alamat Kirim : <%= @alamat %>, <%= @kota %></p>
+                <br>
+     
+                <p>Pesanan yang sudah masuk tidak dapat diubah atau dibatalkan.<br>
+                  Jika Bapak/Ibu membutuhkan informasi lebih lanjut, silahkan hubungi Salesman/Sales Counter kami.
+                </p>
+
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tr>
+                    <td class="left" style="text-align:left; padding-top:20px;">
+                      Terimakasih atas kepercayaan Bapak/Ibu.
+                    </td>
+                  </tr>
+                </table>
+
+                </td>
+              </tr>
+            </table>
+          </center>
+        </td>
+      </tr>
+    </table>
+
+  </center>
+  </td>
+</tr>
+</table>
 </body>
 </html>
