@@ -21,9 +21,9 @@ class TransferItem < ActiveRecord::Base
 
   after_create do
     reset_recent_stock
-    ChannelCustomer.find(self.ash).warehouse_recipients.each do |rc|
-      UserMailer.transfer_items(self, rc.warehouse_admin.email).deliver_now
-    end
+    #ChannelCustomer.find(self.ash).warehouse_recipients.each do |rc|
+      #UserMailer.transfer_items(self, rc.warehouse_admin.email).deliver_now
+    #end
   end
 
   def reset_recent_stock
@@ -32,10 +32,16 @@ class TransferItem < ActiveRecord::Base
       recent_stock.update_attributes!(channel_customer_id: self.tsh, jumlah: recent_stock.jumlah, checked_in: false)
       creating_item_mutation(self, recent_stock.no_sj)
     else
-      recent_stock = ExhibitionStockItem.where(channel_customer_id: self.ash, kode_barang: self.brg).first
+      recent_stock = ExhibitionStockItem.find_by_sql("select * from exhibition_stock_items 
+      where channel_customer_id = '#{self.ash}' and jumlah <= '#{self.jml}' and kode_barang = '#{self.brg}'").first
       recent_stock.update_attributes!(jumlah: (recent_stock.jumlah - self.jml))
-      ExhibitionStockItem.create(recent_stock.attributes.merge({id: nil, channel_customer_id: self.tsh, jumlah: self.jml, checked_in: false,
+      next_stock = ExhibitionStockItem.where(channel_customer_id: self.tsh, kode_barang: self.brg).first
+      if next_stock.present?
+        next_stock.update_attributes!(jumlah: (next_stock.jumlah + self.jml))
+      else
+        ExhibitionStockItem.create(recent_stock.attributes.merge({id: nil, channel_customer_id: self.tsh, jumlah: self.jml, checked_in: false,
             created_at: Time.now, updated_at: Time.now, stok_awal: self.jml}))
+      end
       creating_item_mutation(self, recent_stock.no_sj)
     end
   end
