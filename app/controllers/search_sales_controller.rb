@@ -29,7 +29,7 @@ class SearchSalesController < ApplicationController
       if current_user.role.nil?
         @channel_customer = current_user.channel_customer
       elsif current_user.role == "controller" || current_user.role == "admin"
-        @channel_customer = ChannelCustomer.order(:nama)
+        @channel_customer = ChannelCustomer.where("address_number > 0")
       else
         @channel_customer = []
         current_user.branch.sales_counters.group(:branch_id).each do |sc|
@@ -59,8 +59,8 @@ class SearchSalesController < ApplicationController
 
   def show
     if current_user
-      @user = current_user.channel_customer.id
       unless current_user.admin?
+        @user = current_user.channel_customer.id
         @brand = Brand.all
         @cc = current_user.present? ? current_user.channel_customer : ChannelCustomer.find(self.channel_customer_id)
         @top_10_items = []
@@ -105,7 +105,7 @@ class SearchSalesController < ApplicationController
 
   def show_without_user
     @brand = Brand.all
-    @channel_customer = ChannelCustomer.order(:nama)
+    @channel_customer = ChannelCustomer.where("address_number > 0")
     @cc = ChannelCustomer.find(SearchSale.find(params[:id]).channel_customer_id)
     @top_10_items = []
     @sale_items = []
