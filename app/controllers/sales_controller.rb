@@ -92,7 +92,7 @@ class SalesController < ApplicationController
   # GET /sales/1 GET /sales/1.json
   def show
     order_no = @sale.no_sale.to_s.rjust(4, '0')
-    @get_spg = SalesPromotion.find(@sale.sales_promotion_id)
+    @get_spg = SalesPromotion.find(@sale.sales_promotion_id).present? ? SalesPromotion.find(@sale.sales_promotion_id) : 0
     @tipe_pembayaran = @sale.tipe_pembayaran.split(";")
     respond_to do |format|
       format.html
@@ -298,7 +298,7 @@ class SalesController < ApplicationController
       :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :voucher, :sales_promotion_id, :sisa,
       :netto_elite, :netto_lady, :tanggal_kirim, :showroom_id, :channel_customer_id, :nama, :email, :alamat, :no_telepon,
       :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed, :netto_serenity, :netto_royal,
-      :netto_tech, :alasan_cancel,
+      :netto_tech, :alasan_cancel, :nik, :nama_ktp, :alamat_ktp,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
         :nama_barang, :user_id, :_destroy, :keterangan, :price_list],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
