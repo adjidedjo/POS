@@ -31,6 +31,9 @@ class UserMailer < ApplicationMailer
 
   def order_pameran(sales)
     order_no = sales.no_sale.to_s.rjust(4, '0')
+    @no_so = sales.no_so
+    @total = sales.netto
+    @nama = sales.pos_ultimate_customer.nama.upcase!
     @sales_items = sales.sale_items
     @alamat = sales.pos_ultimate_customer.alamat.upcase!
     @kota = sales.pos_ultimate_customer.kota.upcase!
@@ -39,7 +42,7 @@ class UserMailer < ApplicationMailer
     # @order = order
     # @user = user
     attachments["Invoice.pdf"] = PosPdf.new(sales, order_no).render
-    mail(to: email, subject: "Order Confirmation")
+    mail(to: email, subject: "IMG Invoice")
   end
 
   def pelunasan(recipient, nama, user)
