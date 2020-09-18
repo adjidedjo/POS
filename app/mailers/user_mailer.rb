@@ -42,7 +42,7 @@ class UserMailer < ApplicationMailer
     # @order = order
     # @user = user
     attachments["Invoice.pdf"] = PosPdf.new(sales, order_no).render
-    mail(to: email, subject: "IMG Invoice")
+    mail(to: email, subject: "IMG '#{ChannelCustomer.find(sales.channel_customer_id).nama.upcase!}' Invoice")
   end
 
   def pelunasan(recipient, nama, user)
