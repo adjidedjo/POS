@@ -77,7 +77,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  onfig.action_mailer.default_url_options = { host: 'localhost:3000' }
+  config.action_mailer.default_url_options = { host: 'localhost:3000' }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   # config.action_mailer.smtp_settings = {
@@ -100,13 +100,4 @@ Rails.application.configure do
 #    :sender_address => %{"notifier" <error_pos@ras.co.id>},
 #    :exception_recipients => %w{aji.y@ras.co.id}
 #  }
-
-  config.action_mailer.smtp_settings = {
-    :user_name            => "aji.y@ras.co.id",
-    :password             => "1vG27YfThSCsnOx6",
-    :address              => "smtp-relay.sendinblue.com",
-    :port                 => 587,
-    :domain               => 'ras.co.id',
-    :authentication => "plain",
-    :enable_starttls_auto => true  }
 end
