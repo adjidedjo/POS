@@ -7,6 +7,11 @@
   <Worksheet ss:Name="Sheet1">
     <Table>
       <Row>
+        <Cell><Data ss:Type="String">NIK</Data></Cell>
+        <Cell><Data ss:Type="String">Nama KTP</Data></Cell>
+        <Cell><Data ss:Type="String">Alamat KTP</Data></Cell>
+        <Cell><Data ss:Type="String">Delivery Number</Data></Cell>
+        <Cell><Data ss:Type="String">Invoice Number</Data></Cell>
         <Cell><Data ss:Type="String">Channel Customer</Data></Cell>
         <Cell><Data ss:Type="String">Nama SPG/SPB</Data></Cell>
         <Cell><Data ss:Type="String">No SO</Data></Cell>
@@ -46,9 +51,6 @@
         <Cell><Data ss:Type="String">Alamat Kirim</Data></Cell>
         <Cell><Data ss:Type="String">Kota</Data></Cell>
         <Cell><Data ss:Type="String">Email</Data></Cell>
-        <Cell><Data ss:Type="String">NIK</Data></Cell>
-        <Cell><Data ss:Type="String">Nama KTP</Data></Cell>
-        <Cell><Data ss:Type="String">Alamat KTP</Data></Cell>
         <Cell><Data ss:Type="String">Voucher</Data></Cell>
         <Cell><Data ss:Type="String">Jenis Pembayaran</Data></Cell>
         <Cell><Data ss:Type="String">Sisa</Data></Cell>
@@ -59,6 +61,11 @@
       </Row>
     <% @sales.each do |sale_item| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nik %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama_ktp.empty? ? sale_item.sale.pos_ultimate_customer.nama : sale_item.sale.pos_ultimate_customer.nama_ktp %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat_ktp.empty? ? sale_item.sale.pos_ultimate_customer.alamat : sale_item.sale.pos_ultimate_customer.alamat_ktp %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.delivery_number %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.invoice_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
   SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.titleize %></Data></Cell>
@@ -97,9 +104,6 @@
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.kota %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.email %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nik %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama_ktp %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat_ktp %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= sale_item.sale.voucher %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.tipe_pembayaran %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= sale_item.sale.sisa %></Data></Cell>
