@@ -62,8 +62,8 @@
     <% @sales.each do |sale_item| %>
       <Row>
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nik %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama_ktp.empty? ? sale_item.sale.pos_ultimate_customer.nama : sale_item.sale.pos_ultimate_customer.nama_ktp %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat_ktp.empty? ? sale_item.sale.pos_ultimate_customer.alamat : sale_item.sale.pos_ultimate_customer.alamat_ktp %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama_ktp.nil? ? sale_item.sale.pos_ultimate_customer.nama : sale_item.sale.pos_ultimate_customer.nama_ktp %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat_ktp.nil? ? sale_item.sale.pos_ultimate_customer.alamat : sale_item.sale.pos_ultimate_customer.alamat_ktp %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.delivery_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.invoice_number %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.nama %></Data></Cell>
