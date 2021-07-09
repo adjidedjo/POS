@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Tanggal Return</Data></Cell>
+        <Cell><Data ss:Type="String">No Bukti</Data></Cell>
+        <Cell><Data ss:Type="String">No SJ</Data></Cell>
+        <Cell><Data ss:Type="String">Tanggal SJ</Data></Cell>
+        <Cell><Data ss:Type="String">Serial</Data></Cell>
+        <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Status</Data></Cell>
+        <Cell><Data ss:Type="String">Jumlah</Data></Cell>
+      </Row>
+    <% @return.each do |s| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= s.created_at.strftime("%m %B %Y") %></Data></Cell>
+        <Cell><Data ss:Type="String">RT<%= s.no_bukti_return %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.no_sj.present? ? s.serial : '-' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.tanggal.present? ? s.tanggal.strftime("%m %B %Y") : '-' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.serial.present? ? s.serial : '-' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.kode_barang %></Data></Cell>
+        <% nama = Item.find_by_kode_barang(s.kode_barang) %>
+        <Cell><Data ss:Type="String"><%= nama.present? ? nama.nama : "" %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.keterangan == "B" ? "RETURN" : "TRANSFER"  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.qty_out %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

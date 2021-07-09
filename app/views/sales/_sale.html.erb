@@ -1,0 +1,15 @@
+<tr>
+  <td><%= sale.channel_customer.channel.channel %></td>
+  <td><%= sale.channel_customer.nama.upcase %></td>
+  <td><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
+  <td><%= sale.so_manual.present? ? sale.so_manual : "-" %></td>
+  <td><%= sale.created_at.strftime('%d %B %Y') %></td>
+  <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
+  <td><%= sale.tipe_pembayaran %></td>
+  <% card =  sale.payment_with_debit_cards.sum(:jumlah) + sale.payment_with_credit_cards.sum(:jumlah)  %>
+  <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
+  <td><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)) %></td>
+  <td><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)) %></td>
+  <td class="money"><%= currency(sale.netto) %></td>
+  <td class="money"><%= currency(sale.pembayaran + sale.jumlah_transfer + card) %></td>
+</tr>

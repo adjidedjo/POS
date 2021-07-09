@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  warehouse_admin_id: 1
+  channel_customer_id: 1
+
+two:
+  warehouse_admin_id: 1
+  channel_customer_id: 1

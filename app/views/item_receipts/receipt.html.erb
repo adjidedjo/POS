@@ -1,3 +1,4 @@
+<h5><b>Info:</b> Untuk penerimaan barang berdasarkan <b>SERIAL</b>, silahkan klik kode barang.</h5>
 <%= form_tag item_receipts_process_receipt_path, :method => :put, :id => 'receipt_form' do %>
   <table id="table_receipt" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
     <thead>
@@ -19,11 +20,17 @@
               <td><%= link_to f.object.kode_barang, item_receipts_receipt_by_serial_path(kode_barang: f.object.kode_barang) %></td>
               <%= f.hidden_field "kode_barang" %>
               <%= f.hidden_field "no_sj" %>
-              <td><%= f.object.nama %></td>
-              <td><%= f.text_field "jumlah", value: '' %></td>
+              <%= f.hidden_field "channel_customer_id" %>
+            <td><%= f.object.nama %></td>
+              <% if f.object.serial.present? %>
+                <td>Terima Berdasarkan Serial</td>
+              <% else %>
+               <td><%= f.text_field "jumlah", value: '' %></td>
+              <% end %>
           <% end %>
         <% end %>
     </tbody>
   </table>
-  <%= submit_tag "Check", :class => 'btn btn-primary' %>
+  <%= submit_tag "CHECK IN", :class => 'btn btn-primary' if @receipt.present? %>
+  <%= submit_tag "REJECT", name: 'reject', :class => 'btn btn-warning' if @receipt.present? %>
 <% end %>

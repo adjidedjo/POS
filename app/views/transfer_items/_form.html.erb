@@ -1,0 +1,16 @@
+<%= simple_form_for @transfer_item, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-group">
+    <%= f.input :sn, label: "Serial", input_html: {data: {autocomplete_source: find_serial_on_stock_transfer_items_path}} %>
+    <%= f.input :nbrg, label: "Nama Barang", input_html: {data: {autocomplete_source: find_item_on_stock_transfer_items_path}} %>
+    <%= f.input :jml, label: "Jumlah" %>
+    <%= f.input :tsh, label: "Tujuan", input_html: {data: {autocomplete_source: get_showrooms_transfer_items_path}} %>
+    <%= f.hidden_field :brg %>
+    <%= f.hidden_field :ash, value: current_user.channel_customer.id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit,  "Kirim Barang", :class => 'btn-primary' %>
+  </div>
+<% end %>

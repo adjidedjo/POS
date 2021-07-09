@@ -1,10 +1,11 @@
 <%- model_class = Store -%>
 <div class="page-header">
-  <h1><%= @channel_customer.nama %></h1>
+  <h1><%= @channel_customer.nama.upcase %></h1>
 </div>
 
 <div class="row">
   <div class="col-md-6">
+    <dt><strong>Channel:</strong> <%= @channel_customer.channel.channel %></dt><br />
     <dt><strong>Alamat:</strong> <%= @channel_customer.alamat.titleize %></dt><br />
     <dt><strong>Kota:</strong> <%= @channel_customer.kota.titleize %></dt><br />
     <%  if @channel_customer.dari_tanggal.present? %>
@@ -16,7 +17,7 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>Supervisor <%= @channel_customer.nama %></strong></dt><br />
+    <dt><strong>Supervisor <%= @channel_customer.nama.upcase %></strong></dt><br />
     <table id="supervisor_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
@@ -35,7 +36,7 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <dt><strong>SPG/SPB <%= @channel_customer.nama %></strong></dt><br />
+    <dt><strong>SPG/SPB <%= @channel_customer.nama.upcase %></strong></dt><br />
     <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr>
@@ -52,8 +53,46 @@
     </table>
   </div>
 </div>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Sales Counter <%= @channel_customer.nama.upcase %></strong></dt><br />
+    <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama Sales Counter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @channel_customer.recipients.each do |rc| %>
+          <tr>
+            <td><%= rc.sales_counter.nama.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <dt><strong>Admin Gudang <%= @channel_customer.nama.upcase %></strong></dt><br />
+    <table id="spg_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th class="all">Nama Admin Gudang</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @channel_customer.warehouse_recipients.each do |rc| %>
+          <tr>
+            <td><%= rc.warehouse_admin.nama.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <div>
-  <dt><strong>Merchant-merchant <%= @channel_customer.nama %></strong></dt><br />
+  <dt><strong>Merchant-merchant <%= @channel_customer.nama.upcase %></strong></dt><br />
   <table id="merchant_store" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
     <thead>
       <tr>
@@ -75,7 +114,9 @@
     </tbody>
   </table>
 </div>
-<%= link_to 'Channel customer Baru', new_channel_customer_path, class: "btn btn-default" if current_user.admin? %>
-<%= link_to 'Edit', edit_channel_customer_path(current_user.channel_customer), class: "btn btn-default" unless current_user.admin?%>
-<%= link_to 'Edit', edit_channel_customer_path(@channel_customer), class: "btn btn-default" if current_user.admin?%>
-<%= link_to 'Back', channel_customers_path, class: "btn btn-default" if current_user.admin? %>
+<% unless @controller %>
+  <%= link_to 'Channel customer Baru', new_channel_customer_path, class: "btn btn-default" if current_user.admin? %>
+    <%= link_to 'Edit', edit_channel_customer_path(current_user.channel_customer), class: "btn btn-default" unless current_user.admin?%>
+      <%= link_to 'Edit', edit_channel_customer_path(@channel_customer), class: "btn btn-default" if current_user.admin?%>
+      <% end %>
+      <%= link_to 'Back', channel_customers_path, class: "btn btn-default" if current_user.admin? %>

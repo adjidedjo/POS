@@ -1,0 +1,11 @@
+<%= drop_down "Masters" do %>
+  <%= menu_item "Bank Accounts", bank_accounts_path %>
+  <%= menu_item "Sales Counters", sales_counters_path %>
+  <%= menu_item "Channel Customers", channel_customers_path %>
+  <%= menu_item "Ultimate Customers", pos_ultimate_customers_path %>
+<% end %>
+<%= menu_item "Verify Payment", accounting_verifying_payments_path %>
+<%= menu_item "Stock & Penjualan", accounting_stocks_mutasi_stock_path   %>
+<%= menu_item "Adjusment In/Out", adjusments_path   %>
+<%= menu_item "Export", reports_index_export_path  %>
+<%= menu_item "Akun", reports_index_akun_path %>

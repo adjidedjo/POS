@@ -1,23 +1,26 @@
 jQuery ->
 
-  $('#show_sales_customer').DataTable({
-    bPaginate: false,
-    bFilter: false,
-    bInfo: false
-  })
+  $(document).on 'ready page:load', ->
 
-  $('input.tanggal').datepicker({
-    dateFormat: 'yy-mm-dd',
-    minDate: new Date()
-  })
+    $('#channel_customer_group').autocomplete
+        source: $('#channel_customer_group').data('autocomplete-channel')
 
-  $('#new_channel_customer').validate
-    rules:
-      "channel_customer_channel_id":
-        required: true
-      "channel_customer_nama":
-        required: true
-      "channel_customer_alamat":
-        required: true
-      "channel_customer_kota":
-        required: true
+    $('#show_sales_customer').DataTable({
+      bPaginate: false,
+      bFilter: false,
+      bInfo: false
+    })
+
+    $('input.tanggal').datepicker({
+      dateFormat: 'yy-mm-dd',
+      minDate: new Date()
+    })
+
+    $('#new_channel_customer').validate
+      rules:
+        "channel_customer_nama":
+          required: true
+        "channel_customer_alamat":
+          required: true
+        "channel_customer_kota":
+          required: true

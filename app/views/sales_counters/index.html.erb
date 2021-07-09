@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Sales Counters</h1>
+
+<table class="display table table-striped table-bordered responsive nowrap">
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Nik</th>
+      <th>Email</th>
+      <th>Cabang</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales_counters.each do |sales_counter| %>
+      <tr>
+        <td><%= sales_counter.nama %></td>
+        <td><%= sales_counter.nik %></td>
+        <td><%= sales_counter.email %></td>
+        <td><%= sales_counter.branch.cabang.titleize %></td>
+        <td><%= link_to 'Show', sales_counter, class: "btn btn-info btn-xs" %></td>
+        <% unless @controller %>
+          <td><%= link_to 'Edit', edit_sales_counter_path(sales_counter), class: "btn btn-info btn-xs" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% unless @controller %>
+  <%= link_to 'New Sales counter', new_sales_counter_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% end %>

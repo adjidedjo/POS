@@ -1,9 +1,81 @@
 Rails.application.routes.draw do
 
+  resources :retail_customers do
+    collection do
+      get "get_kode_barang_from_nama"
+      get "exhibition_stock"
+      get "items"
+      get "item_master"
+    end
+  end
+
+  resources :adjusments do
+    collection do
+      get 'find_showroom'
+    end
+  end
+
+  resources :transfer_items do
+    collection do
+      get 'find_serial_on_stock'
+      get 'find_item_on_stock'
+      get 'get_nama_from_serial'
+      get 'get_kode_from_nama'
+      get 'get_showrooms'
+      get 'print_transfer'
+    end
+  end
+
+  resources :warehouse_admins
+
+  namespace :accounting do
+    get 'stocks/mutasi_stock'
+    get 'stocks/view_stock'
+    get 'stocks/view_selisih_intransit'
+    get 'stocks/view_selisih_stock'
+    get 'stocks/view_penjualan'
+    get 'stocks/available_stock'
+    get 'stocks/check_saldo_stock'
+    put 'stocks/process_receipt'
+    resources :verifying_payments do
+      collection do
+        put 'verify'
+        get 'show_order'
+        get 'verify_order'
+        get 'show_channel_payment'
+      end
+    end
+  end
+
+  resources :search_sales
+
+  resources :sales_counters
+
+  resources :acquittances do
+    collection do
+      get 'get_sale_info'
+      get 'search_sales'
+      get "search_sales_by_phone"
+      get "get_mid_from_merchant"
+      get "get_second_mid_from_merchant"
+      get "rekap_pelunasan"
+      get "export_xml"
+    end
+  end
+
+  resources :bank_accounts
+
+  resources :pos_ultimate_customers do
+    collection do
+      get 'get_customer_info'
+    end
+  end
+
   resources :channel_customers do
     collection do
       get "import_intransit"
       post "proses_import_intransit"
+      post "proses_import_intransit_jde"
     end
   end
 
@@ -11,11 +83,18 @@ Rails.application.routes.draw do
   put 'return_items/process_return'
   get 'return_items/return_by_serial'
   put 'return_items/process_return_by_serial'
+  get 'return_items/print_return'
+  get 'return_items/show'
+  get 'return_items/send_returned_items'
+  get 'return_items/cancel_returned_items'
 
   get 'item_receipts/receipt'
   put 'item_receipts/process_receipt'
   get 'item_receipts/receipt_by_serial'
+  get 'item_receipts/check_item_value'
   put 'item_receipts/process_receipt_by_serial'
+  get 'item_receipts/receipt_jde'
+  put 'item_receipts/process_receipt_jde'
 
   get 'reports/index'
   get 'reports/sales_counter'
@@ -24,9 +103,28 @@ Rails.application.routes.draw do
   get 'reports/mutasi_stock'
   get 'reports/selisih_intransit'
   get 'reports/selisih_retur'
+  get 'reports/available_stock'
+  get 'reports/index_akun'
+  get 'reports/index_export'
+  get 'reports/exported'
+  get 'reports/return'
+  get 'reports/reprint_return'
 
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
+
+  devise_scope :user do
+    authenticated :user do
+      root controller: :page, :action => 'home'
+    end
+
+    unauthenticated do
+      root 'devise/sessions#new', as: :unauthenticated_root
+    end
+  end
+
   get 'page/home'
+  get 'page/download_manual_book'
+  get 'page/admin_master_landing_page'
 
   resources :stores
 
@@ -39,8 +137,17 @@ Rails.application.routes.draw do
       get "get_mid_from_merchant"
       get "get_second_mid_from_merchant"
       get "get_kode_barang_from_serial"
+      get "get_kode_barang_from_nama"
       get "edit_by_confirmation"
       get "destroy_by_confirmation"
+      get "exhibition_stock"
+      get "items"
+      get "item_master"
+      get "stock_availability"
+      get "request_cancel_order"
+      get "show_sale"
+      put "approve_cancel_order"
+      get "rejected_cancel_order"
     end
   end
 
@@ -53,11 +160,10 @@ Rails.application.routes.draw do
 
   resources :venues
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  # The priority is based upon order of creation: first created -> highest priority. See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root :to => 'page', :action => 'home'
+#  root controller: :page, :action => 'home'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

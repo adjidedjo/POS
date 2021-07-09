@@ -1,0 +1,7 @@
+<fieldset>
+  <%= f.input :sales_counter_id, collection: SalesCounter.all, label_method: :nama, value_method: :id %>
+  <%= f.input :brand_id, collection: Brand.all, label_method: :brand, value_method: :id %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to "remove", '#', class: "remove_akun_fields btn btn-danger btn-xs" %>
+</fieldset>
+<br />

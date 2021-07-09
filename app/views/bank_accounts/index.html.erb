@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Bank Accounts</h1>
+<table id="index_bank_accounts" class="display table-striped table-bordered" cellspacing="0" width="100%" >
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Account number</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bank_accounts.each do |bank_account| %>
+      <tr>
+        <td><%= bank_account.name %></td>
+        <td><%= bank_account.account_number %></td>
+        <td><%= link_to 'Show', bank_account, class: "btn btn-info btn-xs" %></td>
+        <% unless @controller %>
+          <td><%= link_to 'Edit', edit_bank_account_path(bank_account), class: "btn btn-info btn-xs" %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<% unless @controller %>
+  <%= link_to 'New Bank account', new_bank_account_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% end %>

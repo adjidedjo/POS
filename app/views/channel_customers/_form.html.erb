@@ -1,20 +1,18 @@
 <%= simple_form_for(@channel_customer) do |f| %>
   <%= f.error_notification %>
-
+  <hr>
   <div class="form-inputs">
     <% if current_user.admin? %>
-      <%= f.input :kode_channel_customer %>
       <%= f.input :channel_id, collection: @channel, label_method: :channel, value_method: :id, prompt: "--Pilih Channel--" %>
       <%= f.input :nama %>
+      <%= f.input :group, input_html: {data: {autocomplete_channel: channel_customers_path}} %>
     <% end  %>
+    <%= f.input :dari_tanggal, as: :tanggal, readonly: true %>
+    <%= error_span(@channel_customer[:dari_tanggal]) %>
+    <%= f.input :sampai_tanggal, as: :tanggal, readonly: true %>
+    <%= error_span(@channel_customer[:sampai_tanggal]) %>
     <%= f.input :alamat %>
     <%= f.input :kota %>
-    <% if current_user.admin? %>
-      <%= f.input :dari_tanggal, as: :tanggal, readonly: true %>
-      <%= error_span(@channel_customer[:dari_tanggal]) %>
-      <%= f.input :sampai_tanggal, as: :tanggal, readonly: true %>
-      <%= error_span(@channel_customer[:sampai_tanggal]) %>
-    <% end %>
   </div>
 
   <label>Supervisor</label>
@@ -35,6 +33,24 @@
   </div>
   <br />
 
+  <label>Sales Counter</label>
+  <div class="row form-inline">
+    <%= f.simple_fields_for :recipients do |builder| %>
+      <%= render "recipient_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Sales Counter", f, :recipients %>
+  </div>
+  <br />
+
+  <label>Admin Gudang</label>
+  <div class="row form-inline">
+    <%= f.simple_fields_for :warehouse_recipients do |builder| %>
+      <%= render "warehouse_recipient_fields", :f => builder %>
+    <% end %>
+    <%= link_to_add_fields "Tambah Admin Gudang", f, :warehouse_recipients %>
+  </div>
+  <br />
+
   <label>Merchants</label>
   <div class="row">
     <%= f.simple_fields_for :merchants do |builder| %>
@@ -48,4 +64,5 @@
     <%= f.button :submit %>
     <%= link_to "Ganti Password?", edit_user_registration_path, class: "btn btn-default" unless current_user.admin? %><br />
   </div>
+  <hr>
 <% end %>

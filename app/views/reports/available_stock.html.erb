@@ -1,0 +1,29 @@
+<h1>Laporan Stok <%= @channel.nama.upcase %></h1>
+<br />
+<table id="rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>SJ</th>
+      <th>Serial</th>
+      <th>Kode Barang</th>
+      <th>Nama Barang</th>
+      <th>Status</th>
+      <th>Jumlah</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stock.each do |s| %>
+      <tr>
+        <td><%= s.no_sj %></td>
+        <td><%= s.serial.present? ? s.serial : '-' %></td>
+        <td><%= s.kode_barang %></td>
+        <td><%= s.nama  %></td>
+        <td><%= s.stocking_type == "RE" ? "REGULAR" : 'CS'  %></td>
+        <td><%= s.total %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br />
+<%= link_to "Export to Excel", reports_available_stock_path(format: "xls"), :class => "btn btn-info" %>

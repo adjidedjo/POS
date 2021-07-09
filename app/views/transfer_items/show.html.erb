@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nomor Bukti:</strong>
+  <%= @transfer_item.tfnmr %><%= @transfer_item.id %>
+</p>
+
+<p>
+  <strong>Kode Barang:</strong>
+  <%= @transfer_item.brg %>
+</p>
+
+<p>
+  <strong>Nama Barang:</strong>
+  <%= @transfer_item.nbrg %>
+</p>
+
+<p>
+  <strong>Jumlah:</strong>
+  <%= @transfer_item.jml %>
+</p>
+
+<p>
+  <strong>Tujuan:</strong>
+  <%= ChannelCustomer.find(@transfer_item.tsh).nama %>
+</p>
+
+<%= link_to 'Edit', edit_transfer_item_path(@transfer_item) %> |
+<%= link_to 'Back', transfer_items_path %>

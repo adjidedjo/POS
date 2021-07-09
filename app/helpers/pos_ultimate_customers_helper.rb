@@ -1,0 +1,2 @@
+module PosUltimateCustomersHelper
+end

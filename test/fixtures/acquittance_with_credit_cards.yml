@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  no_merchant: MyString
+  no_kartu_kredit: MyString
+  tenor: MyString
+  mid: MyString
+  nama_kartu: MyString
+  no_kartu_debit: MyString
+  atas_nama: MyString
+  jumlah: 9.99
+
+two:
+  no_merchant: MyString
+  no_kartu_kredit: MyString
+  tenor: MyString
+  mid: MyString
+  nama_kartu: MyString
+  no_kartu_debit: MyString
+  atas_nama: MyString
+  jumlah: 9.99
