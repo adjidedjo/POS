@@ -53,11 +53,11 @@ class SaleItem < ActiveRecord::Base
 
     before_create do
       update_stocking_type
-      if kode_barang.include?("T")
-        p = kode_barang[12..14]
-        l = kode_barang[15..18]
-        self.nama_barang = nama_barang.gsub(/\b#{nama_barang[-9..-7]}\b/, p).gsub(/\b#{nama_barang[-3..-1]}\b/, l)
-      end
+      #if kode_barang.include?("T")
+      #  p = kode_barang[12..14]
+      #  l = kode_barang[15..18]
+      #  self.nama_barang = nama_barang.gsub(/\b#{nama_barang[-9..-7]}\b/, p).gsub(/\b#{nama_barang[-3..-1]}\b/, l)
+      #end
 
       self.channel_customer_id = self.sale.channel_customer_id
       if taken == true
@@ -69,7 +69,7 @@ class SaleItem < ActiveRecord::Base
       if serial.present?
         get_ex_no_sj = ExhibitionStockItem.where("channel_customer_id = ? and kode_barang like ? and jumlah > ?",
           self.sale.channel_customer_id, kode_barang, 0).first
-        self.ex_no_sj = get_ex_no_sj.no_sj
+          self.ex_no_sj = get_ex_no_sj.no_sj
       end
 
       get_brand_id = Item.find_by_kode_barang(self.kode_barang)
