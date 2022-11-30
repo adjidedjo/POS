@@ -1,10 +1,7 @@
-source 'https://rubygems.org'
-
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use sqlite3 as the database for Active Record #gem 'sqlite3
-gem 'mysql2', '~> 0.3.18'
+gem 'mysql2', '0.3.18'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -13,14 +10,14 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
-
+gem "tzinfo"
 # #error notifier
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 # #gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
-gem 'momentjs-rails', '~> 2.9', :github => 'derekprior/momentjs-rails'
+# gem 'momentjs-rails', '~> 2.9', :github => 'derekprior/momentjs-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 gem 'jquery-turbolinks'
@@ -37,7 +34,7 @@ gem 'jquery-datatables-rails', '~> 3.1.1'
 # #pdf
 gem 'prawn', '~> 0.12.0'
 # #devise
-gem 'devise'
+gem 'devise', '~> 3.5.6'
 #
 gem 'paper_trail', '~> 4.0.0.beta'
 #
@@ -59,16 +56,16 @@ gem 'turnout'
 
 # thin
 gem 'thin'
-
+gem 'rest-client'
 gem 'net-ssh', '~> 2.9.2'
 
 group :development, :test do
-  gem 'capistrano'
-  gem 'capistrano-rvm'
-  gem 'capistrano-rails', '~> 1.1', require: false
-  gem 'capistrano-bundler', '~> 1.1', require: false
+  # gem 'capistrano'
+  # gem 'capistrano-rvm'
+  # gem 'capistrano-rails', '~> 1.1', require: false
+  # gem 'capistrano-bundler', '~> 1.1', require: false
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
-  gem 'debugger'
+  # gem 'debugger'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
@@ -77,6 +74,5 @@ group :development, :test do
   gem 'spring'
   # #capistrano
   gem 'activerecord-sqlserver-adapter'
-  gem 'tiny_tds'
+  # gem 'tiny_tds'
 end
-
