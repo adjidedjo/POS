@@ -214,7 +214,7 @@ class Sale < ActiveRecord::Base
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
     self.update_attributes!(cara_bayar: ket_lunas)
-    UserMailer.order_pameran(self).deliver if self.channel_customer_id == 6
+    #UserMailer.order_pameran(self).deliver if self.channel_customer_id == 6
   end
 
   def paid_with_credit?
