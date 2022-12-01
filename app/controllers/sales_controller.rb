@@ -4,10 +4,29 @@ class SalesController < ApplicationController
   before_action :sale_after_printed, only: [:show, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :create]
   before_action :current_user_destroy, only: [:destroy]
+  after_action :save_pdf, only: [:create]
+  after_action :send_whatsapp_notif, only: [:save_pdf]
+
+  def save_pdf
+    pdf = PosPdf.new(@sale, @sale.no_so)
+    pdf.render_file(Rails.root.join('public/pdfs', "#{@sale.no_so}.pdf"))
+  end
+
+  def send_whatsapp_notif
+    nama= @sale.pos_ultimate_customer.nama
+    notelp = @sale.pos_ultimate_customer.no_telepon
+    img = @sale.channel_customer.nama
+    begin
+      RestClient.post "https://icwaba.damcorp.id/whatsapp/sendHsm/so_img_001", {"to": "#{notelp}", "token": "#{API}",
+        "param": ["#{nama}", "#{img}"], "header": {"type": "document", "data": "http://classicspringbed.com:1107/pdfs/#{@sale.no_so}/pdf", "filename": "INVOICE"}}.to_json, {content_type: :json, accept: :json}
+    rescue RestClient::ExceptionWithResponse => e
+      self.description = "It didn't work"
+    end
+  end
 
   def stock_availability
     stock = ExhibitionStockItem.where(kode_barang: params[:kode_barang],
-      channel_customer_id: current_user.channel_customer.id, checked_in: true)
+    channel_customer_id: current_user.channel_customer.id, checked_in: true)
     @element_id = params[:element_id]
     @request_order = params[:jumlah]
     @total_stock = stock.sum(:jumlah)
@@ -28,9 +47,11 @@ class SalesController < ApplicationController
   end
 
   def get_kode_barang_from_nama
-    kode_serial = Item.find_by_nama(params[:nama]).kode_barang
-    @kode = Item.find_by_kode_barang(kode_serial).kode_barang
-    @nama = Item.find_by_kode_barang(kode_serial).nama
+    kode_serial = Item.find_by_nama(params[:nama])
+    @kode = kode_serial.kode_barang
+    @nama = kode_serial.nama
+    @harga = current_user.id == 102 ? kode_serial.harga : 0
+    @point = kode_serial.point
     @element_id = params[:element_id]
 
     respond_to do |format|
@@ -300,7 +321,7 @@ class SalesController < ApplicationController
       :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed, :netto_serenity, :netto_royal,
       :netto_tech, :alasan_cancel, :nik, :nama_ktp, :alamat_ktp,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
-        :nama_barang, :user_id, :_destroy, :keterangan, :price_list],
+        :nama_barang, :user_id, :_destroy, :keterangan, :price_list, :point],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
       payment_with_debit_cards_attributes: [:id, :nama_kartu, :no_kartu_debit, :atas_nama, :jumlah])
   end
