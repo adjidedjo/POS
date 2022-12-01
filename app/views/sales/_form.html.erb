@@ -15,7 +15,7 @@
       <%= f.input :sales_promotion_id, collection: @sales_promotion, label_method: :nama, value_method: :id,
         input_html: {style: 'width: 250px'} %>
       <%= error_span(@sale[:sales_promotion_id]) %>
-      <%= f.input :no_telepon, input_html: { maxlength: 12, style: 'width: 250px',
+      <%= f.input :no_telepon, input_html: { maxlength: 15, style: 'width: 250px',
           data: {autocomplete_source: pos_ultimate_customers_path},
           value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:no_telepon] : nil) :
               f.object.pos_ultimate_customer.no_telepon)},
