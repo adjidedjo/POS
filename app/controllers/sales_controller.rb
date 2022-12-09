@@ -13,8 +13,8 @@ class SalesController < ApplicationController
   end
 
   def send_whatsapp_notif
-    nama= @sale.pos_ultimate_customer.nama
-    notelp = @sale.pos_ultimate_customer.no_telepon.gsub!(/^0/, '62')
+    nama= @sale.nama
+    notelp = @saleno_telepon.gsub!(/^0/, '62')
     img = @sale.channel_customer.nama
     pdf = PosPdf.new(@sale, @sale.no_so)
     pdf.render_file(Rails.root.join('public', "#{@sale.no_so}.pdf"))
