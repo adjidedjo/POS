@@ -4,7 +4,7 @@ class Adjusment < ActiveRecord::Base
   validate :check_item
 
   def check_item
-    errors.add(:kode_barang, "Barang Tidak Terdaftar, hubungi Admin!") if SqlItemMaster.where(kodebrg: self.kode_barang).empty?
+    errors.add(:kode_barang, "Barang Tidak Terdaftar, hubungi Admin!") if Item.where(kode_barang: self.kode_barang).empty?
   end
 
   before_create do

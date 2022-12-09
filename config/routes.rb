@@ -95,6 +95,8 @@ Rails.application.routes.draw do
   put 'item_receipts/process_receipt_by_serial'
   get 'item_receipts/receipt_jde'
   put 'item_receipts/process_receipt_jde'
+  put 'item_receipts/reject_by_serial'
+  put 'item_receipts/reject'
 
   get 'reports/index'
   get 'reports/sales_counter'

@@ -172,7 +172,7 @@ class Sale < ActiveRecord::Base
     # create ultimate customer
     puc = {
       email: email,
-      no_telepon: no_telepon,
+      no_telepon: no_telepon.gsub(/^0/, "62"),
       handphone: handphone,
       handphone1: handphone1,
       alamat: alamat,

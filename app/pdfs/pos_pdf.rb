@@ -11,6 +11,9 @@ class PosPdf < Prawn::Document
   end
 
   def order_number
+    bounding_box([0, cursor - 5], :width => 500) do
+      image "#{Rails.root}/public/images/royalcorp1.png", :width => 500, :height => 160, :position => :center
+    end
     indent 5 do
       bounding_box([0, cursor - 50], :width => 250) do
         text "INVOICE", size: 15, style: :bold

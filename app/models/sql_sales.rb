@@ -1,6 +1,6 @@
 class SqlSales < ActiveRecord::Base
-  #self.abstract_class = true
-  #establish_connection :sqlserver
-  #self.table_name = "TbCabBarang"
-#  set_table_name "tbLaporanCabang"
+  self.abstract_class = true
+  establish_connection :sqlserver
+  # self.table_name = "tbCabPacklistDetBackup"
+  self.table_name = "tbCabPacklistDet"
 end

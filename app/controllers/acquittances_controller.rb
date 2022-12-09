@@ -56,7 +56,7 @@ class AcquittancesController < ApplicationController
   end
 
   def search_sales
-    @all_sales = Sale.order(:no_so).where("sisa > 0 and all_items_exported = true and no_so like ?", "%#{params[:term]}%")
+    @all_sales = Sale.order(:no_so).where("sisa > 0 and no_so like ?", "%#{params[:term]}%")
 
     respond_to do |format|
       format.html

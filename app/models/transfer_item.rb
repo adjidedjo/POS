@@ -33,9 +33,10 @@ class TransferItem < ActiveRecord::Base
       creating_item_mutation(self, recent_stock.no_sj)
     else
       recent_stock = ExhibitionStockItem.find_by_sql("select * from exhibition_stock_items 
-      where channel_customer_id = '#{self.ash}' and jumlah <= '#{self.jml}' and kode_barang = '#{self.brg}'").first
+      where channel_customer_id = '#{self.ash}' and jumlah >= '#{self.jml}' and kode_barang = '#{self.brg}'").first
       recent_stock.update_attributes!(jumlah: (recent_stock.jumlah - self.jml))
-      next_stock = ExhibitionStockItem.where(channel_customer_id: self.tsh, kode_barang: self.brg).first
+      next_stock = ExhibitionStockItem.where(channel_customer_id: self.tsh, kode_barang: self.brg, 
+      no_sj: recent_stock.no_sj).first
       if next_stock.present?
         next_stock.update_attributes!(jumlah: (next_stock.jumlah + self.jml))
       else

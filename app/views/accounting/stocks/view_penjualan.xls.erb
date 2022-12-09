@@ -16,7 +16,7 @@
         <Cell><Data ss:Type="String">Nama SPG/SPB</Data></Cell>
         <Cell><Data ss:Type="String">Status</Data></Cell>
         <Cell><Data ss:Type="String">No SO</Data></Cell>
-        <Cell><Data ss:Type="String">SO Manual</Data></Cell>
+        <Cell><Data ss:Type="String">Notes</Data></Cell>
         <Cell><Data ss:Type="String">Tanggal SO</Data></Cell>
         <Cell><Data ss:Type="String">Nama Konsumen</Data></Cell>
         <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
@@ -80,7 +80,7 @@
   sale_item.sale.sales_promotion.nama.titleize %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.cancel_order? ? 'Batal' : '-' %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.no_so %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.so_manual.present? ? sale_item.sale.so_manual : "-" %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= sale_item.sale.keterangan_customer %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.created_at.strftime("%Y-%m-%d") %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama %></Data></Cell>
         <Cell><Data ss:Type="String"><%= sale_item.kode_barang %></Data></Cell>

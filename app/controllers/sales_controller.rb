@@ -9,7 +9,7 @@ class SalesController < ApplicationController
 
   def save_pdf
     pdf = PosPdf.new(@sale, @sale.no_so)
-    pdf.render_file(Rails.root.join('public/pdfs', "#{@sale.no_so}.pdf"))
+    pdf.render_file(Rails.root.join('public', "#{@sale.no_so}.pdf"))
   end
 
   def send_whatsapp_notif
@@ -18,7 +18,7 @@ class SalesController < ApplicationController
     img = @sale.channel_customer.nama
     begin
       RestClient.post "https://icwaba.damcorp.id/whatsapp/sendHsm/so_img_001", {"to": "#{notelp}", "token": "#{API}",
-        "param": ["#{nama}", "#{img}"], "header": {"type": "document", "data": "http://classicspringbed.com:1107/pdfs/#{@sale.no_so}.pdf", "filename": "INVOICE"}}.to_json, {content_type: :json, accept: :json}
+        "param": ["#{nama}", "#{img}"], "header": {"type": "document", "data": "http://classicspringbed.com:1107/#{@sale.no_so}.pdf", "filename": "INVOICE"}}.to_json, {content_type: :json, accept: :json}
     rescue RestClient::ExceptionWithResponse => e
       self.description = "It didn't work"
     end

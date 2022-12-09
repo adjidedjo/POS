@@ -12,13 +12,15 @@ class SaleItem < ActiveRecord::Base
   }
   validate :cek_stock_without_serial, on: :create
   validate :cek_stock_with_serial, on: :create
-  validate :cek_sales_counter
+  #validate :cek_sales_counter
   validate :cek_price_list, on: :create
 
   def cek_price_list
     unless self.bonus?
-      if self.price_list == 0 || self.price_list.blank?
-        errors.add(:price_list, "MASUKKAN HARGA BARANG SETELAH DISKON")
+      item = SaleItem.find_by_sql("SELECT price FROM limit_prices WHERE kode_barang = '#{self.kode_barang}'")
+      harga = item.first.nil? ? 0 : item.first.price
+      if self.price_list == 0 || self.price_list.blank? || (self.price_list < harga.to_i)
+        errors.add(:price_list, "HARGA TIDAK BOLEH 0 ATAU KURANG DARI LIMIT YANG TELAH DITENTUKAN")
       end
     end
   end
@@ -58,7 +60,7 @@ class SaleItem < ActiveRecord::Base
       #  l = kode_barang[15..18]
       #  self.nama_barang = nama_barang.gsub(/\b#{nama_barang[-9..-7]}\b/, p).gsub(/\b#{nama_barang[-3..-1]}\b/, l)
       #end
-
+      self.point = self.point * self.jumlah
       self.channel_customer_id = self.sale.channel_customer_id
       if taken == true
         self.tanggal_kirim = Date.today
