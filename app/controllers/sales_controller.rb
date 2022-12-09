@@ -4,8 +4,8 @@ class SalesController < ApplicationController
   before_action :sale_after_printed, only: [:show, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :create]
   before_action :current_user_destroy, only: [:destroy]
-  after_action :save_pdf, only: [:create]
-  after_action :send_whatsapp_notif, only: [:save_pdf]
+  # after_action :save_pdf, only: [:create]
+  after_action :send_whatsapp_notif, only: [:create]
 
   def save_pdf
     pdf = PosPdf.new(@sale, @sale.no_so)
@@ -14,8 +14,10 @@ class SalesController < ApplicationController
 
   def send_whatsapp_notif
     nama= @sale.pos_ultimate_customer.nama
-    notelp = @sale.pos_ultimate_customer.no_telepon
+    notelp = @sale.pos_ultimate_customer.no_telepon.gsub!(/^0/, '62')
     img = @sale.channel_customer.nama
+    pdf = PosPdf.new(@sale, @sale.no_so)
+    pdf.render_file(Rails.root.join('public', "#{@sale.no_so}.pdf"))
     begin
       RestClient.post "https://icwaba.damcorp.id/whatsapp/sendHsm/so_img_001", {"to": "#{notelp}", "token": "#{API}",
         "param": ["#{nama}", "#{img}"], "header": {"type": "document", "data": "http://classicspringbed.com:1107/#{@sale.no_so}.pdf", "filename": "INVOICE"}}.to_json, {content_type: :json, accept: :json}
