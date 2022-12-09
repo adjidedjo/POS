@@ -47,4 +47,12 @@ Rails.application.configure do
     # :domain               => 'ras.co.id',
     # :authentication => "plain",
     # :enable_starttls_auto => true  }
+    config.action_mailer.smtp_settings = {
+    :user_name            => "aji.y@ras.co.id",
+    :password             => "1vG27YfThSCsnOx6",
+    :address              => "smtp-relay.sendinblue.com",
+    :port                 => 587,
+    :domain               => 'ras.co.id',
+    :authentication => "plain",
+    :enable_starttls_auto => true  }
 end

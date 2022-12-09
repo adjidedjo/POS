@@ -31,18 +31,19 @@ class UserMailer < ApplicationMailer
 
   def order_pameran(sales)
     order_no = sales.no_sale.to_s.rjust(4, '0')
+    @img = ChannelCustomer.find(sales.channel_customer_id).nama.upcase
     @no_so = sales.no_so
     @total = sales.netto
-    @nama = sales.pos_ultimate_customer.nama.upcase!
+    @nama = sales.pos_ultimate_customer.nama.upcase
     @sales_items = sales.sale_items
-    @alamat = sales.pos_ultimate_customer.alamat.upcase!
-    @kota = sales.pos_ultimate_customer.kota.upcase!
+    @alamat = sales.pos_ultimate_customer.alamat.upcase
+    @kota = sales.pos_ultimate_customer.kota.upcase
     email = sales.pos_ultimate_customer.email
     # type == "RE" ? "REGULAR" : "CLEARANCE SALE"
     # @order = order
     # @user = user
     attachments["Invoice.pdf"] = PosPdf.new(sales, order_no).render
-    mail(to: email, subject: "IMG '#{ChannelCustomer.find(sales.channel_customer_id).nama.upcase!}' Invoice")
+    mail(to: email, subject: "IMG #{@img} Invoice")
   end
 
   def pelunasan(recipient, nama, user)
