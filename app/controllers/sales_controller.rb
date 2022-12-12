@@ -14,12 +14,12 @@ class SalesController < ApplicationController
 
   def send_whatsapp_notif
     nama= @sale.nama
-    notelp = @saleno_telepon.gsub!(/^0/, '62')
+    notelp = @sale.no_telepon.gsub!(/^0/, '62')
     img = @sale.channel_customer.nama
     pdf = PosPdf.new(@sale, @sale.no_so)
     pdf.render_file(Rails.root.join('public', "#{@sale.no_so}.pdf"))
     begin
-      RestClient.post "https://icwaba.damcorp.id/whatsapp/sendHsm/so_img_001", {"to": "#{notelp}", "token": "#{API}",
+      RestClient.post "https://icwaba.damcorp.id/whatsapp/sendHsm/so_img_001", {"to": "#{notelp}", "token": "#{Damcorp::API}",
         "param": ["#{nama}", "#{img}"], "header": {"type": "document", "data": "http://classicspringbed.com:1107/#{@sale.no_so}.pdf", "filename": "INVOICE"}}.to_json, {content_type: :json, accept: :json}
     rescue RestClient::ExceptionWithResponse => e
       self.description = "It didn't work"
