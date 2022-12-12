@@ -19,13 +19,7 @@ class ApplicationController < ActionController::Base
       root_path
     else
       unless resources.channel_customer.nil?
-        if resources.channel_customer.exhibition_stock_items.blank?
-          import_intransit_channel_customers_path
-        elsif resources.channel_customer.exhibition_stock_items.where(checked_in: true).blank?
-          item_receipts_receipt_path
-        else
-          root_path
-        end
+        item_receipts_receipt_path
       else
         root_path
       end
