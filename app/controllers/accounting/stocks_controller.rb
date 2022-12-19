@@ -106,20 +106,30 @@ class Accounting::StocksController < ApplicationController
   end
 
   def mutasi_stock
-    @channel_customer = []
-    channel = current_user.branch.present? ? current_user.branch.sales_counters : []
-    if channel.present?
-      current_user.branch.sales_counters.each do |sc|
-        sc.recipients.group(:channel_customer_id).each do |scr|
-          @channel_customer << scr.channel_customer
-        end
-      end
+    if current_user.role == "accounting"
+      @channel_customer = ChannelCustomer.where(branch_id: current_user.branch_id)
+    elsif current_user.role == "admin"
+      @channel_customer = ChannelCustomer.all
     else
-      ChannelCustomer.all.each do |cc|
-        @channel_customer << cc
-      end
+      []
     end
   end
+
+  #def mutasi_stock
+  #  @channel_customer = []
+  #  channel = current_user.branch_id.present? ? current_user.branch.sales_counters : []
+  #  if channel.present?
+  #    current_user.branch.sales_counters.each do |sc|
+  #      sc.recipients.group(:channel_customer_id).each do |scr|
+  #        @channel_customer << scr.channel_customer
+  #      end
+  #    end
+  #  else
+  #    ChannelCustomer.all.each do |cc|
+  #      @channel_customer << cc
+  #    end
+  #  end
+  #end
 
   private
   def set_controller
