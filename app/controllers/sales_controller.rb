@@ -4,13 +4,7 @@ class SalesController < ApplicationController
   before_action :sale_after_printed, only: [:show, :destroy]
   before_action :get_current_user, only: [:new, :show, :edit, :update, :create]
   before_action :current_user_destroy, only: [:destroy]
-  # after_action :save_pdf, only: [:create]
-  after_action :send_whatsapp_notif, only: [:create]
-
-  def save_pdf
-    pdf = PosPdf.new(@sale, @sale.no_so)
-    pdf.render_file(Rails.root.join('public', "#{@sale.no_so}.pdf"))
-  end
+  #after_save :send_whatsapp_notif, only: [:create]
 
   def send_whatsapp_notif
     nama= @sale.nama
@@ -198,6 +192,7 @@ class SalesController < ApplicationController
 
     respond_to do |format|
       if @sale.save
+        send_whatsapp_notif
         format.html { redirect_to @sale, notice: 'Sale was successfully created.', turbolinks: true }
         format.json { render :show, status: :created, location: @sale }
       else

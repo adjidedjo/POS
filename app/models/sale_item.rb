@@ -13,14 +13,22 @@ class SaleItem < ActiveRecord::Base
   validate :cek_stock_without_serial, on: :create
   validate :cek_stock_with_serial, on: :create
   #validate :cek_sales_counter
-  validate :cek_price_list, on: :create
+  validate :cek_price_list, :activate_price_limit, on: :create
+
+  def activate_price_limit
+    img = ChannelCustomer.find_by_id(self.sale.channel_customer_id)
+    if img.limit?
+      item = PriceLimit.checking_limit_prices(self.kode_barang, img.id)
+      if (self.price_list.to_i < item.limit_price.to_i) && (Date.today.to_date <= item.period_to.to_date)
+        errors.add(:price_list, "HARGA '#{self.nama_barang}' KURANG DARI LIMIT YANG TELAH DITENTUKAN, CEK KEMBALI!")
+      end
+    end
+  end
 
   def cek_price_list
     unless self.bonus?
-      item = SaleItem.find_by_sql("SELECT price FROM limit_prices WHERE kode_barang = '#{self.kode_barang}'")
-      harga = item.first.nil? ? 0 : item.first.price
-      if self.price_list == 0 || self.price_list.blank? || (self.price_list < harga.to_i)
-        errors.add(:price_list, "HARGA TIDAK BOLEH 0 ATAU KURANG DARI LIMIT YANG TELAH DITENTUKAN")
+      if self.price_list == 0 || self.price_list.blank?
+        errors.add(:price_list, "HARGA TIDAK BOLEH 0")
       end
     end
   end
