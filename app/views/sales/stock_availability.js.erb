@@ -1,0 +1,21 @@
+element_id = "<%= @element_id %>"
+jumlah_barang = element_id.replace("taken", "jumlah")
+kode_barang = element_id.replace("taken", "kode_barang")
+nama_barang = element_id.replace("taken", "nama_barang")
+serial = element_id.replace("taken", "serial")
+empty_serial = document.getElementById(serial).value;
+total_stock = <%= @total_stock.to_i %>
+request_order = <%= @request_order.to_i %>
+serial_item = <%= @serial_item %>
+if (total_stock < request_order){
+  alert('Stock kurang dari jumlah order');
+  document.getElementById(jumlah_barang).value = total_stock;
+  document.getElementById(element_id).checked = false;
+} else if (serial_item == true && empty_serial == ""){
+  alert('Barang ini menggunakan serial, silahkan cari serial di kolom serial');
+  document.getElementById(jumlah_barang).value = "";
+  document.getElementById(element_id).checked = false;
+  document.getElementById(kode_barang).value = "";
+  document.getElementById(nama_barang).value = "";
+  document.getElementById(serial).select();
+}

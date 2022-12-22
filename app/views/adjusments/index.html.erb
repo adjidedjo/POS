@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>List Barang Hasil Adjust</h1>
+<hr>
+<br>
+<table id="adjustment_index" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Channel customer</th>
+      <th>No SJ</th>
+      <th>Serial</th>
+      <th>Kode barang</th>
+      <th>Nama barang</th>
+      <th>Jumlah</th>
+      <th>Alasan</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @adjusments.each do |adjusment| %>
+      <tr>
+        <td><%= ChannelCustomer.find(adjusment.channel_customer_id).nama %></td>
+        <td><%= adjusment.no_sj %></td>
+        <td><%= adjusment.serial %></td>
+        <td><%= adjusment.kode_barang %></td>
+        <%  nama = Item.find_by_kode_barang(adjusment.kode_barang) %>
+        <td><%= nama.present? ? nama.nama : "" %></td>
+        <td><%= adjusment.jumlah %></td>
+        <td><%= adjusment.alasan %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Adjusment', new_adjusment_path, class: 'btn btn-primary' %>

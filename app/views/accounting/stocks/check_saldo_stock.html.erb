@@ -1,0 +1,30 @@
+<h5><b>Info:</b> Untuk Scan IN barang, pastikan kursor berada di kolom SERIAL lalu scan.</h5>
+<br />
+<%= form_tag accounting_stocks_process_receipt_path, :method => :put, :id => 'receipt_form' do %>
+  <%= label_tag "SERIAL" %>
+  <%= text_field_tag :serial %>
+<% end %>
+<br />
+<h5><b>Info:</b> Tabel dibawah menampilkan barang yang telah di scan Hari ini.</h5>
+<br />
+<table id="table_receipt" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="all">Serial</th>
+      <th class="all">Kode Barang</th>
+      <th class="all">Nama Barang</th>
+      <th class="all">QTY</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @receipt.each do |resep| %>
+      <tr>
+        <td><%= resep.serial %></td>
+        <td><%= resep.kode_barang %></td>
+        <td><%= resep.nama %></td>
+        <td><%= resep.jumlah %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

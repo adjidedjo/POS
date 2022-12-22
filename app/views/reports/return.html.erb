@@ -1,0 +1,34 @@
+<h1>Laporan Stok <%= @channel.nama.upcase %></h1>
+<br />
+<table id="rekap_stock" class="display table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>Tanggal Return</th>
+      <th>No Bukti</th>
+      <th>Serial</th>
+      <th>Kode Barang</th>
+      <th>Nama Barang</th>
+      <th>Status</th>
+      <th>Jumlah</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @return.each do |s| %>
+      <tr>
+        <td><%= s.created_at.strftime("%m %B %Y") %></td>
+        <td>RT<%= s.no_bukti_return %></td>
+        <td><%= s.serial.present? ? s.serial : '-' %></td>
+        <td><%= s.kode_barang %></td>
+        <% nama = Item.find_by_kode_barang(s.kode_barang) %>
+        <td><%= nama.present? ? nama.nama : "" %></td>
+        <td><%= s.keterangan == "B" ? "RETURN" : "TRANSFER"  %></td>
+        <td><%= s.qty_out %></td>
+        <td><%= link_to "Re-Print", reports_reprint_return_path(:id => s.id, format: "pdf")  %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br />
+<%= link_to "Export to Excel", reports_return_path(cc_id: params[:cc_id], format: "xls"), :class => "btn btn-info" %>

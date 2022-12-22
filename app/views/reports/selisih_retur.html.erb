@@ -6,9 +6,9 @@
       <th>No SJ</th>
       <th>Kode Barang</th>
       <th>Nama Barang</th>
-      <th>Stock</th>
+      <th>Stok Awal</th>
       <th>Retur</th>
-      <th>Selisih</th>
+      <th>Stok Akhir</th>
     </tr>
   </thead>
 
@@ -18,11 +18,14 @@
         <td><%= ins.no_sj %></td>
         <td><%= ins.kode_barang %></td>
         <td><%= ExhibitionStockItem.find_by_kode_barang(ins.kode_barang).nama %></td>
-        <% stock = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true).sum(:jumlah)  %>
-        <td><%= stock %></td>
-        <% retur = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true, checked_out: true).sum(:jumlah)  %>
+        <% stock = ExhibitionStockItem.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, checked_in: true,
+          channel_customer_id: current_user.channel_customer.id).sum(:stok_awal)  %>
+        <% sales = StoreSalesAndStockHistory.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj,
+          channel_customer_id: current_user.channel_customer.id, keterangan: "S").sum(:qty_out)  %>
+        <td><%= stock - sales %></td>
+        <% retur = StoreSalesAndStockHistory.where(kode_barang: ins.kode_barang, no_sj: ins.no_sj, channel_customer_id: current_user.channel_customer.id, keterangan: "B").sum(:qty_out)  %>
         <td><%= retur %></td>
-        <td><%= stock - retur %></td>
+        <td><%= (stock - sales) - retur %></td>
       </tr>
     <% end %>
   </tbody>

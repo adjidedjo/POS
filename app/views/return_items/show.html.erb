@@ -1,0 +1,32 @@
+<h5>Berikut adalah barang-barang yang sudah dinyatakan return dengan <b><i>status belum transfer ke Admin Gudang</i></b></h5>
+<hr />
+<table id="show_return" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th class="all">No SJ</th>
+      <th class="all">Tanggal SJ</th>
+      <th class="all">Kode Barang</th>
+      <th class="all">Nama Barang</th>
+      <th class="all">Jumlah</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @returned.each do |resep| %>
+      <tr>
+        <td><%= resep.no_sj %></td>
+        <td><%= resep.tanggal %></td>
+        <td><%= resep.kode_barang %></td>
+        <td><%=  resep.nama %></td>
+        <td><%=  resep.qty_out %></td>
+      <% end %>
+  </tbody>
+</table>
+<hr />
+<%= link_to "Print Nota Retur", return_items_print_return_path(:format => 'pdf'), :class => 'btn btn-primary' if @returned.present? %>
+<%= link_to "Kirim Nota Retur", return_items_send_returned_items_path(:format => :xml), :class => 'btn btn-primary' if @returned.present? %>
+<%= link_to "Batalkan Nota Retur", return_items_cancel_returned_items_path, :class => 'btn btn-primary' if @returned.present? && @returned.first.no_bukti_return.nil? %>
+<hr />
+<h5>*Kirim Nota Retur, mengirimkan barang-barang yang dinyatakan return ke Admin Gudang untuk diupload di Progam Cabang</h5>
+<h5>*Batalkan Nota Retur akan membatalkan seluruh barang-barang yang telah dinyatakan return</h5>
+<h5>*Barang-barang return yang sudah terkirim ke Admin Gudang tidak bisa edit kembali</h5>

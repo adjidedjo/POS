@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sales_counter_id: 1
+  channel_customer_id: 1
+  brand_id: 1
+
+two:
+  sales_counter_id: 1
+  channel_customer_id: 1
+  brand_id: 1

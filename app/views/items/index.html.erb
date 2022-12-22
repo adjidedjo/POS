@@ -1,36 +1,25 @@
-<%- model_class = Item -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
-<table class="table table-striped">
+<%= hidden_field_tag "kode_barang" %>
+<%= hidden_field_tag "nama_barang" %>
+<%= hidden_field_tag "jumlah" %>
+<%= hidden_field_tag "serial" %>
+<table id="all_item_pos" class="display table table-striped table-bordered responsive nowrap" width="100%" cellspacing="0">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:cabang_id) %></th>
-      <th><%= model_class.human_attribute_name(:kode_barang) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th class="desktop">Brand</th>
+      <th class="desktop">Kode Barang</th>
+      <th>Nama</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    <% @items.each do |item| %>
+    <% Item.all.each do |item| %>
       <tr>
-        <td><%= link_to item.id, item_path(item) %></td>
-        <td><%= item.cabang_id %></td>
+        <td><%= Brand.find(item.brand_id).brand %></td>
         <td><%= item.kode_barang %></td>
-        <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_item_path(item), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      item_path(item),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-xs btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_item_path,
-            :class => 'btn btn-primary' %>
+        <td><%= item.nama %></td>
+        <td><%= link_to 'add', '#', remote: true, 'test' => raw("<div class='modal-text'>..</div>"),
+            :data => {:kode => item.kode_barang, :nama => item.nama}, class: 'add_to_sales'  %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

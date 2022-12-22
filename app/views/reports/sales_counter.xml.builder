@@ -1,64 +1,97 @@
 xml = Builder::XmlMarkup.new
 xml.instruct!
+si_by_brand = SaleItem.find(@chosen_sale_item)
+@nobukti = Time.now.strftime("%d%m%Y%H%M%S")
 xml.data do
-  @sales.each do |sale_item|
+  si_by_brand.each do |si|
+    si.update_attributes!(no_bukti_exported: @nobukti)
     xml.pbjshow do
-      xml.kodebrg sale_item.kode_barang
-      xml.namabrg sale_item.nama_barang
-      xml.qty sale_item.jumlah
+      xml.ExSJ si.ex_no_sj.blank? ? '-' : si.ex_no_sj
+      xml.kodebrg si.kode_barang
+      xml.namabrg si.nama_barang
+      xml.qty si.jumlah
       xml.status 1
       xml.satuan "PCS"
-      xml.created sale_item.created_at.strftime('%m/%d/%Y')
-      xml.createdby SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.capitalize
-      xml.bonus sale_item.bonus? ? 'BONUS' : '-'
-      xml.noso sale_item.sale.no_so
-      xml.KeteranganSO sale_item.sale.keterangan_customer
-      xml.NoPo sale_item.sale.no_so
-      xml.keterangan sale_item.keterangan.blank? ? "-"  : sale_item.keterangan
-      xml.TglDelivery sale_item.tanggal_kirim.strftime("%m/%d/%Y")
-      xml.AlamatKirim sale_item.sale.alamat_kirim
-      xml.Customer sale_item.sale.customer
-      xml.Alamat1 sale_item.sale.alamat_kirim
-      xml.KodePameran sale_item.sale.channel_customer.kode_channel_customer
-      xml.NamaPameran sale_item.sale.channel_customer.nama
-      xml.DariTanggal sale_item.sale.channel_customer.dari_tanggal.strftime("%m/%d/%Y")
-      xml.SampaiTanggal sale_item.sale.channel_customer.sampai_tanggal.strftime("%m/%d/%Y")
-      xml.AsalSo sale_item.sale.channel_customer.channel.channel
-      xml.SPG SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.capitalize
-      xml.Taken (sale_item.taken? ? 'Y' : 'T')
-      xml.Serial sale_item.serial.blank? ? '-' : sale_item.serial
-      item = Item.find_by_kode_barang(sale_item.kode_barang)
-      xml.PriceList item.nil? ? '0' : item.harga
-      xml.Voucher sale_item.sale.voucher
-      xml.Phone sale_item.sale.phone_number
-      xml.Hp1 sale_item.sale.hp1.blank? ? '-' : sale_item.sale.hp1
-      xml.Hp2 sale_item.sale.hp2.blank? ? '-' : sale_item.sale.hp2
-      xml.HargaNetto sale_item.sale.netto
-      dp = (sale_item.sale.pembayaran+sale_item.sale.payment_with_debit_card.jumlah+sale_item.sale.payment_with_credit_cards.sum(:jumlah))
+      xml.created si.created_at.strftime('%m/%d/%Y')
+      xml.createdby SalesPromotion.find(si.sale.sales_promotion_id).nama.capitalize
+      xml.bonus si.bonus? ? 'BONUS' : '-'
+      xml.noso si.sale.no_so
+      xml.KeteranganSO si.sale.keterangan_customer
+      xml.NoPo si.sale.no_so
+      xml.keterangan si.keterangan.blank? ? "-"  : si.keterangan
+      xml.TglDelivery si.tanggal_kirim.strftime("%m/%d/%Y")
+      xml.AlamatKirim si.sale.pos_ultimate_customer.alamat+" "+ si.sale.pos_ultimate_customer.kota.capitalize
+      xml.Customer si.sale.pos_ultimate_customer.nama
+      xml.Alamat1 si.sale.pos_ultimate_customer.alamat
+      if si.brand_id == 2 || si.brand_id == 6
+        xml.KodePameran si.sale.channel_customer.kode_showroom
+      else
+        xml.KodePameran si.sale.channel_customer.kode_channel_customer
+      end
+      xml.NamaPameran si.sale.channel_customer.nama
+      siscc = si.sale.channel_customer
+      xml.DariTanggal siscc.dari_tanggal.nil? ? '' : siscc.dari_tanggal.strftime("%m/%d/%Y")
+      xml.SampaiTanggal siscc.sampai_tanggal.nil? ? '' : siscc.sampai_tanggal.strftime("%m/%d/%Y")
+      xml.AsalSo si.sale.channel_customer.channel.channel
+      xml.SPG si.sale.sales_promotion_id.nil? ? @user.channel_customer.nama.titleize :
+        si.sale.channel_customer.sales_promotions.find(si.sale.sales_promotion_id).nama.titleize
+      xml.Taken (si.taken? ? 'Y' : 'T')
+      xml.Serial si.serial.blank? ? '-' : si.serial
+      xml.PriceList si.price_list
+      xml.Voucher si.sale.voucher
+      xml.Phone si.sale.pos_ultimate_customer.no_telepon
+      xml.Hp1 si.sale.pos_ultimate_customer.handphone.blank? ? '-' : si.sale.pos_ultimate_customer.handphone
+      xml.Hp2 si.sale.pos_ultimate_customer.handphone1.blank? ? '-' : si.sale.pos_ultimate_customer.handphone1
+      xml.HargaNetto si.sale.netto
+      dp = (si.sale.pembayaran+si.sale.payment_with_debit_cards.sum(:jumlah)+si.sale.payment_with_credit_cards.sum(:jumlah)+si.sale.jumlah_transfer + si.sale.voucher)
       xml.DP dp
-      xml.Sisa sale_item.sale.sisa
-      xml.TipePembayaran sale_item.sale.tipe_pembayaran
-      xml.no_kartu_debit sale_item.sale.payment_with_debit_card.no_kartu.blank? ? '-' : sale_item.sale.payment_with_debit_card.no_kartu
-      xml.nama_kartu_debit sale_item.sale.payment_with_debit_card.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_debit_card.nama_kartu
-      xml.atas_nama_debit sale_item.sale.payment_with_debit_card.atas_nama.blank? ? '-' : sale_item.sale.payment_with_debit_card.atas_nama
-      xml.NoMerchant sale_item.sale.payment_with_credit_cards.first.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.mid
-      xml.NoKartu sale_item.sale.payment_with_credit_cards.first.no_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.no_kartu
-      xml.NamaKartu sale_item.sale.payment_with_credit_cards.first.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.nama_kartu
-      xml.AtasNama sale_item.sale.payment_with_credit_cards.first.atas_nama.blank? ? '-' : sale_item.sale.payment_with_credit_cards.first.atas_nama
-      xml.NoMerchant1 sale_item.sale.payment_with_credit_cards.last.no_merchant.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.mid
-      xml.NoKartu1 sale_item.sale.payment_with_credit_cards.last.no_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.no_kartu
-      xml.NamaKartu1 sale_item.sale.payment_with_credit_cards.last.nama_kartu.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.nama_kartu
-      xml.AtasNama1 sale_item.sale.payment_with_credit_cards.last.atas_nama.blank? ? '-' : sale_item.sale.payment_with_credit_cards.last.atas_nama
-      xml.Email sale_item.sale.email
-      xml.ExSJ sale_item.ex_no_sj.blank? ? '-' : sale_item.ex_no_sj
-      netto_brand = sale_item.brand_id == 2 ? sale_item.sale.netto_elite : sale_item.sale.netto_lady
+      xml.Sisa si.sale.sisa
+      xml.TipePembayaran si.sale.tipe_pembayaran
+      xml.Tunai si.sale.pembayaran
+      xml.no_kartu_debit si.sale.payment_with_debit_cards.first.no_kartu_debit.blank? ? '-' : si.sale.payment_with_debit_cards.first.no_kartu_debit
+      xml.nama_kartu_debit si.sale.payment_with_debit_cards.first.nama_kartu.blank? ? '-' : si.sale.payment_with_debit_cards.first.nama_kartu
+      xml.atas_nama_debit si.sale.payment_with_debit_cards.first.atas_nama.blank? ? '-' : si.sale.payment_with_debit_cards.first.atas_nama
+      xml.JumlahDebit si.sale.payment_with_debit_cards.first.jumlah
+      xml.NoMerchant si.sale.payment_with_credit_cards.first.no_merchant.blank? ? '-' : si.sale.payment_with_credit_cards.first.mid
+      xml.NoKartu si.sale.payment_with_credit_cards.first.no_kartu_kredit.blank? ? '-' : si.sale.payment_with_credit_cards.first.no_kartu_kredit
+      xml.NamaKartu si.sale.payment_with_credit_cards.first.nama_kartu.blank? ? '-' : si.sale.payment_with_credit_cards.first.nama_kartu
+      xml.AtasNama si.sale.payment_with_credit_cards.first.atas_nama.blank? ? '-' : si.sale.payment_with_credit_cards.first.atas_nama
+      xml.JumlahKredit si.sale.payment_with_credit_cards.first.jumlah
+      xml.NoMerchant1 si.sale.payment_with_credit_cards.last.no_merchant.blank? ? '-' : si.sale.payment_with_credit_cards.last.mid
+      xml.NoKartu1 si.sale.payment_with_credit_cards.last.no_kartu_kredit.blank? ? '-' : si.sale.payment_with_credit_cards.last.no_kartu_kredit
+      xml.NamaKartu1 si.sale.payment_with_credit_cards.last.nama_kartu.blank? ? '-' : si.sale.payment_with_credit_cards.last.nama_kartu
+      xml.AtasNama1 si.sale.payment_with_credit_cards.last.atas_nama.blank? ? '-' : si.sale.payment_with_credit_cards.last.atas_nama
+      xml.JumlahKredit1 si.sale.payment_with_credit_cards.last.jumlah
+      xml.Email si.sale.email
+      netto_brand =
+        if si.brand_id == 2
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)
+      elsif si.brand_id == 4
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)
+      elsif si.brand_id == 5
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)
+      elsif si.brand_id == 6
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list)
+      elsif si.brand_id == 7
+        si.sale.sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)
+      end
       xml.NettoBrand netto_brand
+      xml.NamaRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.name
+      xml.NoRekening si.sale.bank_account.nil? ? '' : si.sale.bank_account.account_number
+      xml.JumlahTransfer si.sale.jumlah_transfer
+      xml.StatusSO si.stocking_type
     end
   end
 end
 xml_data = xml.target!
-set_file_name = Time.now.strftime("%d%m%Y%H%M%S")
+set_file_name = @nobukti
 file = File.new("#{Rails.root}/public/#{set_file_name}.xml", "wb")
 file.write(xml_data)
 file.close
-UserMailer.order_pameran(@email, "#{set_file_name}", @user).deliver_now
+@sales.group_by(&:brand_id).keys.each do |group|
+  emails = []
+  @user.recipients.where(brand_id: group).each do |rc|
+    emails << rc.sales_counter.email
+  end
+  UserMailer.order_pameran(emails, "#{set_file_name}", @user, @sales, @sales.first.stocking_type).deliver_now
+end

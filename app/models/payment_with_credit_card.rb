@@ -1,5 +1,5 @@
 class PaymentWithCreditCard < ActiveRecord::Base
-  belongs_to :sale
+  belongs_to :sale, inverse_of: :payment_with_credit_cards
 
   before_create do
     get_nama_merchant = Merchant.find_by_no_merchant(no_merchant)

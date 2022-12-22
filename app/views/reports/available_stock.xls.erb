@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">SJ</Data></Cell>
+        <Cell><Data ss:Type="String">Serial</Data></Cell>
+        <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+        <Cell><Data ss:Type="String">Statis</Data></Cell>
+        <Cell><Data ss:Type="String">Jumlah</Data></Cell>
+      </Row>
+    <% @stock.each do |s| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= s.no_sj %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.serial.present? ? s.serial : '-' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.kode_barang %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.nama  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.stocking_type == "RE" ? "REGULAR" : 'CS' %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= s.total %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

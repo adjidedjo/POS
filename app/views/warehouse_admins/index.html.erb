@@ -1,0 +1,34 @@
+<h1>Listing Admin Gudang</h1>
+
+<table class="display table table-striped table-bordered responsive nowrap">
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Nik</th>
+      <th>Email</th>
+      <th>Cabang</th>
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @warehouse_admins.each do |warehouse_admin| %>
+      <tr>
+        <td><%= warehouse_admin.nik %></td>
+        <td><%= warehouse_admin.nama %></td>
+        <td><%= warehouse_admin.email %></td>
+        <td><%= warehouse_admin.branch.cabang.titleize %></td>
+        <td><%= link_to 'Show', warehouse_admin, class: "btn btn-info btn-xs" %></td>
+        <% unless @controller %>
+          <td><%= link_to 'Edit', edit_warehouse_admin_path(warehouse_admin), class: "btn btn-info btn-xs" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<% unless @controller %>
+  <%= link_to 'Admin Gudang Baru', new_warehouse_admin_path, class: "btn btn-primary", 'data-no-turbolink' => true %>
+<% end %>

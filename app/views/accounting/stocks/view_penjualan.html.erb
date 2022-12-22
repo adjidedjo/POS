@@ -1,0 +1,83 @@
+<%- model_class = Sale -%>
+<div class="page-header">
+  <h1>Penjualan <%= @channel_customer.nama.titleize  %></h1>
+</div>
+<div>
+  <h3>Cari Penjualan</h3>
+  <%= simple_form_for :search, { url: accounting_stocks_view_penjualan_path, method: "get" } do |f| %>
+    <div class="field">
+      <%= f.input :dari_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+    </div>
+    <div class="field">
+      <%= f.input :sampai_tanggal, as: :tanggal_sales, readonly: true, input_html: {style: 'width: 250px'} %>
+    </div>
+    <%= hidden_field_tag :cc_id, params[:cc_id] %>
+    <%= submit_tag "Search" %>
+  <% end %>
+</div>
+<h5>Jika ingin mengeksport ke excel sesuai tanggal, cari berdasarkan tanggal lalu export</h5>
+<hr>
+<table id="v_penjualan" class="display table table-striped table-bordered responsive nowrap mini_size" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th style="font-size: 10px;">PC</th>
+      <th style="font-size: 10px;">No SO</th>
+      <th style="font-size: 10px;">Notes</th>
+      <th style="font-size: 10px;">Customer</th>
+      <th style="font-size: 10px;">Ket Pembayaran</th>
+      <th style="font-size: 10px;">Cara Pembayaran</th>
+      <th style="font-size: 10px;">Netto Elite</th>
+      <th style="font-size: 10px;">Netto Lady</th>
+      <th style="font-size: 10px;">Netto Royal</th>
+      <th style="font-size: 10px;">Netto Serenity</th>
+      <th style="font-size: 10px;">Netto Tech</th>
+      <th style="font-size: 10px;">Total Pembayaran</th>
+      <th style="font-size: 10px;">Total Keseluruhan</th>
+      <th style="font-size: 10px;">Total Poin</th>
+      <th style="font-size: 10px;">Verifikasi</th>
+      <th style="font-size: 10px;"><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales.each do |sale| %>
+      <tr>
+        <td style="font-size: 11px;"><%= sale.sales_promotion.nil? ? '' : sale.sales_promotion.nama.upcase %></td>
+        <td style="font-size: 11px;"><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
+        <td style="font-size: 11px;"><%= sale.keterangan_customer %></td>
+        <td style="font-size: 11px;"><%= sale.pos_ultimate_customer.nama.capitalize %></td>
+        <td style="font-size: 11px;"><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
+        <td style="font-size: 11px;"><%= sale.tipe_pembayaran %></td>
+        <% total = (sale.pembayaran+sale.payment_with_debit_cards.sum(:jumlah)+sale.payment_with_credit_cards.sum(:jumlah)+sale.jumlah_transfer) %>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "R"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "S"}.sum(&:price_list)) %></td>
+        <td style="font-size: 10px;"><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "P"}.sum(&:price_list)) %></td>
+        <td class="money" style="font-size: 10px;"><%= currency(total) %></td>
+        <td class="money" style="font-size: 10px;"><%= currency(sale.netto) %></td>
+        <td><%= sale.sale_items.sum(:point) %></td>
+        <td class="money" style="font-size: 10px;"><%= sale.validated? ? "Sudah" : "Belum" %></td>
+        <td style="font-size: 10px;">
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_sale_path(sale), :class => 'btn btn-default btn-xs' if current_user.role == 'supervisor' %>
+          <%= link_to "Print (PDF)", sale_path(sale, :format => 'pdf'), :class => 'btn btn-default btn-xs' %>
+  <%#= link_to t('.destroy', :default => t("helpers.links.destroy")),
+  sale_path(sale),
+  :method => :delete,
+  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+  :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br />
+<% if params[:search].present? %>
+  <%= link_to "Export to Excel", accounting_stocks_view_penjualan_path(cc_id: params[:cc_id],
+    search: {sampai_tanggal: params[:search][:sampai_tanggal], dari_tanggal: params[:search][:dari_tanggal]}, format: "xls"),
+    :class => "btn btn-info" %>
+<% else %>
+  <%= link_to "Export to Excel", accounting_stocks_view_penjualan_path(cc_id: params[:cc_id], format: "xls"),
+    :class => "btn btn-info" %>
+<% end %>

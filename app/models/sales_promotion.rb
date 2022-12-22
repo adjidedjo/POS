@@ -1,5 +1,6 @@
 class SalesPromotion < ActiveRecord::Base
   has_one :user, dependent: :destroy
+  has_one :sale, dependent: :destroy
   belongs_to :store
   belongs_to :showroom
   belongs_to :channel_customer

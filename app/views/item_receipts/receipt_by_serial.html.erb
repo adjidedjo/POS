@@ -3,11 +3,11 @@
     <thead>
       <tr>
         <th></th>
+        <th class="all">Serial</th>
+        <th class="all">Nama Barang</th>
+        <th class="all">Kode Barang</th>
         <th class="all">No SJ</th>
         <th class="all">Tanggal SJ</th>
-        <th class="all">Kode Barang</th>
-        <th class="all">Nama Barang</th>
-        <th class="all">Serial</th>
       </tr>
     </thead>
 
@@ -17,18 +17,19 @@
           <%= fields_for "receipt[]", resep do |f| %>
             <tr>
               <td><%= check_box_tag "receipt_ids[]", f.object.id %></td>
+             <td><%= f.object.serial %></td>
+              <td><%= f.object.nama %></td>
+              <td><%= f.object.kode_barang %></td>
               <td><%= f.object.no_sj %></td>
               <td><%= f.object.tanggal_sj %></td>
-              <td><%= f.object.kode_barang %></td>
               <%= f.hidden_field "kode_barang" %>
-              <td><%= f.object.nama %></td>
-              <td><%= f.object.serial %></td>
             <% end %>
           <% end %>
         <% else %>
         <% end %>
     </tbody>
   </table>
-  <%= submit_tag "Check", :class => 'btn btn-primary' %>
-  <%= link_to "Back", item_receipts_receipt_path,:class => 'btn btn-primary' %>
+  <%= submit_tag "CHECK IN", :class => 'btn btn-primary' if @receipt_by_serial.present? %>
+  <%= submit_tag "REJECT", name: 'reject', :class => 'btn btn-warning' if @receipt_by_serial.present? %>
+  <%= link_to "BACK", item_receipts_receipt_path,:class => 'btn btn-primary' %>
 <% end %>

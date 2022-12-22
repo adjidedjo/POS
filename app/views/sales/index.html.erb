@@ -1,27 +1,44 @@
 <%- model_class = Sale -%>
 <div class="page-header">
-  <h1>Rekap Sales Order</h1>
+  <h1>Penjualan <%= @channel_customer.nama.titleize  %></h1>
 </div>
-<table id="index_of_sales" class="display table table-striped table-bordered responsive nowrap" cellspacing="0" width="100%">
+<table id="index_of_sales" class="display table table-striped table-bordered responsive nowrap mini_size" cellspacing="0" width="100%">
   <thead>
     <tr>
-      <th class="all">No SO</th>
-      <th class="all"><%= model_class.human_attribute_name(:customer) %></th>
-      <th class="min-tablet-l"><%= model_class.human_attribute_name(:phone_number) %></th>
-      <th class="min-tablet-l"><%= model_class.human_attribute_name(:nota_bene) %></th>
-      <th class="min-tablet-l"><%= model_class.human_attribute_name(:so_manual) %></th>
-      <th class="all"><%=t '.actions', :default => t("helpers.actions") %></th>
+      <th style="font-size: 10px">Channel</th>
+      <th style="font-size: 10px">Channel Customer</th>
+      <th style="font-size: 10px">PC</th>
+      <th style="font-size: 10px">No SO</th>
+      <th style="font-size: 10px">SO Manual</th>
+      <th style="font-size: 10px">Customer</th>
+      <th style="font-size: 10px">Ket Pembayaran</th>
+      <th style="font-size: 10px">Cara Pembayaran</th>
+      <th style="font-size: 10px">Netto Elite</th>
+      <th style="font-size: 10px">Netto Lady</th>
+      <th style="font-size: 10px">Total Pembayaran</th>
+      <th style="font-size: 10px">Total Keseluruhan</th>
+      <th style="font-size: 10px">Total Point</th>
+      <th style="font-size: 10px"><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
 
   <tbody>
     <% @sales.each do |sale| %>
       <tr>
-        <td><%= link_to sale.no_so, sale_path(sale) %></td>
-        <td><%= sale.customer %></td>
-        <td><%= sale.phone_number %></td>
-        <td><%= sale.nota_bene %></td>
-        <td><%= sale.so_manual %></td>
+        <td><%= sale.channel_customer.channel.channel %></td>
+        <td><%= sale.channel_customer.nama.upcase %></td>
+        <td><%= sale.sales_promotion.nil? ? '' : sale.sales_promotion.nama.upcase %></td>
+        <td><%= link_to sale.no_so.upcase, sale_path(sale) %></td>
+        <td><%= sale.so_manual.present? ? sale.so_manual : "-" %></td>
+        <td><%= sale.pos_ultimate_customer.nama.capitalize %></td>
+        <td><%= sale.cara_bayar == 'um' ? 'Uang Muka' : 'Lunas' %></td>
+        <td><%= sale.tipe_pembayaran %></td>
+        <td><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "E"}.sum(&:price_list)) %></td>
+        <td><%= currency(sale.sale_items.select { |b| b[:kode_barang][2] == "L"}.sum(&:price_list)) %></td>
+        <% total = (sale.pembayaran+sale.payment_with_debit_cards.sum(:jumlah)+sale.payment_with_credit_cards.sum(:jumlah)+sale.jumlah_transfer) %>
+        <td class="money"><%= currency(total) %></td>
+        <td class="money"><%= currency(sale.netto) %></td>
+        <td><%= sale.sale_items.sum(:point) %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
             edit_sale_path(sale), :class => 'btn btn-default btn-xs' if current_user.role == 'supervisor' %>
@@ -36,3 +53,4 @@
     <% end %>
   </tbody>
 </table>
+<%= link_to "Export to Excel", reports_rekap_so_path(format: "xls"), :class => "btn btn-info" %>
