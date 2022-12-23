@@ -19,7 +19,7 @@ class SaleItem < ActiveRecord::Base
     img = ChannelCustomer.find_by_id(self.sale.channel_customer_id)
     if img.limit?
       item = PriceLimit.checking_limit_prices(self.kode_barang, img.id)
-      if (self.price_list.to_i < item.limit_price.to_i) && (Date.today.to_date <= item.period_to.to_date)
+      if item.present? && (self.price_list.to_i < item.limit_price.to_i) && (Date.today.to_date <= item.period_to.to_date)
         errors.add(:price_list, "HARGA '#{self.nama_barang}' KURANG DARI LIMIT YANG TELAH DITENTUKAN, CEK KEMBALI!")
       end
     end
