@@ -214,7 +214,29 @@ class Sale < ActiveRecord::Base
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
     self.update_attributes!(cara_bayar: ket_lunas)
+    Sale.generate_csv(self)
     #UserMailer.order_pameran(self).deliver if self.channel_customer_id == 6
+  end
+
+  def self.generate_csv(data)
+    attributes = %w{  order_id invoice_ref_num create_time product_id product_name sku quantity total_price recipient_name
+    recipient_phone recipient_address address_line_1 address_line_2 address_line_3 logistics currency
+  amt postal_code customer_po time fs_id} #customize columns here
+
+    CSV.open("#{Rails.root}/public/#{Time.now.to_i}.csv", "wb", headers: true, col_sep: ';') do |csv|
+      csv << attributes
+      # raise data.sale_items.kode_barang.inspect
+      data.sale_items.each do |si|
+
+
+        csv << [si.sale.id, si.sale.no_so, si.sale.created_at.to_i, si.id, si.nama_barang,
+          si.kode_barang, si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, si.sale.pos_ultimate_customer.handphone1,
+          si.sale.pos_ultimate_customer.alamat, si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0],
+          si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1], si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2],
+          "internal", "IDR", si.id, "4018", si.sale.no_so, si.sale.created_at.to_i, si.sale.channel_customer.id
+        ]
+      end
+    end
   end
 
   def paid_with_credit?
