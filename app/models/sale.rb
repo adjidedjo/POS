@@ -223,17 +223,18 @@ class Sale < ActiveRecord::Base
     recipient_phone recipient_address address_line_1 address_line_2 address_line_3 logistics currency
   amt postal_code customer_po time fs_id} #customize columns here
 
-    CSV.open("#{Rails.root}/public/#{Time.now.to_i}.csv", "wb", headers: true, col_sep: ';') do |csv|
+    CSV.open("#{Rails.root}/public/POS#{Time.now.strftime("%d%m%y%H%M")}.csv", "wb", headers: true, col_sep: ';') do |csv|
       csv << attributes
-      # raise data.sale_items.kode_barang.inspect
       data.sale_items.each do |si|
+        brand_id = si.brand_id == 5 ? "2" : "1"
+        display = si.taken? ? "2" : ""
 
 
         csv << [si.sale.id, si.sale.no_so, si.sale.created_at.to_i, si.id, si.nama_barang,
           si.kode_barang, si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, si.sale.pos_ultimate_customer.handphone1,
           si.sale.pos_ultimate_customer.alamat, si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0],
           si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1], si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2],
-          "internal", "IDR", si.id, "4018", si.sale.no_so, si.sale.created_at.to_i, si.sale.channel_customer.id
+          "internal", "IDR", si.id, "4018", si.sale.no_so, si.sale.created_at.to_i, (si.sale.channel_customer.id.to_s + brand_id + display)
         ]
       end
     end
