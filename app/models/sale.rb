@@ -224,21 +224,21 @@ class Sale < ActiveRecord::Base
   amt postal_code customer_po time fs_id} #customize columns here
     file_naming = "POS#{Time.now.strftime("%d%m%y%H%M")}"
 
-    CSV.open("/home/marketing/shared_pos/W/O/#{file_naming}.csv", "wb", headers: true, col_sep: ';') do |csv|
+    CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: true, col_sep: ';') do |csv|
       csv << attributes
       data.sale_items.each do |si|
-        brand_id = si.brand_id == 5 ? "2" : "1"
+        brand_id = si.brand_id
         display = si.taken? ? "2" : ""
 
 
-        csv << [si.sale.id, si.sale.no_so, si.sale.created_at.to_i, si.id, si.nama_barang,
+        csv << ["",si.sale.id, si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, si.nama_barang,
           si.kode_barang, si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, si.sale.pos_ultimate_customer.handphone1,
           si.sale.pos_ultimate_customer.alamat, si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0],
           si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1], si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2],
           "internal", "IDR", si.id, "4018", si.sale.no_so, si.sale.created_at.to_i, (si.sale.channel_customer.id.to_s + brand_id + display)
         ]
       end
-      File.write("/home/marketing/shared_pos/W/O/OLORDER.txt", "#{file_naming}|\n", mode: 'a')
+      File.write("/home/marketing/shared_pos/SV/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')
     end
   end
 
