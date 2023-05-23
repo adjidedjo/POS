@@ -231,7 +231,7 @@ class Sale < ActiveRecord::Base
         display = si.taken? ? "2" : ""
 
 
-        csv << ["",si.sale.id, si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, si.nama_barang,
+        csv << [si.sale.id, si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, si.nama_barang,
           si.kode_barang, si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, si.sale.pos_ultimate_customer.handphone1,
           si.sale.pos_ultimate_customer.alamat, si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0],
           si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1], si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2],
