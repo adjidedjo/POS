@@ -227,7 +227,7 @@ class Sale < ActiveRecord::Base
     CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: true, col_sep: ';') do |csv|
       csv << attributes
       data.sale_items.each do |si|
-        brand_id = si.brand_id
+        brand_id = si.brand_id.to_s
         display = si.taken? ? "2" : ""
 
 
