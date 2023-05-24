@@ -228,7 +228,7 @@ class Sale < ActiveRecord::Base
        "time", "fs_id"]
     file_naming = "POS#{Time.now.strftime("%d%m%y%H%M")}"
 
-    CSV.open("/home/marketing/shared_pos/#{file_naming}.csv", "wb", headers: header, col_sep: ';') do |csv|
+    CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: header, col_sep: ';') do |csv|
       csv << header
       data.sale_items.each do |si|
         brand_id = si.brand_id.to_s
@@ -242,7 +242,7 @@ class Sale < ActiveRecord::Base
           "'internal'", "IDR", si.id, "4018 ", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", (si.sale.channel_customer.id.to_s + brand_id + display).to_i,"'#{nil} '"
         ]
       end
-      File.write("/home/marketing/shared_pos/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')
+      File.write("/home/marketing/shared_pos/SV/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')
     end
   end
 
