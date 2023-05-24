@@ -232,7 +232,7 @@ class Sale < ActiveRecord::Base
       csv << header
       data.sale_items.each do |si|
         brand_id = si.brand_id.to_s
-        display = si.taken? ? "2" : ""
+        display = si.taken? ? "2" : "1"
 
 
         csv << [nil,"#{si.sale.id}", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, "'#{si.nama_barang}'",
