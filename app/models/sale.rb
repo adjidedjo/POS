@@ -219,26 +219,30 @@ class Sale < ActiveRecord::Base
   end
 
   def self.generate_csv(data)
-    attributes = %w{  order_id invoice_ref_num create_time product_id product_name sku quantity total_price recipient_name
-    recipient_phone recipient_address address_line_1 address_line_2 address_line_3 logistics currency
-  amt postal_code customer_po time fs_id} #customize columns here
+  #   attributes = %w{  order_id invoice_ref_num create_time product_id product_name sku quantity total_price recipient_name
+  #   recipient_phone recipient_address address_line_1 address_line_2 address_line_3 logistics currency
+  # amt postal_code customer_po time fs_id} customize columns here
+    header = [nil, "order_id", "invoice_ref_num", "create_time", "product_id", "product_name", "sku", 
+      "quantity", "total_price", "recipient_name", "recipient_phone", "recipient_address", "address_line_1", 
+      "address_line_2", "address_line_3", "logistics", "currency", "amt", "postal_code", "customer_po",
+       "time", "fs_id"]
     file_naming = "POS#{Time.now.strftime("%d%m%y%H%M")}"
 
-    CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: true, col_sep: ';') do |csv|
-      csv << attributes
+    CSV.open("#{Rails.root}/public/test.csv", "wb", headers: header, col_sep: ';') do |csv|
+      csv << header
       data.sale_items.each do |si|
         brand_id = si.brand_id.to_s
         display = si.taken? ? "2" : ""
 
 
-        csv << [si.sale.id, si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, si.nama_barang,
-          si.kode_barang, si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, si.sale.pos_ultimate_customer.handphone1,
-          si.sale.pos_ultimate_customer.alamat, si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0],
-          si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1], si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2],
-          "internal", "IDR", si.id, "4018", si.sale.no_so, si.sale.created_at.to_i, (si.sale.channel_customer.id.to_s + brand_id + display)
+        csv << [nil,"#{si.sale.id}", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, "'#{si.nama_barang}'",
+          "'#{si.kode_barang} '", si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, "'#{si.sale.pos_ultimate_customer.handphone1}",
+          "'#{si.sale.pos_ultimate_customer.alamat}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0]}'",
+          "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1]}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2]} '",
+          "'internal'", "IDR", si.id, "4018 ", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", (si.sale.channel_customer.id.to_s + brand_id + display).to_i,"'#{nil} '"
         ]
       end
-      File.write("/home/marketing/shared_pos/SV/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')
+      File.write("#{Rails.root}/public/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')
     end
   end
 
