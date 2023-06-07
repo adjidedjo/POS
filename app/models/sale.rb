@@ -23,7 +23,7 @@ class Sale < ActiveRecord::Base
 
   has_paper_trail
 
-  attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1, :nik, :nama_ktp, :alamat_ktp
+  attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1, :nik, :nama_ktp, :alamat_ktp, :nama_npwp, :alamat_npwp
 
   validates :netto, :tanggal_kirim, :netto_elite, :netto_lady,
     :netto_royal, :netto_serenity, :netto_tech, :voucher, :jumlah_transfer, :pembayaran, :sales_promotion_id, presence: true
@@ -124,6 +124,10 @@ class Sale < ActiveRecord::Base
       nik: nik.nil? ? '-' : nik,
       nama_ktp: nama_ktp.nil? ? nama : nama_ktp,
       alamat_ktp: alamat_ktp.nil? ? alamat : alamat_ktp,
+      nama_ktp: nama_ktp.nil? ? nama : nama_ktp,
+      alamat_ktp: alamat_ktp.nil? ? alamat : alamat_ktp,
+      nama_npwp: nama_npwp.nil? ? nama : nama_npwp,
+      alamat_npwp: alamat_npwp.nil? ? alamat_npwp : alamat_npwp,
     }
     if no_telepon.present?
       ultimate_customer = PosUltimateCustomer.where("no_telepon like ?", no_telepon)
@@ -214,7 +218,7 @@ class Sale < ActiveRecord::Base
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
     self.update_attributes!(cara_bayar: ket_lunas)
-    Sale.generate_csv(self) if self.channel_customer_id == 1
+    Sale.generate_csv(self)
     #UserMailer.order_pameran(self).deliver if self.channel_customer_id == 6
   end
 
@@ -231,15 +235,16 @@ class Sale < ActiveRecord::Base
     CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: header, col_sep: ';') do |csv|
       csv << header
       data.sale_items.each do |si|
-        brand_id = si.brand_id.to_s
-        display = si.taken? ? "2" : ""
+        brand_id = (si.brand_id == 5 ? "2" : "1")
+        display = si.taken? ? "2" : "1"
+        so_tax = si.sale.tax? ? si.sale.no_so+"-P" : si.sale.no_so
 
 
-        csv << [nil,"#{si.sale.id}", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, "'#{si.nama_barang}'",
+        csv << [nil,"#{si.sale.id}", so_tax, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, "'#{si.nama_barang}'",
           "'#{si.kode_barang} '", si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, "'#{si.sale.pos_ultimate_customer.handphone1}",
           "'#{si.sale.pos_ultimate_customer.alamat}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0]}'",
           "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1]}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2]} '",
-          "'internal'", "IDR", si.id, "4018 ", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", (si.sale.channel_customer.id.to_s + brand_id + display).to_i,"'#{nil} '"
+          "'internal'", "IDR", si.id, "4018 ", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", (si.sale.channel_customer.address_number.to_s + brand_id + display).to_i,"'#{nil} '"
         ]
       end
       File.write("/home/marketing/shared_pos/SV/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')

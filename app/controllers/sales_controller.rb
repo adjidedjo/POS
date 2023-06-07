@@ -186,6 +186,7 @@ class SalesController < ApplicationController
     @sale.channel_customer_id = current_user.channel_customer.id
     @sale.channel_id = current_user.channel_customer.channel.id
     @sale.tipe_pembayaran = params[:tipe_pembayaran].join(';')
+    @sale.tax = sale_params[:nama_npwp].nil? ? 0 : 1
     @merchant = current_user.channel_customer.merchants
     get_credit_card = sale_params["tipe_pembayaran"].split(";").include?('Credit Card') if sale_params["tipe_pembayaran"].present?
     @sale.nama_kartu = @merchant.find_by_no_merchant(sale_params["no_merchant"]).nama if get_credit_card == true
@@ -316,7 +317,7 @@ class SalesController < ApplicationController
       :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :voucher, :sales_promotion_id, :sisa,
       :netto_elite, :netto_lady, :tanggal_kirim, :showroom_id, :channel_customer_id, :nama, :email, :alamat, :no_telepon,
       :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed, :netto_serenity, :netto_royal,
-      :netto_tech, :alasan_cancel, :nik, :nama_ktp, :alamat_ktp,
+      :netto_tech, :alasan_cancel, :nik, :nama_ktp, :alamat_ktp, :nama_npwp, :alamat_npwp,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
         :nama_barang, :user_id, :_destroy, :keterangan, :price_list, :point],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
