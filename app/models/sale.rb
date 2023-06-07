@@ -239,7 +239,6 @@ class Sale < ActiveRecord::Base
         display = si.taken? ? "2" : "1"
         so_tax = si.sale.tax? ? si.sale.no_so+"-P" : si.sale.no_so
 
-
         csv << [nil,"#{si.sale.id}", so_tax, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, "'#{si.nama_barang}'",
           "'#{si.kode_barang} '", si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, "'#{si.sale.pos_ultimate_customer.handphone1}",
           "'#{si.sale.pos_ultimate_customer.alamat}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0]}'",
