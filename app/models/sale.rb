@@ -230,7 +230,7 @@ class Sale < ActiveRecord::Base
       "quantity", "total_price", "recipient_name", "recipient_phone", "recipient_address", "address_line_1", 
       "address_line_2", "address_line_3", "logistics", "currency", "amt", "postal_code", "customer_po",
        "time", "fs_id"]
-    file_naming = "POS#{Time.now.strftime("%d%m%y%H%M")}"
+    file_naming = "POS#{data.no_order}"
 
     CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: header, col_sep: ';') do |csv|
       csv << header
