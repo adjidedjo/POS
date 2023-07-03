@@ -230,7 +230,7 @@ class Sale < ActiveRecord::Base
       "quantity", "total_price", "recipient_name", "recipient_phone", "recipient_address", "address_line_1", 
       "address_line_2", "address_line_3", "logistics", "currency", "amt", "postal_code", "customer_po",
        "time", "fs_id"]
-    file_naming = "POS#{Time.now.strftime("%d%m%y%H%M")}"
+    file_naming = "POS#{data.no_order}"
 
     CSV.open("/home/marketing/shared_pos/SV/#{file_naming}.csv", "wb", headers: header, col_sep: ';') do |csv|
       csv << header
@@ -240,10 +240,10 @@ class Sale < ActiveRecord::Base
         so_tax = si.sale.tax? ? si.sale.no_so+"-P" : si.sale.no_so
 
         csv << [nil,"#{si.sale.id}", so_tax, "'#{si.sale.created_at.strftime("%d%m%y")}", si.id, "'#{si.nama_barang}'",
-          "'#{si.kode_barang} '", si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, "'#{si.sale.pos_ultimate_customer.handphone1}",
+          "'#{si.kode_barang} '", si.jumlah, si.price_list, si.sale.pos_ultimate_customer.nama, "'#{si.sale.pos_ultimate_customer.no_telepon}",
           "'#{si.sale.pos_ultimate_customer.alamat}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[0]}'",
           "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[1]}'", "'#{si.sale.pos_ultimate_customer.alamat.scan(/.{0,39}[a-z.!?,;](?:\b|$)/mi)[2]} '",
-          "'internal'", "IDR", si.id, "4018 ", si.sale.no_so, "'#{si.sale.created_at.strftime("%d%m%y")}", (si.sale.channel_customer.address_number.to_s + brand_id + display).to_i,"'#{nil} '"
+          "'internal'", "IDR", si.id, "4018 ", so_tax, "'#{si.sale.created_at.strftime("%d%m%y")}", (si.sale.channel_customer.address_number.to_s + brand_id + display).to_i,"'#{nil} '"
         ]
       end
       File.write("/home/marketing/shared_pos/SV/OLORDER.txt", "#{file_naming}.csv|\n", mode: 'a')
