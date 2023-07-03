@@ -38,7 +38,7 @@
       <%= error_span(@sale[:handphone1]) %>
     </div>
     <div class="col-md-4">
-      <%= f.input :alamat, label: "Alamat Penerima", as: :text, input_html: {style: 'width: 250px',
+      <%= f.input :alamat, label: "Alamat Penerima", input_html: {style: 'width: 250px',
         value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:alamat] : nil) : f.object.pos_ultimate_customer.alamat)} %>
       <%= error_span(@sale[:alamat]) %>
       <%= f.input :kota, label: "Kota Penerima", input_html: {style: 'width: 250px',
