@@ -109,7 +109,7 @@ class ReportsController < ApplicationController
 
   def rekap_so
     @sales = []
-    Sale.where(channel_customer_id: current_user.channel_customer.id, cancel_order: false).each do |sale|
+    Sale.where(channel_customer_id: current_user.channel_customer.id, cancel_order: false).where("date(created_at) >= ?", 1.weeks.ago).each do |sale|
       SaleItem.where(sale_id: sale.id).where("date(created_at) >= ?", 1.weeks.ago).each do |sale_item|
         @sales << sale_item
       end
