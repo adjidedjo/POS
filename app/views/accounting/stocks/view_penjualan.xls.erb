@@ -157,7 +157,7 @@
             <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.kota %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.email %></Data></Cell>
-            <Cell><Data ss:Type="String"><%= (Brand.find(sale_item.brand_id).nil? ? "" : Brand.find(sale_item.brand_id).name) %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= (Brand.find(sale_item.brand_id).nil? ? "" : Brand.find(sale_item.brand_id).brand) %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.bonus? ? "BONUS" : "-" %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.taken? ? "Yes" : "No" %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.serial %></Data></Cell>
