@@ -107,7 +107,7 @@
             <Cell><Data ss:Type="Number"><%= sale_item.sale.voucher %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.sale.tipe_pembayaran %></Data></Cell>
             <Cell><Data ss:Type="Number"><%= sale_item.sale.sisa %></Data></Cell>
-            <Cell><Data ss:Type="String"><%= Brand.find(sale_item.brand_id).name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= Brand.find(sale_item.brand_id).brand %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.bonus? ? "BONUS" : "-" %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.taken? ? "Yes" : "No" %></Data></Cell>
             <Cell><Data ss:Type="String"><%= sale_item.serial %></Data></Cell>
