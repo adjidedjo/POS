@@ -23,7 +23,8 @@ class Sale < ActiveRecord::Base
 
   has_paper_trail
 
-  attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1, :nik, :nama_ktp, :alamat_ktp, :nama_npwp, :alamat_npwp
+  attr_accessor :nama, :email, :alamat, :kota, :no_telepon, :handphone, :handphone1, :nik, :nama_ktp, 
+  :alamat_ktp, :no_npwp, :nama_npwp, :alamat_npwp
 
   validates :netto, :tanggal_kirim, :netto_elite, :netto_lady,
     :netto_royal, :netto_serenity, :netto_tech, :voucher, :jumlah_transfer, :pembayaran, :sales_promotion_id, presence: true
@@ -126,8 +127,9 @@ class Sale < ActiveRecord::Base
       alamat_ktp: alamat_ktp.nil? ? alamat : alamat_ktp,
       nama_ktp: nama_ktp.nil? ? nama : nama_ktp,
       alamat_ktp: alamat_ktp.nil? ? alamat : alamat_ktp,
-      nama_npwp: nama_npwp.nil? ? nama : nama_npwp,
-      alamat_npwp: alamat_npwp.nil? ? alamat_npwp : alamat_npwp,
+      no_npwp: no_npwp.nil? ? '' : no_npwp,
+      nama_npwp: nama_npwp.nil? ? '' : nama_npwp,
+      alamat_npwp: alamat_npwp.nil? ? '' : alamat_npwp
     }
     if no_telepon.present?
       ultimate_customer = PosUltimateCustomer.where("no_telepon like ?", no_telepon)
@@ -180,7 +182,10 @@ class Sale < ActiveRecord::Base
       handphone: handphone,
       handphone1: handphone1,
       alamat: alamat,
-      kota: kota
+      kota: kota,
+      no_npwp: no_npwp,
+      nama_npwp: nama_npwp,
+      alamat_npwp: alamat_npwp
     }
     ultimate_customer = PosUltimateCustomer.where("no_telepon like ?", no_telepon)
     if ultimate_customer.empty?
@@ -218,7 +223,7 @@ class Sale < ActiveRecord::Base
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
     self.update_attributes!(cara_bayar: ket_lunas)
-    Sale.generate_csv(self)
+    # Sale.generate_csv(self)
     #UserMailer.order_pameran(self).deliver if self.channel_customer_id == 6
   end
 

@@ -64,6 +64,9 @@
       <%= f.input :alamat_ktp, label: "Alamat KTP", as: :text, input_html: {style: 'width: 250px',
         value: (f.object.new_record? ? (params[:sale].present? ? params[:sale][:alamat_ktp] : nil) : f.object.pos_ultimate_customer.alamat)} %>
       <%= error_span(@sale[:alamat_ktp]) %>
+      <%= f.input :nama_npwp, label: "No NPWP",
+        input_html: {style: 'width: 250px', value: params[:sale].present? ? params[:sale][:no_npwp] : nil } %>
+      <%= error_span(@sale[:nama_npwp]) %>
       <%= f.input :nama_npwp, label: "Nama NPWP",
         input_html: {style: 'width: 250px', value: params[:sale].present? ? params[:sale][:nama_npwp] : nil } %>
       <%= error_span(@sale[:nama_npwp]) %>
