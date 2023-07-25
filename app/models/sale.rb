@@ -223,7 +223,7 @@ class Sale < ActiveRecord::Base
     total_bayar = debit + credit + tunai + transfer
     ket_lunas = total_bayar < (netto-self.voucher) ? 'um' : 'lunas'
     self.update_attributes!(cara_bayar: ket_lunas)
-    # Sale.generate_csv(self)
+    Sale.generate_csv(self)
     #UserMailer.order_pameran(self).deliver if self.channel_customer_id == 6
   end
 
