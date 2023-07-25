@@ -1,118 +1,118 @@
 <?xml version="1.0"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:o="urn:schemas-microsoft-com:office:office"
   xmlns:x="urn:schemas-microsoft-com:office:excel"
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:html="http://www.w3.org/TR/REC-html40">
-  <Worksheet ss:Name="Sheet1">
-    <Table>
-      <Row>
-        <Cell><Data ss:Type="String">NIK</Data></Cell>
-        <Cell><Data ss:Type="String">Nama KTP</Data></Cell>
-        <Cell><Data ss:Type="String">Alamat KTP</Data></Cell>
-        <Cell><Data ss:Type="String">Delivery Number</Data></Cell>
-        <Cell><Data ss:Type="String">Invoice Number</Data></Cell>
-        <Cell><Data ss:Type="String">Channel Customer</Data></Cell>
-        <Cell><Data ss:Type="String">Nama SPG/SPB</Data></Cell>
-        <Cell><Data ss:Type="String">No SO</Data></Cell>
-        <Cell><Data ss:Type="String">So Manual</Data></Cell>
-        <Cell><Data ss:Type="String">Tanggal SO</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Konsumen</Data></Cell>
-        <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
-        <Cell><Data ss:Type="String">QTY</Data></Cell>
-        <Cell><Data ss:Type="String">Price List</Data></Cell>
-        <Cell><Data ss:Type="String">Tanggal Kirim</Data></Cell>
-        <Cell><Data ss:Type="String">Netto Penjualan</Data></Cell>
-        <Cell><Data ss:Type="String">Pembayaran Tunai</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Bank</Data></Cell>
-        <Cell><Data ss:Type="String">No Rekening</Data></Cell>
-        <Cell><Data ss:Type="String">Jumlah Transfer</Data></Cell>
-        <Cell><Data ss:Type="String">Nominal Kartu Debit</Data></Cell>
-        <Cell><Data ss:Type="String">No Kartu Debit</Data></Cell>
-        <Cell><Data ss:Type="String">Atas Nama</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Bank</Data></Cell>
-        <Cell><Data ss:Type="String">Nominal Kartu Kredit</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Kartu Kredit</Data></Cell>
-        <Cell><Data ss:Type="String">No Kartu Kredit</Data></Cell>
-        <Cell><Data ss:Type="String">Atas Nama</Data></Cell>
-        <Cell><Data ss:Type="String">No Merchant</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Merchant</Data></Cell>
-        <Cell><Data ss:Type="String">Nominal Kartu Kredit</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Kartu Kredit</Data></Cell>
-        <Cell><Data ss:Type="String">No Kartu Kredit</Data></Cell>
-        <Cell><Data ss:Type="String">Atas Nama</Data></Cell>
-        <Cell><Data ss:Type="String">No Merchant</Data></Cell>
-        <Cell><Data ss:Type="String">Nama Merchant</Data></Cell>
-        <Cell><Data ss:Type="String">Kode Pameran</Data></Cell>
-        <Cell><Data ss:Type="String">Dari Tanggal</Data></Cell>
-        <Cell><Data ss:Type="String">Ke Tanggal</Data></Cell>
-        <Cell><Data ss:Type="String">No Telp</Data></Cell>
-        <Cell><Data ss:Type="String">Alamat Kirim</Data></Cell>
-        <Cell><Data ss:Type="String">Kota</Data></Cell>
-        <Cell><Data ss:Type="String">Email</Data></Cell>
-        <Cell><Data ss:Type="String">Voucher</Data></Cell>
-        <Cell><Data ss:Type="String">Jenis Pembayaran</Data></Cell>
-        <Cell><Data ss:Type="String">Sisa</Data></Cell>
-        <Cell><Data ss:Type="String">Brand</Data></Cell>
-        <Cell><Data ss:Type="String">Bonus</Data></Cell>
-        <Cell><Data ss:Type="String">Taken</Data></Cell>
-        <Cell><Data ss:Type="String">Serial</Data></Cell>
-      </Row>
-    <% @sales.each do |sale_item| %>
-      <Row>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nik %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama_ktp.nil? ? sale_item.sale.pos_ultimate_customer.nama : sale_item.sale.pos_ultimate_customer.nama_ktp %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat_ktp.nil? ? sale_item.sale.pos_ultimate_customer.alamat : sale_item.sale.pos_ultimate_customer.alamat_ktp %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.delivery_number %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.invoice_number %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.nama %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
+    <Worksheet ss:Name="Sheet1">
+      <Table>
+        <Row>
+          <Cell><Data ss:Type="String">NIK</Data></Cell>
+          <Cell><Data ss:Type="String">Nama KTP</Data></Cell>
+          <Cell><Data ss:Type="String">Alamat KTP</Data></Cell>
+          <Cell><Data ss:Type="String">Delivery Number</Data></Cell>
+          <Cell><Data ss:Type="String">Invoice Number</Data></Cell>
+          <Cell><Data ss:Type="String">Channel Customer</Data></Cell>
+          <Cell><Data ss:Type="String">Nama SPG/SPB</Data></Cell>
+          <Cell><Data ss:Type="String">No SO</Data></Cell>
+          <Cell><Data ss:Type="String">So Manual</Data></Cell>
+          <Cell><Data ss:Type="String">Tanggal SO</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Konsumen</Data></Cell>
+          <Cell><Data ss:Type="String">Kode Barang</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Barang</Data></Cell>
+          <Cell><Data ss:Type="String">QTY</Data></Cell>
+          <Cell><Data ss:Type="String">Price List</Data></Cell>
+          <Cell><Data ss:Type="String">Tanggal Kirim</Data></Cell>
+          <Cell><Data ss:Type="String">Netto Penjualan</Data></Cell>
+          <Cell><Data ss:Type="String">Pembayaran Tunai</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Bank</Data></Cell>
+          <Cell><Data ss:Type="String">No Rekening</Data></Cell>
+          <Cell><Data ss:Type="String">Jumlah Transfer</Data></Cell>
+          <Cell><Data ss:Type="String">Nominal Kartu Debit</Data></Cell>
+          <Cell><Data ss:Type="String">No Kartu Debit</Data></Cell>
+          <Cell><Data ss:Type="String">Atas Nama</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Bank</Data></Cell>
+          <Cell><Data ss:Type="String">Nominal Kartu Kredit</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Kartu Kredit</Data></Cell>
+          <Cell><Data ss:Type="String">No Kartu Kredit</Data></Cell>
+          <Cell><Data ss:Type="String">Atas Nama</Data></Cell>
+          <Cell><Data ss:Type="String">No Merchant</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Merchant</Data></Cell>
+          <Cell><Data ss:Type="String">Nominal Kartu Kredit</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Kartu Kredit</Data></Cell>
+          <Cell><Data ss:Type="String">No Kartu Kredit</Data></Cell>
+          <Cell><Data ss:Type="String">Atas Nama</Data></Cell>
+          <Cell><Data ss:Type="String">No Merchant</Data></Cell>
+          <Cell><Data ss:Type="String">Nama Merchant</Data></Cell>
+          <Cell><Data ss:Type="String">Kode Pameran</Data></Cell>
+          <Cell><Data ss:Type="String">Dari Tanggal</Data></Cell>
+          <Cell><Data ss:Type="String">Ke Tanggal</Data></Cell>
+          <Cell><Data ss:Type="String">No Telp</Data></Cell>
+          <Cell><Data ss:Type="String">Alamat Kirim</Data></Cell>
+          <Cell><Data ss:Type="String">Kota</Data></Cell>
+          <Cell><Data ss:Type="String">Email</Data></Cell>
+          <Cell><Data ss:Type="String">Voucher</Data></Cell>
+          <Cell><Data ss:Type="String">Jenis Pembayaran</Data></Cell>
+          <Cell><Data ss:Type="String">Sisa</Data></Cell>
+          <Cell><Data ss:Type="String">Brand</Data></Cell>
+          <Cell><Data ss:Type="String">Bonus</Data></Cell>
+          <Cell><Data ss:Type="String">Taken</Data></Cell>
+          <Cell><Data ss:Type="String">Serial</Data></Cell>
+        </Row>
+        <% @sales.each do |sale_item| %>
+          <Row>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nik %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama_ktp.nil? ? sale_item.sale.pos_ultimate_customer.nama : sale_item.sale.pos_ultimate_customer.nama_ktp %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat_ktp.nil? ? sale_item.sale.pos_ultimate_customer.alamat : sale_item.sale.pos_ultimate_customer.alamat_ktp %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.delivery_number %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.invoice_number %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.nama %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.sales_promotion_id.nil? ? current_user.channel_customer.nama.titleize :
   SalesPromotion.find(sale_item.sale.sales_promotion_id).nama.titleize %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.no_so %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.so_manual.present? ? sale_item.sale.so_manual : "-" %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.tanggal_kirim %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.kode_barang %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.nama_barang %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.jumlah %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.price_list %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.tanggal_kirim %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.sale.netto %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.sale.pembayaran %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.sale.jumlah_transfer %></Data></Cell>
-        <% sale_item.sale.payment_with_debit_cards.each do |cd| %>
-          <Cell><Data ss:Type="Number"><%= cd.jumlah %></Data></Cell>
-          <Cell><Data ss:Type="String"><%= cd.no_kartu_debit.present? ? cd.no_kartu_debit : '-'  %></Data></Cell>
-          <Cell><Data ss:Type="String"><%= cd.atas_nama.present? ? cd.atas_nama : '-' %></Data></Cell>
-          <Cell><Data ss:Type="String"><%= cd.nama_kartu.present? ? cd.nama_kartu : '-' %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.no_so %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.so_manual.present? ? sale_item.sale.so_manual : "-" %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.tanggal_kirim %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.nama %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.kode_barang %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.nama_barang %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.jumlah %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.price_list %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.tanggal_kirim %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.sale.netto %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.sale.pembayaran %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.bank_account.nil? ? '' : sale_item.sale.bank_account.account_number %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.sale.jumlah_transfer %></Data></Cell>
+            <% sale_item.sale.payment_with_debit_cards.each do |cd| %>
+              <Cell><Data ss:Type="Number"><%= cd.jumlah %></Data></Cell>
+              <Cell><Data ss:Type="String"><%= cd.no_kartu_debit.present? ? cd.no_kartu_debit : '-'  %></Data></Cell>
+              <Cell><Data ss:Type="String"><%= cd.atas_nama.present? ? cd.atas_nama : '-' %></Data></Cell>
+              <Cell><Data ss:Type="String"><%= cd.nama_kartu.present? ? cd.nama_kartu : '-' %></Data></Cell>
+            <% end %>
+            <% sale_item.sale.payment_with_credit_cards.each do |cc| %>
+              <Cell><Data ss:Type="Number"><%= cc.jumlah %></Data></Cell>
+              <Cell><Data ss:Type="String"><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </Data></Cell>
+              <Cell><Data ss:Type="String"><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </Data></Cell>
+              <Cell><Data ss:Type="String"><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </Data></Cell>
+              <Cell><Data ss:Type="String"><%= cc.no_merchant.present? ? cc.no_merchant : '-' %> </Data></Cell>
+              <Cell><Data ss:Type="String"><%= cc.nama_merchant.present? ? cc.nama_merchant : '-' %> </Data></Cell>
+            <% end %>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.kode_channel_customer %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.dari_tanggal %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.sampai_tanggal %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.no_telepon %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.kota %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.email %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.sale.voucher %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.sale.tipe_pembayaran %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= sale_item.sale.sisa %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= Brand.find(sale_item.brand_id).brand %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.bonus? ? "BONUS" : "-" %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.taken? ? "Yes" : "No" %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= sale_item.serial %></Data></Cell>
+          </Row>
         <% end %>
-        <% sale_item.sale.payment_with_credit_cards.each do |cc| %>
-          <Cell><Data ss:Type="Number"><%= cc.jumlah %></Data></Cell>
-          <Cell><Data ss:Type="String"><%= cc.nama_kartu.present? ? cc.nama_kartu : '-' %> </Data></Cell>
-          <Cell><Data ss:Type="String"><%= cc.no_kartu_kredit.present? ? cc.no_kartu_kredit : '-' %> </Data></Cell>
-          <Cell><Data ss:Type="String"><%= cc.atas_nama.present? ? cc.atas_nama : '-' %> </Data></Cell>
-          <Cell><Data ss:Type="String"><%= cc.no_merchant.present? ? cc.no_merchant : '-' %> </Data></Cell>
-          <Cell><Data ss:Type="String"><%= cc.nama_merchant.present? ? cc.nama_merchant : '-' %> </Data></Cell>
-        <% end %>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.kode_channel_customer %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.dari_tanggal %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.channel_customer.sampai_tanggal %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.no_telepon %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.alamat %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.kota %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.pos_ultimate_customer.email %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.sale.voucher %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.sale.tipe_pembayaran %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= sale_item.sale.sisa %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= Brand.find(sale_item.brand_id).brand %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.bonus? ? "BONUS" : "-" %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.taken? ? "Yes" : "No" %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= sale_item.serial %></Data></Cell>
-      </Row>
-    <% end %>
-    </Table>
-  </Worksheet>
-</Workbook>
+      </Table>
+    </Worksheet>
+  </Workbook>
