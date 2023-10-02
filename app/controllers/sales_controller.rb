@@ -46,7 +46,7 @@ class SalesController < ApplicationController
     kode_serial = Item.find_by_nama(params[:nama])
     @kode = kode_serial.kode_barang
     @nama = kode_serial.nama
-    @harga = current_user.id == 102 ? kode_serial.harga : 0
+    @harga = kode_serial.harga
     @point = kode_serial.point
     @element_id = params[:element_id]
 
@@ -317,7 +317,7 @@ class SalesController < ApplicationController
       :atas_nama, :nama_kartu, :netto, :pembayaran, :no_sale, :cara_bayar, :voucher, :sales_promotion_id, :sisa,
       :netto_elite, :netto_lady, :tanggal_kirim, :showroom_id, :channel_customer_id, :nama, :email, :alamat, :no_telepon,
       :handphone, :handphone1, :kota, :bank_account_id, :jumlah_transfer, :all_items_exported, :printed, :netto_serenity, :netto_royal,
-      :netto_tech, :alasan_cancel, :nik, :nama_ktp, :alamat_ktp, :nama_npwp, :alamat_npwp,
+      :netto_tech, :alasan_cancel, :nik, :nama_ktp, :alamat_ktp, :no_npwp, :nama_npwp, :alamat_npwp,
       sale_items_attributes: [:id, :kode_barang, :sale_id, :jumlah, :tanggal_kirim, :taken, :bonus, :serial,
         :nama_barang, :user_id, :_destroy, :keterangan, :price_list, :point],
       payment_with_credit_cards_attributes: [:id, :no_merchant, :nama_kartu, :no_kartu_kredit, :atas_nama, :jumlah, :tenor, :mid],
